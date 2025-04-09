@@ -1,0 +1,112 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mamlaka/core/network/local/cache.dart';
+import 'package:mamlaka/core/themes/colors.dart';
+import 'package:mamlaka/core/themes/light.dart';
+import 'package:mamlaka/core/utils/constants.dart';
+import 'package:mamlaka/feature/navigation/view/manager/homeBloc/state.dart';
+
+import 'feature/auth/manager/authBloc/auth_cubit.dart';
+import 'feature/navigation/view/manager/homeBloc/cubit.dart';
+import 'main.dart';
+import 'mamlaka_view.dart';
+
+class MyApp extends StatefulWidget {
+  const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    // HomeDataSourceImpl().appVisit();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ScreenUtilInit(
+      minTextAdapt: true,
+      splitScreenMode: true,
+      builder: (_, child) => MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => HomeCubit(),
+          ),
+          BlocProvider(
+            lazy: false,
+            create: (context) => AuthCubit()..getCountryCode(),
+          ),
+          // BlocProvider(
+          //   create: (context) => AddressCubit(),
+          // ),
+          // BlocProvider(
+          //   create: (context) => BookCubit(),
+          // ),
+          // BlocProvider(
+          //   create: (context) => OrderCubit(),
+          // ),
+          // BlocProvider(
+          //   create: (context) => ManageAddressesCubit(),
+          // ),
+          // BlocProvider(
+          //   create: (context) => ProceedCubit(),
+          // ),
+          // BlocProvider(
+          //   create: (context) => CartCubit(),
+          // ),
+        ],
+        child: BlocBuilder<HomeCubit, HomeState>(
+          builder: (context, state) {
+            SystemChrome.setSystemUIOverlayStyle(
+              const SystemUiOverlayStyle(
+                statusBarColor: AppColors.scaffoldBackGround,
+                statusBarIconBrightness: Brightness.dark,
+                statusBarBrightness: Brightness.light,
+                systemNavigationBarColor: AppColors.scaffoldBackGround,
+                systemNavigationBarDividerColor: AppColors.scaffoldBackGround,
+              ),
+            );
+            return MaterialApp(
+              debugShowCheckedModeBanner: false,
+              localizationsDelegates: context.localizationDelegates,
+              supportedLocales: context.supportedLocales,
+              locale: context.locale,
+              //locale: DevicePreview.locale(context),
+              //builder: DevicePreview.appBuilder,
+              navigatorKey: navigatorKey,
+              theme: Themes(Constants.fontFamily).light(),
+              darkTheme: Themes(Constants.fontFamily).dark(),
+              themeMode: darkModeValue ? ThemeMode.dark : ThemeMode.light,
+              builder: (context, child) => child!,
+              navigatorObservers: [
+                HeroController(
+                  createRectTween: (begin, end) {
+                    return SlowRectTween(begin: begin, end: end);
+                  },
+                ),
+              ],
+              home: const MamlakaApp(),
+            );
+          },
+        ),
+      ),
+    );
+  }
+}
+
+class SlowRectTween extends RectTween {
+  SlowRectTween({super.begin, super.end});
+
+  @override
+  Rect lerp(double t) {
+    // Apply easing curve to slow down animation
+    final slowT = Curves.easeInOut.transform(t); // or use Interval(0.0, 0.5)
+    return Rect.lerp(begin, end, slowT)!;
+  }
+}
