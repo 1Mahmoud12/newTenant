@@ -21,6 +21,7 @@ class AppIcons {
 
   //Navigation bar
   static const arrowBackIc = '$baseUrl/arrowBackIc.svg';
+  static const arrowRight = '$baseUrl/arrow-right-01.svg';
   static const checkBoxTrue = '$baseUrl/svg/checkBoxTrue.svg';
 
   // Camera
@@ -121,4 +122,14 @@ class AppIcons {
   static const reviewStarIc = '$baseUrl/reviewStarIc.svg';
   static const attachedPhotoIc = '$baseUrl/attachedPhotoIc.svg';
   static const addNewAddressesIc = '$baseUrl/addNewAddressesIc.svg';
+
+  // profile
+  static const myOrders = '$baseUrl/my-orders.svg';
+  static const myDetails = '$baseUrl/my-details.svg';
+  static const addressBook = '$baseUrl/address-book.svg';
+  static const paymentMethod = '$baseUrl/payment-method.svg';
+  static const notificationIcon = '$baseUrl/notification-01.svg';
+  static const faq = '$baseUrl/faq.svg';
+  static const helpCenter = '$baseUrl/help-center.svgg';
+  static const logout = '$baseUrl/logout-05.svg';
 }
