@@ -3,9 +3,9 @@ import 'dart:developer';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mamlaka/core/network/local/cache.dart';
-import 'package:mamlaka/core/utils/constants.dart';
-import 'package:mamlaka/feature/navigation/view/manager/homeBloc/state.dart';
+import 'package:dobzz_seller/core/network/local/cache.dart';
+import 'package:dobzz_seller/core/utils/constants.dart';
+import 'package:dobzz_seller/feature/navigation/view/manager/homeBloc/state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
   HomeCubit() : super(HomeInitial());

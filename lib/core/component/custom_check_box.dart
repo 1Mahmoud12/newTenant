@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mamlaka/core/themes/styles.dart';
-import 'package:mamlaka/core/utils/screen_spaces_extension.dart';
+import 'package:dobzz_seller/core/themes/styles.dart';
+import 'package:dobzz_seller/core/utils/screen_spaces_extension.dart';
 
 import '../themes/colors.dart';
 

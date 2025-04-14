@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:mamlaka/core/utils/extensions.dart';
+import 'package:dobzz_seller/core/utils/extensions.dart';
 
 class DrawSlider extends StatelessWidget {
   final Color? sliderColor;

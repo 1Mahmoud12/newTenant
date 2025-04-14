@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:mamlaka/core/utils/app_images.dart';
-import 'package:mamlaka/core/utils/extensions.dart';
+import 'package:dobzz_seller/core/utils/app_images.dart';
+import 'package:dobzz_seller/core/utils/extensions.dart';
 
 enum EmptyImages {
   noOrders,

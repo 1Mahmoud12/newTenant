@@ -8,11 +8,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:mamlaka/core/component/buttons/custom_text_button.dart';
-import 'package:mamlaka/core/component/sharred_divider.dart';
-import 'package:mamlaka/core/themes/colors.dart';
-import 'package:mamlaka/core/themes/styles.dart';
-import 'package:mamlaka/core/utils/constants.dart';
+import 'package:dobzz_seller/core/component/buttons/custom_text_button.dart';
+import 'package:dobzz_seller/core/component/sharred_divider.dart';
+import 'package:dobzz_seller/core/themes/colors.dart';
+import 'package:dobzz_seller/core/themes/styles.dart';
+import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'constants_models.dart';

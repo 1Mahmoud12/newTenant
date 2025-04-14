@@ -1,6 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:mamlaka/core/themes/colors.dart';
+import 'package:dobzz_seller/core/themes/colors.dart';
 
 class SeeAllWidget extends StatelessWidget {
   const SeeAllWidget({

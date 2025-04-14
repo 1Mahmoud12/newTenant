@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mamlaka/core/component/Sliders/sharred.dart';
-import 'package:mamlaka/core/themes/colors.dart';
+import 'package:dobzz_seller/core/component/Sliders/sharred.dart';
+import 'package:dobzz_seller/core/themes/colors.dart';
 
 class SliderCustom extends StatefulWidget {
   final double valueSlider;

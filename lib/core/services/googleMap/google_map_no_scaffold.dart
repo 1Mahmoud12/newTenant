@@ -5,13 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart' as location_import;
-import 'package:mamlaka/core/network/local/cache.dart';
-import 'package:mamlaka/core/services/googleMap/utils/utils_google_map.dart';
-import 'package:mamlaka/core/themes/colors.dart';
-import 'package:mamlaka/core/utils/constants.dart';
-import 'package:mamlaka/core/utils/extensions.dart';
-import 'package:mamlaka/core/utils/utils.dart';
-import 'package:mamlaka/feature/navigation/view/manager/homeBloc/cubit.dart';
+import 'package:dobzz_seller/core/network/local/cache.dart';
+import 'package:dobzz_seller/core/services/googleMap/utils/utils_google_map.dart';
+import 'package:dobzz_seller/core/themes/colors.dart';
+import 'package:dobzz_seller/core/utils/constants.dart';
+import 'package:dobzz_seller/core/utils/extensions.dart';
+import 'package:dobzz_seller/core/utils/utils.dart';
+import 'package:dobzz_seller/feature/navigation/view/manager/homeBloc/cubit.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class GoogleMapWithoutScaffold extends StatefulWidget {

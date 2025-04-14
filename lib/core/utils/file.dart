@@ -2,7 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:http/http.dart' as http;
-import 'package:mamlaka/core/utils/utils.dart';
+import 'package:dobzz_seller/core/utils/utils.dart';
 import 'package:path_provider/path_provider.dart';
 //import 'package:open_file/open_file.dart';
 import 'package:url_launcher/url_launcher.dart';

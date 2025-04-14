@@ -1,14 +1,14 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mamlaka/core/component/buttons/custom_text_button.dart';
-import 'package:mamlaka/core/component/fields/custom_text_form_field.dart';
-import 'package:mamlaka/core/themes/colors.dart';
-import 'package:mamlaka/core/utils/bottomSheet/success_bottom_sheet.dart';
-import 'package:mamlaka/core/utils/navigate.dart';
-import 'package:mamlaka/feature/auth/login/view/presentation/login_screen.dart';
-import 'package:mamlaka/feature/auth/manager/authBloc/auth_cubit.dart';
-import 'package:mamlaka/feature/auth/manager/authBloc/auth_state.dart';
+import 'package:dobzz_seller/core/component/buttons/custom_text_button.dart';
+import 'package:dobzz_seller/core/component/fields/custom_text_form_field.dart';
+import 'package:dobzz_seller/core/themes/colors.dart';
+import 'package:dobzz_seller/core/utils/bottomSheet/success_bottom_sheet.dart';
+import 'package:dobzz_seller/core/utils/navigate.dart';
+import 'package:dobzz_seller/feature/auth/login/view/presentation/login_screen.dart';
+import 'package:dobzz_seller/feature/auth/manager/authBloc/auth_cubit.dart';
+import 'package:dobzz_seller/feature/auth/manager/authBloc/auth_state.dart';
 
 class ResetPasswordView extends StatefulWidget {
   const ResetPasswordView({super.key});

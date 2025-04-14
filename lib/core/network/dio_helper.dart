@@ -4,9 +4,9 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:mamlaka/core/network/end_points.dart';
-import 'package:mamlaka/core/utils/constants.dart';
-import 'package:mamlaka/core/utils/utils.dart';
+import 'package:dobzz_seller/core/network/end_points.dart';
+import 'package:dobzz_seller/core/utils/constants.dart';
+import 'package:dobzz_seller/core/utils/utils.dart';
 
 // ignore: avoid_classes_with_only_static_members
 class DioHelper {

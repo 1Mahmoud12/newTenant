@@ -1,17 +1,17 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mamlaka/core/component/buttons/custom_text_button.dart';
-import 'package:mamlaka/core/component/fields/custom_text_form_field.dart';
-import 'package:mamlaka/core/component/loadsErros/loading_widget.dart';
-import 'package:mamlaka/core/themes/colors.dart';
-import 'package:mamlaka/core/utils/custom_show_toast.dart';
-import 'package:mamlaka/core/utils/extensions.dart';
-import 'package:mamlaka/core/utils/navigate.dart';
-import 'package:mamlaka/feature/auth/login/view/presentation/login_screen.dart';
-import 'package:mamlaka/feature/auth/manager/authBloc/auth_cubit.dart';
-import 'package:mamlaka/feature/auth/manager/authBloc/auth_state.dart';
-import 'package:mamlaka/feature/auth/verifyCode/view/presentation/verify_code_view.dart';
+import 'package:dobzz_seller/core/component/buttons/custom_text_button.dart';
+import 'package:dobzz_seller/core/component/fields/custom_text_form_field.dart';
+import 'package:dobzz_seller/core/component/loadsErros/loading_widget.dart';
+import 'package:dobzz_seller/core/themes/colors.dart';
+import 'package:dobzz_seller/core/utils/custom_show_toast.dart';
+import 'package:dobzz_seller/core/utils/extensions.dart';
+import 'package:dobzz_seller/core/utils/navigate.dart';
+import 'package:dobzz_seller/feature/auth/login/view/presentation/login_screen.dart';
+import 'package:dobzz_seller/feature/auth/manager/authBloc/auth_cubit.dart';
+import 'package:dobzz_seller/feature/auth/manager/authBloc/auth_state.dart';
+import 'package:dobzz_seller/feature/auth/verifyCode/view/presentation/verify_code_view.dart';
 
 class AddPasswordView extends StatefulWidget {
   const AddPasswordView({super.key});

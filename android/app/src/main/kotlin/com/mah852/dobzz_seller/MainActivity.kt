@@ -1,4 +1,4 @@
-package com.mah852.mamlaka
+package com.mah852.dobzz_seller
 
 import io.flutter.embedding.android.FlutterActivity
 

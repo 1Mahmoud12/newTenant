@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mamlaka/core/themes/styles.dart';
+import 'package:dobzz_seller/core/themes/styles.dart';
 
 class HeaderApp extends StatelessWidget {
   const HeaderApp({

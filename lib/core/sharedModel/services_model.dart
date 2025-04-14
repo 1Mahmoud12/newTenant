@@ -1,4 +1,4 @@
-import 'package:mamlaka/core/sharedModel/clothes_model.dart';
+import 'package:dobzz_seller/core/sharedModel/clothes_model.dart';
 
 class CategoriesModel {
   final int idServices;

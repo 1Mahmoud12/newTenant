@@ -1,9 +1,9 @@
 /*
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:mamlaka/core/themes/colors.dart';
-import 'package:mamlaka/core/themes/styles.dart';
-import 'package:mamlaka/core/utils/screen_spaces_extension.dart';
+import 'package:dobzz_seller/core/themes/colors.dart';
+import 'package:dobzz_seller/core/themes/styles.dart';
+import 'package:dobzz_seller/core/utils/screen_spaces_extension.dart';
 
 class CustomTextPhoneNumber extends StatelessWidget {
   final TextEditingController phoneNumberController;

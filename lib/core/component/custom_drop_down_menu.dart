@@ -1,8 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:mamlaka/core/themes/colors.dart';
-import 'package:mamlaka/core/themes/styles.dart';
+import 'package:dobzz_seller/core/themes/colors.dart';
+import 'package:dobzz_seller/core/themes/styles.dart';
 
 class CustomDropDownMenu extends StatefulWidget {
   final String? selectedItem;

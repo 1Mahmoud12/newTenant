@@ -2,15 +2,15 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:mamlaka/core/component/buttons/custom_text_button.dart';
-import 'package:mamlaka/core/component/fields/custom_text_form_field.dart';
-import 'package:mamlaka/core/themes/colors.dart';
-import 'package:mamlaka/core/themes/styles.dart';
-import 'package:mamlaka/core/utils/app_icons.dart';
-import 'package:mamlaka/core/utils/constants.dart';
-import 'package:mamlaka/core/utils/custom_alert_dialog.dart';
-import 'package:mamlaka/core/utils/extensions.dart';
-import 'package:mamlaka/core/utils/utils.dart';
+import 'package:dobzz_seller/core/component/buttons/custom_text_button.dart';
+import 'package:dobzz_seller/core/component/fields/custom_text_form_field.dart';
+import 'package:dobzz_seller/core/themes/colors.dart';
+import 'package:dobzz_seller/core/themes/styles.dart';
+import 'package:dobzz_seller/core/utils/app_icons.dart';
+import 'package:dobzz_seller/core/utils/constants.dart';
+import 'package:dobzz_seller/core/utils/custom_alert_dialog.dart';
+import 'package:dobzz_seller/core/utils/extensions.dart';
+import 'package:dobzz_seller/core/utils/utils.dart';
 
 Future<void> alertDialogRating(
   BuildContext context, {

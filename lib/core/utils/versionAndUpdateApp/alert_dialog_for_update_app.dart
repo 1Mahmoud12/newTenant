@@ -3,12 +3,12 @@ import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:mamlaka/core/component/buttons/custom_text_button.dart';
-import 'package:mamlaka/core/utils/constants.dart';
-import 'package:mamlaka/core/utils/errorLoadingWidgets/empty_widget.dart';
-import 'package:mamlaka/core/utils/navigate.dart';
-import 'package:mamlaka/core/utils/utils.dart';
-import 'package:mamlaka/core/utils/versionAndUpdateApp/check_app_update.dart';
+import 'package:dobzz_seller/core/component/buttons/custom_text_button.dart';
+import 'package:dobzz_seller/core/utils/constants.dart';
+import 'package:dobzz_seller/core/utils/errorLoadingWidgets/empty_widget.dart';
+import 'package:dobzz_seller/core/utils/navigate.dart';
+import 'package:dobzz_seller/core/utils/utils.dart';
+import 'package:dobzz_seller/core/utils/versionAndUpdateApp/check_app_update.dart';
 
 void checkVersion(BuildContext context) async {
   final _checker = AppVersionChecker();

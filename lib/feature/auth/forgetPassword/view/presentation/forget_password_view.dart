@@ -2,11 +2,11 @@ import 'package:country_code_picker/country_code_picker.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mamlaka/core/component/buttons/custom_text_button.dart';
-import 'package:mamlaka/core/themes/colors.dart';
-import 'package:mamlaka/feature/auth/login/view/presentation/widgets/phone_number_widget.dart';
-import 'package:mamlaka/feature/auth/manager/authBloc/auth_cubit.dart';
-import 'package:mamlaka/feature/auth/manager/authBloc/auth_state.dart';
+import 'package:dobzz_seller/core/component/buttons/custom_text_button.dart';
+import 'package:dobzz_seller/core/themes/colors.dart';
+import 'package:dobzz_seller/feature/auth/login/view/presentation/widgets/phone_number_widget.dart';
+import 'package:dobzz_seller/feature/auth/manager/authBloc/auth_cubit.dart';
+import 'package:dobzz_seller/feature/auth/manager/authBloc/auth_state.dart';
 
 class ForgetPasswordView extends StatefulWidget {
   const ForgetPasswordView({super.key});

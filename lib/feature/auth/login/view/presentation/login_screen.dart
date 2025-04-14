@@ -3,17 +3,17 @@ import 'dart:developer';
 import 'package:easy_localization/easy_localization.dart' as easy;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mamlaka/core/component/buttons/custom_text_button.dart';
-import 'package:mamlaka/core/component/fields/custom_text_form_field.dart';
-import 'package:mamlaka/core/component/loadsErros/loading_widget.dart';
-import 'package:mamlaka/core/themes/colors.dart';
-import 'package:mamlaka/core/utils/navigate.dart';
-import 'package:mamlaka/feature/auth/forgetPassword/view/presentation/forget_password_view.dart';
-import 'package:mamlaka/feature/auth/login/view/presentation/widgets/phone_number_widget.dart';
-import 'package:mamlaka/feature/auth/manager/authBloc/auth_cubit.dart';
-import 'package:mamlaka/feature/auth/manager/authBloc/auth_state.dart';
-import 'package:mamlaka/feature/auth/signUp/view/presentation/sign_up_view.dart';
-import 'package:mamlaka/feature/navigation/view/presentation/navigation_view.dart';
+import 'package:dobzz_seller/core/component/buttons/custom_text_button.dart';
+import 'package:dobzz_seller/core/component/fields/custom_text_form_field.dart';
+import 'package:dobzz_seller/core/component/loadsErros/loading_widget.dart';
+import 'package:dobzz_seller/core/themes/colors.dart';
+import 'package:dobzz_seller/core/utils/navigate.dart';
+import 'package:dobzz_seller/feature/auth/forgetPassword/view/presentation/forget_password_view.dart';
+import 'package:dobzz_seller/feature/auth/login/view/presentation/widgets/phone_number_widget.dart';
+import 'package:dobzz_seller/feature/auth/manager/authBloc/auth_cubit.dart';
+import 'package:dobzz_seller/feature/auth/manager/authBloc/auth_state.dart';
+import 'package:dobzz_seller/feature/auth/signUp/view/presentation/sign_up_view.dart';
+import 'package:dobzz_seller/feature/navigation/view/presentation/navigation_view.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});

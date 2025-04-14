@@ -1,8 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:mamlaka/core/component/buttons/custom_text_button.dart';
-import 'package:mamlaka/core/themes/colors.dart';
-import 'package:mamlaka/core/utils/item_above_modal_bottom_sheet.dart';
+import 'package:dobzz_seller/core/component/buttons/custom_text_button.dart';
+import 'package:dobzz_seller/core/themes/colors.dart';
+import 'package:dobzz_seller/core/utils/item_above_modal_bottom_sheet.dart';
 
 Future<void> failureModalBottomSheetWithReason(BuildContext context, {required List reasons, required Function onPress}) async {
   showModalBottomSheet(

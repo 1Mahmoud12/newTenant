@@ -10,11 +10,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:mamlaka/core/utils/bloc_observe.dart';
-import 'package:mamlaka/core/utils/constants.dart';
-import 'package:mamlaka/feature/auth/data/models/register_model.dart';
-import 'package:mamlaka/feature/navigation/view/presentation/navigation_view.dart';
-import 'package:mamlaka/feature/splash/view/presentation/splash_screen.dart';
+import 'package:dobzz_seller/core/utils/bloc_observe.dart';
+import 'package:dobzz_seller/core/utils/constants.dart';
+import 'package:dobzz_seller/feature/auth/data/models/register_model.dart';
+import 'package:dobzz_seller/feature/navigation/view/presentation/navigation_view.dart';
+import 'package:dobzz_seller/feature/splash/view/presentation/splash_screen.dart';
 
 import 'core/network/dio_helper.dart';
 import 'core/network/local/cache.dart';

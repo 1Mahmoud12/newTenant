@@ -3,16 +3,16 @@ import 'dart:developer';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:mamlaka/core/network/dio_helper.dart';
-import 'package:mamlaka/core/network/end_points.dart';
-import 'package:mamlaka/core/network/errors/failures.dart';
-import 'package:mamlaka/core/network/local/cache.dart';
-import 'package:mamlaka/feature/auth/data/models/country_code_model.dart';
-import 'package:mamlaka/feature/auth/data/models/login_params.dart';
-import 'package:mamlaka/feature/auth/data/models/register_model.dart';
-import 'package:mamlaka/feature/auth/data/models/reset_password_params.dart';
-import 'package:mamlaka/feature/auth/data/models/sign_up_params.dart';
-import 'package:mamlaka/feature/auth/data/models/verify_code_model.dart';
+import 'package:dobzz_seller/core/network/dio_helper.dart';
+import 'package:dobzz_seller/core/network/end_points.dart';
+import 'package:dobzz_seller/core/network/errors/failures.dart';
+import 'package:dobzz_seller/core/network/local/cache.dart';
+import 'package:dobzz_seller/feature/auth/data/models/country_code_model.dart';
+import 'package:dobzz_seller/feature/auth/data/models/login_params.dart';
+import 'package:dobzz_seller/feature/auth/data/models/register_model.dart';
+import 'package:dobzz_seller/feature/auth/data/models/reset_password_params.dart';
+import 'package:dobzz_seller/feature/auth/data/models/sign_up_params.dart';
+import 'package:dobzz_seller/feature/auth/data/models/verify_code_model.dart';
 
 abstract class AuthDataSource {
   Future<Either<Failure, CountryCodeModel>> getCountryCode();

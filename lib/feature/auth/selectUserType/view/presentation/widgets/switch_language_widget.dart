@@ -2,8 +2,8 @@ import 'package:easy_localization/easy_localization.dart' as easy;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:mamlaka/core/themes/colors.dart';
-import 'package:mamlaka/feature/navigation/view/manager/homeBloc/cubit.dart';
+import 'package:dobzz_seller/core/themes/colors.dart';
+import 'package:dobzz_seller/feature/navigation/view/manager/homeBloc/cubit.dart';
 
 class SwitchLanguageWidget extends StatefulWidget {
   const SwitchLanguageWidget({super.key});

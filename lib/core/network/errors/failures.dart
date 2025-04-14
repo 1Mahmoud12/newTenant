@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
-import 'package:mamlaka/core/utils/constants.dart';
+import 'package:dobzz_seller/core/utils/constants.dart';
 
 abstract class Failure {
   final String errMessage;

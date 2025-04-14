@@ -1,5 +1,5 @@
 import 'package:hive_flutter/adapters.dart';
-import 'package:mamlaka/feature/auth/data/models/register_model.dart';
+import 'package:dobzz_seller/feature/auth/data/models/register_model.dart';
 
 Box? userCache;
 String userCacheBoxKey = 'userCache';

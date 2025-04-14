@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:mamlaka/core/utils/app_icons.dart';
+import 'package:dobzz_seller/core/utils/app_icons.dart';
 
 PreferredSizeWidget customAppBar({
   bool stopLeading = false,

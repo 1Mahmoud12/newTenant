@@ -1,10 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:mamlaka/core/component/buttons/custom_text_button.dart';
-import 'package:mamlaka/core/themes/colors.dart';
-import 'package:mamlaka/core/utils/navigate.dart';
-import 'package:mamlaka/feature/auth/login/view/presentation/login_screen.dart';
-import 'package:mamlaka/feature/navigation/view/presentation/navigation_view.dart';
+import 'package:dobzz_seller/core/component/buttons/custom_text_button.dart';
+import 'package:dobzz_seller/core/themes/colors.dart';
+import 'package:dobzz_seller/core/utils/navigate.dart';
+import 'package:dobzz_seller/feature/auth/login/view/presentation/login_screen.dart';
+import 'package:dobzz_seller/feature/navigation/view/presentation/navigation_view.dart';
 
 Future<void> signInDialog(BuildContext context) async {
   showDialog(

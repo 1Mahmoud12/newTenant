@@ -9,9 +9,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:googleapis_auth/auth_io.dart';
 import 'package:http/http.dart';
-import 'package:mamlaka/core/network/local/cache.dart';
-import 'package:mamlaka/core/utils/constants.dart';
-import 'package:mamlaka/core/utils/device_id.dart';
+import 'package:dobzz_seller/core/network/local/cache.dart';
+import 'package:dobzz_seller/core/utils/constants.dart';
+import 'package:dobzz_seller/core/utils/device_id.dart';
 
 enum NotificationType { Order, Inbox, Announcement }
 

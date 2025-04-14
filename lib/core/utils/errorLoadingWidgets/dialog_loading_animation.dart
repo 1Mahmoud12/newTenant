@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:mamlaka/core/themes/colors.dart';
+import 'package:dobzz_seller/core/themes/colors.dart';
 
 void animationDialogLoading(BuildContext context) {
   showDialog(

@@ -4,9 +4,9 @@ import 'dart:developer';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:mamlaka/core/utils/constants.dart';
-import 'package:mamlaka/core/utils/errorLoadingWidgets/stop_internet_widget.dart';
-import 'package:mamlaka/core/utils/notification/notification.dart';
+import 'package:dobzz_seller/core/utils/constants.dart';
+import 'package:dobzz_seller/core/utils/errorLoadingWidgets/stop_internet_widget.dart';
+import 'package:dobzz_seller/core/utils/notification/notification.dart';
 
 import 'main.dart';
 

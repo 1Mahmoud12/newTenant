@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:mamlaka/core/network/local/cache.dart';
-import 'package:mamlaka/core/themes/colors.dart';
-import 'package:mamlaka/core/themes/light.dart';
-import 'package:mamlaka/core/utils/constants.dart';
-import 'package:mamlaka/feature/navigation/view/manager/homeBloc/state.dart';
+import 'package:dobzz_seller/core/network/local/cache.dart';
+import 'package:dobzz_seller/core/themes/colors.dart';
+import 'package:dobzz_seller/core/themes/light.dart';
+import 'package:dobzz_seller/core/utils/constants.dart';
+import 'package:dobzz_seller/feature/navigation/view/manager/homeBloc/state.dart';
 
 import 'feature/auth/manager/authBloc/auth_cubit.dart';
 import 'feature/navigation/view/manager/homeBloc/cubit.dart';

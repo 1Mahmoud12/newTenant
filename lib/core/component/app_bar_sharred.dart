@@ -1,6 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:mamlaka/core/themes/styles.dart';
+import 'package:dobzz_seller/core/themes/styles.dart';
 
 AppBar shareAppBar(BuildContext context, {required String nameAppBar, bool notificationIcon = true}) {
   return AppBar(

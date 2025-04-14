@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:mamlaka/core/themes/colors.dart';
+import 'package:dobzz_seller/core/themes/colors.dart';
 
 // Figma Same here to Responsive
 class Styles {

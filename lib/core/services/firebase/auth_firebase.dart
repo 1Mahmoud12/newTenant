@@ -3,8 +3,8 @@
 // import 'package:easy_localization/easy_localization.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:flutter/cupertino.dart';
-// import 'package:mamlaka/core/network/errors/failures.dart';
-// import 'package:mamlaka/core/utils/custom_show_toast.dart';
+// import 'package:dobzz_seller/core/network/errors/failures.dart';
+// import 'package:dobzz_seller/core/utils/custom_show_toast.dart';
 //
 // class AuthenticationService {
 //   final FirebaseAuth _auth = FirebaseAuth.instance;

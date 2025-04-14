@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:mamlaka/core/themes/colors.dart';
-import 'package:mamlaka/core/themes/styles.dart';
-import 'package:mamlaka/core/utils/app_icons.dart';
-import 'package:mamlaka/core/utils/app_images.dart';
-import 'package:mamlaka/core/utils/extensions.dart';
+import 'package:dobzz_seller/core/themes/colors.dart';
+import 'package:dobzz_seller/core/themes/styles.dart';
+import 'package:dobzz_seller/core/utils/app_icons.dart';
+import 'package:dobzz_seller/core/utils/app_images.dart';
+import 'package:dobzz_seller/core/utils/extensions.dart';
 
 enum ShowToastPosition { top, bottom }
 

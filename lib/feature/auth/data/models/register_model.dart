@@ -1,4 +1,4 @@
-import 'package:mamlaka/core/utils/constants.dart';
+import 'package:dobzz_seller/core/utils/constants.dart';
 
 class RegisterModel {
   RegisterModel({

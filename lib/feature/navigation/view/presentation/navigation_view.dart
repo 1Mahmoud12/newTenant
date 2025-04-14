@@ -5,13 +5,13 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:mamlaka/core/network/local/cache.dart';
-import 'package:mamlaka/core/themes/colors.dart';
-import 'package:mamlaka/core/utils/app_icons.dart';
-import 'package:mamlaka/core/utils/bottomSheet/sign_in_dialog.dart';
-import 'package:mamlaka/core/utils/custom_show_toast.dart';
-import 'package:mamlaka/core/utils/extensions.dart';
-import 'package:mamlaka/core/utils/versionAndUpdateApp/alert_dialog_for_update_app.dart';
+import 'package:dobzz_seller/core/network/local/cache.dart';
+import 'package:dobzz_seller/core/themes/colors.dart';
+import 'package:dobzz_seller/core/utils/app_icons.dart';
+import 'package:dobzz_seller/core/utils/bottomSheet/sign_in_dialog.dart';
+import 'package:dobzz_seller/core/utils/custom_show_toast.dart';
+import 'package:dobzz_seller/core/utils/extensions.dart';
+import 'package:dobzz_seller/core/utils/versionAndUpdateApp/alert_dialog_for_update_app.dart';
 
 class NavigationView extends StatefulWidget {
   final int customIndex;

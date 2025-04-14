@@ -5,16 +5,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:mamlaka/core/component/buttons/custom_text_button.dart';
-import 'package:mamlaka/core/themes/colors.dart';
-import 'package:mamlaka/core/utils/app_icons.dart';
-import 'package:mamlaka/core/utils/app_images.dart';
-import 'package:mamlaka/core/utils/constants.dart';
-import 'package:mamlaka/core/utils/extensions.dart';
-import 'package:mamlaka/core/utils/navigate.dart';
-import 'package:mamlaka/feature/auth/login/view/presentation/login_screen.dart';
-import 'package:mamlaka/feature/auth/signUp/view/presentation/sign_up_view.dart';
-import 'package:mamlaka/feature/navigation/view/manager/homeBloc/cubit.dart';
+import 'package:dobzz_seller/core/component/buttons/custom_text_button.dart';
+import 'package:dobzz_seller/core/themes/colors.dart';
+import 'package:dobzz_seller/core/utils/app_icons.dart';
+import 'package:dobzz_seller/core/utils/app_images.dart';
+import 'package:dobzz_seller/core/utils/constants.dart';
+import 'package:dobzz_seller/core/utils/extensions.dart';
+import 'package:dobzz_seller/core/utils/navigate.dart';
+import 'package:dobzz_seller/feature/auth/login/view/presentation/login_screen.dart';
+import 'package:dobzz_seller/feature/auth/signUp/view/presentation/sign_up_view.dart';
+import 'package:dobzz_seller/feature/navigation/view/manager/homeBloc/cubit.dart';
 import 'package:page_transition/page_transition.dart';
 
 class SplashTwoScreen extends StatefulWidget {

@@ -3,8 +3,8 @@ import 'dart:typed_data';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:mamlaka/core/utils/app_icons.dart';
-import 'package:mamlaka/core/utils/app_images.dart';
+import 'package:dobzz_seller/core/utils/app_icons.dart';
+import 'package:dobzz_seller/core/utils/app_images.dart';
 
 class CacheImage extends StatelessWidget {
   final String? urlImage;
