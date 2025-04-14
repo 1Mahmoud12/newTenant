@@ -130,7 +130,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
               obscureText: _obscureText,
               controller: widget.controller,
               keyboardType: widget.textInputType ?? TextInputType.text,
-              style: TextStyle(color: AppColors.cB800, fontSize: (widget.fontSizeHintText ?? 17).sp, fontWeight: FontWeight.w600),
+              style: TextStyle(color: AppColors.primaryColor, fontSize: (widget.fontSizeHintText ?? 17).sp, fontWeight: FontWeight.w600),
               onChanged: (value) {
                 if (widget.onChange != null) {
                   widget.onChange!.call(value);
@@ -153,16 +153,24 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
               focusNode: widget.focusNode,
               textDirection: context.locale.languageCode == 'ar' ? TextDirection.rtl : TextDirection.ltr,
               decoration: InputDecoration(
+          
                 alignLabelWithHint: true,
                 errorStyle: TextStyle(color: AppColors.red, fontSize: 14, fontWeight: FontWeight.w500),
                 enabled: widget.enable!,
                 hintText: widget.hintText.tr(),
                 hintStyle: widget.hintStyle ??
-                    TextStyle(color: AppColors.cB800.withOpacity(.5), fontSize: (widget.fontSizeHintText ?? 17).sp, fontWeight: FontWeight.w600),
+                    TextStyle(
+                      color: AppColors.primaryColor.withOpacity(.5),
+                      fontSize: (widget.fontSizeHintText ?? 17).sp,
+                      fontWeight: FontWeight.w600,
+                    ),
                 prefixIcon: widget.prefixIcon,
                 labelText: widget.labelText?.tr(),
-                labelStyle:
-                    TextStyle(color: AppColors.cB800.withOpacity(.5), fontSize: (widget.fontSizeHintText ?? 17).sp, fontWeight: FontWeight.w600),
+                labelStyle: TextStyle(
+                  color: AppColors.primaryColor.withOpacity(.5),
+                  fontSize: (widget.fontSizeHintText ?? 17).sp,
+                  fontWeight: FontWeight.w600,
+                ),
                 fillColor: widget.fillColor ?? AppColors.transparent,
                 hintTextDirection: context.locale.languageCode == 'ar' ? TextDirection.rtl : TextDirection.ltr,
                 filled: true,
@@ -174,24 +182,24 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
                     : null,
                 contentPadding: widget.contentPadding ?? const EdgeInsets.symmetric(horizontal: 14, vertical: 13),
                 enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(widget.borderRadius ?? 20)),
-                  borderSide: BorderSide(color: widget.enabledBorder ?? AppColors.cB100.withOpacity(.1), width: 2),
+                  borderRadius: BorderRadius.all(Radius.circular(widget.borderRadius ?? 8)),
+                  borderSide: BorderSide(color: widget.enabledBorder ?? AppColors.primaryColor.withOpacity(.1)),
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(widget.borderRadius ?? 20)),
-                  borderSide: BorderSide(color: widget.focusedBorderColor ?? AppColors.cB100.withOpacity(.1), width: 2),
+                  borderRadius: BorderRadius.all(Radius.circular(widget.borderRadius ?? 8)),
+                  borderSide: BorderSide(color: widget.focusedBorderColor ?? AppColors.primaryColor.withOpacity(.1)),
                 ),
                 focusedErrorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(widget.borderRadius ?? 20)),
-                  borderSide: BorderSide(color: widget.focusedBorderColor ?? AppColors.cB100.withOpacity(.1), width: 2),
+                  borderRadius: BorderRadius.all(Radius.circular(widget.borderRadius ?? 8)),
+                  borderSide: BorderSide(color: widget.focusedBorderColor ?? AppColors.primaryColor.withOpacity(.1)),
                 ),
                 errorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(widget.borderRadius ?? 20)),
+                  borderRadius: BorderRadius.all(Radius.circular(widget.borderRadius ?? 8)),
                   borderSide: BorderSide(color: AppColors.red),
                 ),
                 disabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(widget.borderRadius ?? 8)),
-                  borderSide: BorderSide(color: widget.focusedBorderColor ?? AppColors.cB100.withOpacity(.1), width: 2),
+                  borderSide: BorderSide(color: widget.focusedBorderColor ?? AppColors.primaryColor.withOpacity(.1)),
                 ),
                 suffixIcon: widget.password != null && widget.password!
                     ? Padding(

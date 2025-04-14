@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:ui';
 
+import 'package:dobzz_seller/core/utils/navigate.dart';
+import 'package:dobzz_seller/feature/home/views/presentation/home_page_view.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
@@ -29,7 +31,7 @@ class _SplashScreenState extends State<SplashScreen> {
     timer = Timer(
       const Duration(seconds: 3),
       () {
-        // context.navigateToPage(const SplashTwoScreen(), pageTransitionType: PageTransitionType.bottomToTop, animation: 800);
+        context.navigateToPage(const HomePageView());
 
         //context.navigateToPage(userCacheValue?.data != null ? const BottomNavBarScreen() : const LoginScreen());
         // userCacheValue.data != null
@@ -94,7 +96,7 @@ class _SplashScreenState extends State<SplashScreen> {
           ),
           Center(
             child: Image.asset(
-              AppImages.appLogo,
+              AppImages.splashLogo,
             ),
           ),
         ],

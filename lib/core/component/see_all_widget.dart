@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SeeAllWidget extends StatelessWidget {
   const SeeAllWidget({
@@ -21,13 +22,13 @@ class SeeAllWidget extends StatelessWidget {
       children: [
         Text(
           title.tr(),
-          style: Theme.of(context).textTheme.displayMedium?.copyWith(fontWeight: FontWeight.w500),
+          style: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 18.sp, fontWeight: FontWeight.bold),
         ),
         InkWell(
           onTap: onTap,
           child: Text(
-            'see_all'.tr(),
-            style: Theme.of(context).textTheme.displayMedium?.copyWith(fontWeight: FontWeight.w500, color: AppColors.primaryColor),
+            'View All'.tr(),
+            style: Theme.of(context).textTheme.displayMedium?.copyWith(fontWeight: FontWeight.w500, color: AppColors.grey),
           ),
         ),
       ],

@@ -10,14 +10,14 @@ import 'package:dobzz_seller/core/utils/notification/notification.dart';
 
 import 'main.dart';
 
-class MamlakaApp extends StatefulWidget {
-  const MamlakaApp({super.key});
+class DobzzSellerApp extends StatefulWidget {
+  const DobzzSellerApp({super.key});
 
   @override
-  State<MamlakaApp> createState() => _MamlakaAppState();
+  State<DobzzSellerApp> createState() => _DobzzSellerAppState();
 }
 
-class _MamlakaAppState extends State<MamlakaApp> {
+class _DobzzSellerAppState extends State<DobzzSellerApp> {
   int currentIndex = 0;
 
   late StreamSubscription<List<ConnectivityResult>> subscription;

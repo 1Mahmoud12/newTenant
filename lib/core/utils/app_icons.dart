@@ -44,7 +44,9 @@ class AppIcons {
   // Home
   static const location = '$baseUrl/location.svg';
   static const notification = '$baseUrl/notification.svg';
+  static const filter = '$baseUrl/filter-icon.svg';
   static const aboutUs = '$baseUrl/aboutUs.svg';
+  static const tShirtCate = '$baseUrl/t-shirt-cateory.svg';
 
   // Services
 

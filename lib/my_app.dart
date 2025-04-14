@@ -12,7 +12,7 @@ import 'package:dobzz_seller/feature/navigation/view/manager/homeBloc/state.dart
 import 'feature/auth/manager/authBloc/auth_cubit.dart';
 import 'feature/navigation/view/manager/homeBloc/cubit.dart';
 import 'main.dart';
-import 'mamlaka_view.dart';
+import 'dobzz_seller_view.dart';
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
@@ -91,7 +91,7 @@ class _MyAppState extends State<MyApp> {
                   },
                 ),
               ],
-              home: const MamlakaApp(),
+              home: const DobzzSellerApp(),
             );
           },
         ),
