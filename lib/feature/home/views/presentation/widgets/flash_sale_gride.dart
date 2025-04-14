@@ -33,8 +33,7 @@ class FlashSaleGrid extends StatelessWidget {
 
     return GridView.builder(
       itemCount: flashItems.length,
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
+
       padding: EdgeInsets.zero,
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
