@@ -1,4 +1,6 @@
 import 'package:dobzz_seller/core/component/cache_image.dart';
+import 'package:dobzz_seller/core/utils/navigate.dart';
+import 'package:dobzz_seller/feature/product/views/presentation/product_details_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -35,69 +37,74 @@ class _FlashCardState extends State<FlashCard> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Stack(
-          children: [
-            CacheImage(
-              urlImage: widget.imagePath,
-              errorColor: Colors.grey,
-              height: 200,
-            ),
-            Positioned(
-              top: 12,
-              right: 12,
-              child: GestureDetector(
-                onTap: toggleLike,
-                child: Container(
-                  padding: const EdgeInsets.all(6),
-                  decoration: const BoxDecoration(
-                    color: Colors.black87,
-                    shape: BoxShape.circle,
-                  ),
-                  child: Icon(
-                    isLiked ? Icons.favorite : Icons.favorite_border,
-                    color: Colors.white,
-                    size: 18,
-                  ),
-                ),
+    return InkWell(
+      onTap: () {
+        context.navigateToPage(const ProductDetailsView());
+      },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Stack(
+            children: [
+              CacheImage(
+                urlImage: widget.imagePath,
+                errorColor: Colors.grey,
+                height: 200,
               ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 8),
-        Text(
-          widget.title,
-          style: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        const SizedBox(height: 4),
-        Row(
-          children: [
-            Text(
-              widget.price,
-              style: TextStyle(
-                fontSize: 14.sp,
-                color: Colors.grey.shade700,
-              ),
-            ),
-            if (widget.discountPercentage != null) ...[
-              const SizedBox(width: 8),
-              Text(
-                '-${widget.discountPercentage}',
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  color: Colors.red,
-                  fontWeight: FontWeight.bold,
+              Positioned(
+                top: 12,
+                right: 12,
+                child: GestureDetector(
+                  onTap: toggleLike,
+                  child: Container(
+                    padding: const EdgeInsets.all(6),
+                    decoration: const BoxDecoration(
+                      color: Colors.black87,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      isLiked ? Icons.favorite : Icons.favorite_border,
+                      color: Colors.white,
+                      size: 18,
+                    ),
+                  ),
                 ),
               ),
             ],
-          ],
-        ),
-      ],
+          ),
+          const SizedBox(height: 8),
+          Text(
+            widget.title,
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Row(
+            children: [
+              Text(
+                widget.price,
+                style: TextStyle(
+                  fontSize: 14.sp,
+                  color: Colors.grey.shade700,
+                ),
+              ),
+              if (widget.discountPercentage != null) ...[
+                const SizedBox(width: 8),
+                Text(
+                  '-${widget.discountPercentage}',
+                  style: TextStyle(
+                    fontSize: 14.sp,
+                    color: Colors.red,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

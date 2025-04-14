@@ -2,8 +2,7 @@ import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:dobzz_seller/core/utils/app_icons.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 PreferredSizeWidget customAppBar({
   bool stopLeading = false,
@@ -24,31 +23,43 @@ PreferredSizeWidget customAppBar({
     leading: stopLeading
         ? const SizedBox.shrink()
         : Padding(
-            padding:
-                EdgeInsets.only(top: 17, left: context.locale.languageCode == 'ar' ? 0 : 16, right: context.locale.languageCode == 'ar' ? 16 : 0),
+            padding: const EdgeInsets.symmetric(horizontal: 10),
             child: IconButton(
               onPressed: onPressLeading ?? () => Navigator.pop(context),
-              icon: Platform.isAndroid
-                  ? RotatedBox(quarterTurns: context.locale.languageCode == 'ar' ? 2 : 0, child: SvgPicture.asset(AppIcons.arrowBackIc))
-                  : const Icon(Icons.arrow_back_ios),
+              icon: Platform.isAndroid ? const Icon(Icons.arrow_back) : const Icon(Icons.arrow_back_ios),
             ),
           ),
-    leadingWidth: 75,
+    leadingWidth: 50,
     centerTitle: centerTitle,
-    title: Padding(
-      padding: const EdgeInsets.only(top: 17.0),
-      child: Text(
-        (title ?? '').tr(),
-        style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w500),
-      ),
+    title: Text(
+      (title ?? '').tr(),
+      style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 20.sp, fontWeight: FontWeight.bold),
     ),
     actions: [
       Padding(
-        padding: const EdgeInsets.only(top: 17),
-        child: actions ?? Container(),
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        child: actions ??
+            Stack(
+              clipBehavior: Clip.none,
+              children: [
+                Icon(Icons.notifications_none, size: 28.sp),
+                Positioned(
+                  top: 2,
+                  right: 2,
+                  child: Container(
+                    width: 8,
+                    height: 8,
+                    decoration: const BoxDecoration(
+                      color: Colors.red,
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+                ),
+              ],
+            ),
       ),
     ],
     bottom: bottom,
-    toolbarHeight: 80,
+    toolbarHeight: 60,
   );
 }

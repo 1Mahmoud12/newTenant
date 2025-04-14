@@ -1,4 +1,5 @@
 import 'package:dobzz_seller/core/component/cache_image.dart';
+import 'package:dobzz_seller/core/component/custom_app_bar.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:dobzz_seller/core/utils/constant_gaping.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -23,10 +24,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
       persistentFooterButtons: const [
         PriceAndAddToCartWidget(),
       ],
-      appBar: AppBar(
-        title: const Text('Details'),
-        centerTitle: true,
-      ),
+      appBar: customAppBar(context: context, title: 'Product Details'),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
