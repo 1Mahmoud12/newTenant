@@ -4,6 +4,8 @@ import 'package:dobzz_seller/core/component/custom_list.dart';
 import 'package:dobzz_seller/core/component/fields/custom_text_form_field.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:dobzz_seller/core/utils/constant_gaping.dart';
+import 'package:dobzz_seller/core/utils/navigate.dart';
+import 'package:dobzz_seller/feature/cart/view/address/presentation/address_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -47,15 +49,20 @@ class _CheckoutViewState extends State<CheckoutView> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  Text(
-                    'Change',
-                    style: TextStyle(
-                      fontSize: 16.sp,
-                      color: Colors.black,
-                      fontWeight: FontWeight.w500,
-                      decoration: TextDecoration.underline, // 👈 adds underline
-                      decorationColor: Colors.black,
-                      decorationThickness: 15,
+                  InkWell(
+                    onTap: () {
+                      context.navigateToPage(const AddressView());
+                    },
+                    child: Text(
+                      'Change',
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w500,
+                        decoration: TextDecoration.underline, // 👈 adds underline
+                        decorationColor: Colors.black,
+                        decorationThickness: 15,
+                      ),
                     ),
                   ),
                 ],

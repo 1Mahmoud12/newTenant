@@ -1,18 +1,7 @@
 import 'dart:async';
 import 'dart:ui';
-
 import 'package:dobzz_seller/core/utils/navigate.dart';
-import 'package:dobzz_seller/feature/account/view/faq/presentation/faq_view.dart';
-import 'package:dobzz_seller/feature/account/view/helpCenter/presentation/help_center_view.dart';
-import 'package:dobzz_seller/feature/account/view/myDetalis/presentation/my_details_veiw.dart';
-import 'package:dobzz_seller/feature/account/view/myOrders/presentation/my_order_view.dart';
-import 'package:dobzz_seller/feature/account/view/notificationSetting/presentation/notification_setting_view.dart';
-import 'package:dobzz_seller/feature/account/view/presentation/account_view.dart';
-import 'package:dobzz_seller/feature/cart/view/presentation/cart_view.dart';
-import 'package:dobzz_seller/feature/favorites/views/presentation/favorite_view.dart';
-import 'package:dobzz_seller/feature/home/views/presentation/home_page_view.dart';
 import 'package:dobzz_seller/feature/navigation/view/presentation/navigation_view.dart';
-import 'package:dobzz_seller/feature/product/views/presentation/product_details_view.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
