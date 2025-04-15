@@ -1,6 +1,9 @@
 import 'package:dobzz_seller/core/component/cache_image.dart';
 import 'package:dobzz_seller/core/component/custom_app_bar.dart';
 import 'package:dobzz_seller/core/component/fields/custom_text_form_field.dart';
+import 'package:dobzz_seller/core/utils/constant_gaping.dart';
+import 'package:dobzz_seller/core/utils/navigate.dart';
+import 'package:dobzz_seller/feature/account/view/myOrders/presentation/track_order_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -411,18 +414,23 @@ class TrackOrder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-        color: Colors.black,
-      ),
-      child: Text(
-        'Track order',
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 12.sp,
-          fontWeight: FontWeight.w400,
+    return InkWell(
+      onTap: () {
+        context.navigateToPage(const TrackOrderView());
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          color: Colors.black,
+        ),
+        child: Text(
+          'Track order',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 12.sp,
+            fontWeight: FontWeight.w400,
+          ),
         ),
       ),
     );
