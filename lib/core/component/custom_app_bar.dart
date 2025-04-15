@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:dobzz_seller/core/utils/navigate.dart';
+import 'package:dobzz_seller/feature/notification/presentation/notification_view.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -38,25 +40,30 @@ PreferredSizeWidget customAppBar({
     actions: [
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10),
-        child: actions ??
-            Stack(
-              clipBehavior: Clip.none,
-              children: [
-                Icon(Icons.notifications_none, size: 28.sp),
-                Positioned(
-                  top: 2,
-                  right: 2,
-                  child: Container(
-                    width: 8,
-                    height: 8,
-                    decoration: const BoxDecoration(
-                      color: Colors.red,
-                      shape: BoxShape.circle,
+        child: InkWell(
+          onTap: () {
+            context.navigateToPage(const NotificationsView());
+          },
+          child: actions ??
+              Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  Icon(Icons.notifications_none, size: 28.sp),
+                  Positioned(
+                    top: 2,
+                    right: 2,
+                    child: Container(
+                      width: 8,
+                      height: 8,
+                      decoration: const BoxDecoration(
+                        color: Colors.red,
+                        shape: BoxShape.circle,
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
+                ],
+              ),
+        ),
       ),
     ],
     bottom: bottom,
