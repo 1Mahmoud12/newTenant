@@ -1,268 +1,95 @@
-import 'dart:developer';
-import 'dart:io';
-
-import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:dobzz_seller/core/network/local/cache.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
-import 'package:dobzz_seller/core/utils/app_icons.dart';
-import 'package:dobzz_seller/core/utils/bottomSheet/sign_in_dialog.dart';
-import 'package:dobzz_seller/core/utils/custom_show_toast.dart';
-import 'package:dobzz_seller/core/utils/extensions.dart';
-import 'package:dobzz_seller/core/utils/versionAndUpdateApp/alert_dialog_for_update_app.dart';
+import 'package:dobzz_seller/core/utils/constant_gaping.dart';
+import 'package:dobzz_seller/feature/account/view/presentation/account_view.dart';
+import 'package:dobzz_seller/feature/cart/view/presentation/cart_view.dart';
+import 'package:dobzz_seller/feature/favorites/views/presentation/favorite_view.dart';
+import 'package:dobzz_seller/feature/home/views/presentation/home_page_view.dart';
+import 'package:flutter/material.dart';
 
 class NavigationView extends StatefulWidget {
-  final int customIndex;
-
-  const NavigationView({super.key, this.customIndex = 0});
+  const NavigationView({Key? key}) : super(key: key);
 
   @override
   State<NavigationView> createState() => _NavigationViewState();
 }
 
-class _NavigationViewState extends State<NavigationView> with SingleTickerProviderStateMixin {
-  int index = 0;
-  late AnimationController _animationController;
-  List<Widget> screens = [
-    const SizedBox(),
-    const SizedBox(),
-    const SizedBox(),
-    const SizedBox(),
-    const SizedBox(),
-  ];
-  int currentInterIndex = 0;
+class _NavigationViewState extends State<NavigationView> {
+  int _selectedIndex = 0;
 
-  @override
-  void initState() {
-    super.initState();
-    index = widget.customIndex;
-    _animationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 300));
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (userCacheValue.data != null) {
-        // BlocProvider.of<ManageAddressesCubit>(context).getAllMyAddresses(context: context);
-        //  BlocProvider.of<HomeCubit>(context).getNotificationCount();
-
-        //  CartCubit.of(context).getCart(context: context);
-      }
-
-      log('start Connectivity');
-
-      // Update App
-      checkVersion(context);
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
     });
   }
 
-  @override
-  void dispose() {
-    _animationController.dispose();
-
-    super.dispose();
-  }
-
-  void _onItemTapped(int newIndex, BuildContext context) {
-    if (userCacheValue.data == null && (newIndex == 0 || newIndex == 2)) {
-      notRequireSignIn(newIndex);
-    } else if (userCacheValue.data == null) {
-      signInDialog(context);
-    } else {
-      notRequireSignIn(newIndex);
-    }
-  }
-
-  void notRequireSignIn(int newIndex) {
-    if (newIndex != index) {
-      setState(() {
-        index = newIndex;
-      });
-      _animationController.forward(from: 0);
-    }
-  }
-
-  int exitApp = 0;
-
+  List<Widget> screens = [
+    const HomePageView(),
+    const CartView(),
+    const FavoriteView(),
+    const AccountView(),
+  ];
   @override
   Widget build(BuildContext context) {
-    return PopScope(
-      canPop: false,
-      onPopInvokedWithResult: (didPop, result) {
-        exitApp++;
-        //Utils.showToast(title: 'swipe twice to exit', state: UtilState.success);
-        customShowToast(context, 'swipe_again_to_exit_app'.tr(), showToastStatus: ShowToastStatus.warning);
-        Future.delayed(
-          const Duration(seconds: 5),
-          () {
-            exitApp = 0;
-            setState(() {});
-          },
-        );
-        if (exitApp == 2) {
-          exit(0);
-        }
-      },
-      child: Scaffold(
-        body: IndexedStack(
-          index: index,
-          children: screens,
-        ),
-        bottomNavigationBar: Container(
-          clipBehavior: Clip.antiAlias,
-          decoration: BoxDecoration(
-            border: Border.all(
-              color: AppColors.cBorderTextFormField,
-            ),
-            borderRadius: const BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
-            boxShadow: const [
-              BoxShadow(
-                color: Color(0x0C000000),
-                blurRadius: 34,
-                offset: Offset(0, 20),
+    return Scaffold(
+      body: Stack(
+        children: [
+          screens[_selectedIndex],
+          Positioned(
+            bottom: 5,
+            left: 0,
+            right: 0,
+            child: Container(
+              padding: const EdgeInsets.all(8),
+              height: 67,
+              decoration: BoxDecoration(
+                color: const Color(0xff292526),
+                borderRadius: BorderRadius.circular(40),
               ),
-            ],
-          ),
-          child: Stack(
-            children: [
-              BottomNavigationBar(
-                items: [
-                  BottomNavigationBarItem(
-                    icon: Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: SvgPicture.asset(
-                        index == 0 ? AppIcons.selectedHome : AppIcons.unSelectedHome,
-                      ),
-                    ),
-                    label: 'home'.tr(),
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: SvgPicture.asset(
-                        index == 1 ? AppIcons.selectedOrders : AppIcons.unSelectedOrders,
-                      ),
-                    ),
-                    label: 'orders'.tr(),
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: SvgPicture.asset(
-                        index == 2 ? AppIcons.selectedOffers : AppIcons.unSelectedOffers,
-                      ),
-                    ),
-                    label: 'offers'.tr(),
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: SvgPicture.asset(
-                        index == 3 ? AppIcons.selectedCart : AppIcons.unSelectedCart,
-                      ), /*BlocBuilder<CartCubit, CartState>(
-                        builder: (context, state) => Badge(
-                          isLabelVisible: ConstantsModels.cartModel != null &&
-                              ConstantsModels.cartModel!.data != null &&
-                              ConstantsModels.cartModel!.data!.totalAmount != 0,
-                          smallSize: 10,
-                          backgroundColor: AppColors.red,
-                          child: SvgPicture.asset(
-                            index == 3 ? AppIcons.selectedCart : AppIcons.unSelectedCart,
-                          ),
-                        ),
-                      ),*/
-                    ),
-                    label: 'cart'.tr(),
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: SvgPicture.asset(
-                        index == 4 ? AppIcons.selectedProfile : AppIcons.unSelectedProfile,
-                      ),
-                    ),
-                    label: 'profile'.tr(),
-                  ),
+              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  _buildNavItem(0, Icons.home_outlined, Icons.home_filled, true),
+                  s,
+                  _buildNavItem(1, Icons.shopping_bag_outlined, Icons.shopping_bag, false),
+                  s,
+                  _buildNavItem(2, Icons.favorite_border, Icons.favorite, false),
+                  s,
+                  _buildNavItem(3, Icons.person_outline, Icons.person, false),
                 ],
-                backgroundColor: AppColors.transparent,
-                showSelectedLabels: true,
-                showUnselectedLabels: true,
-                selectedLabelStyle: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 14, fontWeight: FontWeight.w500),
-                unselectedLabelStyle: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                    ),
-                elevation: 0,
-                selectedItemColor: AppColors.primaryColor,
-                unselectedItemColor: AppColors.grey,
-                currentIndex: index,
-                // Set the current index
-                type: BottomNavigationBarType.fixed,
-                onTap: (int value) {
-                  _onItemTapped(value, context);
-                  if (value == 0) {
-                    SystemChrome.setSystemUIOverlayStyle(
-                      const SystemUiOverlayStyle(
-                        statusBarColor: AppColors.primaryColor,
-                        statusBarIconBrightness: Brightness.light,
-                        statusBarBrightness: Brightness.light,
-                        systemNavigationBarColor: AppColors.scaffoldBackGround,
-                        systemNavigationBarDividerColor: AppColors.scaffoldBackGround,
-                      ),
-                    );
-                  } else {
-                    SystemChrome.setSystemUIOverlayStyle(
-                      const SystemUiOverlayStyle(
-                        statusBarColor: AppColors.scaffoldBackGround,
-                        statusBarIconBrightness: Brightness.dark,
-                        statusBarBrightness: Brightness.light,
-                        systemNavigationBarColor: AppColors.scaffoldBackGround,
-                        systemNavigationBarDividerColor: AppColors.scaffoldBackGround,
-                      ),
-                    );
-                  }
-                },
               ),
-              AnimatedPositioned(
-                duration: Durations.medium1,
-                left: !context.locale.languageCode.contains('ar')
-                    ? ((index == 0
-                            ? (context.screenWidth * .08)
-                            : index == 1
-                                ? (context.screenWidth * .27)
-                                : index == 2
-                                    ? (context.screenWidth * .48)
-                                    : index == 3
-                                        ? (context.screenWidth * .67)
-                                        : index == 4
-                                            ? (context.screenWidth * .87)
-                                            : 0)
-                        .toDouble())
-                    : ((index == 0
-                            ? (context.screenWidth * .87)
-                            : index == 1
-                                ? (context.screenWidth * .67)
-                                : index == 2
-                                    ? (context.screenWidth * .48)
-                                    : index == 3
-                                        ? (context.screenWidth * .27)
-                                        : index == 4
-                                            ? (context.screenWidth * .08)
-                                            : 0)
-                        .toDouble()),
-                child: SizedBox(
-                  height: 10,
-                  width: 18,
-                  child: Container(
-                    height: 10,
-                    width: 18,
-                    decoration: const BoxDecoration(
-                      color: AppColors.primaryColor,
-                      borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10)),
-                    ),
-                  ),
-                ),
-              ),
-            ],
+            ),
           ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildNavItem(int index, IconData outlinedIcon, IconData filledIcon, bool hasNotification) {
+    final isSelected = _selectedIndex == index;
+    return GestureDetector(
+      onTap: () => _onItemTapped(index),
+      child: Container(
+        padding: const EdgeInsets.all(8),
+        width: 65,
+        height: 65,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: isSelected ? Colors.white.withOpacity(0.1) : Colors.transparent,
+        ),
+        child: Column(
+          children: [
+            Icon(
+              isSelected ? filledIcon : outlinedIcon,
+              color: isSelected ? Colors.white : Colors.white.withOpacity(0.8),
+              size: 28,
+            ),
+            if (isSelected)
+              Container(
+                padding: const EdgeInsets.all(3),
+                decoration: const BoxDecoration(shape: BoxShape.circle, color: AppColors.primaryColor),
+              ),
+          ],
         ),
       ),
     );

@@ -8,12 +8,15 @@ class FavoriteView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: customAppBar(context: context, title: 'Saved items'),
+      appBar: customAppBar(context: context, title: 'Saved items', stopLeading: true),
       body: const Padding(
         padding: EdgeInsets.symmetric(horizontal: 16),
         child: Column(
           children: [
             Expanded(child: FlashSaleGrid()),
+            SizedBox(
+              height: 100,
+            ),
           ],
         ),
       ),

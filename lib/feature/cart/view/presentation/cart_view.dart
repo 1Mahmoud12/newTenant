@@ -121,11 +121,14 @@ class _CartViewState extends State<CartView> {
                   ],
                 ),
               ),
+              const SizedBox(
+                height: 100,
+              ),
             ],
           ),
         ),
       ],
-      appBar: customAppBar(context: context, title: 'Cart'),
+      appBar: customAppBar(context: context, title: 'Cart', stopLeading: true),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),

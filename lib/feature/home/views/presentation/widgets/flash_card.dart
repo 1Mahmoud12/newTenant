@@ -49,7 +49,7 @@ class _FlashCardState extends State<FlashCard> {
               CacheImage(
                 urlImage: widget.imagePath,
                 errorColor: Colors.grey,
-                height: 200,
+                height: MediaQuery.sizeOf(context).height * 0.255,
               ),
               Positioned(
                 top: 12,

@@ -9,7 +9,7 @@ class AccountView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: customAppBar(context: context, title: 'Account'),
+      appBar: customAppBar(context: context, title: 'Account', stopLeading: true),
       backgroundColor: Colors.white,
       body: SafeArea(
         child: Column(
@@ -101,6 +101,9 @@ class AccountView extends StatelessWidget {
                     title: 'Logout',
                     onTap: () {},
                     isLogout: true,
+                  ),
+                  const SizedBox(
+                    height: 100,
                   ),
                 ],
               ),

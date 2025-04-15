@@ -6,6 +6,7 @@ import 'package:dobzz_seller/feature/account/view/presentation/account_view.dart
 import 'package:dobzz_seller/feature/cart/view/presentation/cart_view.dart';
 import 'package:dobzz_seller/feature/favorites/views/presentation/favorite_view.dart';
 import 'package:dobzz_seller/feature/home/views/presentation/home_page_view.dart';
+import 'package:dobzz_seller/feature/navigation/view/presentation/navigation_view.dart';
 import 'package:dobzz_seller/feature/product/views/presentation/product_details_view.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -35,7 +36,7 @@ class _SplashScreenState extends State<SplashScreen> {
     timer = Timer(
       const Duration(seconds: 3),
       () {
-        context.navigateToPage(const AccountView());
+        context.navigateToPage(const NavigationView());
 
         //context.navigateToPage(userCacheValue?.data != null ? const BottomNavBarScreen() : const LoginScreen());
         // userCacheValue.data != null

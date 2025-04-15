@@ -50,6 +50,9 @@ class HomePageView extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: 16),
                   child: FlashSaleGrid(),
                 ),
+                const SizedBox(
+                  height: 100,
+                ),
               ],
             ),
           ),
