@@ -1,6 +1,7 @@
 import 'package:dobzz_seller/core/component/custom_app_bar.dart';
 import 'package:dobzz_seller/core/utils/app_icons.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
+import 'package:dobzz_seller/feature/account/view/faq/presentation/faq_view.dart';
 import 'package:dobzz_seller/feature/account/view/myDetalis/presentation/my_details_veiw.dart';
 import 'package:dobzz_seller/feature/account/view/myOrders/presentation/my_order_view.dart';
 import 'package:flutter/material.dart';
@@ -96,7 +97,9 @@ class AccountView extends StatelessWidget {
                   _buildMenuItem(
                     icon: AppIcons.faq,
                     title: 'FAQs',
-                    onTap: () {},
+                    onTap: () {
+                      context.navigateToPage(const FaqsView());
+                    },
                   ),
                   _buildMenuItem(
                     icon: AppIcons.helpCenter,

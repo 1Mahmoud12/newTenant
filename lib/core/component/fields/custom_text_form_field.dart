@@ -161,7 +161,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
                     TextStyle(
                       color: AppColors.grey.withOpacity(.5),
                       fontSize: (widget.fontSizeHintText ?? 17).sp,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w500,
                     ),
                 prefixIcon: widget.prefixIcon,
                 labelText: widget.labelText?.tr(),
