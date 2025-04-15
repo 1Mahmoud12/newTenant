@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'package:dobzz_seller/core/utils/navigate.dart';
+import 'package:dobzz_seller/feature/account/view/myOrders/presentation/my_order_view.dart';
 import 'package:dobzz_seller/feature/account/view/presentation/account_view.dart';
 import 'package:dobzz_seller/feature/cart/view/presentation/cart_view.dart';
 import 'package:dobzz_seller/feature/favorites/views/presentation/favorite_view.dart';
@@ -36,7 +37,7 @@ class _SplashScreenState extends State<SplashScreen> {
     timer = Timer(
       const Duration(seconds: 3),
       () {
-        context.navigateToPage(const NavigationView());
+        context.navigateToPage(const MyOrderView());
 
         //context.navigateToPage(userCacheValue?.data != null ? const BottomNavBarScreen() : const LoginScreen());
         // userCacheValue.data != null
