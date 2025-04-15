@@ -11,10 +11,10 @@ class AppIcons {
   static const infoInvoiceIc = '$baseUrl/infoInvoiceIc.svg';
 
   // Flags
-  static const AEIc = '$baseUrl/AEIc.svg';
-  static const EGIc = '$baseUrl/EGIc.svg';
+  static const AEIc = '$baseUrl/emiratesFlag.svg';
+  static const EGIc = '$baseUrl/egyptFlag.svg';
   static const PSIc = '$baseUrl/PSIc.svg';
-  static const SAIc = '$baseUrl/SAIc.svg';
+  static const SAIc = '$baseUrl/saudiArabiaFlag.svg';
 
   // Auth
   static const upDownIc = '$baseUrl/upDownIc.svg';

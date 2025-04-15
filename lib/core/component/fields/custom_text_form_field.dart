@@ -153,14 +153,13 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
               focusNode: widget.focusNode,
               textDirection: context.locale.languageCode == 'ar' ? TextDirection.rtl : TextDirection.ltr,
               decoration: InputDecoration(
-          
                 alignLabelWithHint: true,
                 errorStyle: TextStyle(color: AppColors.red, fontSize: 14, fontWeight: FontWeight.w500),
                 enabled: widget.enable!,
                 hintText: widget.hintText.tr(),
                 hintStyle: widget.hintStyle ??
                     TextStyle(
-                      color: AppColors.primaryColor.withOpacity(.5),
+                      color: AppColors.grey.withOpacity(.5),
                       fontSize: (widget.fontSizeHintText ?? 17).sp,
                       fontWeight: FontWeight.w600,
                     ),
@@ -183,7 +182,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
                 contentPadding: widget.contentPadding ?? const EdgeInsets.symmetric(horizontal: 14, vertical: 13),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(widget.borderRadius ?? 8)),
-                  borderSide: BorderSide(color: widget.enabledBorder ?? AppColors.primaryColor.withOpacity(.1)),
+                  borderSide: BorderSide(color: widget.enabledBorder ?? AppColors.grey.withOpacity(.2)),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(widget.borderRadius ?? 8)),

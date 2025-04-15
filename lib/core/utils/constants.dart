@@ -1,3 +1,4 @@
+import 'package:dobzz_seller/core/utils/app_icons.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -61,3 +62,18 @@ class DayAndMonth {
 
   DayAndMonth({required this.day, required this.dayInMonth});
 }
+
+class CountryFlag {
+  final int id;
+  final String name;
+  final String code;
+  final String image;
+
+  CountryFlag({required this.id, required this.name, required this.code, required this.image});
+}
+
+List<CountryFlag> countriesflage = [
+  CountryFlag(id: 1, name: 'egy', code: '20', image: AppIcons.AEIc),
+  CountryFlag(id: 2, name: 'sau', code: '966', image: AppIcons.EGIc),
+  CountryFlag(id: 3, name: 'ema', code: '973', image: AppIcons.SAIc),
+];

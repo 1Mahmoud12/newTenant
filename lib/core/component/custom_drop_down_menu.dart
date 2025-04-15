@@ -1,15 +1,41 @@
+import 'package:dobzz_seller/core/themes/colors.dart';
+import 'package:dobzz_seller/core/themes/styles.dart';
+import 'package:dobzz_seller/core/utils/app_icons.dart';
+import 'package:dobzz_seller/core/utils/constant_gaping.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:dobzz_seller/core/themes/colors.dart';
-import 'package:dobzz_seller/core/themes/styles.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+
+class DropDownModel {
+  final String name;
+  final String? image;
+  final bool showImage;
+  final bool showName;
+  final int value;
+  DropDownModel({
+    required this.name,
+    required this.value,
+    this.showImage = false,
+    this.showName = true,
+    this.image,
+  });
+}
 
 class CustomDropDownMenu extends StatefulWidget {
-  final String? selectedItem;
-  final List<String> items;
+  final DropDownModel? selectedItem;
+  final List<DropDownModel> items;
   final double? width;
+  final Color? borderColor;
+  final Color? fillColor;
+  final TextStyle? textStyleSelected;
   final int? directionArrowButton;
-  final void Function(String?)? onChanged;
+  final double? borderRadius;
+  final bool showDropDownIcon;
+  final void Function(DropDownModel?)? onChanged;
+  final String? nameField;
+  final bool hasError;
+  final String? errorText;
 
   const CustomDropDownMenu({
     super.key,
@@ -18,6 +44,14 @@ class CustomDropDownMenu extends StatefulWidget {
     this.width,
     this.onChanged,
     this.directionArrowButton,
+    this.borderColor,
+    this.fillColor,
+    this.borderRadius,
+    this.showDropDownIcon = true,
+    this.textStyleSelected,
+    this.nameField,
+    this.hasError = false,
+    this.errorText,
   });
 
   @override
@@ -25,7 +59,7 @@ class CustomDropDownMenu extends StatefulWidget {
 }
 
 class _CustomDropDownMenuState extends State<CustomDropDownMenu> {
-  String newSelected = '';
+  DropDownModel newSelected = DropDownModel(name: '', value: -1);
 
   @override
   void initState() {
@@ -35,88 +69,126 @@ class _CustomDropDownMenuState extends State<CustomDropDownMenu> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      //width: (MediaQuery.of(context).size.width * (widget.width ?? .9)).w,
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(8), color: AppColors.white, border: Border.all(color: AppColors.greyBorderColor)),
-      padding: const EdgeInsets.symmetric(horizontal: 8),
-      margin: const EdgeInsets.symmetric(horizontal: 8),
-      child: DropdownButton<String>(
-        underline: Container(),
-        icon: const SizedBox(),
-        iconSize: 0,
-        hint: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Expanded(
-              child: FittedBox(
-                alignment: context.locale.languageCode == 'ar' ? Alignment.centerRight : Alignment.centerLeft,
-                fit: BoxFit.scaleDown,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 5, right: 5).w,
-                  child: Text(
-                    newSelected.tr(),
-                    style: Styles.style14400,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (widget.nameField != null)
+          Text(
+            widget.nameField!.tr(),
+            style: Theme.of(context).textTheme.displayMedium,
+          ),
+        if (widget.nameField != null) h5,
+        Container(
+          //width: (MediaQuery.of(context).size.width * (widget.width ?? .9)).w,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(widget.borderRadius ?? 8),
+            color: widget.fillColor ?? AppColors.white,
+            border: Border.all(
+              color: widget.hasError ? Colors.red : widget.borderColor ?? AppColors.greyBorderColor,
+            ),
+          ),
+
+          child: DropdownButton<DropDownModel>(
+            underline: Container(),
+            icon: const SizedBox(),
+            padding: const EdgeInsets.symmetric(horizontal: 4),
+            iconSize: 0,
+            hint: Row(
+              children: [
+                if (newSelected.showName)
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 5, right: 5),
+                      child: Text(
+                        newSelected.name.tr(),
+                        style: Styles.style14400,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
                   ),
-                ),
-              ),
-            ),
-            const SizedBox(
-              width: 10,
-            ),
-            Align(
-              // alignment: context.locale.languageCode == 'ar' ? Alignment.centerRight : Alignment.centerLeft,
-              child: RotatedBox(
-                quarterTurns: widget.directionArrowButton ?? 1,
-                child: FittedBox(
-                  fit: BoxFit.scaleDown,
-                  child: Icon(
-                    Icons.arrow_forward_ios,
-                    color: AppColors.black,
-                    size: 20,
+                if (newSelected.showImage)
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 5, right: 5),
+                      child: newSelected.image!.contains('.svg')
+                          ? SvgPicture.asset(
+                              newSelected.image!,
+                              fit: BoxFit.cover,
+                              height: 16.h,
+                            )
+                          : Image.asset(
+                              newSelected.image!,
+                              fit: BoxFit.cover,
+                            ),
+                    ),
                   ),
-                ),
-              ),
+                if (widget.showDropDownIcon)
+                  Align(
+                    // alignment: context.locale.languageCode == 'ar' ? Alignment.centerRight : Alignment.centerLeft,
+                    child: RotatedBox(
+                      quarterTurns: widget.directionArrowButton ?? 0,
+                      child: const FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Icon(Icons.keyboard_arrow_down),
+                      ),
+                    ),
+                  ),
+              ],
             ),
-          ],
-        ),
-        onChanged: (String? newValue) {
-          newSelected = newValue!;
-          setState(() {});
+            onChanged: (DropDownModel? newValue) {
+              newSelected = newValue!;
+              setState(() {});
 
-          widget.onChanged?.call(newValue);
-        },
-        isExpanded: true,
-        borderRadius: BorderRadius.circular(15.r),
-        //  autofocus: false,
-        focusColor: AppColors.primaryColor,
-        dropdownColor: AppColors.white,
-        alignment: context.locale.languageCode == 'ar' ? Alignment.centerRight : Alignment.centerLeft,
-
-        items: widget.items.map((String item) {
-          return DropdownMenuItem<String>(
-            value: item.tr(),
-            child: Container(
-              // constraints: BoxConstraints(maxWidth: 120.w),
-              // width: 120.w,
-              alignment: context.locale.languageCode == 'ar' ? Alignment.centerRight : Alignment.centerLeft,
-
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(10.r)),
-              child: Padding(
-                padding: const EdgeInsets.only(left: 10.0).w,
-                child: Text(
-                  item,
-                  style: Styles.style12400,
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: context.locale.languageCode == 'ar' ? TextAlign.right : TextAlign.left,
-                ),
-              ),
-            ),
-            onTap: () {
-              //debugPrint(widget.selectedItem);
+              widget.onChanged?.call(newValue);
             },
-          );
-        }).toList(),
-      ),
+            isExpanded: true,
+            borderRadius: BorderRadius.circular(15.r),
+            //  autofocus: false,
+            focusColor: AppColors.primaryColor,
+            dropdownColor: AppColors.white,
+            alignment: context.locale.languageCode == 'ar' ? Alignment.centerRight : Alignment.centerLeft,
+            style: widget.textStyleSelected ?? Styles.style14400,
+
+            items: widget.items.map((DropDownModel item) {
+              return DropdownMenuItem<DropDownModel>(
+                value: item,
+                child: Container(
+                  // constraints: BoxConstraints(maxWidth: 120.w),
+                  // width: 120.w,
+                  alignment: context.locale.languageCode == 'ar' ? Alignment.centerRight : Alignment.centerLeft,
+
+                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(10.r)),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 10.0).w,
+                    child: Text(
+                      item.name,
+                      style: Styles.style12400,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: context.locale.languageCode == 'ar' ? TextAlign.right : TextAlign.left,
+                      maxLines: 1,
+                    ),
+                  ),
+                ),
+                onTap: () {
+                  //debugPrint(widget.selectedItem);
+                },
+              );
+            }).toList(),
+          ),
+        ),
+        if (widget.hasError && widget.errorText != null)
+          Padding(
+            padding: const EdgeInsets.only(top: 5, left: 5),
+            child: Text(
+              widget.errorText!,
+              style: TextStyle(
+                color: Colors.red,
+                fontSize: 12.sp,
+              ),
+            ),
+          ),
+      ],
     );
   }
 }

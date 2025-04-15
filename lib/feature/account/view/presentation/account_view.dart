@@ -1,6 +1,7 @@
 import 'package:dobzz_seller/core/component/custom_app_bar.dart';
 import 'package:dobzz_seller/core/utils/app_icons.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
+import 'package:dobzz_seller/feature/account/view/myDetalis/presentation/my_details_veiw.dart';
 import 'package:dobzz_seller/feature/account/view/myOrders/presentation/my_order_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -73,7 +74,9 @@ class AccountView extends StatelessWidget {
                   _buildMenuItem(
                     icon: AppIcons.myDetails,
                     title: 'My Details',
-                    onTap: () {},
+                    onTap: () {
+                      context.navigateToPage(const MyDetailsView());
+                    },
                   ),
                   _buildMenuItem(
                     icon: AppIcons.addressBook,
