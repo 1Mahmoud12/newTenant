@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/feature/account/view/faq/presentation/faq_view.dart';
+import 'package:dobzz_seller/feature/account/view/helpCenter/presentation/help_center_view.dart';
 import 'package:dobzz_seller/feature/account/view/myDetalis/presentation/my_details_veiw.dart';
 import 'package:dobzz_seller/feature/account/view/myOrders/presentation/my_order_view.dart';
 import 'package:dobzz_seller/feature/account/view/notificationSetting/presentation/notification_setting_view.dart';
@@ -40,7 +41,7 @@ class _SplashScreenState extends State<SplashScreen> {
     timer = Timer(
       const Duration(seconds: 3),
       () {
-        context.navigateToPage(const NotificationsSettingsview());
+        context.navigateToPage(const HelpCenterView());
 
         //context.navigateToPage(userCacheValue?.data != null ? const BottomNavBarScreen() : const LoginScreen());
         // userCacheValue.data != null

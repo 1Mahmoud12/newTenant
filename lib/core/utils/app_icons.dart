@@ -132,4 +132,11 @@ class AppIcons {
   static const faq = '$baseUrl/faq.svg';
   static const helpCenter = '$baseUrl/help-center.svgg';
   static const logout = '$baseUrl/logout-05.svg';
+  // help center
+  static const customerSerivce = '$baseUrl/customer-service.svg';
+  static const Whatsapp = '$baseUrl/Whatsapp.svg';
+  static const Web = '$baseUrl/Web.svg';
+  static const Facebook = '$baseUrl/Facebook.svg';
+  static const Twitter = '$baseUrl/Twitter.svg';
+  static const Instagram = '$baseUrl/Instagram.svg';
 }
