@@ -41,7 +41,7 @@ class _SplashScreenState extends State<SplashScreen> {
     timer = Timer(
       const Duration(seconds: 3),
       () {
-        context.navigateToPage(const HelpCenterView());
+        context.navigateToPage(const NavigationView());
 
         //context.navigateToPage(userCacheValue?.data != null ? const BottomNavBarScreen() : const LoginScreen());
         // userCacheValue.data != null

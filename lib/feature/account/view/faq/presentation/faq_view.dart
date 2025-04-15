@@ -1,4 +1,5 @@
 import 'package:dobzz_seller/core/component/custom_app_bar.dart';
+import 'package:dobzz_seller/core/component/custom_list.dart';
 import 'package:dobzz_seller/core/component/fields/custom_text_form_field.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:dobzz_seller/core/utils/constant_gaping.dart';
@@ -56,7 +57,7 @@ class _FaqsViewState extends State<FaqsView> {
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 5),
-                child: FaqList(
+                child: CustomList(
                   tabs: const ['General', 'Account', 'Service', 'Payment'],
                   onTabChanged: (index) {
                     //  print('Selected Tab: $index');
@@ -167,67 +168,6 @@ class QuestionItem extends StatelessWidget {
         theme: const ExpandableThemeData(
           hasIcon: false,
         ),
-      ),
-    );
-  }
-}
-
-class FaqList extends StatefulWidget {
-  final List<String> tabs;
-  final void Function(int index)? onTabChanged;
-
-  const FaqList({
-    Key? key,
-    required this.tabs,
-    this.onTabChanged,
-  }) : super(key: key);
-
-  @override
-  State<FaqList> createState() => _FaqListState();
-}
-
-class _FaqListState extends State<FaqList> {
-  int selectedIndex = 0;
-
-  @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Row(
-        children: List.generate(widget.tabs.length, (index) {
-          final isSelected = index == selectedIndex;
-          return Padding(
-            padding: const EdgeInsets.only(right: 8.0),
-            child: GestureDetector(
-              onTap: () {
-                setState(() {
-                  selectedIndex = index;
-                });
-                if (widget.onTabChanged != null) {
-                  widget.onTabChanged!(index);
-                }
-              },
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
-                decoration: BoxDecoration(
-                  color: isSelected ? Colors.black : Colors.white,
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(
-                    color: isSelected ? Colors.black : Colors.grey.withOpacity(0.3),
-                  ),
-                ),
-                child: Text(
-                  widget.tabs[index],
-                  style: TextStyle(
-                    color: isSelected ? Colors.white : Colors.black,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 16.sp,
-                  ),
-                ),
-              ),
-            ),
-          );
-        }),
       ),
     );
   }

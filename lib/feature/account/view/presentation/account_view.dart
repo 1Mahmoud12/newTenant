@@ -5,7 +5,9 @@ import 'package:dobzz_seller/feature/account/view/faq/presentation/faq_view.dart
 import 'package:dobzz_seller/feature/account/view/helpCenter/presentation/help_center_view.dart';
 import 'package:dobzz_seller/feature/account/view/myDetalis/presentation/my_details_veiw.dart';
 import 'package:dobzz_seller/feature/account/view/myOrders/presentation/my_order_view.dart';
+import 'package:dobzz_seller/feature/account/view/notificationSetting/presentation/notification_setting_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
 class AccountView extends StatelessWidget {
@@ -93,7 +95,9 @@ class AccountView extends StatelessWidget {
                   _buildMenuItem(
                     icon: AppIcons.notificationIcon,
                     title: 'Notifications',
-                    onTap: () {},
+                    onTap: () {
+                      context.navigateToPage(const NotificationsSettingsview());
+                    },
                   ),
                   _buildMenuItem(
                     icon: AppIcons.faq,
@@ -103,7 +107,7 @@ class AccountView extends StatelessWidget {
                     },
                   ),
                   _buildMenuItem(
-                    icon: AppIcons.helpCenter,
+                    icon: AppIcons.customerSerivce,
                     title: 'Help Center',
                     onTap: () {
                       context.navigateToPage(const HelpCenterView());
@@ -112,7 +116,9 @@ class AccountView extends StatelessWidget {
                   _buildMenuItem(
                     icon: AppIcons.logout,
                     title: 'Logout',
-                    onTap: () {},
+                    onTap: () {
+                      showLogoutDialog(context, () {});
+                    },
                     isLogout: true,
                   ),
                   const SizedBox(
@@ -124,6 +130,79 @@ class AccountView extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  void showLogoutDialog(BuildContext context, VoidCallback onConfirm) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          backgroundColor: Colors.white,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 30),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(
+                  Icons.error_outline,
+                  color: Colors.red,
+                  size: 48,
+                ),
+                const SizedBox(height: 16),
+                const Text(
+                  'Logout?',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Are you sure you want to logout?',
+                  style: TextStyle(color: Colors.grey, fontSize: 16.sp, fontWeight: FontWeight.w500),
+                ),
+                const SizedBox(height: 24),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    onConfirm();
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red,
+                    minimumSize: const Size(double.infinity, 50),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  child: const Text(
+                    'Yes, Logout',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                OutlinedButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  style: OutlinedButton.styleFrom(
+                    side: const BorderSide(color: Colors.grey),
+                    minimumSize: const Size(double.infinity, 50),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  child: const Text(
+                    'No, Cancel',
+                    style: TextStyle(color: Colors.black),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 

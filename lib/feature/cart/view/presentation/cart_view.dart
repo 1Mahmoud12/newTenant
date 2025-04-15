@@ -2,6 +2,8 @@ import 'package:dobzz_seller/core/component/buttons/custom_text_button.dart';
 import 'package:dobzz_seller/core/component/cache_image.dart';
 import 'package:dobzz_seller/core/component/custom_app_bar.dart';
 import 'package:dobzz_seller/core/utils/constant_gaping.dart';
+import 'package:dobzz_seller/core/utils/navigate.dart';
+import 'package:dobzz_seller/feature/cart/view/checkout/presentation/check_out_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -106,7 +108,9 @@ class _CartViewState extends State<CartView> {
               h20,
               CustomTextButton(
                 borderRadius: 8,
-                onPress: () {},
+                onPress: () {
+                  context.navigateToPage(const CheckoutView());
+                },
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
