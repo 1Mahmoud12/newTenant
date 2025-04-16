@@ -44,7 +44,7 @@ class FlashSaleGrid extends StatelessWidget {
       ),
       itemBuilder: (context, index) {
         final item = flashItems[index];
-        return FlashCard(
+        return ProductCard(
           onLikeTap: (isNowLiked) {},
           imagePath: item['imagePath']!,
           title: item['title']!,

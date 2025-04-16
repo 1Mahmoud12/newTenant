@@ -7,7 +7,6 @@ import 'package:dobzz_seller/feature/home/views/presentation/widgets/categories_
 import 'package:dobzz_seller/feature/home/views/presentation/widgets/flash_sale_gride.dart';
 import 'package:dobzz_seller/feature/home/views/presentation/widgets/home_page_header.dart';
 import 'package:dobzz_seller/feature/home/views/presentation/widgets/home_slider.dart';
-import 'package:dobzz_seller/feature/home/views/presentation/widgets/search_filter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 

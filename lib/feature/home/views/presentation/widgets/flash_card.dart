@@ -4,13 +4,13 @@ import 'package:dobzz_seller/feature/product/views/presentation/product_details_
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class FlashCard extends StatefulWidget {
+class ProductCard extends StatefulWidget {
   final String imagePath;
   final String title;
   final String price;
   final String? discountPercentage;
   final Function(bool isNowLiked)? onLikeTap;
-  const FlashCard({
+  const ProductCard({
     Key? key,
     required this.imagePath,
     required this.title,
@@ -20,10 +20,10 @@ class FlashCard extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<FlashCard> createState() => _FlashCardState();
+  State<ProductCard> createState() => _ProductCardState();
 }
 
-class _FlashCardState extends State<FlashCard> {
+class _ProductCardState extends State<ProductCard> {
   bool isLiked = false;
 
   void toggleLike() {

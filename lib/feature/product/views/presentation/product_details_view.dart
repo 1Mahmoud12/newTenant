@@ -2,6 +2,8 @@ import 'package:dobzz_seller/core/component/cache_image.dart';
 import 'package:dobzz_seller/core/component/custom_app_bar.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:dobzz_seller/core/utils/constant_gaping.dart';
+import 'package:dobzz_seller/core/utils/navigate.dart';
+import 'package:dobzz_seller/feature/review/presentation/review_veiw.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -41,25 +43,30 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                 const Icon(Icons.star, color: Colors.orange, size: 20),
                 const SizedBox(width: 4),
                 IntrinsicWidth(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '4.0/5',
-                        style: TextStyle(
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w500,
-                          height: 1.0, // Reduce line height
+                  child: InkWell(
+                    onTap: () {
+                      context.navigateToPage(const ReviewsView());
+                    },
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '4.0/5',
+                          style: TextStyle(
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w500,
+                            height: 1.0, // Reduce line height
+                          ),
+                          textAlign: TextAlign.start,
                         ),
-                        textAlign: TextAlign.start,
-                      ),
-                      const SizedBox(height: 0), // Just to be explicit
-                      Container(
-                        height: 1,
-                        color: Colors.black,
-                      ),
-                    ],
+                        const SizedBox(height: 0), // Just to be explicit
+                        Container(
+                          height: 1,
+                          color: Colors.black,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 const SizedBox(width: 4),
