@@ -17,9 +17,9 @@ class SearchFilter extends StatelessWidget {
             Expanded(
               flex: 5,
               child: CustomTextFormField(
-                
+                enable: false,
                 controller: TextEditingController(),
-                hintText: '',
+                hintText: 'Search product..',
                 outPadding: EdgeInsets.zero,
               ),
             ),

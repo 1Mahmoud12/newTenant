@@ -1,5 +1,8 @@
+import 'package:dobzz_seller/core/component/fields/custom_text_form_field.dart';
 import 'package:dobzz_seller/core/component/see_all_widget.dart';
 import 'package:dobzz_seller/core/utils/constant_gaping.dart';
+import 'package:dobzz_seller/core/utils/navigate.dart';
+import 'package:dobzz_seller/feature/home/views/presentation/search_product_home_view.dart';
 import 'package:dobzz_seller/feature/home/views/presentation/widgets/categories_list.dart';
 import 'package:dobzz_seller/feature/home/views/presentation/widgets/flash_sale_gride.dart';
 import 'package:dobzz_seller/feature/home/views/presentation/widgets/home_page_header.dart';
@@ -24,7 +27,21 @@ class HomePageView extends StatelessWidget {
                 h20,
                 const HomePageHeader(),
                 h10,
-                const SearchFilter(),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: GestureDetector(
+                    onTap: () {
+                      context.navigateToPage(const SearchProductHomeView());
+                    },
+                    child: CustomTextFormField(
+                      prefixIcon: const Icon(Icons.search),
+                      enable: false,
+                      controller: TextEditingController(),
+                      hintText: 'Search product..',
+                      outPadding: EdgeInsets.zero,
+                    ),
+                  ),
+                ),
                 h10,
                 const HomeSlider(),
                 h10,
