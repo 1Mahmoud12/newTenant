@@ -47,7 +47,7 @@ class _SignUpViewState extends State<SignUpView> {
                 ),
                 child: Text(
                   'login'.tr(),
-                  style: Theme.of(context).textTheme.displaySmall?.copyWith(fontWeight: FontWeight.w600, color: AppColors.cB800),
+                  style: Theme.of(context).textTheme.displaySmall?.copyWith(fontWeight: FontWeight.w600, color: AppColors.primaryColor),
                 ),
               ),
             ),
@@ -59,12 +59,12 @@ class _SignUpViewState extends State<SignUpView> {
         children: [
           const SizedBox(height: 32),
           Text(
-            'set_up_your_account'.tr(),
+            'set up your account'.tr(),
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: AppColors.primaryColor),
             textAlign: TextAlign.center,
           ),
           Text(
-            'join_us_in_just_a_few_taps_and_manage_your_healthcare_effortlessly'.tr(),
+            'join us in just a few taps and manage your healthcare effortlessly'.tr(),
             style: Theme.of(context).textTheme.displaySmall?.copyWith(color: AppColors.cB900),
             textAlign: TextAlign.center,
           ),
@@ -76,14 +76,14 @@ class _SignUpViewState extends State<SignUpView> {
                 CustomTextFormField(
                   outPadding: EdgeInsets.zero,
                   controller: AuthCubit.of(context).nameController,
-                  hintText: 'full_name'.tr(),
-                  labelText: 'full_name'.tr(),
+                  hintText: 'full name'.tr(),
+                  labelText: 'full name'.tr(),
                 ),
                 CustomTextFormField(
                   outPadding: EdgeInsets.zero,
                   controller: AuthCubit.of(context).nationalIdController,
-                  hintText: 'enter_your_national_id'.tr(),
-                  labelText: 'national_id'.tr(),
+                  hintText: 'enter your national id'.tr(),
+                  labelText: 'national id'.tr(),
                   textInputType: TextInputType.number,
                 ),
                 Row(
@@ -91,7 +91,7 @@ class _SignUpViewState extends State<SignUpView> {
                     Expanded(
                       child: PhonePickerField(
                         cubit: AuthCubit.of(context),
-                        helperText: 'enter_your_phone_number'.tr(),
+                        helperText: 'enter your phone number'.tr(),
                       ),
                     ),
                   ],
@@ -99,8 +99,8 @@ class _SignUpViewState extends State<SignUpView> {
                 CustomTextFormField(
                   outPadding: EdgeInsets.zero,
                   controller: AuthCubit.of(context).emailController,
-                  hintText: 'enter_your_email'.tr(),
-                  labelText: 'enter_your_email'.tr(),
+                  hintText: 'enter your email'.tr(),
+                  labelText: 'enter your email'.tr(),
                   textInputType: TextInputType.emailAddress,
                 ),
                 CustomCheckBox(
@@ -114,11 +114,11 @@ class _SignUpViewState extends State<SignUpView> {
                         EdgeInsets.only(left: context.locale.languageCode == 'ar' ? 0 : 8.0, right: context.locale.languageCode == 'ar' ? 8.0 : 0),
                     child: Text.rich(
                       TextSpan(
-                        text: 'agree_with '.tr(),
+                        text: 'agree with '.tr(),
                         style: Theme.of(context).textTheme.displayMedium,
                         children: [
                           TextSpan(
-                            text: 'terms_&_condition'.tr(),
+                            text: 'terms & condition'.tr(),
                             style: Theme.of(context).textTheme.displayMedium?.copyWith(color: AppColors.primaryColor),
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
@@ -138,11 +138,11 @@ class _SignUpViewState extends State<SignUpView> {
               if (state is AuthSignUpSuccessState) {
                 context.navigateToPageWithReplacement(
                   VerifyCodeView(
-                    phoneNumber: AuthCubit.of(context).phoneController.text,
-                    countryCodeId: AuthCubit.of(context).countryCodeId,
-                    verifyButton: (context) {
-                      AuthCubit.of(context).verifyCode(context);
-                    },
+                    // phoneNumber: AuthCubit.of(context).phoneController.text,
+                    // countryCodeId: AuthCubit.of(context).countryCodeId,
+                    // verifyButton: (context) {
+                    //   AuthCubit.of(context).verifyCode(context);
+                    // },
                   ),
                 );
               }

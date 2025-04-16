@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:device_preview/device_preview.dart';
+import 'package:dobzz_seller/feature/splash/view/presentation/splash_two_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -23,7 +24,7 @@ import 'core/utils/notification/notification.dart';
 import 'firebase_options.dart';
 import 'my_app.dart';
 
-Widget appStartScreen = const SplashScreen();
+Widget appStartScreen = const SplashTwoScreen();
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
@@ -89,8 +90,8 @@ void main() async {
         startLocale: const Locale('en', 'US'),
         child: DevicePreview(
           // ignore: avoid_redundant_argument_values
-          enabled: true,
-          // enabled: false,
+         // enabled: true,
+         enabled: false,
           builder: (context) => const MyApp(), // Wrap your app
         ),
       ),

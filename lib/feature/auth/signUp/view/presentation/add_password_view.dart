@@ -1,3 +1,4 @@
+import 'package:dobzz_seller/feature/navigation/view/presentation/navigation_view.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,10 +18,10 @@ class AddPasswordView extends StatefulWidget {
   const AddPasswordView({super.key});
 
   @override
-  State<AddPasswordView> createState() => _AddPasswordViewState();
+  State<AddPasswordView> createState() => AddPasswordViewState();
 }
 
-class _AddPasswordViewState extends State<AddPasswordView> {
+class AddPasswordViewState extends State<AddPasswordView> {
   bool checkBoxValue = false;
   GlobalKey<FormState> formKey = GlobalKey();
 
@@ -45,7 +46,7 @@ class _AddPasswordViewState extends State<AddPasswordView> {
                 ),
                 child: Text(
                   'login'.tr(),
-                  style: Theme.of(context).textTheme.displaySmall?.copyWith(fontWeight: FontWeight.w600, color: AppColors.cB800),
+                  style: Theme.of(context).textTheme.displaySmall?.copyWith(fontWeight: FontWeight.w600, color: AppColors.primaryColor),
                 ),
               ),
             ),
@@ -57,12 +58,12 @@ class _AddPasswordViewState extends State<AddPasswordView> {
         children: [
           const SizedBox(height: 32),
           Text(
-            'protect_your_account'.tr(),
+            'protect your account'.tr(),
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: AppColors.primaryColor),
             textAlign: TextAlign.center,
           ),
           Text(
-            'set_a_secure_password_for_safe_access'.tr(),
+            'set a secure password for safe access'.tr(),
             style: Theme.of(context).textTheme.displaySmall?.copyWith(color: AppColors.cB900),
             textAlign: TextAlign.center,
           ),
@@ -74,10 +75,7 @@ class _AddPasswordViewState extends State<AddPasswordView> {
                 CustomTextFormField(
                   outPadding: EdgeInsets.zero,
                   controller: AuthCubit.of(context).passwordController,
-                  // validator: (value) {
-                  //   if (value == null) return 'wrong_password,_please_try_again'.tr();
-                  // },
-                  helperText: 'enter_your_password'.tr(),
+                  helperText: 'enter your password'.tr(),
                   hintText: 'password'.tr(),
                   labelText: 'password'.tr(),
                   password: true,
@@ -85,17 +83,8 @@ class _AddPasswordViewState extends State<AddPasswordView> {
                 CustomTextFormField(
                   outPadding: EdgeInsets.zero,
                   controller: AuthCubit.of(context).confirmPasswordController,
-                  // validator: (value) {
-                  //   if (value == null) {
-                  //     return Text(
-                  //       'wrong_password,_please_try_again'.tr(),
-                  //       //  style: TextStyle(color: AppColors.red, fontSize: 14, fontWeight: FontWeight.w500),
-                  //     );
-                  //   }
-                  // },
-                  // helperText: 'enter_your_password'.tr(),
                   hintText: 're-password'.tr(),
-                  labelText: 're-enter_password'.tr(),
+                  labelText: 're-enter password'.tr(),
                   password: true,
                 ),
               ].paddingDirectional(bottom: 16),
@@ -105,13 +94,13 @@ class _AddPasswordViewState extends State<AddPasswordView> {
             listener: (context, state) {
               if (state is AuthSignUpSuccessState) {
                 context.navigateToPageWithReplacement(
-                  VerifyCodeView(
-                    phoneNumber: AuthCubit.of(context).phoneController.text,
-                    countryCodeId: AuthCubit.of(context).countryCodeId,
-                    verifyButton: (context) {
-                      AuthCubit.of(context).verifyCode(context);
-                    },
-                  ),
+                  const VerifyCodeView(
+                      // phoneNumber: AuthCubit.of(context).phoneController.text,
+                      // countryCodeId: AuthCubit.of(context).countryCodeId,
+                      // verifyButton: (context) {
+                      //   AuthCubit.of(context).verifyCode(context);
+                      // },
+                      ),
                 );
               }
             },
@@ -121,11 +110,12 @@ class _AddPasswordViewState extends State<AddPasswordView> {
               onPress: () {
                 if (formKey.currentState!.validate()) {
                   if (AuthCubit.of(context).passwordController.text != AuthCubit.of(context).confirmPasswordController.text) {
-                    customShowToast(context, 'passwords_do_not_match'.tr(), showToastStatus: ShowToastStatus.error);
+                    customShowToast(context, 'passwords do not match'.tr(), showToastStatus: ShowToastStatus.error);
                   } else if (!checkBoxValue) {
-                    customShowToast(context, 'you_must_agree_with_the_terms_&_condition'.tr(), showToastStatus: ShowToastStatus.error);
+                    customShowToast(context, 'you must agree with the terms & condition'.tr(), showToastStatus: ShowToastStatus.error);
                   } else {
-                    AuthCubit.of(context).signUp(context);
+                    context.navigateToPage(const NavigationView());
+                    // AuthCubit.of(context).signUp(context);
                   }
                 }
               },

@@ -65,11 +65,11 @@ class AuthCubit extends Cubit<AuthState> {
         }, (r) async {
           context.navigateToPage(
             VerifyCodeView(
-              phoneNumber: phoneController.text,
-              countryCodeId: countryCodeId,
-              verifyButton: (context) {
-                context.navigateToPage(const ResetPasswordView());
-              },
+              // phoneNumber: phoneController.text,
+              // countryCodeId: countryCodeId,
+              // verifyButton: (context) {
+              //   context.navigateToPage(const ResetPasswordView());
+              // },
             ),
           );
           emit(AuthGetCountryCodeSuccessState());

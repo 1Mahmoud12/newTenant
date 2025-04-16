@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:dobzz_seller/core/utils/navigate.dart';
+import 'package:dobzz_seller/feature/navigation/view/presentation/navigation_view.dart';
 import 'package:easy_localization/easy_localization.dart' as easy;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,13 +14,16 @@ import 'package:dobzz_seller/feature/auth/manager/authBloc/auth_state.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 class VerifyCodeView extends StatefulWidget {
-  final String phoneNumber;
-  final int countryCodeId;
+  // final String phoneNumber;
+  // final int countryCodeId;
 
-  final Function(BuildContext context)? verifyButton;
-  final void Function(String)? onChanged;
+  // final Function(BuildContext context)? verifyButton;
+  // final void Function(String)? onChanged;
 
-  const VerifyCodeView({super.key, required this.phoneNumber, this.verifyButton, required this.countryCodeId, this.onChanged});
+  const VerifyCodeView({
+    super.key,
+    //  required this.phoneNumber, this.verifyButton, required this.countryCodeId, this.onChanged
+  });
 
   @override
   State<VerifyCodeView> createState() => _VerifyCodeViewState();
@@ -67,7 +72,7 @@ class _VerifyCodeViewState extends State<VerifyCodeView> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              'verify_phone_number'.tr(),
+              'verify phone number'.tr(),
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: AppColors.primaryColor),
               textAlign: TextAlign.center,
             ),
@@ -75,7 +80,7 @@ class _VerifyCodeViewState extends State<VerifyCodeView> {
               children: [
                 Expanded(
                   child: Text(
-                    'enter_the_verification_code_sent_to_your_phone_to_proceed_with_setting_a_new_password_'.tr(),
+                    'enter the verification code sent to your phone to proceed with setting a new password '.tr(),
                     style: Theme.of(context).textTheme.displaySmall?.copyWith(color: AppColors.cB900),
                     textAlign: TextAlign.center,
                   ),
@@ -86,20 +91,21 @@ class _VerifyCodeViewState extends State<VerifyCodeView> {
             VerificationCode(
               focusNode: _focusNode,
               onChanged: (value) {
-                if (widget.onChanged != null) {
-                  widget.onChanged!(value);
-                } else {
-                  AuthCubit.of(context).setCodeController(value);
-                  log('Code ${AuthCubit.of(context).codeController.text}');
-                }
+                // if (widget.onChanged != null) {
+                //   widget.onChanged!(value);
+                // } else {
+                //   AuthCubit.of(context).setCodeController(value);
+                //   log('Code ${AuthCubit.of(context).codeController.text}');
+                // }
               },
               onCompleted: (value) {
-                widget.verifyButton?.call(context);
-                //registerBloc?.verificationNumber = value;
-                //registerBloc?.beforeRegisterSendCode(context);
+                // widget.verifyButton?.call(context);
+                // //registerBloc?.verificationNumber = value;
+                // //registerBloc?.beforeRegisterSendCode(context);
               },
               validator: (p0) {
-                return 'incorrect_otp._try_again';
+                return '';
+                //'incorrect otp. try again';
               },
             ),
             Row(
@@ -107,7 +113,7 @@ class _VerifyCodeViewState extends State<VerifyCodeView> {
               children: [
                 Text(
                   '00:${_start.toString().padLeft(2, '0')}',
-                  style: Theme.of(context).textTheme.titleSmall?.copyWith(color: AppColors.cB100.withOpacity(.4)),
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(color: AppColors.primaryColor.withOpacity(.4)),
                 ),
                 InkWell(
                   onTap: _start != 0
@@ -118,12 +124,12 @@ class _VerifyCodeViewState extends State<VerifyCodeView> {
                           startTimer();
                         },
                   child: Text(
-                    'resend_code'.tr(),
+                    'resend code'.tr(),
                     style: Theme.of(context).textTheme.displayMedium?.copyWith(
                           fontWeight: FontWeight.w700,
                           decoration: TextDecoration.underline,
-                          color: _start != 0 ? AppColors.cB100.withOpacity(.4) : AppColors.primaryColor,
-                          decorationColor: _start != 0 ? AppColors.cB100.withOpacity(.4) : AppColors.black,
+                          color: _start != 0 ? AppColors.primaryColor.withOpacity(.4) : AppColors.primaryColor,
+                          decorationColor: _start != 0 ? AppColors.primaryColor.withOpacity(.4) : AppColors.black,
                         ),
                   ),
                 ),
@@ -136,7 +142,9 @@ class _VerifyCodeViewState extends State<VerifyCodeView> {
                 padding: const EdgeInsets.symmetric(vertical: 14.5),
                 state: state is AuthResendCodeLoadingState,
                 onPress: () {
-                  widget.verifyButton?.call(context);
+                  context.navigateToPage(const NavigationView());
+
+                  //  widget.verifyButton?.call(context);
 
                   //  registerBloc?.beforeRegisterSendCode(context);
                   /*if (RegisterBloc.get(context).verificationNumber.round().toString() == newValue) {
@@ -194,7 +202,7 @@ class VerificationCode extends StatelessWidget {
           selectedColor: AppColors.primaryColor,
           selectedFillColor: AppColors.cBorderTextFormField,
           inactiveColor: AppColors.cBorderPinColor.withOpacity(.15),
-          activeColor: AppColors.cB200,
+          activeColor: AppColors.primaryColor,
           fieldWidth: context.screenWidth * .2,
           fieldHeight: context.screenWidth * .17,
         ),

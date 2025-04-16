@@ -7,6 +7,9 @@ class AppImages {
   static const backgroundSplashTwo = '$baseUrl/backgroundSplashTwo.png';
   static const backGroundSuccessToast = '$baseUrl/backGroundSuccessToast.png';
 
+  // splash shap
+  static const splashShape = '$baseUrl/splash-shap.png';
+
   //Temporary
   static const projectsTemporary = '$baseUrl/projectsTemporary.png';
 
