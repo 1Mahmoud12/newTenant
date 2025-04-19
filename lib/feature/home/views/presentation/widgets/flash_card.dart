@@ -1,5 +1,6 @@
 import 'package:dobzz_seller/core/component/cache_image.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
+import 'package:dobzz_seller/feature/home/views/manager/addToWhishlist/cubit/add_to_wish_list_cubit.dart';
 import 'package:dobzz_seller/feature/product/views/presentation/product_details_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -25,13 +26,12 @@ class ProductCard extends StatefulWidget {
 
 class _ProductCardState extends State<ProductCard> {
   bool isLiked = false;
-
+  AddToWishListCubit addToWishListCubit = AddToWishListCubit();
   void toggleLike() {
     setState(() {
       isLiked = !isLiked;
     });
     widget.onLikeTap?.call(isLiked);
-    // Do something on tap, like call an API or update local state
     debugPrint('Liked: $isLiked for ${widget.title}');
   }
 

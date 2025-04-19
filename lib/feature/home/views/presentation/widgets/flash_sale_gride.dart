@@ -1,4 +1,5 @@
 import 'package:dobzz_seller/core/component/loadsErros/loading_widget.dart';
+import 'package:dobzz_seller/feature/home/views/manager/addToWhishlist/cubit/add_to_wish_list_cubit.dart';
 import 'package:dobzz_seller/feature/home/views/manager/topProduct/cubit/top_product_cubit.dart';
 import 'package:dobzz_seller/feature/home/views/presentation/widgets/flash_card.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +22,7 @@ class _FlashSaleGridState extends State<FlashSaleGrid> {
   }
 
   TopProductCubit topProductCubit = TopProductCubit();
+  AddToWishListCubit addToWishListCubit = AddToWishListCubit();
   @override
   Widget build(BuildContext context) {
     return BlocProvider.value(
@@ -59,7 +61,7 @@ class _FlashSaleGridState extends State<FlashSaleGrid> {
                 final product = topProducts[index];
                 return ProductCard(
                   onLikeTap: (isNowLiked) {
-                    // Handle like functionality
+                    if (isNowLiked) addToWishListCubit.addToWishList(context: context, productId: product.id ?? -1);
                   },
                   imagePath: product.imagePath ?? '',
                   title: product.name ?? 'Unknown Product',
