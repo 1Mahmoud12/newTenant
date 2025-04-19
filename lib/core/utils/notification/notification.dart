@@ -405,7 +405,7 @@ Future<void> selectTokens() async {
     log('Need Get Token');
     Constants.fcmToken = newToken;
     Constants.deviceId = await DeviceUUid().getUniqueDeviceId();
-    if (userCacheValue.data != null) {
+    if (userCacheValue?.data != null) {
       //HomeDataSourceImpl().updateFcmToken(fcmToken: Constants.fcmToken, deviceId: Constants.deviceId);
     }
     userCache?.put(fcmTokenKey, Constants.fcmToken);

@@ -1,15 +1,12 @@
 import 'dart:developer';
-
 import 'package:easy_localization/easy_localization.dart' as easy;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dobzz_seller/core/component/buttons/custom_text_button.dart';
 import 'package:dobzz_seller/core/component/fields/custom_text_form_field.dart';
-import 'package:dobzz_seller/core/component/loadsErros/loading_widget.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/feature/auth/forgetPassword/view/presentation/forget_password_view.dart';
-import 'package:dobzz_seller/feature/auth/login/view/presentation/widgets/phone_number_widget.dart';
 import 'package:dobzz_seller/feature/auth/manager/authBloc/auth_cubit.dart';
 import 'package:dobzz_seller/feature/auth/manager/authBloc/auth_state.dart';
 import 'package:dobzz_seller/feature/auth/signUp/view/presentation/sign_up_view.dart';
@@ -78,18 +75,24 @@ class _LoginScreenState extends State<LoginScreen> {
                 key: formKey,
                 child: Column(
                   children: [
-                    Directionality(
-                      textDirection: TextDirection.ltr,
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: PhonePickerField(
-                              helperText: 'enter your phone number'.tr(),
-                              cubit: AuthCubit.of(context),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: BlocBuilder<AuthCubit, AuthState>(
+                            builder: (context, state) => CustomTextFormField(
+                              outPadding: EdgeInsets.zero,
+                              controller: AuthCubit.of(context).emailController,
+                              validator: (value) {
+                                if (value.isEmpty) return 'required email'.tr();
+                                if (AuthCubit.of(context).errorMessage != null) return AuthCubit.of(context).errorMessage;
+                              },
+                              helperText: 'enter your email'.tr(),
+                              hintText: 'email'.tr(),
+                              labelText: 'email'.tr(),
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                     const SizedBox(height: 16),
                     Row(
@@ -148,31 +151,29 @@ class _LoginScreenState extends State<LoginScreen> {
                   }
                 },
                 builder: (context, state) => CustomTextButton(
-                  borderRadius: 78,
+                  borderRadius: 8,
                   backgroundColor: AppColors.primaryColor,
                   padding: const EdgeInsets.symmetric(vertical: 14.5),
-                  child: state is AuthLoginLoadingState
-                      ? const LoadingWidget()
-                      : Row(
-                          children: [
-                            Expanded(
-                              child: Text(
-                                'log in'.tr(),
-                                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                                      fontWeight: FontWeight.w500,
-                                      color: AppColors.white,
-                                    ),
-                                textAlign: TextAlign.center,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          'log in'.tr(),
+                          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                                fontWeight: FontWeight.w500,
+                                color: AppColors.white,
                               ),
-                            ),
-                          ],
+                          textAlign: TextAlign.center,
                         ),
+                      ),
+                    ],
+                  ),
                   onPress: () {
                     AuthCubit.of(context).errorMessage = null;
                     if (formKey.currentState!.validate()) {
-                      context.navigateToPage(const NavigationView());
+                      //context.navigateToPage(const NavigationView());
 
-                      //  AuthCubit.of(context).login(context);
+                      AuthCubit.of(context).login(context);
                     }
                   },
                 ),

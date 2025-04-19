@@ -1,7 +1,5 @@
 import 'package:country_code_picker/country_code_picker.dart';
-import 'package:dobzz_seller/core/utils/navigate.dart';
-import 'package:dobzz_seller/feature/auth/forgetPassword/view/presentation/reset_password_view.dart';
-import 'package:dobzz_seller/feature/auth/verifyCode/view/presentation/verify_code_view.dart';
+import 'package:dobzz_seller/core/component/fields/custom_text_form_field.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -50,15 +48,10 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 32),
-            Row(
-              children: [
-                Expanded(
-                  child: PhonePickerField(
-                    cubit: AuthCubit.of(context),
-                    helperText: 'enter your phone number'.tr(),
-                  ),
-                ),
-              ],
+            CustomTextFormField(
+              outPadding: EdgeInsets.zero,
+              controller: AuthCubit.of(context).emailController,
+              hintText: 'email'.tr(),
             ),
             const SizedBox(height: 32),
             BlocBuilder<AuthCubit, AuthState>(
@@ -67,11 +60,10 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
                 childText: 'continue'.tr(),
                 padding: const EdgeInsets.symmetric(vertical: 14.5),
                 onPress: () {
-                  context.navigateToPage( VerifyCodeView());
+                  //context.navigateToPage(const VerifyCodeView());
 
-                  //   AuthCubit.of(context).forgetPassword(context: context);
+                  AuthCubit.of(context).forgetPassword(context: context);
                 },
-                state: state is AuthGetCountryCodeLoadingState,
               ),
             ),
           ],

@@ -13,6 +13,8 @@ class Constants {
   static String notificationChannelKey = 'channel_id1';
   static String fcmToken = '';
   static String deviceId = '';
+  static String subdomain = 'shine';
+  static String apiPassword = '123#Social_Codgoo#321';
 
   static FirebaseMessaging messaging = FirebaseMessaging.instance;
   static Map jsonServerKey = {};

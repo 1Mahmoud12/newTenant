@@ -25,7 +25,7 @@ bool rememberMe = false;
 
 bool darkModeValue = false;
 
-RegisterModel userCacheValue = RegisterModel();
+RegisterModel? userCacheValue ;
 // AllMyAddresses allMyAddressesCache = AllMyAddresses();
 // AdvertiseModel advertiseModelCache = AdvertiseModel();
 // CategoriesModel? categoriesModelCache;

@@ -1,4 +1,6 @@
 import 'package:dobzz_seller/core/component/custom_app_bar.dart';
+import 'package:dobzz_seller/core/network/local/cache.dart';
+import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:dobzz_seller/core/utils/app_icons.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/feature/account/view/faq/presentation/faq_view.dart';
@@ -6,6 +8,7 @@ import 'package:dobzz_seller/feature/account/view/helpCenter/presentation/help_c
 import 'package:dobzz_seller/feature/account/view/myDetalis/presentation/my_details_veiw.dart';
 import 'package:dobzz_seller/feature/account/view/myOrders/presentation/my_order_view.dart';
 import 'package:dobzz_seller/feature/account/view/notificationSetting/presentation/notification_setting_view.dart';
+import 'package:dobzz_seller/feature/auth/login/view/presentation/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -117,7 +120,11 @@ class AccountView extends StatelessWidget {
                     icon: AppIcons.logout,
                     title: 'Logout',
                     onTap: () {
-                      showLogoutDialog(context, () {});
+                      showLogoutDialog(context, () async {
+                        userCacheValue = null;
+                        await userCache?.clear();
+                        context.navigateToPageWithClearStack(const LoginScreen());
+                      });
                     },
                     isLogout: true,
                   ),
@@ -147,7 +154,7 @@ class AccountView extends StatelessWidget {
               children: [
                 const Icon(
                   Icons.error_outline,
-                  color: Colors.red,
+                  color: AppColors.primaryColor,
                   size: 48,
                 ),
                 const SizedBox(height: 16),
@@ -170,7 +177,7 @@ class AccountView extends StatelessWidget {
                     onConfirm();
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.red,
+                    backgroundColor: AppColors.primaryColor,
                     minimumSize: const Size(double.infinity, 50),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),

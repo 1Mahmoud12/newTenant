@@ -1,83 +1,104 @@
-import 'package:dobzz_seller/core/utils/constants.dart';
-
 class RegisterModel {
-  RegisterModel({
-    this.statusCode,
-    this.message,
-    this.messageAr,
-    this.data,
-  });
-
-  RegisterModel.fromJson(dynamic json) {
-    statusCode = json['StatusCode'];
-    message = json['Message'];
-    messageAr = json['MessageAr'];
-    data = json['Data'] != null ? Data.fromJson(json['Data']) : null;
-  }
-
-  int? statusCode;
+  bool? status;
+  int? code;
   String? message;
-  String? messageAr;
   Data? data;
 
+  RegisterModel({this.status, this.code, this.message, this.data});
+
+  RegisterModel.fromJson(Map<String, dynamic> json) {
+    status = json['status'];
+    code = json['code'];
+    message = json['message'];
+    data = json['data'] != null ? Data.fromJson(json['data']) : null;
+  }
+
   Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{};
-    map['StatusCode'] = statusCode;
-    map['Message'] = message;
-    map['MessageAr'] = messageAr;
-    if (data != null) {
-      map['Data'] = data?.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    data['code'] = code;
+    data['message'] = message;
+    if (this.data != null) {
+      data['data'] = this.data!.toJson();
     }
-    return map;
+    return data;
   }
 }
 
 class Data {
+  int? id;
+  String? name;
+  String? firstName;
+  String? lastName;
+  String? email;
+  String? phone;
+  String? avatarPath;
+  bool? twoFactorAuth;
+  bool? pushNotifications;
+  bool? desktopNotifications;
+  bool? emailNotifications;
+  String? language;
+  String? appearance;
+  String? createdAt;
+  String? type;
+  String? token;
+
   Data({
     this.id,
-    this.userName,
-    this.fullName,
-    this.phone,
+    this.name,
+    this.firstName,
+    this.lastName,
     this.email,
+    this.phone,
+    this.avatarPath,
+    this.twoFactorAuth,
+    this.pushNotifications,
+    this.desktopNotifications,
+    this.emailNotifications,
+    this.language,
+    this.appearance,
+    this.createdAt,
+    this.type,
     this.token,
-    this.birthDate,
-    this.imageUrl,
-    this.chatStatusId,
   });
 
-  Data.fromJson(dynamic json) {
-    id = json['Id'];
-    userName = json['UserName'];
-    fullName = json['FullName'];
-    phone = json['Phone'];
-    email = json['Email'];
-    token = json['token'] ?? Constants.token;
-    birthDate = json['BirthDate'];
-    imageUrl = json['ImageUrl'];
-    chatStatusId = json['ChatStatusId'];
+  Data.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    firstName = json['first_name'];
+    lastName = json['last_name'];
+    email = json['email'];
+    phone = json['phone'];
+    avatarPath = json['avatar_path'];
+    twoFactorAuth = json['two_factor_auth'];
+    pushNotifications = json['push_notifications'];
+    desktopNotifications = json['desktop_notifications'];
+    emailNotifications = json['email_notifications'];
+    language = json['language'];
+    appearance = json['appearance'];
+    createdAt = json['created_at'];
+    type = json['type'];
+    token = json['token'];
   }
 
-  int? id;
-  String? userName;
-  String? fullName;
-  String? phone;
-  String? email;
-  String? token;
-  String? birthDate;
-  String? imageUrl;
-  int? chatStatusId;
-
   Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{};
-    map['Id'] = id;
-    map['UserName'] = userName;
-    map['FullName'] = fullName;
-    map['Phone'] = phone;
-    map['Email'] = email;
-    map['token'] = token;
-    map['BirthDate'] = birthDate;
-    map['ImageUrl'] = imageUrl;
-    map['ChatStatusId'] = chatStatusId;
-    return map;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['first_name'] = firstName;
+    data['last_name'] = lastName;
+    data['email'] = email;
+    data['phone'] = phone;
+    data['avatar_path'] = avatarPath;
+    data['two_factor_auth'] = twoFactorAuth;
+    data['push_notifications'] = pushNotifications;
+    data['desktop_notifications'] = desktopNotifications;
+    data['email_notifications'] = emailNotifications;
+    data['language'] = language;
+    data['appearance'] = appearance;
+    data['created_at'] = createdAt;
+    data['type'] = type;
+    data['token'] = token;
+    return data;
   }
 }

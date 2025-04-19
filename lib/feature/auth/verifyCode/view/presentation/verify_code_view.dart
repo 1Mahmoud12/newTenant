@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
-
 import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/feature/navigation/view/presentation/navigation_view.dart';
 import 'package:easy_localization/easy_localization.dart' as easy;
@@ -14,7 +12,7 @@ import 'package:dobzz_seller/feature/auth/manager/authBloc/auth_state.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 class VerifyCodeView extends StatefulWidget {
-  // final String phoneNumber;
+  final String email;
   // final int countryCodeId;
 
   // final Function(BuildContext context)? verifyButton;
@@ -22,6 +20,7 @@ class VerifyCodeView extends StatefulWidget {
 
   const VerifyCodeView({
     super.key,
+    required this.email,
     //  required this.phoneNumber, this.verifyButton, required this.countryCodeId, this.onChanged
   });
 
@@ -99,13 +98,16 @@ class _VerifyCodeViewState extends State<VerifyCodeView> {
                 // }
               },
               onCompleted: (value) {
+                AuthCubit.of(context).verifyCode(context,);
                 // widget.verifyButton?.call(context);
                 // //registerBloc?.verificationNumber = value;
                 // //registerBloc?.beforeRegisterSendCode(context);
               },
-              validator: (p0) {
+              validator: (code) {
+                if (code == null || code.isEmpty) return ''; // Don't show error yet
+                if (code.length < 4) return ''; // Still typing
+                if (code != '1234') return 'Invalid code'; // Example condition
                 return '';
-                //'incorrect otp. try again';
               },
             ),
             Row(
@@ -193,6 +195,7 @@ class VerificationCode extends StatelessWidget {
         validator: (value) {
           return validator?.call(value);
         },
+        errorTextSpace: 32,
         textStyle: Theme.of(context).textTheme.titleSmall,
         hintStyle: Theme.of(context).textTheme.titleSmall,
         pinTheme: PinTheme(

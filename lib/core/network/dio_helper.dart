@@ -70,15 +70,17 @@ class DioHelper {
     bool formDataIsEnabled = false,
     String? jsonEncode,
     BuildContext? context,
+    Options? options,
   }) async {
     final String token = Constants.token;
 
     debugPrint('token: $token');
     dio!.options.headers = {
       if (token != '') 'Authorization': 'Bearer $token',
-      'Content-Type': 'application/json',
-      'Accept': '*/*',
-      //'lang': Constants.currentLanguage,
+      'Accept': 'application/json',
+      'subdomain': Constants.subdomain,
+      'Apipassword': Constants.apiPassword,
+      'lang': Constants.currentLanguage,
     };
 
     log('=======================================================');
@@ -105,15 +107,16 @@ class DioHelper {
       '${EndPoints.baseUrl}$endPoint',
       queryParameters: query,
       data: jsonEncode ?? (formDataIsEnabled ? FormData.fromMap(data) : data),
+      options: options,
     )
         .then((value) {
       printDM('Response post Method ==== \n $value');
       printDM('statusMessage ==> ${value.statusMessage}');
 
       if (context != null) {}
-      if (value.data['StatusCode'] == 200) {
-        debugPrint('Success Data (${value.data['StatusCode']}) ===> ${value.data['Data']}');
-      }
+      // if (value.data['StatusCode'] == 200) {
+      //   debugPrint('Success Data (${value.data['StatusCode']}) ===> ${value.data['Data']}');
+      // }
 
       return value;
     });

@@ -9,7 +9,6 @@ import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:dobzz_seller/core/utils/extensions.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/feature/auth/login/view/presentation/login_screen.dart';
-import 'package:dobzz_seller/feature/auth/login/view/presentation/widgets/phone_number_widget.dart';
 import 'package:dobzz_seller/feature/auth/manager/authBloc/auth_cubit.dart';
 import 'package:dobzz_seller/feature/auth/manager/authBloc/auth_state.dart';
 import 'package:dobzz_seller/feature/auth/signUp/view/presentation/add_password_view.dart';
@@ -75,26 +74,15 @@ class _SignUpViewState extends State<SignUpView> {
               children: [
                 CustomTextFormField(
                   outPadding: EdgeInsets.zero,
-                  controller: AuthCubit.of(context).nameController,
-                  hintText: 'full name'.tr(),
-                  labelText: 'full name'.tr(),
+                  controller: AuthCubit.of(context).firstNameController,
+                  hintText: 'first name'.tr(),
+                  labelText: 'first name'.tr(),
                 ),
                 CustomTextFormField(
                   outPadding: EdgeInsets.zero,
-                  controller: AuthCubit.of(context).nationalIdController,
-                  hintText: 'enter your national id'.tr(),
-                  labelText: 'national id'.tr(),
-                  textInputType: TextInputType.number,
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                      child: PhonePickerField(
-                        cubit: AuthCubit.of(context),
-                        helperText: 'enter your phone number'.tr(),
-                      ),
-                    ),
-                  ],
+                  controller: AuthCubit.of(context).lastNameController,
+                  hintText: 'last name'.tr(),
+                  labelText: 'last name'.tr(),
                 ),
                 CustomTextFormField(
                   outPadding: EdgeInsets.zero,
@@ -107,6 +95,9 @@ class _SignUpViewState extends State<SignUpView> {
                   checkBox: checkBoxValue,
                   onTap: () {
                     checkBoxValue = !checkBoxValue;
+                    if (checkBoxValue) {
+                      AuthCubit.of(context).termAndCondition = 1;
+                    }
                     setState(() {});
                   },
                   child: Padding(
@@ -138,6 +129,7 @@ class _SignUpViewState extends State<SignUpView> {
               if (state is AuthSignUpSuccessState) {
                 context.navigateToPageWithReplacement(
                   VerifyCodeView(
+                    email: AuthCubit.of(context).emailController.text,
                     // phoneNumber: AuthCubit.of(context).phoneController.text,
                     // countryCodeId: AuthCubit.of(context).countryCodeId,
                     // verifyButton: (context) {
@@ -148,6 +140,7 @@ class _SignUpViewState extends State<SignUpView> {
               }
             },
             builder: (context, state) => CustomTextButton(
+              borderRadius: 8,
               childText: 'continue'.tr(),
               padding: const EdgeInsets.symmetric(vertical: 14.5),
               onPress: () {

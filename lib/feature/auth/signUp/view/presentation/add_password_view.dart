@@ -1,10 +1,8 @@
-import 'package:dobzz_seller/feature/navigation/view/presentation/navigation_view.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dobzz_seller/core/component/buttons/custom_text_button.dart';
 import 'package:dobzz_seller/core/component/fields/custom_text_form_field.dart';
-import 'package:dobzz_seller/core/component/loadsErros/loading_widget.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:dobzz_seller/core/utils/custom_show_toast.dart';
 import 'package:dobzz_seller/core/utils/extensions.dart';
@@ -94,32 +92,33 @@ class AddPasswordViewState extends State<AddPasswordView> {
             listener: (context, state) {
               if (state is AuthSignUpSuccessState) {
                 context.navigateToPageWithReplacement(
-                  const VerifyCodeView(
-                      // phoneNumber: AuthCubit.of(context).phoneController.text,
-                      // countryCodeId: AuthCubit.of(context).countryCodeId,
-                      // verifyButton: (context) {
-                      //   AuthCubit.of(context).verifyCode(context);
-                      // },
-                      ),
+                  VerifyCodeView(
+                    email: AuthCubit.of(context).emailController.text,
+                    // phoneNumber: AuthCubit.of(context).phoneController.text,
+                    // countryCodeId: AuthCubit.of(context).countryCodeId,
+                    // verifyButton: (context) {
+                    //   AuthCubit.of(context).verifyCode(context);
+                    // },
+                  ),
                 );
               }
             },
             builder: (context, state) => CustomTextButton(
-              childText: state is AuthSignUpLoadingState ? null : 'finish'.tr(),
+              childText: 'finish'.tr(),
               padding: const EdgeInsets.symmetric(vertical: 14.5),
               onPress: () {
                 if (formKey.currentState!.validate()) {
                   if (AuthCubit.of(context).passwordController.text != AuthCubit.of(context).confirmPasswordController.text) {
                     customShowToast(context, 'passwords do not match'.tr(), showToastStatus: ShowToastStatus.error);
-                  } else if (!checkBoxValue) {
+                  } else if (AuthCubit.of(context).termAndCondition == 0) {
                     customShowToast(context, 'you must agree with the terms & condition'.tr(), showToastStatus: ShowToastStatus.error);
                   } else {
-                    context.navigateToPage(const NavigationView());
-                    // AuthCubit.of(context).signUp(context);
+                    //  context.navigateToPage(const NavigationView());
+                    AuthCubit.of(context).signUp(context);
                   }
                 }
               },
-              child: state is AuthSignUpLoadingState ? const LoadingWidget() : null,
+              // child: state is AuthSignUpLoadingState ? const LoadingWidget() : null,
             ),
           ),
           const SizedBox(height: 16),

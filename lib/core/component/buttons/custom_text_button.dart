@@ -58,7 +58,7 @@ class _CustomTextButtonState extends State<CustomTextButton> {
                 decoration: BoxDecoration(
                   color: widget.backgroundColor ?? AppColors.primaryColor,
                   border: Border.all(color: widget.borderColor ?? AppColors.transparent, width: widget.borderWidth),
-                  borderRadius: widget.allBorderRadius ?? BorderRadius.circular((widget.borderRadius ?? 30).r),
+                  borderRadius: widget.allBorderRadius ?? BorderRadius.circular((widget.borderRadius ?? 8).r),
                   gradient: widget.gradient,
                 ),
                 // alignment: Alignment.center,

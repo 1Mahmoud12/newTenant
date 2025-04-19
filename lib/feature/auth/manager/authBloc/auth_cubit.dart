@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'dart:developer';
 
+import 'package:dobzz_seller/core/network/errors/failures.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,7 +19,6 @@ import 'package:dobzz_seller/feature/auth/data/models/login_params.dart';
 import 'package:dobzz_seller/feature/auth/data/models/reset_password_params.dart';
 import 'package:dobzz_seller/feature/auth/data/models/sign_up_params.dart';
 import 'package:dobzz_seller/feature/auth/data/models/verify_code_model.dart';
-import 'package:dobzz_seller/feature/auth/forgetPassword/view/presentation/reset_password_view.dart';
 import 'package:dobzz_seller/feature/auth/manager/authBloc/auth_state.dart';
 import 'package:dobzz_seller/feature/auth/verifyCode/view/presentation/verify_code_view.dart';
 import 'package:dobzz_seller/feature/navigation/view/presentation/navigation_view.dart';
@@ -28,7 +29,7 @@ class AuthCubit extends Cubit<AuthState> {
   static AuthCubit of(BuildContext context) => BlocProvider.of<AuthCubit>(context);
 
   final AuthDataSource authDataSource = AuthDataSourceImpl();
-
+  int termAndCondition = 0;
   void changeStat() {
     emit(AuthInitial());
   }
@@ -55,7 +56,7 @@ class AuthCubit extends Cubit<AuthState> {
   void forgetPassword({required BuildContext context}) async {
     emit(AuthGetCountryCodeLoadingState());
     animationDialogLoading(context);
-    authDataSource.forgetPassword(context, phoneController.text, countryCodeId).then(
+    authDataSource.forgetPassword(context, email: emailController.text).then(
       (value) async {
         closeDialog(context);
         // bool result = await InternetConnectionChecker().hasConnection;
@@ -65,6 +66,7 @@ class AuthCubit extends Cubit<AuthState> {
         }, (r) async {
           context.navigateToPage(
             VerifyCodeView(
+              email: emailController.text,
               // phoneNumber: phoneController.text,
               // countryCodeId: countryCodeId,
               // verifyButton: (context) {
@@ -82,7 +84,7 @@ class AuthCubit extends Cubit<AuthState> {
     emit(AuthResendCodeLoadingState());
     animationDialogLoading(context);
     customShowToast(context, 'we_send_again_code_for_you'.tr());
-    authDataSource.resendCode(context, phoneController.text, countryCodeId).then(
+    authDataSource.resendCode(context, lastNameController.text, countryCodeId).then(
       (value) async {
         closeDialog(context);
         // bool result = await InternetConnectionChecker().hasConnection;
@@ -96,8 +98,8 @@ class AuthCubit extends Cubit<AuthState> {
     );
   }
 
-  TextEditingController nameController = TextEditingController();
-  TextEditingController phoneController = TextEditingController();
+  TextEditingController firstNameController = TextEditingController();
+  TextEditingController lastNameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
@@ -124,27 +126,30 @@ class AuthCubit extends Cubit<AuthState> {
         .postSignUp(
       context,
       SignUpParams(
-        name: nameController.text,
+        firstName: firstNameController.text,
         email: emailController.text,
-        phoneNumber: phoneController.text,
+        lastName: lastNameController.text,
         password: passwordController.text,
-        birthday: nationalIdController.text,
-        gender: gender,
-        userName: phoneController.text,
-        countryCodeId: countryCodeId,
-        fcmToken: Constants.fcmToken,
-        deviceTypeId: Constants.deviceId,
+        termAndCondition: termAndCondition,
       ),
     )
         .then(
       (value) async {
-        closeDialog(context);
-        // bool result = await InternetConnectionChecker().hasConnection;
         value.fold((l) {
-          failureModalBottomSheetWithReason(context, reasons: [l.errMessage], onPress: () {});
+          closeDialog(context);
+          // Extract error reasons if available
+          List<String> errorReasons = [];
+          if (l is ServerFailure && l.apiError != null) {
+            errorReasons = l.apiError!.getErrorsList();
+          } else {
+            errorReasons = [l.errMessage];
+          }
+          failureModalBottomSheetWithReason(context, reasons: errorReasons, onPress: () {});
+          // customShowToast(context, l.errMessage, showToastStatus: ShowToastStatus.error);
           emit(AuthSignUpErrorState(l.errMessage));
         }, (r) async {
-          customShowToast(context, 'created_user_successfully'.tr());
+          closeDialog(context);
+          // customShowToast(context, 'created_user_successfully'.tr());
           emit(AuthSignUpSuccessState());
         });
       },
@@ -165,9 +170,8 @@ class AuthCubit extends Cubit<AuthState> {
         .verifyCode(
       context,
       VerifyCodeModel(
-        otp: codeController.text,
-        phone: phoneController.text,
-        countryCodeId: countryCodeId,
+        otp: 'codeController.text',
+        phone: emailController.text,
       ),
     )
         .then(
@@ -189,7 +193,7 @@ class AuthCubit extends Cubit<AuthState> {
             nameButton: 'go_home',
             onPress: () {
               context.navigateToPageWithReplacement(const NavigationView());
-              phoneController.clear();
+              lastNameController.clear();
               passwordController.clear();
               confirmPasswordController.clear();
             },
@@ -209,28 +213,32 @@ class AuthCubit extends Cubit<AuthState> {
         .postLogin(
       context,
       LoginParams(
-        phoneNumber: phoneController.text,
+        email: emailController.text,
         password: passwordController.text,
-        countryCodeId: countryCodeId,
-        fcmToken: Constants.fcmToken,
-        deviceTypeId: Constants.deviceId,
       ),
     )
         .then(
       (value) async {
-        closeDialog(context);
         // bool result = await InternetConnectionChecker().hasConnection;
         value.fold((l) {
-          failureModalBottomSheetWithReason(context, reasons: [l.errMessage], onPress: () {});
-          errorMessage = l.errMessage;
+          closeDialog(context);
+          // Extract error reasons if available
+          List<String> errorReasons = [];
+          if (l is ServerFailure && l.apiError != null) {
+            errorReasons = l.apiError!.getErrorsList();
+          } else {
+            errorReasons = [l.errMessage];
+          }
+          failureModalBottomSheetWithReason(context, reasons: errorReasons, onPress: () {});
           emit(AuthLoginErrorState(l.errMessage));
         }, (r) async {
           ConstantsModels.registerModel = r;
           userCacheValue = r;
+          log('userCacheValue.data ==>${userCacheValue?.data}');
           Constants.token = r.data?.token ?? '';
-          userCache?.put(userCacheKey, jsonEncode(r.toJson()));
-          context.navigateToPageWithReplacement(const NavigationView());
-          phoneController.clear();
+          await userCache?.put(userCacheKey, jsonEncode(r.toJson()));
+          context.navigateToPageWithClearStack(const NavigationView());
+          lastNameController.clear();
           passwordController.clear();
           confirmPasswordController.clear();
           emit(AuthLoginSuccessState());
@@ -260,7 +268,7 @@ class AuthCubit extends Cubit<AuthState> {
           failureModalBottomSheetWithReason(context, reasons: [l.errMessage], onPress: () {});
           emit(AuthResetPasswordErrorState(l.errMessage));
         }, (r) async {
-          phoneController.clear();
+          lastNameController.clear();
           passwordController.clear();
           confirmPasswordController.clear();
           emit(AuthResetPasswordSuccessState());

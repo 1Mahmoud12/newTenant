@@ -33,7 +33,7 @@ class PhonePickerField extends StatelessWidget {
       children: [
         Expanded(
           child: CustomTextFormField(
-            controller: cubit.phoneController,
+            controller: cubit.lastNameController,
             hintText: 'x xxxx xxxx',
 
             labelText: 'phone_number',

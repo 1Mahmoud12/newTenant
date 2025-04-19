@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
+import 'package:dobzz_seller/core/network/errors/api_error_model.dart';
 import 'package:dobzz_seller/core/utils/constants.dart';
 
 abstract class Failure {
@@ -10,7 +11,9 @@ abstract class Failure {
 }
 
 class ServerFailure extends Failure {
-  ServerFailure(super.errMessage);
+  final ApiError? apiError;
+
+  ServerFailure(String errMessage, {this.apiError}) : super(errMessage);
 
   factory ServerFailure.fromDioException(DioException dioError) {
     switch (dioError.type) {
@@ -21,18 +24,22 @@ class ServerFailure extends Failure {
       case DioExceptionType.receiveTimeout:
         return ServerFailure('Receive timeout with ApiServer');
       case DioExceptionType.badResponse:
-        log('badResponse on url ${dioError.response?.realUri}');
-        log('badResponse on statusCode ${dioError.response?.statusCode}');
-        log("badResponse on dataSource ${dioError.response?.data.runtimeType} ''${dioError.response?.data}'' ");
+        // Parse the error response using our ApiError model
+        try {
+          final statusCode = dioError.response?.statusCode;
+          final responseData = dioError.response?.data;
 
-        return ServerFailure.fromResponse(
-          dioError.response?.statusCode,
-          dioError.response?.data != ''
-              ? ((arabicLanguage ? dioError.response?.data['MessageAr'] : dioError.response?.data['Message']) ??
-                      'Something went wrong, Please try again!') ??
-                  'Something went wrong, Please try again!'
-              : null,
-        );
+          if (responseData is Map<String, dynamic>) {
+            final apiError = ApiError.fromJson(responseData, statusCode: statusCode);
+            return ServerFailure(apiError: apiError, apiError.getUserFriendlyMessage());
+          } else if (responseData is String) {
+            return ServerFailure(responseData);
+          }
+          return ServerFailure('Bad response: ${statusCode ?? "Unknown"}');
+        } catch (e) {
+          return ServerFailure('Could not process error response');
+        }
+      /////////////////////////////////////////////////////
       case DioExceptionType.badCertificate:
         return ServerFailure('Bad Certificate with ApiServer');
       case DioExceptionType.cancel:

@@ -1,15 +1,15 @@
 class EndPoints {
-  static const domain = 'http://77.237.244.134:8073';
-  static const baseUrl = '$domain/api/';
+  static const domain = 'https://backend.dobzz.com';
+  static const baseUrl = '$domain/api/v1/';
 
   // Auth
   static const countryCodes = 'Account/CountryCodes';
-  static const register = 'Account/Register';
-  static const login = 'Account/Login';
-  static const validateOTP = 'Account/ValidateOTP';
+  static const register = 'shop/auth/register';
+  static const login = 'shop/auth/login';
+  static const validateOTP = 'shop/auth/verify-otp';
   static const updateFcmToken = 'Account/UpdateFCMToken';
   static const appVisit = 'AppSetting/Admin_UpdateAppVisit';
-  static const forgetPassword = 'Account/ForgetPassword';
+  static const forgetPassword = 'shop/auth/forgot-password';
   static const resetPassword = 'Account/ResetPassword';
   static const resendOtp = 'Account/ResendOtp';
   static const deleteUser = 'Account/DeleteUser';

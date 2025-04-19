@@ -1,40 +1,25 @@
 class SignUpParams {
-  final String name;
+  final String firstName;
   final String email;
-  final String phoneNumber;
+  final String lastName;
   final String password;
-  final String birthday;
-  final String fcmToken;
-  final String deviceTypeId;
-  final int gender;
-  final String userName;
-  final int countryCodeId;
+  final int termAndCondition;
 
   SignUpParams({
-    required this.name,
+    required this.firstName,
     required this.email,
-    required this.phoneNumber,
+    required this.lastName,
     required this.password,
-    required this.birthday,
-    required this.gender,
-    required this.userName,
-    required this.countryCodeId,
-    required this.fcmToken,
-    required this.deviceTypeId,
+    required this.termAndCondition,
   });
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'FullName': name,
-      'Email': email,
-      'PhoneNumber': phoneNumber,
+      'first_name': firstName,
+      'email': email,
+      'last_name': lastName,
       'password': password,
-      'Birthday': birthday,
-      'Gender': gender,
-      'UserName': userName,
-      'CountryCodeId': countryCodeId,
-      'FCMToken': fcmToken,
-      'DeviceTypeId': deviceTypeId,
+      'agree_terms': termAndCondition,
     };
   }
 }

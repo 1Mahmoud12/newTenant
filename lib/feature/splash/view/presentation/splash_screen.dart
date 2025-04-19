@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:ui';
+import 'package:dobzz_seller/core/network/local/cache.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
+import 'package:dobzz_seller/feature/auth/login/view/presentation/login_screen.dart';
 import 'package:dobzz_seller/feature/navigation/view/presentation/navigation_view.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -30,13 +32,10 @@ class _SplashScreenState extends State<SplashScreen> {
     timer = Timer(
       const Duration(seconds: 3),
       () {
-        context.navigateToPage(const NavigationView());
-
-        //context.navigateToPage(userCacheValue?.data != null ? const BottomNavBarScreen() : const LoginScreen());
-        // userCacheValue.data != null
-        //     ? context.navigateToPage(const NavigationView())
-        //     : context.navigateToPage(const SelectUserType(), pageTransitionType: PageTransitionType.rightToLeft, animation: 400);
-        // // userCache?.put(onBoardingKey, false);
+        //   context.navigateToPage(const NavigationView());
+        context.navigateToPage(userCacheValue?.data != null ? const NavigationView() : const LoginScreen());
+        // userCacheValue.data != null ? context.navigateToPage(const NavigationView()) : context.navigateToPage(const LoginScreen());
+        // userCache?.put(onBoardingKey, false);
       },
     );
   }

@@ -2,11 +2,11 @@ import 'dart:developer';
 
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
+import 'package:dobzz_seller/core/network/errors/api_error_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:dobzz_seller/core/network/dio_helper.dart';
 import 'package:dobzz_seller/core/network/end_points.dart';
 import 'package:dobzz_seller/core/network/errors/failures.dart';
-import 'package:dobzz_seller/core/network/local/cache.dart';
 import 'package:dobzz_seller/feature/auth/data/models/country_code_model.dart';
 import 'package:dobzz_seller/feature/auth/data/models/login_params.dart';
 import 'package:dobzz_seller/feature/auth/data/models/register_model.dart';
@@ -17,7 +17,7 @@ import 'package:dobzz_seller/feature/auth/data/models/verify_code_model.dart';
 abstract class AuthDataSource {
   Future<Either<Failure, CountryCodeModel>> getCountryCode();
 
-  Future<Either<Failure, String>> forgetPassword(BuildContext context, String phoneNumber, int countryCodeId);
+  Future<Either<Failure, String>> forgetPassword(BuildContext context, {required String email});
 
   Future<Either<Failure, String>> resendCode(BuildContext context, String phoneNumber, int countryCodeId);
 
@@ -58,12 +58,40 @@ class AuthDataSourceImpl implements AuthDataSource {
         endPoint: endpoint,
         data: signUpParams.toMap(),
         context: context,
+        options: Options(
+          validateStatus: (status) {
+            // Consider all responses below 500 as "valid" responses
+            // This allows us to handle error responses in our code rather than
+            // having Dio throw exceptions for 4xx responses
+            return status != null && status < 500;
+          },
+        ),
       );
-      log('object response.dataSource ${response.data.runtimeType}');
-      return right('');
+
+      // Now check if the response indicates success or an error
+      final statusCode = response.statusCode;
+      log('A7a========>$response');
+      // Success case
+      if (statusCode! == 200 && response.data['status']) {
+        log('Success response: ${response.data}');
+        return right('');
+      }
+      // Error case - we get here because we're treating 4xx as valid responses
+      else {
+        log('Error response: ${response.data}');
+        if (response.data is Map<String, dynamic>) {
+          final apiError = ApiError.fromJson(response.data, statusCode: statusCode);
+          return left(
+            ServerFailure(
+              apiError.getUserFriendlyMessage(),
+              apiError: apiError,
+            ),
+          );
+        }
+        return left(ServerFailure('Error $statusCode: ${response.statusMessage}'));
+      }
     } catch (error) {
       log(error.toString());
-
       if (error is DioException) {
         return left(ServerFailure.fromDioException(error));
       }
@@ -102,8 +130,28 @@ class AuthDataSourceImpl implements AuthDataSource {
         context: context,
         //  formDataIsEnabled: true,
       );
-      log('object response.dataSource ${response.data.runtimeType}');
-      return right(RegisterModel.fromJson({'Data': response.data}));
+      // Now check if the response indicates success or an error
+      final statusCode = response.statusCode;
+      log('A7a========>$response');
+      // Success case
+      if (statusCode! == 200 && response.data['status']) {
+        log('Success response: ${response.data}');
+        return right(RegisterModel.fromJson(response.data));
+      }
+      // Error case - we get here because we're treating 4xx as valid responses
+      else {
+        log('Error response: ${response.data}');
+        if (response.data is Map<String, dynamic>) {
+          final apiError = ApiError.fromJson(response.data, statusCode: statusCode);
+          return left(
+            ServerFailure(
+              apiError.getUserFriendlyMessage(),
+              apiError: apiError,
+            ),
+          );
+        }
+        return left(ServerFailure('Error $statusCode: ${response.statusMessage}'));
+      }
     } catch (error) {
       log(error.toString());
 
@@ -115,15 +163,17 @@ class AuthDataSourceImpl implements AuthDataSource {
   }
 
   @override
-  Future<Either<Failure, String>> forgetPassword(BuildContext context, String phoneNumber, int countryCodeId) async {
+  Future<Either<Failure, String>> forgetPassword(BuildContext context, {required String email}) async {
     try {
-      final String endpoint = '${EndPoints.forgetPassword}?phone=$phoneNumber&CountryCodeId=$countryCodeId';
-      final response = await DioHelper.getData(
-        url: endpoint,
+      const String endpoint = EndPoints.forgetPassword;
+      await DioHelper.postData(
+        endPoint: endpoint,
         context: context,
+        data: {
+          'email': email,
+        },
       );
-      idUserValue = response.data['Data']['UserId'];
-      userCache?.put(idUserKey, response.data['Data']['UserId']);
+
       return right('Success');
     } catch (error) {
       log(error.toString());
