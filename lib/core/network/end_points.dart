@@ -85,4 +85,7 @@ class EndPoints {
 
   // Contact us
   static const contactUs = 'SocialMedia/GetAllActiveSocialMedia';
+
+  // wish list
+  static const addToWishList = 'shop/user/wishlist';
 }
