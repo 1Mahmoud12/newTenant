@@ -49,7 +49,9 @@ class _ProductCardState extends State<ProductCard> {
               CacheImage(
                 urlImage: widget.imagePath,
                 errorColor: Colors.grey,
-                height: MediaQuery.sizeOf(context).height * 0.255,
+                height: MediaQuery.sizeOf(context).height * 0.27,
+                width: double.infinity,
+                fit: BoxFit.cover,
               ),
               Positioned(
                 top: 12,

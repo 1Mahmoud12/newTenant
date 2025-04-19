@@ -32,9 +32,10 @@ class DioHelper {
     final String token = isolateToken ?? Constants.token;
     debugPrint('token: $token');
     dio!.options.headers = {
-      if (token.isNotEmpty) 'Authorization': 'Bearer $token',
-      'Content-Type': 'application/json',
+      if (token != '') 'Authorization': 'Bearer $token',
       'Accept': 'application/json',
+      'subdomain': Constants.subdomain,
+      'Apipassword': Constants.apiPassword,
       'lang': Constants.currentLanguage,
     };
     log('=======================================================');

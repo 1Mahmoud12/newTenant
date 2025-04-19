@@ -32,6 +32,7 @@ class EndPoints {
   static const getAllBranches = 'Report/GetAllBranches';
   static const staticPage = 'StaticPage/StaticPage';
   static const getAdvertises = 'Advertise/GetAdvertises';
+  static const getTopProduct = 'shop/top-products';
 
   //  Service
   static const getCategories = 'Service/GetCategories';
