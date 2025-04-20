@@ -1,11 +1,14 @@
+import 'package:dobzz_seller/core/component/buttons/custom_text_button.dart';
 import 'package:dobzz_seller/core/component/cache_image.dart';
 import 'package:dobzz_seller/core/component/custom_app_bar.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:dobzz_seller/core/utils/constant_gaping.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
+import 'package:dobzz_seller/feature/cart/view/manager/addToCart/cubit/add_to_cart_cubit.dart';
 import 'package:dobzz_seller/feature/review/presentation/review_veiw.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -18,13 +21,16 @@ class ProductDetailsView extends StatefulWidget {
 
 class _ProductDetailsViewState extends State<ProductDetailsView> {
   String selectedSize = 'M';
+  int quantity = 1;
   final PageController controller = PageController();
-
+  AddToCartCubit addToCartCubit = AddToCartCubit();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      persistentFooterButtons: const [
-        PriceAndAddToCartWidget(),
+      persistentFooterButtons: [
+        PriceAndAddToCartWidget(
+          addToCartCubit: addToCartCubit,
+        ),
       ],
       appBar: customAppBar(context: context, title: 'Product Details'),
       body: SingleChildScrollView(
@@ -34,69 +40,159 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
           children: [
             ProductGallery(controller: controller),
             const SizedBox(height: 16),
-            Text(
-              'Regular Fit Slogan',
-              style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold),
-            ),
-            Row(
-              children: [
-                const Icon(Icons.star, color: Colors.orange, size: 20),
-                const SizedBox(width: 4),
-                IntrinsicWidth(
-                  child: InkWell(
-                    onTap: () {
-                      context.navigateToPage(const ReviewsView());
-                    },
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '4.0/5',
-                          style: TextStyle(
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.w500,
-                            height: 1.0, // Reduce line height
-                          ),
-                          textAlign: TextAlign.start,
-                        ),
-                        const SizedBox(height: 0), // Just to be explicit
-                        Container(
-                          height: 1,
-                          color: Colors.black,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 4),
-                Text(
-                  '(45 reviews)',
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    color: Colors.grey,
-                  ),
-                ),
-              ],
+            const ProductTitle(),
+            RatingAndReview(
+              onTap: () {
+                context.navigateToPage(const ReviewsView());
+              },
             ),
             const SizedBox(height: 12),
-            Text(
-              'The name says it all, the right size slightly snugs the body leaving enough room for comfort in the sleeves and waist.',
-              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16.sp, color: Colors.grey),
-            ),
-            const SizedBox(height: 10),
-            const Text(
-              'Choose size',
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 10),
-            SizeSelector(
-              onSelectSize: (selectedSize) {},
+            const ProductDescription(),
+            const SizedBox(height: 20),
+            SizeSelectorSection(
+              selectedSize: selectedSize,
+              onSelectSize: (value) {
+                setState(() => selectedSize = value);
+              },
             ),
             const SizedBox(height: 20),
+            QuantitySelector(
+              addToCartCubit: addToCartCubit,
+              quantity: addToCartCubit.quantity,
+              onIncrease: () => setState(() => addToCartCubit.quantity++),
+              onDecrease: () {
+                if (addToCartCubit.quantity > 1) setState(() => addToCartCubit.quantity--);
+              },
+            ),
           ],
         ),
       ),
+    );
+  }
+}
+
+class ProductTitle extends StatelessWidget {
+  const ProductTitle({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      'Regular Fit Slogan',
+      style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold),
+    );
+  }
+}
+
+class RatingAndReview extends StatelessWidget {
+  final VoidCallback onTap;
+
+  const RatingAndReview({required this.onTap, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        const Icon(Icons.star, color: Colors.orange, size: 20),
+        const SizedBox(width: 4),
+        IntrinsicWidth(
+          child: InkWell(
+            onTap: onTap,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '4.0/5',
+                  style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500, height: 1),
+                ),
+                Container(height: 1, color: Colors.black),
+              ],
+            ),
+          ),
+        ),
+        const SizedBox(width: 4),
+        Text(
+          '(45 reviews)',
+          style: TextStyle(fontSize: 12.sp, color: Colors.grey),
+        ),
+      ],
+    );
+  }
+}
+
+class ProductDescription extends StatelessWidget {
+  const ProductDescription({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      'The name says it all, the right size slightly snugs the body leaving enough room for comfort in the sleeves and waist.',
+      style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500, color: Colors.grey),
+    );
+  }
+}
+
+class SizeSelectorSection extends StatelessWidget {
+  final String selectedSize;
+  final ValueChanged<String> onSelectSize;
+
+  const SizeSelectorSection({
+    required this.selectedSize,
+    required this.onSelectSize,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text('Choose size', style: TextStyle(fontWeight: FontWeight.bold)),
+        const SizedBox(height: 10),
+        SizeSelector(onSelectSize: onSelectSize),
+      ],
+    );
+  }
+}
+
+class QuantitySelector extends StatelessWidget {
+  final int quantity;
+  final VoidCallback onIncrease;
+  final VoidCallback onDecrease;
+  final AddToCartCubit addToCartCubit;
+  const QuantitySelector({
+    required this.quantity,
+    required this.onIncrease,
+    required this.onDecrease,
+    super.key,
+    required this.addToCartCubit,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        const Text('Quantity', style: TextStyle(fontWeight: FontWeight.bold)),
+        const SizedBox(width: 16),
+        Container(
+          decoration: BoxDecoration(
+            border: Border.all(color: AppColors.grey),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Row(
+            children: [
+              IconButton(
+                onPressed: onDecrease,
+                icon: const Icon(Icons.remove),
+              ),
+              Text('${addToCartCubit.quantity}', style: TextStyle(fontSize: 16.sp)),
+              IconButton(
+                onPressed: onIncrease,
+                icon: const Icon(Icons.add),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }
@@ -177,11 +273,17 @@ class ProductGallery extends StatelessWidget {
   }
 }
 
-class PriceAndAddToCartWidget extends StatelessWidget {
+class PriceAndAddToCartWidget extends StatefulWidget {
   const PriceAndAddToCartWidget({
     super.key,
+    required this.addToCartCubit,
   });
+  final AddToCartCubit addToCartCubit;
+  @override
+  State<PriceAndAddToCartWidget> createState() => _PriceAndAddToCartWidgetState();
+}
 
+class _PriceAndAddToCartWidgetState extends State<PriceAndAddToCartWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -205,19 +307,38 @@ class PriceAndAddToCartWidget extends StatelessWidget {
           ),
           w30,
           Expanded(
-            child: SizedBox(
-              height: 50,
-              child: ElevatedButton.icon(
-                onPressed: () {},
-                icon: const Icon(Icons.shopping_cart),
-                label: const Text('Add to Cart'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.black,
-                  foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
+            child: BlocProvider.value(
+              value: widget.addToCartCubit,
+              child: BlocBuilder<AddToCartCubit, AddToCartState>(
+                builder: (context, state) {
+                  return CustomTextButton(
+                    child: state is AddToCartLoading
+                        ? const Center(
+                            child: SizedBox(
+                              height: 20,
+                              width: 20,
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                              ),
+                            ),
+                          )
+                        : Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              s,
+                              const Icon(Icons.shopping_cart, color: Colors.white),
+                              Text(
+                                'Add to Cart',
+                                style: TextStyle(color: Colors.white, fontSize: 16.sp, fontWeight: FontWeight.w500),
+                              ),
+                              s,
+                            ],
+                          ),
+                    onPress: () {
+                      widget.addToCartCubit.addToCart(context: context, productId: 76);
+                    },
+                  );
+                },
               ),
             ),
           ),

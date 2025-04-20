@@ -13,7 +13,7 @@ class FavoriteView extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 16),
         child: Column(
           children: [
-            Expanded(child: FlashSaleGrid()),
+            Expanded(child: FlashSaleGrid(isItWhishList: true)),
             SizedBox(
               height: 100,
             ),

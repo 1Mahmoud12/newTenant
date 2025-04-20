@@ -11,7 +11,7 @@ class WishListDataSource {
   static Future<Either<Failure, WishListModel>> getWishList() async {
     try {
       final response = await DioHelper.getData(url: EndPoints.addToWishList);
-      log('Top Product Response: ${response.data['data']}');
+      log('WhishList Response: ${response.data['data']}');
       return Right(WishListModel.fromJson(response.data));
     } catch (error) {
       if (error is DioException) {

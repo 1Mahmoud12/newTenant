@@ -171,9 +171,10 @@ class DioHelper {
 
     // final String token = HiveReuse.mainBox.get(AppConst.tokenBox) ?? '';
     dio!.options.headers = {
-      'Authorization': 'Bearer $token',
-      'Content-Type': 'application/json',
-      'Apipassword': Constants.passwordApi,
+      if (token != '') 'Authorization': 'Bearer $token',
+      'Accept': 'application/json',
+      'subdomain': Constants.subdomain,
+      'Apipassword': Constants.apiPassword,
       'lang': Constants.currentLanguage,
     };
     log('=======================================================');

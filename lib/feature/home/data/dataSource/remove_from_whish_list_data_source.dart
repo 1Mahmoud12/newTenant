@@ -1,18 +1,17 @@
-import 'dart:developer';
-
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:dobzz_seller/core/network/dio_helper.dart';
 import 'package:dobzz_seller/core/network/end_points.dart';
 import 'package:dobzz_seller/core/network/errors/failures.dart';
-import 'package:dobzz_seller/feature/cart/data/models/cart_item_model.dart';
 
-class CartItemDataSource {
-  static Future<Either<Failure, CartItemModel>> getCartItems() async {
+class RemoveFromWhishListDataSource {
+  static Future<Either<Failure, void>> removeFromWishList({required int productId}) async {
     try {
-      final response = await DioHelper.getData(url: EndPoints.cartItems);
-      log('Cart Response: ${response.data['data']}');
-      return Right(CartItemModel.fromJson(response.data));
+      await DioHelper.deleteData(
+        endPoint: '${EndPoints.wishlist}/$productId',
+        data: {},
+      );
+      return const Right(null);
     } catch (error) {
       if (error is DioException) {
         return Left(ServerFailure.fromDioException(error));

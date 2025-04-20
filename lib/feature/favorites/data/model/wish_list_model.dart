@@ -33,12 +33,12 @@ class WishListModel {
 }
 
 class Data {
-  int? id;
+  num? id;
   String? product;
-  int? productId;
-  int? priceForProduct;
+  num? productId;
+  num? priceForProduct;
   String? descriptionProduct;
-  int? priceForProductOld;
+  num? priceForProductOld;
   String? productImagePath;
   String? productThumbnailPath;
   String? createdAt;

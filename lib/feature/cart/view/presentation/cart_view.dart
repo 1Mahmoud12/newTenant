@@ -8,6 +8,7 @@ import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/feature/cart/data/models/cart_item_model.dart';
 import 'package:dobzz_seller/feature/cart/view/checkout/presentation/check_out_view.dart';
 import 'package:dobzz_seller/feature/cart/view/manager/cartItems/cubit/cart_items_cubit.dart';
+import 'package:dobzz_seller/feature/cart/view/manager/deleteFromCart/cubit/delete_from_cart_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -33,22 +34,23 @@ class _CartViewState extends State<CartView> {
   }
 
   // Handle add quantity
-  void onAdd(dynamic item) {
+  void onAdd(CartItemData item) {
     // Implement add quantity logic using Cubit
     // This will depend on your Cubit implementation for updating quantities
     // For now, we'll assume setState is used within the Cubit
     setState(() {
-      item.quantity += 1;
+      item.quantity = (item.quantity ?? 0) + 1;
     });
     // You should add a method in the Cubit to handle this
     // _cartCubit.updateQuantity(item.id, item.quantity + 1);
   }
 
   // Handle remove quantity
-  void onRemove(dynamic item) {
-    if (item.quantity > 1) {
+  void onRemove(CartItemData item) {
+    final int quantity = item.quantity ?? 0;
+    if (quantity > 1) {
       setState(() {
-        item.quantity -= 1;
+        item.quantity = (item.quantity ?? 0) - 1;
       });
       // You should add a method in the Cubit to handle this
       // _cartCubit.updateQuantity(item.id, item.quantity - 1);
@@ -56,7 +58,7 @@ class _CartViewState extends State<CartView> {
   }
 
   // Handle item delete
-  void onDelete(dynamic item) {
+  void onDelete(CartItemData item) {
     // Implement delete logic using Cubit
     // _cartCubit.removeItem(item.id);
 
@@ -64,73 +66,83 @@ class _CartViewState extends State<CartView> {
     setState(() {
       ConstantsModels.cartItemModel?.data?.remove(item);
     });
+    deleteFromCartCubit.deleteFromCart(context: context, itemId: item.id ?? -1);
     // Reload items after deletion
     // _loadCartItems();
   }
 
+  DeleteFromCartCubit deleteFromCartCubit = DeleteFromCartCubit();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      persistentFooterButtons:
-          ConstantsModels.cartItemModel != null && ConstantsModels.cartItemModel?.data != null && ConstantsModels.cartItemModel!.data!.isNotEmpty
-              ? null
-              : const [
-                  GoToCheckOutButton(),
-                ],
-      appBar: customAppBar(context: context, title: 'Cart', stopLeading: true),
-      body: BlocProvider.value(
-        value: cartCubit,
-        child: BlocBuilder<CartItemsCubit, CartItemsState>(
-          builder: (context, state) {
-            if (state is CartItemsLoading) {
-              return const Center(child: LoadingWidget());
-            } else if (state is CartItemsError) {
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('Error: ${state.e}'),
-                    ElevatedButton(
-                      onPressed: _loadCartItems,
-                      child: const Text('Retry'),
-                    ),
-                  ],
-                ),
-              );
-            } else if (state is CartItemsSuccess) {
-              final cartItems = ConstantsModels.cartItemModel?.data ?? [];
+    return BlocProvider.value(
+      value: cartCubit,
+      child: BlocBuilder<CartItemsCubit, CartItemsState>(
+        builder: (context, state) {
+          return Scaffold(
+            persistentFooterButtons: ConstantsModels.cartItemModel != null &&
+                    ConstantsModels.cartItemModel?.data != null &&
+                    ConstantsModels.cartItemModel!.data!.isNotEmpty
+                ? const [
+                    GoToCheckOutButton(),
+                  ]
+                : null,
+            appBar: customAppBar(context: context, title: 'Cart', stopLeading: true),
+            body: BlocProvider.value(
+              value: cartCubit,
+              child: BlocBuilder<CartItemsCubit, CartItemsState>(
+                builder: (context, state) {
+                  if (state is CartItemsLoading) {
+                    return const Center(child: LoadingWidget());
+                  } else if (state is CartItemsError) {
+                    return Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text('Error: ${state.e}'),
+                          ElevatedButton(
+                            onPressed: _loadCartItems,
+                            child: const Text('Retry'),
+                          ),
+                        ],
+                      ),
+                    );
+                  } else if (state is CartItemsSuccess) {
+                    final cartItems = ConstantsModels.cartItemModel?.data ?? [];
 
-              if (cartItems.isEmpty) {
-                return const Center(
-                  child: Text('Your cart is empty'),
-                );
-              }
+                    if (cartItems.isEmpty) {
+                      return const Center(
+                        child: Text('Your cart is empty'),
+                      );
+                    }
 
-              return SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Column(
-                    children: [
-                      // Loop through the cart items list to create CartItemWidget for each
-                      for (final item in cartItems)
-                        CartItemWidget(
-                          cartItem: item,
-                          onRemove: () => onRemove(item),
-                          onAdd: () => onAdd(item),
-                          onDelete: () => onDelete(item),
+                    return SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Column(
+                          children: [
+                            // Loop through the cart items list to create CartItemWidget for each
+                            for (final item in cartItems)
+                              CartItemWidget(
+                                cartItem: item,
+                                onRemove: () => onRemove(item),
+                                onAdd: () => onAdd(item),
+                                onDelete: () => onDelete(item),
+                              ),
+                          ],
                         ),
-                    ],
-                  ),
-                ),
-              );
-            } else {
-              // Initial state or any other state
-              return const Center(
-                child: Text('Loading cart...'),
-              );
-            }
-          },
-        ),
+                      ),
+                    );
+                  } else {
+                    // Initial state or any other state
+                    return const Center(
+                      child: Text('Loading cart...'),
+                    );
+                  }
+                },
+              ),
+            ),
+          );
+        },
       ),
     );
   }
@@ -270,10 +282,12 @@ class CartItemWidget extends StatelessWidget {
       child: IntrinsicHeight(
         child: Row(
           children: [
-            const CacheImage(
-              urlImage: '',
+            CacheImage(
+              urlImage: cartItem.productImagePath,
               errorColor: Colors.grey,
               width: 100,
+              height: 100,
+              fit: BoxFit.cover,
             ),
             const SizedBox(width: 12),
             Expanded(
@@ -284,7 +298,7 @@ class CartItemWidget extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          cartItem.product ?? '',
+                          cartItem.product?.name ?? '',
                           style: TextStyle(
                             fontSize: 16.sp,
                             fontWeight: FontWeight.w600,

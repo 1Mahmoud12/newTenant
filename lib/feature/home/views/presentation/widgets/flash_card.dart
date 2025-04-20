@@ -11,6 +11,7 @@ class ProductCard extends StatefulWidget {
   final String price;
   final String? discountPercentage;
   final Function(bool isNowLiked)? onLikeTap;
+  final bool initialLiked;
   const ProductCard({
     Key? key,
     required this.imagePath,
@@ -18,6 +19,7 @@ class ProductCard extends StatefulWidget {
     required this.price,
     this.discountPercentage,
     this.onLikeTap,
+    required this.initialLiked,
   }) : super(key: key);
 
   @override
@@ -25,6 +27,11 @@ class ProductCard extends StatefulWidget {
 }
 
 class _ProductCardState extends State<ProductCard> {
+  @override
+  void initState() {
+    super.initState();
+    isLiked = widget.initialLiked;
+  }
   bool isLiked = false;
   AddToWishListCubit addToWishListCubit = AddToWishListCubit();
   void toggleLike() {
