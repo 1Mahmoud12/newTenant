@@ -1,10 +1,15 @@
 import 'package:dobzz_seller/core/component/buttons/custom_text_button.dart';
 import 'package:dobzz_seller/core/component/cache_image.dart';
 import 'package:dobzz_seller/core/component/custom_app_bar.dart';
+import 'package:dobzz_seller/core/component/loadsErros/loading_widget.dart';
 import 'package:dobzz_seller/core/utils/constant_gaping.dart';
+import 'package:dobzz_seller/core/utils/constants_models.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
+import 'package:dobzz_seller/feature/cart/data/models/cart_item_model.dart';
 import 'package:dobzz_seller/feature/cart/view/checkout/presentation/check_out_view.dart';
+import 'package:dobzz_seller/feature/cart/view/manager/cartItems/cubit/cart_items_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CartView extends StatefulWidget {
@@ -15,140 +20,178 @@ class CartView extends StatefulWidget {
 }
 
 class _CartViewState extends State<CartView> {
-  List<CartItem> cartItems = [
-    CartItem(
-      imageUrl: 'https://example.com/image.jpg',
-      title: 'Product 1',
-      size: 'L',
-      price: '\$29.99',
-      quantity: 2,
-    ),
-    CartItem(
-      imageUrl: 'https://example.com/image.jpg',
-      title: 'Product 2',
-      size: 'M',
-      price: '\$19.99',
-      quantity: 1,
-    ),
-    CartItem(
-      imageUrl: 'https://example.com/image.jpg',
-      title: 'Product 2',
-      size: 'M',
-      price: '\$19.99',
-      quantity: 1,
-    ),
-    CartItem(
-      imageUrl: 'https://example.com/image.jpg',
-      title: 'Product 2',
-      size: 'M',
-      price: '\$19.99',
-      quantity: 1,
-    ),
-    CartItem(
-      imageUrl: 'https://example.com/image.jpg',
-      title: 'Product 2',
-      size: 'M',
-      price: '\$19.99',
-      quantity: 1,
-    ),
-  ];
+  CartItemsCubit cartCubit = CartItemsCubit();
+
+  @override
+  void initState() {
+    super.initState();
+    _loadCartItems();
+  }
+
+  void _loadCartItems() {
+    cartCubit.getCartItems(context: context);
+  }
 
   // Handle add quantity
-  void onAdd(CartItem item) {
+  void onAdd(dynamic item) {
+    // Implement add quantity logic using Cubit
+    // This will depend on your Cubit implementation for updating quantities
+    // For now, we'll assume setState is used within the Cubit
     setState(() {
       item.quantity += 1;
     });
+    // You should add a method in the Cubit to handle this
+    // _cartCubit.updateQuantity(item.id, item.quantity + 1);
   }
 
   // Handle remove quantity
-  void onRemove(CartItem item) {
+  void onRemove(dynamic item) {
     if (item.quantity > 1) {
       setState(() {
         item.quantity -= 1;
       });
+      // You should add a method in the Cubit to handle this
+      // _cartCubit.updateQuantity(item.id, item.quantity - 1);
     }
   }
 
   // Handle item delete
-  void onDelete(CartItem item) {
+  void onDelete(dynamic item) {
+    // Implement delete logic using Cubit
+    // _cartCubit.removeItem(item.id);
+
+    // For now, using setState for immediate feedback
     setState(() {
-      cartItems.remove(item);
+      ConstantsModels.cartItemModel?.data?.remove(item);
     });
+    // Reload items after deletion
+    // _loadCartItems();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      persistentFooterButtons: [
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: Column(
-            children: [
-              const CheckOutItem(
-                label: 'Sub-total',
-                value: '8452.5',
-              ),
-              const CheckOutItem(
-                label: 'VAT(%)',
-                value: '8452.5',
-              ),
-              const CheckOutItem(
-                label: 'Shipping fee',
-                value: '8452.5',
-              ),
-              Divider(
-                thickness: 0.7,
-                color: Colors.grey.withOpacity(0.5),
-              ),
-              const CheckOutItem(
-                label: 'Total',
-                value: '8452.5',
-                labelColor: Colors.black,
-              ),
-              h20,
-              CustomTextButton(
-                borderRadius: 8,
-                onPress: () {
-                  context.navigateToPage(const CheckoutView());
-                },
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+      persistentFooterButtons:
+          ConstantsModels.cartItemModel != null && ConstantsModels.cartItemModel?.data != null && ConstantsModels.cartItemModel!.data!.isNotEmpty
+              ? null
+              : const [
+                  GoToCheckOutButton(),
+                ],
+      appBar: customAppBar(context: context, title: 'Cart', stopLeading: true),
+      body: BlocProvider.value(
+        value: cartCubit,
+        child: BlocBuilder<CartItemsCubit, CartItemsState>(
+          builder: (context, state) {
+            if (state is CartItemsLoading) {
+              return const Center(child: LoadingWidget());
+            } else if (state is CartItemsError) {
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Spacer(),
-                    Text(
-                      'Go To Check out',
-                      style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500, color: Colors.white),
+                    Text('Error: ${state.e}'),
+                    ElevatedButton(
+                      onPressed: _loadCartItems,
+                      child: const Text('Retry'),
                     ),
-                    w10,
-                    const Icon(Icons.arrow_forward, color: Colors.white),
-                    s,
                   ],
                 ),
-              ),
-              const SizedBox(
-                height: 100,
-              ),
-            ],
-          ),
-        ),
-      ],
-      appBar: customAppBar(context: context, title: 'Cart', stopLeading: true),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Column(
-            children: [
-              // Loop through the cart items list to create CartItemWidget for each
-              for (final item in cartItems)
-                CartItemWidget(
-                  cartItem: item,
-                  onRemove: () => onRemove(item),
-                  onAdd: () => onAdd(item),
-                  onDelete: () => onDelete(item),
+              );
+            } else if (state is CartItemsSuccess) {
+              final cartItems = ConstantsModels.cartItemModel?.data ?? [];
+
+              if (cartItems.isEmpty) {
+                return const Center(
+                  child: Text('Your cart is empty'),
+                );
+              }
+
+              return SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Column(
+                    children: [
+                      // Loop through the cart items list to create CartItemWidget for each
+                      for (final item in cartItems)
+                        CartItemWidget(
+                          cartItem: item,
+                          onRemove: () => onRemove(item),
+                          onAdd: () => onAdd(item),
+                          onDelete: () => onDelete(item),
+                        ),
+                    ],
+                  ),
                 ),
-            ],
-          ),
+              );
+            } else {
+              // Initial state or any other state
+              return const Center(
+                child: Text('Loading cart...'),
+              );
+            }
+          },
         ),
+      ),
+    );
+  }
+}
+
+class GoToCheckOutButton extends StatelessWidget {
+  const GoToCheckOutButton({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      child: Column(
+        children: [
+          const CheckOutItem(
+            label: 'Sub-total',
+            value: '8452.5',
+          ),
+          const CheckOutItem(
+            label: 'VAT(%)',
+            value: '8452.5',
+          ),
+          const CheckOutItem(
+            label: 'Shipping fee',
+            value: '8452.5',
+          ),
+          Divider(
+            thickness: 0.7,
+            color: Colors.grey.withOpacity(0.5),
+          ),
+          const CheckOutItem(
+            label: 'Total',
+            value: '8452.5',
+            labelColor: Colors.black,
+          ),
+          h20,
+          CustomTextButton(
+            borderRadius: 8,
+            onPress: () {
+              context.navigateToPage(const CheckoutView());
+            },
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Spacer(),
+                Text(
+                  'Go To Check out',
+                  style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500, color: Colors.white),
+                ),
+                w10,
+                const Icon(Icons.arrow_forward, color: Colors.white),
+                s,
+              ],
+            ),
+          ),
+          const SizedBox(
+            height: 100,
+          ),
+        ],
       ),
     );
   }
@@ -202,7 +245,7 @@ class CartItem {
 }
 
 class CartItemWidget extends StatelessWidget {
-  final CartItem cartItem;
+  final CartItemData cartItem;
   final VoidCallback onRemove;
   final VoidCallback onAdd;
   final VoidCallback onDelete;
@@ -241,7 +284,7 @@ class CartItemWidget extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          cartItem.title,
+                          cartItem.product ?? '',
                           style: TextStyle(
                             fontSize: 16.sp,
                             fontWeight: FontWeight.w600,
@@ -262,7 +305,7 @@ class CartItemWidget extends StatelessWidget {
                   Row(
                     children: [
                       Text(
-                        cartItem.price,
+                        cartItem.price.toString(),
                         style: TextStyle(
                           fontSize: 16.sp,
                           fontWeight: FontWeight.w600,
