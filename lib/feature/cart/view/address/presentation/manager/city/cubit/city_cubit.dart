@@ -1,0 +1,26 @@
+import 'package:bloc/bloc.dart';
+import 'package:dobzz_seller/core/utils/constants_models.dart';
+import 'package:dobzz_seller/core/utils/utils.dart';
+import 'package:dobzz_seller/feature/cart/view/address/data/dataSourec/city_data_source.dart';
+import 'package:flutter/material.dart';
+import 'package:meta/meta.dart';
+
+part 'city_state.dart';
+
+class CityCubit extends Cubit<CityState> {
+  CityCubit() : super(CityInitial());
+  Future<void> getAddress({required BuildContext context, required int stateId}) async {
+    emit(CityLoading());
+    await CityDataSource.getCities(stateId: stateId).then(
+      (value) async {
+        value.fold((l) {
+          Utils.showToast(title: l.errMessage, state: UtilState.error);
+          emit(CityError(e: l.errMessage));
+        }, (r) async {
+          ConstantsModels.cityModel = r;
+          emit(CitySuccess());
+        });
+      },
+    );
+  }
+}

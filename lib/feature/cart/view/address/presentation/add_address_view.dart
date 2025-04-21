@@ -3,111 +3,149 @@ import 'package:dobzz_seller/core/component/custom_app_bar.dart';
 import 'package:dobzz_seller/core/component/custom_drop_down_menu.dart';
 import 'package:dobzz_seller/core/component/fields/custom_text_form_field.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
-import 'package:dobzz_seller/core/utils/app_images.dart';
 import 'package:dobzz_seller/core/utils/constant_gaping.dart';
+import 'package:dobzz_seller/core/utils/constants_models.dart';
+import 'package:dobzz_seller/feature/cart/view/address/presentation/manager/addAddress/cubit/add_address_cubit.dart';
+import 'package:dobzz_seller/feature/cart/view/address/presentation/manager/address/cubit/address_cubit.dart';
+import 'package:dobzz_seller/feature/cart/view/address/presentation/manager/city/cubit/city_cubit.dart';
+import 'package:dobzz_seller/feature/cart/view/address/presentation/manager/state/cubit/state_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class AddAddressView extends StatelessWidget {
-  const AddAddressView({super.key});
-
+class AddAddressView extends StatefulWidget {
+  const AddAddressView({super.key, required this.addressCubit});
+final AddressCubit addressCubit;
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: customAppBar(context: context, title: 'New Address'),
-      body: Stack(
-        children: [
-          Positioned.fill(child: Image.asset(AppImages.actionBlocked, fit: BoxFit.cover)),
-          const Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: AddAddressBottomSheet(),
-          ),
-        ],
-      ),
-    );
-  }
+  State<AddAddressView> createState() => _AddAddressViewState();
 }
 
-class AddAddressBottomSheet extends StatefulWidget {
-  const AddAddressBottomSheet({Key? key}) : super(key: key);
-
-  @override
-  State<AddAddressBottomSheet> createState() => _AddAddressBottomSheetState();
-}
-
-class _AddAddressBottomSheetState extends State<AddAddressBottomSheet> {
+class _AddAddressViewState extends State<AddAddressView> {
   List<DropDownModel> addressList = [
     DropDownModel(name: 'Asyut', value: 0),
     DropDownModel(name: 'California', value: 1),
   ];
   @override
+  void initState() {
+    super.initState();
+    stateCubit.getAddress(context: context);
+  }
+
+  StateCubit stateCubit = StateCubit();
+  AddAddressCubit addAddressCubit = AddAddressCubit();
+  CityCubit cityCubit = CityCubit();
+  @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(color: Colors.white, borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Center(
-            child: Container(
-              decoration: BoxDecoration(color: Colors.grey.shade300, borderRadius: BorderRadius.circular(20)),
-              height: 7,
-              width: 90,
-            ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Scaffold(
+      appBar: customAppBar(context: context, title: 'New Address'),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'Address',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
+              CustomTextFormField(
+                outPadding: EdgeInsets.zero,
+                controller: addAddressCubit.addressNicknameController,
+                hintText: 'Enter your address nickname',
+                nameField: 'Address Nickname',
+                hintStyle: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+                nameFieldStyle: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
-              IconButton(
-                icon: const Icon(Icons.close),
-                onPressed: () => Navigator.pop(context),
-                padding: EdgeInsets.zero,
-                constraints: const BoxConstraints(),
-                splashRadius: 24,
+              h10,
+              CustomTextFormField(
+                outPadding: EdgeInsets.zero,
+                controller: addAddressCubit.phoneController,
+                hintText: 'Enter your number',
+                nameField: 'number',
+                textInputType: TextInputType.number,
+                hintStyle: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+                nameFieldStyle: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              h10,
+              BlocProvider.value(
+                value: stateCubit,
+                child: BlocBuilder<StateCubit, StateState>(
+                  builder: (context, state) {
+                    return CustomDropDownMenu(
+                      nameField: 'State',
+                      borderColor: Colors.grey.withOpacity(0.2),
+                      selectedItem: DropDownModel(name: 'Choose your state', value: 0),
+                      items: ConstantsModels.stateModel?.data?.map((e) {
+                            return DropDownModel(name: e.name ?? '', value: e.id ?? -1);
+                          }).toList() ??
+                          [],
+                      onChanged: (value) {
+                        setState(() {});
+                        cityCubit.getAddress(context: context, stateId: addAddressCubit.stateId);
+                        addAddressCubit.stateId = value?.value ?? -1;
+                      },
+                    );
+                  },
+                ),
+              ),
+              h10,
+              if (addAddressCubit.stateId != -1)
+                BlocProvider.value(
+                  value: cityCubit,
+                  child: BlocBuilder<CityCubit, CityState>(
+                    builder: (context, state) {
+                      return CustomDropDownMenu(
+                        nameField: 'City',
+                        borderColor: Colors.grey.withOpacity(0.2),
+                        selectedItem: DropDownModel(name: 'Choose your city', value: 0),
+                        items: ConstantsModels.cityModel?.data?.map((e) {
+                              return DropDownModel(name: e.name ?? '', value: e.id ?? -1);
+                            }).toList() ??
+                            [],
+                        onChanged: (value) {
+                          addAddressCubit.cityId = value?.value ?? -1;
+                        },
+                      );
+                    },
+                  ),
+                ),
+              h15,
+              LabeledCheckButton(
+                onChanged: (value) {
+                  addAddressCubit.isDefault = value;
+                },
+              ),
+              h20,
+              BlocProvider.value(
+                value: addAddressCubit,
+                child: BlocBuilder<AddAddressCubit, AddAddressState>(
+                  builder: (context, state) {
+                    return CustomTextButton(
+                      state: state is AddAddressLoading,
+                      onPress: () {
+                        addAddressCubit.addAddress(context: context, addressCubit: widget.addressCubit);
+                      },
+                      childText: 'Add',
+                      borderRadius: 8,
+                    );
+                  },
+                ),
               ),
             ],
           ),
-          Divider(
-            thickness: 0.9,
-            color: Colors.grey.withOpacity(0.2),
-          ),
-          h10,
-          CustomDropDownMenu(
-            nameField: 'Address Nickname',
-            borderColor: Colors.grey.withOpacity(0.2),
-            selectedItem: DropDownModel(name: 'Choose your address', value: 0),
-            items: addressList,
-          ),
-          h10,
-          CustomTextFormField(
-            outPadding: EdgeInsets.zero,
-            controller: TextEditingController(),
-            hintText: 'Enter your full address',
-            nameField: 'Full Address',
-          ),
-          h10,
-          LabeledCheckButton(
-            onChanged: (value) {
-              // Handle the checkbox state change
-              print('Checkbox is now: $value');
-            },
-          ),
-          h20,
-          CustomTextButton(
-            onPress: () {},
-            childText: 'Add',
-            borderRadius: 8,
-          ),
-        ],
+        ),
       ),
     );
   }

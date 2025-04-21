@@ -48,7 +48,11 @@ class _AddressViewState extends State<AddressView> {
                 // Show Add Address button instead when no addresses
                 return CustomTextButton(
                   borderRadius: 8,
-                  onPress: () => context.navigateToPage(const AddAddressView()),
+                  onPress: () => context.navigateToPage(
+                    AddAddressView(
+                      addressCubit: addressCubit,
+                    ),
+                  ),
                   childText: 'Add Address',
                 );
               }
@@ -83,104 +87,107 @@ class _AddressViewState extends State<AddressView> {
               // Show address list if not empty
               return Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Saved Address',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20.sp,
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Saved Address',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20.sp,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 16),
-                    ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: ConstantsModels.addressModel?.data?.length ?? 0,
-                      itemBuilder: (context, index) {
-                        final address = ConstantsModels.addressModel?.data![index];
-                        return Padding(
-                          padding: const EdgeInsets.only(bottom: 12.0),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.grey.shade300),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: RadioListTile(
-                              value: index,
-                              groupValue: selectedAddressIndex,
-                              onChanged: (value) {
-                                setState(() {
-                                  selectedAddressIndex = value!;
-                                });
-                              },
-                              fillColor: const WidgetStatePropertyAll(AppColors.primaryColor),
-                              activeColor: Colors.black,
-                              shape: RoundedRectangleBorder(
+                      const SizedBox(height: 16),
+                      ListView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: ConstantsModels.addressModel?.data?.length ?? 0,
+                        itemBuilder: (context, index) {
+                          final address = ConstantsModels.addressModel?.data![index];
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 12.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.grey.shade300),
                                 borderRadius: BorderRadius.circular(10),
                               ),
-                              contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 16,
-                                vertical: 8,
-                              ),
-                              title: Row(
-                                children: [
-                                  Text(
-                                    address?.name ?? '',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16.sp,
-                                    ),
-                                  ),
-                                  if (address?.isDefault ?? false)
-                                    Container(
-                                      margin: const EdgeInsets.only(left: 8),
-                                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                                      decoration: BoxDecoration(
-                                        color: Colors.grey.shade200,
-                                        borderRadius: BorderRadius.circular(4),
-                                      ),
-                                      child: Text(
-                                        address?.isDefault ?? false ? 'Default' : '',
-                                        style: const TextStyle(
-                                          fontSize: 12,
-                                          color: Colors.grey,
-                                        ),
-                                      ),
-                                    ),
-                                ],
-                              ),
-                              subtitle: Padding(
-                                padding: const EdgeInsets.only(top: 4.0),
-                                child: Row(
+                              child: RadioListTile(
+                                value: index,
+                                groupValue: selectedAddressIndex,
+                                onChanged: (value) {
+                                  setState(() {
+                                    selectedAddressIndex = value!;
+                                  });
+                                },
+                                fillColor: const WidgetStatePropertyAll(AppColors.primaryColor),
+                                activeColor: Colors.black,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                  vertical: 8,
+                                ),
+                                title: Row(
                                   children: [
-                                    const Icon(
-                                      Icons.location_on_outlined,
-                                      size: 16,
-                                      color: Colors.grey,
-                                    ),
-                                    const SizedBox(width: 4),
-                                    Expanded(
-                                      child: Text(
-                                        '${address?.country ?? ''} - ${address?.state ?? ''} - ${address?.city ?? ''} - ${address?.pinCode ?? ''}',
-                                        style: TextStyle(
-                                          color: Colors.grey.shade600,
-                                          fontSize: 14,
-                                        ),
-                                        overflow: TextOverflow.ellipsis,
+                                    Text(
+                                      address?.name ?? '',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16.sp,
                                       ),
                                     ),
+                                    if (address?.isDefault ?? false)
+                                      Container(
+                                        margin: const EdgeInsets.only(left: 8),
+                                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                                        decoration: BoxDecoration(
+                                          color: Colors.grey.shade200,
+                                          borderRadius: BorderRadius.circular(4),
+                                        ),
+                                        child: Text(
+                                          address?.isDefault ?? false ? 'Default' : '',
+                                          style: const TextStyle(
+                                            fontSize: 12,
+                                            color: Colors.grey,
+                                          ),
+                                        ),
+                                      ),
                                   ],
+                                ),
+                                subtitle: Padding(
+                                  padding: const EdgeInsets.only(top: 4.0),
+                                  child: Row(
+                                    children: [
+                                      const Icon(
+                                        Icons.location_on_outlined,
+                                        size: 16,
+                                        color: Colors.grey,
+                                      ),
+                                      const SizedBox(width: 4),
+                                      Expanded(
+                                        child: Text(
+                                          '${address?.country ?? ''} - ${address?.state ?? ''} - ${address?.city ?? ''} - ${address?.pinCode ?? ''}',
+                                          style: TextStyle(
+                                            color: Colors.grey.shade600,
+                                            fontSize: 14,
+                                          ),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        );
-                      },
-                    ),
-                    const SizedBox(height: 8),
-                    _buildAddAddressButton(),
-                  ],
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 8),
+                      _buildAddAddressButton(),
+                    ],
+                  ),
                 ),
               );
             }
@@ -232,7 +239,11 @@ class _AddressViewState extends State<AddressView> {
   // Method for the add address button to avoid duplication
   Widget _buildAddAddressButton() {
     return InkWell(
-      onTap: () => context.navigateToPage(const AddAddressView()),
+      onTap: () => context.navigateToPage(
+        AddAddressView(
+          addressCubit: addressCubit,
+        ),
+      ),
       child: Container(
         width: double.infinity,
         padding: const EdgeInsets.symmetric(vertical: 16),

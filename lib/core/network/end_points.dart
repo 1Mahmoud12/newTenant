@@ -93,6 +93,8 @@ class EndPoints {
   //product details
   static const getProductDetails = 'shop/products';
 
-  // product reviews
+  // address
   static const address = 'shop/user/addresses';
+  static const state = 'shop/user/states';
+  static const cities = '/shop/user/cities?filter[state_id]=';
 }

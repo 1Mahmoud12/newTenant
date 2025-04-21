@@ -37,6 +37,7 @@ class CustomTextFormField extends StatefulWidget {
   final void Function(String value)? onChange;
   final Function? validator;
   final FocusNode? focusNode;
+  final TextStyle? nameFieldStyle;
 
   const CustomTextFormField({
     super.key,
@@ -68,6 +69,7 @@ class CustomTextFormField extends StatefulWidget {
     this.helperText,
     this.focusNode,
     this.arabicLanguage,
+    this.nameFieldStyle,
   });
 
   @override
@@ -123,7 +125,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
             if (widget.nameField != null)
               Text(
                 widget.nameField!.tr(),
-                style: Styles.style14300,
+                style: widget.nameFieldStyle ?? Styles.style14300,
               ),
             if (widget.nameField != null) 6.ESH(),
             TextFormField(
