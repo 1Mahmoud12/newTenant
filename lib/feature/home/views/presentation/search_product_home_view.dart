@@ -213,7 +213,7 @@ class SearchedProductCard extends StatelessWidget {
       ),
       trailing: const Icon(Icons.arrow_outward),
       onTap: () {
-        context.navigateToPage(const ProductDetailsView());
+        //context.navigateToPage(const ProductDetailsView());
       },
     );
   }

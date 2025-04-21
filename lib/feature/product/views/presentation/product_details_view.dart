@@ -3,8 +3,10 @@ import 'package:dobzz_seller/core/component/cache_image.dart';
 import 'package:dobzz_seller/core/component/custom_app_bar.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:dobzz_seller/core/utils/constant_gaping.dart';
+import 'package:dobzz_seller/core/utils/constants_models.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/feature/cart/view/manager/addToCart/cubit/add_to_cart_cubit.dart';
+import 'package:dobzz_seller/feature/product/views/manager/productDetails/cubit/product_details_cubit.dart';
 import 'package:dobzz_seller/feature/review/presentation/review_veiw.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +15,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class ProductDetailsView extends StatefulWidget {
-  const ProductDetailsView({Key? key}) : super(key: key);
+  final int productId;
+
+  const ProductDetailsView({
+    Key? key,
+    required this.productId,
+  }) : super(key: key);
 
   @override
   State<ProductDetailsView> createState() => _ProductDetailsViewState();
@@ -21,63 +28,139 @@ class ProductDetailsView extends StatefulWidget {
 
 class _ProductDetailsViewState extends State<ProductDetailsView> {
   String selectedSize = 'M';
-  int quantity = 1;
   final PageController controller = PageController();
-  AddToCartCubit addToCartCubit = AddToCartCubit();
+  final AddToCartCubit addToCartCubit = AddToCartCubit();
+  final ProductDetailsCubit productDetailsCubit = ProductDetailsCubit();
+
+  @override
+  void initState() {
+    super.initState();
+    _loadProductDetails();
+  }
+
+  void _loadProductDetails() {
+    productDetailsCubit.getProductDetailsData(
+      context: context,
+      productId: widget.productId,
+    );
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      persistentFooterButtons: [
-        PriceAndAddToCartWidget(
-          addToCartCubit: addToCartCubit,
-        ),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => productDetailsCubit),
+        BlocProvider(create: (context) => addToCartCubit),
       ],
-      appBar: customAppBar(context: context, title: 'Product Details'),
-      body: SingleChildScrollView(
+      child: BlocConsumer<ProductDetailsCubit, ProductDetailsState>(
+        listener: (context, state) {
+          if (state is ProductDetailsError) {
+            // return Text(data: state.e.toString());
+          }
+        },
+        builder: (context, state) {
+          return Scaffold(
+            persistentFooterButtons: [
+              if (state is ProductDetailsSuccess)
+                PriceAndAddToCartWidget(
+                  price: ConstantsModels.productDetailsModel?.data?.price ?? 0,
+                  addToCartCubit: addToCartCubit,
+                  productId: widget.productId,
+                )
+              else
+                const SizedBox(height: 56),
+            ],
+            appBar: customAppBar(context: context, title: 'Product Details'),
+            body: _buildBody(state),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildBody(ProductDetailsState state) {
+    if (state is ProductDetailsLoading) {
+      return const Center(child: CircularProgressIndicator());
+    } else if (state is ProductDetailsError) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('Error: ${state.e}'),
+            const SizedBox(height: 16),
+            CustomTextButton(
+              onPress: _loadProductDetails,
+              childText: 'Retry',
+            ),
+          ],
+        ),
+      );
+    } else if (state is ProductDetailsSuccess) {
+      final productDetails = ConstantsModels.productDetailsModel?.data;
+      return SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ProductGallery(controller: controller),
+            ProductGallery(controller: controller, images: [productDetails?.imagePath ?? '']),
             const SizedBox(height: 16),
-            const ProductTitle(),
+            ProductTitle(productName: productDetails?.name ?? ''),
             RatingAndReview(
+              rating: productDetails?.reviewsCount.toString() ?? '0',
+              reviewCount: productDetails?.reviews?.length ?? 0,
               onTap: () {
-                context.navigateToPage(const ReviewsView());
+                context.navigateToPage(
+                  const ReviewsView(
+
+                      // productId: widget.productId
+
+                      ),
+                );
               },
             ),
             const SizedBox(height: 12),
-            const ProductDescription(),
-            const SizedBox(height: 20),
-            SizeSelectorSection(
-              selectedSize: selectedSize,
-              onSelectSize: (value) {
-                setState(() => selectedSize = value);
-              },
-            ),
-            const SizedBox(height: 20),
+            ProductDescription(description: productDetails?.description ?? ''),
+            // if (productDetails?.sizes?.isNotEmpty ?? false)
+            //   SizeSelectorSection(
+            //     sizes: productDetails!.sizes!,
+            //     selectedSize: selectedSize,
+            //     onSelectSize: (value) {
+            //       setState(() => selectedSize = value);
+            //     },
+            //   ),
             QuantitySelector(
               addToCartCubit: addToCartCubit,
               quantity: addToCartCubit.quantity,
               onIncrease: () => setState(() => addToCartCubit.quantity++),
               onDecrease: () {
-                if (addToCartCubit.quantity > 1) setState(() => addToCartCubit.quantity--);
+                if (addToCartCubit.quantity > 1) {
+                  setState(() => addToCartCubit.quantity--);
+                }
               },
             ),
           ],
         ),
-      ),
-    );
+      );
+    }
+
+    // Initial state or any other state
+    return const Center(child: Text('Loading product details...'));
   }
 }
 
 class ProductTitle extends StatelessWidget {
-  const ProductTitle({super.key});
-
+  const ProductTitle({super.key, required this.productName});
+  final String productName;
   @override
   Widget build(BuildContext context) {
     return Text(
-      'Regular Fit Slogan',
+      productName,
       style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold),
     );
   }
@@ -85,8 +168,9 @@ class ProductTitle extends StatelessWidget {
 
 class RatingAndReview extends StatelessWidget {
   final VoidCallback onTap;
-
-  const RatingAndReview({required this.onTap, super.key});
+  final String rating;
+  final int reviewCount;
+  const RatingAndReview({required this.onTap, super.key, required this.rating, required this.reviewCount});
 
   @override
   Widget build(BuildContext context) {
@@ -101,7 +185,7 @@ class RatingAndReview extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '4.0/5',
+                  rating,
                   style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500, height: 1),
                 ),
                 Container(height: 1, color: Colors.black),
@@ -111,7 +195,7 @@ class RatingAndReview extends StatelessWidget {
         ),
         const SizedBox(width: 4),
         Text(
-          '(45 reviews)',
+          '($reviewCount reviews)',
           style: TextStyle(fontSize: 12.sp, color: Colors.grey),
         ),
       ],
@@ -120,12 +204,12 @@ class RatingAndReview extends StatelessWidget {
 }
 
 class ProductDescription extends StatelessWidget {
-  const ProductDescription({super.key});
-
+  const ProductDescription({super.key, required this.description});
+  final String description;
   @override
   Widget build(BuildContext context) {
     return Text(
-      'The name says it all, the right size slightly snugs the body leaving enough room for comfort in the sleeves and waist.',
+      description,
       style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500, color: Colors.grey),
     );
   }
@@ -201,8 +285,9 @@ class ProductGallery extends StatelessWidget {
   const ProductGallery({
     super.key,
     required this.controller,
+    required this.images,
   });
-
+  final List<String> images;
   final PageController controller;
 
   @override
@@ -216,14 +301,14 @@ class ProductGallery extends StatelessWidget {
           child: PageView(
             controller: controller,
             children: List.generate(
-              3,
+              images.length,
               (index) => Padding(
                 padding: EdgeInsets.only(
                   right: context.locale.languageCode == 'ar' ? 0 : 5,
                   left: context.locale.languageCode == 'ar' ? 5 : 0,
                 ),
-                child: const CacheImage(
-                  urlImage: '',
+                child: CacheImage(
+                  urlImage: images[index],
                   errorColor: Colors.grey,
                   borderRadius: 12,
                 ),
@@ -238,7 +323,7 @@ class ProductGallery extends StatelessWidget {
             child: Center(
               child: SmoothPageIndicator(
                 controller: controller,
-                count: 3,
+                count: images.length,
                 effect: WormEffect(
                   dotHeight: 8,
                   dotWidth: 8,
@@ -277,8 +362,12 @@ class PriceAndAddToCartWidget extends StatefulWidget {
   const PriceAndAddToCartWidget({
     super.key,
     required this.addToCartCubit,
+    required this.price,
+    required this.productId,
   });
   final AddToCartCubit addToCartCubit;
+  final num price;
+  final int productId;
   @override
   State<PriceAndAddToCartWidget> createState() => _PriceAndAddToCartWidgetState();
 }
@@ -300,7 +389,7 @@ class _PriceAndAddToCartWidgetState extends State<PriceAndAddToCartWidget> {
                 style: TextStyle(fontSize: 16.sp, color: Colors.grey, fontWeight: FontWeight.w500),
               ),
               Text(
-                r'$ 1,190',
+                '${widget.price} EGP',
                 style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
               ),
             ],
@@ -335,7 +424,7 @@ class _PriceAndAddToCartWidgetState extends State<PriceAndAddToCartWidget> {
                             ],
                           ),
                     onPress: () {
-                      widget.addToCartCubit.addToCart(context: context, productId: 76);
+                      widget.addToCartCubit.addToCart(context: context, productId: widget.productId);
                     },
                   );
                 },

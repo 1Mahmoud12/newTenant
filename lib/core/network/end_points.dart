@@ -36,7 +36,7 @@ class EndPoints {
   static const wishlist = 'shop/user/wishlist';
 
   //  Service
-  static const getCategories = 'Service/GetCategories';
+  static const getCategories = 'shop/categories';
   static const getAllServices = 'Service/GetAllServices';
   static const getAllPetPackages = 'Service/GetAllPetPackages';
 
@@ -89,4 +89,7 @@ class EndPoints {
 
   // wish list
   static const addToWishList = 'shop/user/wishlist';
+
+  //product details
+  static const getProductDetails = 'shop/products';
 }

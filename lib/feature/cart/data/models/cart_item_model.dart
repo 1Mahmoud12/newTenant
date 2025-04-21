@@ -102,14 +102,14 @@ class Product {
   String? sku;
   String? description;
   int? price;
-  double? priceOld;
+  num? priceOld;
   num? length;
   num? width;
   num? height;
   num? weight;
   dynamic brand;
   num? brandId;
-  num? label;
+  String? label;
   num? labelId;
   List<Categories>? categories;
   //List<MainCategories>? mainCategories;

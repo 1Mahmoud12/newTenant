@@ -1,3 +1,4 @@
+import 'package:dobzz_seller/core/component/cache_image.dart';
 import 'package:dobzz_seller/core/component/loadsErros/loading_widget.dart';
 import 'package:dobzz_seller/core/utils/app_icons.dart';
 import 'package:dobzz_seller/core/utils/constant_gaping.dart';
@@ -71,14 +72,11 @@ class _CategoriesListState extends State<CategoriesList> {
                                 borderRadius: BorderRadius.circular(8),
                                 color: Colors.grey.shade300,
                               ),
-                              child: categories.isNotEmpty && categories[index].iconPath != null
-                                  ? Image.network(
-                                      categories[index].iconPath!,
-                                      width: 24,
-                                      height: 24,
-                                      errorBuilder: (context, error, stackTrace) => SvgPicture.asset(AppIcons.tShirtCate),
-                                    )
-                                  : SvgPicture.asset(AppIcons.tShirtCate),
+                              child: CacheImage(
+                                urlImage: categories.isNotEmpty ? categories[index].imagePath ?? AppIcons.tShirtCate : AppIcons.tShirtCate,
+                                width: 40,
+                                height: 40,
+                              ),
                             ),
                             h5,
                             Text(

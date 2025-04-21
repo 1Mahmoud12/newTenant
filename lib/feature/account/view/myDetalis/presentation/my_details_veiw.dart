@@ -236,7 +236,7 @@ class _MyDetailsViewState extends State<MyDetailsView> {
                   lastName: _lastNameController.text,
                   email: _emailController.text,
                   phone: _phoneController.text,
-                  image: _profileImage,
+                  image: _profileImage, 
                 );
               },
               child: state is UpdateProfileLoading

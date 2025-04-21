@@ -11,6 +11,7 @@ class ProductCard extends StatefulWidget {
   final String price;
   final String? discountPercentage;
   final Function(bool isNowLiked)? onLikeTap;
+  final int productId;
   final bool initialLiked;
   const ProductCard({
     Key? key,
@@ -20,6 +21,7 @@ class ProductCard extends StatefulWidget {
     this.discountPercentage,
     this.onLikeTap,
     required this.initialLiked,
+    required this.productId,
   }) : super(key: key);
 
   @override
@@ -32,6 +34,7 @@ class _ProductCardState extends State<ProductCard> {
     super.initState();
     isLiked = widget.initialLiked;
   }
+
   bool isLiked = false;
   AddToWishListCubit addToWishListCubit = AddToWishListCubit();
   void toggleLike() {
@@ -46,7 +49,11 @@ class _ProductCardState extends State<ProductCard> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        context.navigateToPage(const ProductDetailsView());
+        context.navigateToPage(
+          ProductDetailsView(
+            productId: widget.productId ?? -1,
+          ),
+        );
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

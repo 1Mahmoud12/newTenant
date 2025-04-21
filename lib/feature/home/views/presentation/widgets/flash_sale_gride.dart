@@ -99,6 +99,7 @@ class TopProductGrid extends StatelessWidget {
               itemBuilder: (context, index) {
                 final product = topProducts[index];
                 return ProductCard(
+                  productId: product.id ?? -1,
                   initialLiked: widget.isItWhishList!,
                   onLikeTap: (isNowLiked) {
                     if (isNowLiked) {
@@ -177,6 +178,7 @@ class CartGrid extends StatelessWidget {
               itemBuilder: (context, index) {
                 final wishListItem = wishList[index];
                 return ProductCard(
+                  productId: wishListItem.id?.toInt() ?? -1,
                   initialLiked: widget.isItWhishList!,
                   onLikeTap: (isNowLiked) {
                     // Add to wishlist
