@@ -2,6 +2,7 @@ import 'package:dobzz_seller/feature/account/view/myDetalis/data/models/edit_pro
 import 'package:dobzz_seller/feature/auth/data/models/country_code_model.dart';
 import 'package:dobzz_seller/feature/auth/data/models/register_model.dart';
 import 'package:dobzz_seller/feature/cart/data/models/cart_item_model.dart';
+import 'package:dobzz_seller/feature/cart/view/address/data/models/address_model.dart';
 import 'package:dobzz_seller/feature/favorites/data/model/wish_list_model.dart';
 import 'package:dobzz_seller/feature/home/data/models/categories_model.dart';
 import 'package:dobzz_seller/feature/home/data/models/product_mdoel.dart';
@@ -15,5 +16,6 @@ class ConstantsModels {
   static WishListModel? wishListModel;
   static EditProfileModel? editProfileModel;
   static CategoriesModel? categoriesModel;
-  static ProductDetailsModel ? productDetailsModel ;
+  static ProductDetailsModel? productDetailsModel;
+  static AddressModel? addressModel;
 }

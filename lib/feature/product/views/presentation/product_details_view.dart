@@ -6,6 +6,8 @@ import 'package:dobzz_seller/core/utils/constant_gaping.dart';
 import 'package:dobzz_seller/core/utils/constants_models.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/feature/cart/view/manager/addToCart/cubit/add_to_cart_cubit.dart';
+import 'package:dobzz_seller/feature/home/views/manager/addToWhishlist/cubit/add_to_wish_list_cubit.dart';
+import 'package:dobzz_seller/feature/home/views/manager/removeFromWhislist/cubit/remove_from_whish_list_cubit.dart';
 import 'package:dobzz_seller/feature/product/views/manager/productDetails/cubit/product_details_cubit.dart';
 import 'package:dobzz_seller/feature/review/presentation/review_veiw.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -31,7 +33,8 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
   final PageController controller = PageController();
   final AddToCartCubit addToCartCubit = AddToCartCubit();
   final ProductDetailsCubit productDetailsCubit = ProductDetailsCubit();
-
+  AddToWishListCubit addToWishListCubit = AddToWishListCubit();
+  RemoveFromWhishListCubit removeFromWhishListCubit = RemoveFromWhishListCubit();
   @override
   void initState() {
     super.initState();
@@ -77,14 +80,14 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                 const SizedBox(height: 56),
             ],
             appBar: customAppBar(context: context, title: 'Product Details'),
-            body: _buildBody(state),
+            body: _buildBody(state, productId: widget.productId),
           );
         },
       ),
     );
   }
 
-  Widget _buildBody(ProductDetailsState state) {
+  Widget _buildBody(ProductDetailsState state, {required int productId}) {
     if (state is ProductDetailsLoading) {
       return const Center(child: CircularProgressIndicator());
     } else if (state is ProductDetailsError) {
@@ -108,7 +111,15 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ProductGallery(controller: controller, images: [productDetails?.imagePath ?? '']),
+            ProductGallery(
+              onLikeTap: (isNowLiked) {
+                if (isNowLiked) {
+                  addToWishListCubit.addToWishList(context: context, productId: productId);
+                }
+              },
+              controller: controller,
+              images: [productDetails?.imagePath ?? ''],
+            ),
             const SizedBox(height: 16),
             ProductTitle(productName: productDetails?.name ?? ''),
             RatingAndReview(
@@ -281,14 +292,30 @@ class QuantitySelector extends StatelessWidget {
   }
 }
 
-class ProductGallery extends StatelessWidget {
+class ProductGallery extends StatefulWidget {
   const ProductGallery({
     super.key,
     required this.controller,
     required this.images,
+    this.onLikeTap,
   });
   final List<String> images;
   final PageController controller;
+  final Function(bool isNowLiked)? onLikeTap;
+
+  @override
+  State<ProductGallery> createState() => _ProductGalleryState();
+}
+
+class _ProductGalleryState extends State<ProductGallery> {
+  void toggleLike() {
+    setState(() {
+      isLiked = !isLiked;
+    });
+    widget.onLikeTap?.call(isLiked);
+  }
+
+  bool isLiked = false;
 
   @override
   Widget build(BuildContext context) {
@@ -299,16 +326,16 @@ class ProductGallery extends StatelessWidget {
           height: MediaQuery.sizeOf(context).height * 0.5,
           width: MediaQuery.sizeOf(context).width,
           child: PageView(
-            controller: controller,
+            controller: widget.controller,
             children: List.generate(
-              images.length,
+              widget.images.length,
               (index) => Padding(
                 padding: EdgeInsets.only(
                   right: context.locale.languageCode == 'ar' ? 0 : 5,
                   left: context.locale.languageCode == 'ar' ? 5 : 0,
                 ),
                 child: CacheImage(
-                  urlImage: images[index],
+                  urlImage: widget.images[index],
                   errorColor: Colors.grey,
                   borderRadius: 12,
                 ),
@@ -322,8 +349,8 @@ class ProductGallery extends StatelessWidget {
             width: MediaQuery.of(context).size.width,
             child: Center(
               child: SmoothPageIndicator(
-                controller: controller,
-                count: images.length,
+                controller: widget.controller,
+                count: widget.images.length,
                 effect: WormEffect(
                   dotHeight: 8,
                   dotWidth: 8,
@@ -338,15 +365,15 @@ class ProductGallery extends StatelessWidget {
           top: 12,
           right: 12,
           child: GestureDetector(
-            onTap: () {},
+            onTap: toggleLike,
             child: Container(
               padding: const EdgeInsets.all(8),
               decoration: const BoxDecoration(
                 color: Colors.black87,
                 shape: BoxShape.circle,
               ),
-              child: const Icon(
-                Icons.favorite_border,
+              child: Icon(
+                isLiked ? Icons.favorite : Icons.favorite_border,
                 color: Colors.white,
                 size: 18,
               ),

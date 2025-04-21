@@ -33,8 +33,8 @@ class UserData {
   String? email;
   String? phone;
   String? avatarPath;
-  AddressModel? addressDefault;
-  List<AddressModel>? addresses;
+  EditProfileAddressModel? addressDefault;
+  List<EditProfileAddressModel>? addresses;
   bool? twoFactorAuth;
   bool? pushNotifications;
   bool? desktopNotifications;
@@ -71,12 +71,8 @@ class UserData {
       email: json['email'],
       phone: json['phone'],
       avatarPath: json['avatar_path'],
-      addressDefault: json['address_default'] != null
-          ? AddressModel.fromJson(json['address_default'])
-          : null,
-      addresses: (json['addresses'] as List?)
-          ?.map((e) => AddressModel.fromJson(e))
-          .toList(),
+      addressDefault: json['address_default'] != null ? EditProfileAddressModel.fromJson(json['address_default']) : null,
+      addresses: (json['addresses'] as List?)?.map((e) => EditProfileAddressModel.fromJson(e)).toList(),
       twoFactorAuth: json['two_factor_auth'],
       pushNotifications: json['push_notifications'],
       desktopNotifications: json['desktop_notifications'],
@@ -109,7 +105,7 @@ class UserData {
   }
 }
 
-class AddressModel {
+class EditProfileAddressModel {
   int? id;
   String? name;
   String? phone;
@@ -125,7 +121,7 @@ class AddressModel {
   String? createdAt;
   String? updateAt;
 
-  AddressModel({
+  EditProfileAddressModel({
     this.id,
     this.name,
     this.phone,
@@ -142,8 +138,8 @@ class AddressModel {
     this.updateAt,
   });
 
-  factory AddressModel.fromJson(Map<String, dynamic> json) {
-    return AddressModel(
+  factory EditProfileAddressModel.fromJson(Map<String, dynamic> json) {
+    return EditProfileAddressModel(
       id: json['id'],
       name: json['name'],
       phone: json['phone'],

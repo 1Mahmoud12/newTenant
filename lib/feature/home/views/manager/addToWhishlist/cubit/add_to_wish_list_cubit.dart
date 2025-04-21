@@ -17,7 +17,7 @@ class AddToWishListCubit extends Cubit<AddToWishListState> {
           emit(AddToWishListError(e: l.errMessage));
           Utils.showToast(title: l.errMessage, state: UtilState.error);
         }, (r) async {
-          Utils.showToast(title: 'product add to wish list successfully', state: UtilState.success);
+          //  Utils.showToast(title: 'product add to wish list successfully', state: UtilState.success);
           emit(AddToWishListSuccess());
         });
       },

@@ -92,4 +92,7 @@ class EndPoints {
 
   //product details
   static const getProductDetails = 'shop/products';
+
+  // product reviews
+  static const address = 'shop/user/addresses';
 }
