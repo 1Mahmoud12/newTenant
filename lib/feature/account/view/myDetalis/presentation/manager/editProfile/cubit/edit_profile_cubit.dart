@@ -42,7 +42,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     ).then(
       (value) async {
         value.fold((l) {
-          Utils.showToast(title: l.errMessage, state: UtilState.success);
+          Utils.showToast(title: l.errMessage, state: UtilState.error);
 
           emit(UpdateProfileError(e: l.errMessage));
         }, (r) async {
