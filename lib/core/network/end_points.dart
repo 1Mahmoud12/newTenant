@@ -15,7 +15,7 @@ class EndPoints {
   static const deleteUser = 'Account/DeleteUser';
 
   // EditProfile
-  static const editProfile = 'Account/EditProfile';
+  static const editProfile = 'shop/user/profile';
   static const changePassword = 'Account/ChangePassword';
   static const editPhoneNmber = 'Account/EditPhoneNmber';
   static const validateOTPChangePhone = 'Account/ValidateOTPChangePhone';

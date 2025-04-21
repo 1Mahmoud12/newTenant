@@ -1,4 +1,5 @@
 import 'package:dobzz_seller/core/utils/app_icons.dart';
+import 'package:dobzz_seller/feature/home/data/models/categories_model.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
