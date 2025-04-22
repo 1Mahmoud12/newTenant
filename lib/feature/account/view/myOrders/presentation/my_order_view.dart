@@ -493,9 +493,9 @@ class OrderCard extends StatelessWidget {
       children: [
         Text(
           _formatCurrency(totalPrice),
-          style: const TextStyle(
+          style: TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: 16,
+            fontSize: 17.sp,
           ),
         ),
         const Spacer(),
