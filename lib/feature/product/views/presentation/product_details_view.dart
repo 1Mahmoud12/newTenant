@@ -1,6 +1,7 @@
 import 'package:dobzz_seller/core/component/buttons/custom_text_button.dart';
 import 'package:dobzz_seller/core/component/cache_image.dart';
 import 'package:dobzz_seller/core/component/custom_app_bar.dart';
+import 'package:dobzz_seller/core/component/loadsErros/loading_widget.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:dobzz_seller/core/utils/constant_gaping.dart';
 import 'package:dobzz_seller/core/utils/constants_models.dart';
@@ -89,7 +90,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
 
   Widget _buildBody(ProductDetailsState state, {required int productId}) {
     if (state is ProductDetailsLoading) {
-      return const Center(child: CircularProgressIndicator());
+      return const Center(child: LoadingWidget());
     } else if (state is ProductDetailsError) {
       return Center(
         child: Column(

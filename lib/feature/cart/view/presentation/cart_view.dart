@@ -85,8 +85,10 @@ class _CartViewState extends State<CartView> {
             persistentFooterButtons: ConstantsModels.cartItemModel != null &&
                     ConstantsModels.cartItemModel?.data != null &&
                     ConstantsModels.cartItemModel!.data!.isNotEmpty
-                ? const [
-                    GoToCheckOutButton(),
+                ? [
+                    GoToCheckOutButton(
+                      checkoutDetailsCubit: checkoutDetailsCubit,
+                    ),
                   ]
                 : null,
             appBar: customAppBar(context: context, title: 'Cart', stopLeading: true),
@@ -154,17 +156,25 @@ class _CartViewState extends State<CartView> {
 class GoToCheckOutButton extends StatelessWidget {
   const GoToCheckOutButton({
     super.key,
+    required this.checkoutDetailsCubit,
   });
-
+  final CheckoutDetailsCubit checkoutDetailsCubit;
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Column(
         children: [
-          CheckOutItem(
-            label: 'Sub-total',
-            value: ConstantsModels.checkoutDetailsModel?.subTotalPrice.toString() ?? '0',
+          BlocProvider.value(
+            value: checkoutDetailsCubit,
+            child: BlocBuilder<CheckoutDetailsCubit, CheckoutDetailsState>(
+              builder: (context, state) {
+                return CheckOutItem(
+                  label: 'Sub-total',
+                  value: ConstantsModels.checkoutDetailsModel?.subTotalPrice.toString() ?? '0',
+                );
+              },
+            ),
           ),
           Divider(
             thickness: 0.7,
