@@ -7,14 +7,19 @@ import 'package:dobzz_seller/feature/home/views/presentation/home_page_view.dart
 import 'package:flutter/material.dart';
 
 class NavigationView extends StatefulWidget {
-  const NavigationView({Key? key}) : super(key: key);
-
+  const NavigationView({Key? key, this.initialIndex = 0}) : super(key: key);
+  final int? initialIndex;
   @override
   State<NavigationView> createState() => _NavigationViewState();
 }
 
 class _NavigationViewState extends State<NavigationView> {
   int _selectedIndex = 0;
+  @override
+  void initState() {
+    _selectedIndex = widget.initialIndex!;
+    super.initState();
+  }
 
   void _onItemTapped(int index) {
     setState(() {

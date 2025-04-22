@@ -73,6 +73,10 @@ class EndPoints {
   static const submitCancellationRequest = 'Order/SubmitCancellationRequest';
   static const getOrderVisitTime = 'Order/GetOrderVisitTime';
   static const cartItems = 'shop/cart';
+  static const discount = 'shop/checkout/apply-code';
+  static const order = 'shop/orders';
+  static const checkoutDetails = 'shop/checkout';
+  static const processToCheckout = 'shop/checkout/proceed';
 
   //Claims
   static const addClaimMessage = 'ClaimMessage/AddClaimMessage';

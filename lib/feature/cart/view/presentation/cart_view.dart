@@ -7,6 +7,7 @@ import 'package:dobzz_seller/core/utils/constants_models.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/feature/cart/data/models/cart_item_model.dart';
 import 'package:dobzz_seller/feature/cart/view/checkout/presentation/check_out_view.dart';
+import 'package:dobzz_seller/feature/cart/view/checkout/presentation/manager/checkoutDetails/cubit/checkout_details_cubit.dart';
 import 'package:dobzz_seller/feature/cart/view/manager/cartItems/cubit/cart_items_cubit.dart';
 import 'package:dobzz_seller/feature/cart/view/manager/deleteFromCart/cubit/delete_from_cart_cubit.dart';
 import 'package:flutter/material.dart';
@@ -27,12 +28,14 @@ class _CartViewState extends State<CartView> {
   void initState() {
     super.initState();
     _loadCartItems();
+    checkoutDetailsCubit.getCheckoutDetails(context: context);
   }
 
   void _loadCartItems() {
     cartCubit.getCartItems(context: context);
   }
 
+  CheckoutDetailsCubit checkoutDetailsCubit = CheckoutDetailsCubit();
   // Handle add quantity
   void onAdd(CartItemData item) {
     // Implement add quantity logic using Cubit
@@ -159,26 +162,13 @@ class GoToCheckOutButton extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Column(
         children: [
-          const CheckOutItem(
+          CheckOutItem(
             label: 'Sub-total',
-            value: '8452.5',
-          ),
-          const CheckOutItem(
-            label: 'VAT(%)',
-            value: '8452.5',
-          ),
-          const CheckOutItem(
-            label: 'Shipping fee',
-            value: '8452.5',
+            value: ConstantsModels.checkoutDetailsModel?.subTotalPrice.toString() ?? '0',
           ),
           Divider(
             thickness: 0.7,
             color: Colors.grey.withOpacity(0.5),
-          ),
-          const CheckOutItem(
-            label: 'Total',
-            value: '8452.5',
-            labelColor: Colors.black,
           ),
           h20,
           CustomTextButton(

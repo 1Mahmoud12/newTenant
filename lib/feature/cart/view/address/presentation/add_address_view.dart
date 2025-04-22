@@ -2,6 +2,7 @@ import 'package:dobzz_seller/core/component/buttons/custom_text_button.dart';
 import 'package:dobzz_seller/core/component/custom_app_bar.dart';
 import 'package:dobzz_seller/core/component/custom_drop_down_menu.dart';
 import 'package:dobzz_seller/core/component/fields/custom_text_form_field.dart';
+import 'package:dobzz_seller/core/component/loadsErros/loading_widget.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:dobzz_seller/core/utils/constant_gaping.dart';
 import 'package:dobzz_seller/core/utils/constants_models.dart';
@@ -14,7 +15,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AddAddressView extends StatefulWidget {
   const AddAddressView({super.key, required this.addressCubit});
-final AddressCubit addressCubit;
+  final AddressCubit addressCubit;
   @override
   State<AddAddressView> createState() => _AddAddressViewState();
 }
@@ -133,12 +134,30 @@ class _AddAddressViewState extends State<AddAddressView> {
                 child: BlocBuilder<AddAddressCubit, AddAddressState>(
                   builder: (context, state) {
                     return CustomTextButton(
-                      state: state is AddAddressLoading,
                       onPress: () {
                         addAddressCubit.addAddress(context: context, addressCubit: widget.addressCubit);
                       },
-                      childText: 'Add',
                       borderRadius: 8,
+                      child: state is AddAddressLoading
+                          ? const Center(
+                              child: SizedBox(
+                                height: 20,
+                                width: 20,
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                ),
+                              ),
+                            )
+                          : const Center(
+                              child: Text(
+                                'Add',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
                     );
                   },
                 ),

@@ -1,9 +1,14 @@
 import 'package:dobzz_seller/core/component/cache_image.dart';
 import 'package:dobzz_seller/core/component/custom_app_bar.dart';
 import 'package:dobzz_seller/core/component/fields/custom_text_form_field.dart';
+import 'package:dobzz_seller/core/component/loadsErros/loading_widget.dart';
+import 'package:dobzz_seller/core/utils/constants_models.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
+import 'package:dobzz_seller/feature/account/view/myOrders/data/models/order_model.dart';
+import 'package:dobzz_seller/feature/account/view/myOrders/presentation/manager/order/cubit/order_cubit.dart';
 import 'package:dobzz_seller/feature/account/view/myOrders/presentation/track_order_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -46,90 +51,70 @@ class _MyOrderViewState extends State<MyOrderView> {
     super.dispose();
   }
 
+  OrderCubit orderCubit = OrderCubit();
+  @override
+  void initState() {
+    orderCubit.getOrders(context: context);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: customAppBar(context: context, title: 'My Orders'),
       body: SafeArea(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.grey[200],
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                height: 50,
-                child: Row(
+        child: BlocProvider.value(
+          value: orderCubit,
+          child: BlocBuilder<OrderCubit, OrderState>(
+            builder: (context, state) {
+              if (state is OrderLoading) {
+                return const Center(child: LoadingWidget());
+              }
+              if (state is OrderError) {
+                return Center(
+                  child: Text(
+                    state.e,
+                    style: TextStyle(fontSize: 16.sp, color: Colors.red),
+                  ),
+                );
+              }
+              if (state is OrderSuccess) {
+                return Column(
                   children: [
-                    _buildTabButton('Ongoing', 0),
-                    _buildTabButton('Completed', 1),
+                    Expanded(
+                      child: ConstantsModels.orderModel?.data?.isEmpty ?? true
+                          ? Center(
+                              child: Text(
+                                'No orders available.',
+                                style: TextStyle(fontSize: 16.sp, color: Colors.black),
+                              ),
+                            )
+                          : ListView.builder(
+                              padding: const EdgeInsets.all(16),
+                              itemCount: ConstantsModels.orderModel?.data?.length ?? 0,
+                              itemBuilder: (context, index) {
+                                return OrderItemWidget(
+                                  orderItem: ConstantsModels.orderModel?.data![index] ?? OrderData(),
+                                  isCompleted: true,
+                                );
+                              },
+                            ),
+                    ),
                   ],
-                ),
-              ),
-            ),
-            Expanded(
-              child: PageView(
-                controller: _pageController,
-                onPageChanged: (index) {
-                  setState(() {
-                    _activeTabIndex = index;
-                  });
-                },
-                children: [
-                  _buildOrderList(ongoingOrders, false),
-                  _buildOrderList(completedOrders, true),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+                );
+              }
 
-  Expanded _buildTabButton(String title, int index) {
-    return Expanded(
-      child: GestureDetector(
-        onTap: () => _onTabTapped(index),
-        child: Container(
-          margin: const EdgeInsets.all(4),
-          decoration: BoxDecoration(
-            color: _activeTabIndex == index ? Colors.white : Colors.transparent,
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Center(
-            child: Text(
-              title,
-              style: TextStyle(
-                fontSize: 16.sp,
-                fontWeight: FontWeight.normal,
-                color: _activeTabIndex == index ? Colors.black : Colors.grey,
-              ),
-            ),
+              return const SizedBox.shrink();
+            },
           ),
         ),
       ),
-    );
-  }
-
-  Widget _buildOrderList(List<OrderItem> items, bool isCompleted) {
-    return ListView.builder(
-      padding: const EdgeInsets.all(16),
-      itemCount: items.length,
-      itemBuilder: (context, index) {
-        return OrderItemWidget(
-          orderItem: items[index],
-          isCompleted: isCompleted,
-        );
-      },
     );
   }
 }
 
 class OrderItemWidget extends StatelessWidget {
-  final OrderItem orderItem;
+  final OrderData orderItem;
   final bool isCompleted;
   const OrderItemWidget({
     super.key,
@@ -163,7 +148,7 @@ class OrderItemWidget extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          orderItem.name,
+                          orderItem.id.toString() ?? '-1',
                           style: TextStyle(
                             fontSize: 16.sp,
                             fontWeight: FontWeight.w600,
@@ -176,7 +161,7 @@ class OrderItemWidget extends StatelessWidget {
                     ],
                   ),
                   Text(
-                    'Size ${orderItem.size}',
+                    'Size ${orderItem.totalPrice}',
                     style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14.sp, color: Colors.grey),
                   ),
                   const SizedBox(height: 8),
@@ -184,7 +169,7 @@ class OrderItemWidget extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          orderItem.price,
+                          orderItem.totalPrice ?? 0.toString(),
                           style: TextStyle(
                             fontSize: 16.sp,
                             fontWeight: FontWeight.w600,
@@ -447,3 +432,36 @@ class OrderItem {
     required this.price,
   });
 }
+
+
+
+ // Padding(
+            //   padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+            //   child: Container(
+            //     decoration: BoxDecoration(
+            //       color: Colors.grey[200],
+            //       borderRadius: BorderRadius.circular(12),
+            //     ),
+            //     height: 50,
+            //     child: Row(
+            //       children: [
+            //         _buildTabButton('Ongoing', 0),
+            //         _buildTabButton('Completed', 1),
+            //       ],
+            //     ),
+            //   ),
+            // ),
+            // Expanded(
+            //   child: PageView(
+            //     controller: _pageController,
+            //     onPageChanged: (index) {
+            //       setState(() {
+            //         _activeTabIndex = index;
+            //       });
+            //     },
+            //     children: [
+            //       _buildOrderList(ongoingOrders, false),
+            //       _buildOrderList(completedOrders, true),
+            //     ],
+            //   ),
+            // ),
