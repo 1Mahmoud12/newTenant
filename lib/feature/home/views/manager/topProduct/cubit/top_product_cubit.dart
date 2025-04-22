@@ -11,7 +11,7 @@ part 'top_product_state.dart';
 class TopProductCubit extends Cubit<TopProductState> {
   TopProductCubit() : super(TopProductInitial());
 
-  Future<void> getTopProduct({required BuildContext context}) async {
+  Future<void> getTopProduct({required BuildContext context, int? subCategoryId}) async {
     emit(TopProductLoading());
     await GetTopProductDataSource.getTopProduct().then(
       (value) async {
@@ -19,7 +19,11 @@ class TopProductCubit extends Cubit<TopProductState> {
           emit(TopProductError(e: l.errMessage));
         }, (r) async {
           //   logger.i(r.toJson());
-          ConstantsModels.topProductModel = r;
+          if (subCategoryId != null) {
+            ConstantsModels.productsModel = r;
+          } else {
+            ConstantsModels.topProductModel = r;
+          }
           log('Top Product: ${ConstantsModels.topProductModel?.data?.length}');
 
           emit(TopProductSuccess());

@@ -19,10 +19,11 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class ProductDetailsView extends StatefulWidget {
   final int productId;
-
+  final bool? initialLiked;
   const ProductDetailsView({
     Key? key,
     required this.productId,
+    this.initialLiked = false,
   }) : super(key: key);
 
   @override
@@ -113,6 +114,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ProductGallery(
+              initialLiked: widget.initialLiked,
               onLikeTap: (isNowLiked) {
                 if (isNowLiked) {
                   addToWishListCubit.addToWishList(context: context, productId: productId);
@@ -299,16 +301,24 @@ class ProductGallery extends StatefulWidget {
     required this.controller,
     required this.images,
     this.onLikeTap,
+    this.initialLiked = false,
   });
   final List<String> images;
   final PageController controller;
   final Function(bool isNowLiked)? onLikeTap;
+  final bool? initialLiked;
 
   @override
   State<ProductGallery> createState() => _ProductGalleryState();
 }
 
 class _ProductGalleryState extends State<ProductGallery> {
+  @override
+  void initState() {
+    isLiked = widget.initialLiked!;
+    super.initState();
+  }
+
   void toggleLike() {
     setState(() {
       isLiked = !isLiked;

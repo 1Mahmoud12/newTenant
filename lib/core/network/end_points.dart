@@ -77,6 +77,7 @@ class EndPoints {
   static const order = 'shop/orders';
   static const checkoutDetails = 'shop/checkout';
   static const processToCheckout = 'shop/checkout/proceed';
+  static const subCategories = 'shop/sub-categories?filter[parent_id]=';
 
   //Claims
   static const addClaimMessage = 'ClaimMessage/AddClaimMessage';

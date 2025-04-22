@@ -1,3 +1,4 @@
+import 'package:dobzz_seller/feature/Categories/data/models/sub_categories_models.dart';
 import 'package:dobzz_seller/feature/account/view/myDetalis/data/models/edit_profile_model.dart';
 import 'package:dobzz_seller/feature/account/view/myOrders/data/models/order_model.dart';
 import 'package:dobzz_seller/feature/auth/data/models/country_code_model.dart';
@@ -26,4 +27,7 @@ class ConstantsModels {
   static CityModel? cityModel;
   static OrderModel ? orderModel ;
   static CheckoutDetailsModel ? checkoutDetailsModel ;
+  static SubCategoryModel  ? subCategoryModel  ;
+    static ProductModel? productsModel;
+
 }

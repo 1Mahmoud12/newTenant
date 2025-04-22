@@ -34,7 +34,7 @@ class _FlashSaleGridState extends State<FlashSaleGrid> {
   @override
   Widget build(BuildContext context) {
     return widget.isItWhishList!
-        ? CartGrid(
+        ? FavoriteGrid(
             wishListCubit: wishListCubit,
             widget: widget,
             removeFromWhishListCubit: removeFromWhishListCubit,
@@ -128,8 +128,8 @@ class TopProductGrid extends StatelessWidget {
   }
 }
 
-class CartGrid extends StatelessWidget {
-  const CartGrid({
+class FavoriteGrid extends StatelessWidget {
+  const FavoriteGrid({
     super.key,
     required this.wishListCubit,
     required this.widget,
@@ -178,8 +178,8 @@ class CartGrid extends StatelessWidget {
               itemBuilder: (context, index) {
                 final wishListItem = wishList[index];
                 return ProductCard(
-                  productId: wishListItem.id?.toInt() ?? -1,
-                  initialLiked: widget.isItWhishList!,
+                  productId: wishListItem.productId?.toInt() ?? -1,
+                  initialLiked: true,
                   onLikeTap: (isNowLiked) {
                     // Add to wishlist
                     if (widget.isItWhishList!) {

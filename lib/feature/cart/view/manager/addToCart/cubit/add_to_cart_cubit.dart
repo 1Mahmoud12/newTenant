@@ -16,7 +16,7 @@ class AddToCartCubit extends Cubit<AddToCartState> {
         value.fold((l) {
           emit(AddToCartError(e: l.errMessage));
         }, (r) async {
-          Utils.showToast(title: 'Product Add to cart successfully', state: UtilState.success);
+          //  Utils.showToast(title: 'Product Add to cart successfully', state: UtilState.success);
           Navigator.pop(context);
           // context.navigateToPage(
           //   const CartView(),

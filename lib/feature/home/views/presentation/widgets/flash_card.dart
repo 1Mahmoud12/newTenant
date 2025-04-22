@@ -51,7 +51,8 @@ class _ProductCardState extends State<ProductCard> {
       onTap: () {
         context.navigateToPage(
           ProductDetailsView(
-            productId: widget.productId ?? -1,
+            initialLiked: widget.initialLiked,
+            productId: widget.productId,
           ),
         );
       },
