@@ -90,17 +90,17 @@ class AccountView extends StatelessWidget {
                     },
                   ),
                   _buildMenuItem(
-                    icon: AppIcons.paymentMethod,
+                    icon: AppIcons.changePassword,
                     title: 'Change Password',
                     onTap: () {
                       context.navigateToPage(const ForgetPasswordView());
                     },
                   ),
-                  _buildMenuItem(
-                    icon: AppIcons.paymentMethod,
-                    title: 'Payment Methods',
-                    onTap: () {},
-                  ),
+                  // _buildMenuItem(
+                  //   icon: AppIcons.paymentMethod,
+                  //   title: 'Payment Methods',
+                  //   onTap: () {},
+                  // ),
                   _buildMenuItem(
                     icon: AppIcons.notificationIcon,
                     title: 'Notifications',

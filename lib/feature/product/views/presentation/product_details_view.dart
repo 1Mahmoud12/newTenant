@@ -461,8 +461,9 @@ class _PriceAndAddToCartWidgetState extends State<PriceAndAddToCartWidget> {
                               s,
                             ],
                           ),
-                    onPress: () {
-                      widget.addToCartCubit.addToCart(context: context, productId: widget.productId);
+                    onPress: () async {
+                      await widget.addToCartCubit.addToCart(context: context, productId: widget.productId);
+                      Navigator.pop(context);
                     },
                   );
                 },

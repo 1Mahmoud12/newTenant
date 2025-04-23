@@ -136,6 +136,7 @@ class AppIcons {
   static const myDetails = '$baseUrl/my-details.svg';
   static const addressBook = '$baseUrl/address-book.svg';
   static const paymentMethod = '$baseUrl/payment-method.svg';
+  static const changePassword = '$baseUrl/change-passowrd.svg';
   static const notificationIcon = '$baseUrl/notification-01.svg';
   static const faq = '$baseUrl/faq.svg';
   static const helpCenter = '$baseUrl/help-center.svgg';

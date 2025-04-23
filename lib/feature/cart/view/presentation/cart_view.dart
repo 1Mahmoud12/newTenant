@@ -27,13 +27,11 @@ class _CartViewState extends State<CartView> {
   @override
   void initState() {
     super.initState();
-    _loadCartItems();
+    cartCubit.getCartItems(context: context);
     checkoutDetailsCubit.getCheckoutDetails(context: context);
   }
 
-  void _loadCartItems() {
-    cartCubit.getCartItems(context: context);
-  }
+  void _loadCartItems() {}
 
   CheckoutDetailsCubit checkoutDetailsCubit = CheckoutDetailsCubit();
   // Handle add quantity

@@ -18,6 +18,7 @@ class CartItemsCubit extends Cubit<CartItemsState> {
         value.fold((l) {
           emit(CartItemsError(e: l.errMessage));
         }, (r) async {
+          log('cart items: ${r.data?.length}');
           ConstantsModels.cartItemModel = r;
           log('Cart items list: ${ConstantsModels.cartItemModel?.data?.length}');
 

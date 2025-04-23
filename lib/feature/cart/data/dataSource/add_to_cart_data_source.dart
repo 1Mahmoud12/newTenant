@@ -16,7 +16,7 @@ class AddToCartDataSource {
           'quantity': quantity,
         },
       );
-      log('Top Product Response: ${response.data['data']}');
+      log('add to cart Response: ${response.data}');
       return const Right(null);
     } catch (error) {
       if (error is DioException) {

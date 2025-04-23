@@ -11,7 +11,7 @@ class CartItemDataSource {
   static Future<Either<Failure, CartItemModel>> getCartItems() async {
     try {
       final response = await DioHelper.getData(url: EndPoints.cartItems);
-      log('Cart Response: ${response.data['data']}');
+      log('Cart Response: ${response.data}');
       return Right(CartItemModel.fromJson(response.data));
     } catch (error) {
       if (error is DioException) {

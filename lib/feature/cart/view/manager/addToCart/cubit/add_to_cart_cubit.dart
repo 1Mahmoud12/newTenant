@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:dobzz_seller/core/utils/utils.dart';
 import 'package:dobzz_seller/feature/cart/data/dataSource/add_to_cart_data_source.dart';
@@ -17,7 +19,7 @@ class AddToCartCubit extends Cubit<AddToCartState> {
           emit(AddToCartError(e: l.errMessage));
         }, (r) async {
           //  Utils.showToast(title: 'Product Add to cart successfully', state: UtilState.success);
-          Navigator.pop(context);
+          //
           // context.navigateToPage(
           //   const CartView(),
           // );
