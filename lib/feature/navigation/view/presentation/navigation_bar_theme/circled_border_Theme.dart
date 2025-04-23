@@ -1,6 +1,8 @@
 import 'package:dobzz_seller/core/themes/colors.dart';
+import 'package:dobzz_seller/core/utils/app_icons.dart';
 import 'package:dobzz_seller/core/utils/constant_gaping.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 class CircledBorderTheme extends StatelessWidget {
   final int selectedIndex;
@@ -27,8 +29,8 @@ class CircledBorderTheme extends StatelessWidget {
         children: [
           NavItem(
             index: 0,
-            outlinedIcon: Icons.home_outlined,
-            filledIcon: Icons.home_filled,
+            outlinedIcon: AppIcons.unSelectedHomeC,
+            filledIcon: AppIcons.selectedHomeC,
             hasNotification: true,
             isSelected: selectedIndex == 0,
             onTap: onItemTapped,
@@ -36,8 +38,8 @@ class CircledBorderTheme extends StatelessWidget {
           s,
           NavItem(
             index: 1,
-            outlinedIcon: Icons.shopping_bag_outlined,
-            filledIcon: Icons.shopping_bag,
+            outlinedIcon: AppIcons.unSelectedCartC,
+            filledIcon: AppIcons.selectedCartC,
             hasNotification: false,
             isSelected: selectedIndex == 1,
             onTap: onItemTapped,
@@ -45,8 +47,8 @@ class CircledBorderTheme extends StatelessWidget {
           s,
           NavItem(
             index: 2,
-            outlinedIcon: Icons.favorite_border,
-            filledIcon: Icons.favorite,
+            outlinedIcon: AppIcons.unSelectedFavoriteC,
+            filledIcon: AppIcons.selectedFavoriteC,
             hasNotification: false,
             isSelected: selectedIndex == 2,
             onTap: onItemTapped,
@@ -54,8 +56,8 @@ class CircledBorderTheme extends StatelessWidget {
           s,
           NavItem(
             index: 3,
-            outlinedIcon: Icons.person_outline,
-            filledIcon: Icons.person,
+            outlinedIcon: AppIcons.unSelectedProfileC,
+            filledIcon: AppIcons.selectedProfileC,
             hasNotification: false,
             isSelected: selectedIndex == 3,
             onTap: onItemTapped,
@@ -68,8 +70,8 @@ class CircledBorderTheme extends StatelessWidget {
 
 class NavItem extends StatelessWidget {
   final int index;
-  final IconData outlinedIcon;
-  final IconData filledIcon;
+  final String outlinedIcon;
+  final String filledIcon;
   final bool hasNotification;
   final bool isSelected;
   final Function(int) onTap;
@@ -98,10 +100,11 @@ class NavItem extends StatelessWidget {
         ),
         child: Column(
           children: [
-            Icon(
+            SvgPicture.asset(
               isSelected ? filledIcon : outlinedIcon,
-              color: isSelected ? Colors.white : Colors.white.withOpacity(0.8),
-              size: 28,
+              width: 25,
+              height: 25,
+              colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
             ),
             if (isSelected)
               Container(

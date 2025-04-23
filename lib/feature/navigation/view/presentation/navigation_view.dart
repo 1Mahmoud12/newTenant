@@ -15,7 +15,7 @@ class NavigationViewWithThemes extends StatefulWidget {
   const NavigationViewWithThemes({
     Key? key,
     this.initialIndex = 0,
-    this.theme = NavigationTheme.regular,
+    this.theme = NavigationTheme.circular,
   }) : super(key: key);
 
   final int? initialIndex;

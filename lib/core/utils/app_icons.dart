@@ -30,17 +30,26 @@ class AppIcons {
   static const flashOn = '$baseUrl/svg/flashOn.svg';
   static const star = '$baseUrl/star.svg';
 
-  // Navigation
-  static const unSelectedHome = '$baseUrl/unselected-home.svg';
-  static const unSelectedCart = '$baseUrl/unselected-cartsvg.svg';
-  static const unSelectedProfile = '$baseUrl/unselected-profile.svg';
-  static const unSelectedFavorite = '$baseUrl/unselected-favorite.svg';
-
-  static const selectedHome = '$baseUrl/selected-home.svg';
-  static const selectedCart = '$baseUrl/selected-cart.svg';
-  static const selectedProfile = '$baseUrl/selected-profile.svg';
-  static const selectedFavorite = '$baseUrl/selected-favorite.svg';
-//////////////////////
+  // Navigation bar icons////////////////////
+  // the regular theme icons
+  static const unSelectedHomeR = '$baseUrl/unselected-home.svg';
+  static const unSelectedCartR = '$baseUrl/unselected-cartsvg.svg';
+  static const unSelectedProfileR = '$baseUrl/unselected-profile.svg';
+  static const unSelectedFavoriteR = '$baseUrl/unselected-favorite.svg';
+  static const selectedHomeR = '$baseUrl/selected-home.svg';
+  static const selectedCartR = '$baseUrl/selected-cart.svg';
+  static const selectedProfileR = '$baseUrl/selected-profile.svg';
+  static const selectedFavoriteR = '$baseUrl/selected-favorite.svg';
+  // the Circled theme icons
+  static const unSelectedHomeC = '$baseUrl/unselected-home-c.svg';
+  static const unSelectedCartC = '$baseUrl/unselected-cart-c.svg';
+  static const unSelectedProfileC = '$baseUrl/unselected-profile-c.svg';
+  static const unSelectedFavoriteC = '$baseUrl/unselected-favorite.svg';
+  static const selectedHomeC = '$baseUrl/selected-home-c.svg';
+  static const selectedCartC = '$baseUrl/selected-cart-c.svg';
+  static const selectedProfileC = '$baseUrl/selected-profile-c.svg';
+  static const selectedFavoriteC = '$baseUrl/selected-favorite-c.svg';
+//////////////////////////////
   // Home
   static const location = '$baseUrl/location.svg';
   static const notification = '$baseUrl/notification.svg';
