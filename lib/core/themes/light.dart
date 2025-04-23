@@ -17,6 +17,7 @@ class Themes {
         appBarTheme: AppBarTheme(
           color: AppColors.transparent,
           elevation: 0,
+          surfaceTintColor: Colors.transparent,
           systemOverlayStyle: const SystemUiOverlayStyle(
             statusBarColor: AppColors.scaffoldBackGround,
             statusBarIconBrightness: Brightness.dark,

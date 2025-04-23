@@ -2,7 +2,6 @@ import 'package:dobzz_seller/core/component/buttons/custom_text_button.dart';
 import 'package:dobzz_seller/core/component/custom_app_bar.dart';
 import 'package:dobzz_seller/core/component/custom_drop_down_menu.dart';
 import 'package:dobzz_seller/core/component/fields/custom_text_form_field.dart';
-import 'package:dobzz_seller/core/component/loadsErros/loading_widget.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:dobzz_seller/core/utils/constant_gaping.dart';
 import 'package:dobzz_seller/core/utils/constants_models.dart';
@@ -325,12 +324,3 @@ class _LabeledCheckButtonState extends State<LabeledCheckButton> {
     );
   }
 }
-
-// Example usage:
-// LabeledCheckButton(
-//   label: "Make this as a default address",
-//   initialValue: false,
-//   onChanged: (value) {
-//     print("Checkbox is now: $value");
-//   },
-// )

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:dobzz_seller/core/network/errors/failures.dart';
+import 'package:dobzz_seller/feature/auth/forgetPassword/view/presentation/reset_password_view.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -69,9 +70,9 @@ class AuthCubit extends Cubit<AuthState> {
               email: emailController.text,
               // phoneNumber: phoneController.text,
               // countryCodeId: countryCodeId,
-              // verifyButton: (context) {
-              //   context.navigateToPage(const ResetPasswordView());
-              // },
+              verifyButton: (context) {
+                context.navigateToPage(const ResetPasswordView());
+              },
             ),
           );
           emit(AuthGetCountryCodeSuccessState());
@@ -186,18 +187,18 @@ class AuthCubit extends Cubit<AuthState> {
           userCacheValue = r;
           Constants.token = r.data?.token ?? '';
           userCache?.put(userCacheKey, jsonEncode(r.toJson()));
-          successModalBottomSheet(
-            context,
-            title: 'user_confirmed_successfully'.tr(),
-            subTitle: 'you_can_now_entertainment_with_the_app',
-            nameButton: 'go_home',
-            onPress: () {
-              context.navigateToPageWithReplacement(const NavigationView());
-              lastNameController.clear();
-              passwordController.clear();
-              confirmPasswordController.clear();
-            },
-          );
+          // successModalBottomSheet(
+          //   context,
+          //   title: 'user_confirmed_successfully'.tr(),
+          //   subTitle: 'you_can_now_entertainment_with_the_app',
+          //   nameButton: 'go_home',
+          //   onPress: () {
+          //     //context.navigateToPageWithReplacement(const NavigationView());
+          //     lastNameController.clear();
+          //     passwordController.clear();
+          //     confirmPasswordController.clear();
+          //   },
+          // );
           emit(AuthVerifySuccessState());
         });
       },

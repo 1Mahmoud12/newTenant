@@ -15,12 +15,13 @@ class VerifyCodeView extends StatefulWidget {
   final String email;
   // final int countryCodeId;
 
-  // final Function(BuildContext context)? verifyButton;
-  // final void Function(String)? onChanged;
+ final Function(BuildContext context)? verifyButton;
+  final void Function(String)? onChanged;
 
   const VerifyCodeView({
     super.key,
     required this.email,
+    this.onChanged, this.verifyButton,
     //  required this.phoneNumber, this.verifyButton, required this.countryCodeId, this.onChanged
   });
 
@@ -67,97 +68,101 @@ class _VerifyCodeViewState extends State<VerifyCodeView> {
       appBar: AppBar(),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              'verify phone number'.tr(),
-              style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: AppColors.primaryColor),
-              textAlign: TextAlign.center,
-            ),
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    'enter the verification code sent to your phone to proceed with setting a new password '.tr(),
-                    style: Theme.of(context).textTheme.displaySmall?.copyWith(color: AppColors.cB900),
-                    textAlign: TextAlign.center,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                'verify phone number'.tr(),
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: AppColors.primaryColor),
+                textAlign: TextAlign.center,
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      'enter the verification code sent to your phone to proceed with setting a new password '.tr(),
+                      style: Theme.of(context).textTheme.displaySmall?.copyWith(color: AppColors.cB900),
+                      textAlign: TextAlign.center,
+                    ),
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 37),
-            VerificationCode(
-              focusNode: _focusNode,
-              onChanged: (value) {
-                // if (widget.onChanged != null) {
-                //   widget.onChanged!(value);
-                // } else {
-                //   AuthCubit.of(context).setCodeController(value);
-                //   log('Code ${AuthCubit.of(context).codeController.text}');
-                // }
-              },
-              onCompleted: (value) {
-                AuthCubit.of(context).verifyCode(context,);
-                // widget.verifyButton?.call(context);
-                // //registerBloc?.verificationNumber = value;
-                // //registerBloc?.beforeRegisterSendCode(context);
-              },
-              validator: (code) {
-                if (code == null || code.isEmpty) return ''; // Don't show error yet
-                if (code.length < 4) return ''; // Still typing
-                if (code != '1234') return 'Invalid code'; // Example condition
-                return '';
-              },
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  '00:${_start.toString().padLeft(2, '0')}',
-                  style: Theme.of(context).textTheme.titleSmall?.copyWith(color: AppColors.primaryColor.withOpacity(.4)),
-                ),
-                InkWell(
-                  onTap: _start != 0
-                      ? null
-                      : () {
-                          AuthCubit.of(context).resendCode(context: context);
-                          _timer.cancel();
-                          startTimer();
-                        },
-                  child: Text(
-                    'resend code'.tr(),
-                    style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                          fontWeight: FontWeight.w700,
-                          decoration: TextDecoration.underline,
-                          color: _start != 0 ? AppColors.primaryColor.withOpacity(.4) : AppColors.primaryColor,
-                          decorationColor: _start != 0 ? AppColors.primaryColor.withOpacity(.4) : AppColors.black,
-                        ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 32),
-            BlocBuilder<AuthCubit, AuthState>(
-              builder: (context, state) => CustomTextButton(
-                childText: 'verify'.tr(),
-                padding: const EdgeInsets.symmetric(vertical: 14.5),
-                state: state is AuthResendCodeLoadingState,
-                onPress: () {
-                  context.navigateToPage(const NavigationView());
-
-                  //  widget.verifyButton?.call(context);
-
-                  //  registerBloc?.beforeRegisterSendCode(context);
-                  /*if (RegisterBloc.get(context).verificationNumber.round().toString() == newValue) {
-                        context.navigateToPageWithClearStack(resetPassword ? const ResetPassword() : const CreatePassword());
-                      } else {
-                        Utils.showToast(title: 'Invalid Code', state: UtilState.error);
-                      }*/
+                ],
+              ),
+              const SizedBox(height: 37),
+              VerificationCode(
+                focusNode: _focusNode,
+                onChanged: (value) {
+                  if (widget.onChanged != null) {
+                    widget.onChanged!(value);
+                  } else {
+                    AuthCubit.of(context).setCodeController(value);
+                    // log('Code ${AuthCubit.of(context).codeController.text}');
+                  }
+                },
+                onCompleted: (value) {
+                  AuthCubit.of(context).verifyCode(
+                    context,
+                  );
+                  widget.verifyButton?.call(context);
+                  //registerBloc?.verificationNumber = value;
+                  //registerBloc?.beforeRegisterSendCode(context);
+                },
+                validator: (code) {
+                  if (code == null || code.isEmpty) return ''; // Don't show error yet
+                  if (code.length < 4) return ''; // Still typing
+                  if (code != '1234') return 'Invalid code'; // Example condition
+                  return '';
                 },
               ),
-            ),
-          ],
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    '00:${_start.toString().padLeft(2, '0')}',
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(color: AppColors.primaryColor.withOpacity(.4)),
+                  ),
+                  InkWell(
+                    onTap: _start != 0
+                        ? null
+                        : () {
+                            AuthCubit.of(context).resendCode(context: context);
+                            _timer.cancel();
+                            startTimer();
+                          },
+                    child: Text(
+                      'resend code'.tr(),
+                      style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                            fontWeight: FontWeight.w700,
+                            decoration: TextDecoration.underline,
+                            color: _start != 0 ? AppColors.primaryColor.withOpacity(.4) : AppColors.primaryColor,
+                            decorationColor: _start != 0 ? AppColors.primaryColor.withOpacity(.4) : AppColors.black,
+                          ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 32),
+              BlocBuilder<AuthCubit, AuthState>(
+                builder: (context, state) => CustomTextButton(
+                  childText: 'verify'.tr(),
+                  padding: const EdgeInsets.symmetric(vertical: 14.5),
+                  state: state is AuthResendCodeLoadingState,
+                  onPress: () {
+                    context.navigateToPage(const NavigationView());
+
+                    //  widget.verifyButton?.call(context);
+
+                    //  registerBloc?.beforeRegisterSendCode(context);
+                    /*if (RegisterBloc.get(context).verificationNumber.round().toString() == newValue) {
+                          context.navigateToPageWithClearStack(resetPassword ? const ResetPassword() : const CreatePassword());
+                        } else {
+                          Utils.showToast(title: 'Invalid Code', state: UtilState.error);
+                        }*/
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

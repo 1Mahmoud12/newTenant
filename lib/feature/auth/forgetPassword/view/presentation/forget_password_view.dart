@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dobzz_seller/core/component/buttons/custom_text_button.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
-import 'package:dobzz_seller/feature/auth/login/view/presentation/widgets/phone_number_widget.dart';
 import 'package:dobzz_seller/feature/auth/manager/authBloc/auth_cubit.dart';
 import 'package:dobzz_seller/feature/auth/manager/authBloc/auth_state.dart';
 
@@ -25,6 +24,8 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
     super.initState();
   }
 
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,39 +35,45 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24.0),
-        child: Column(
-          children: [
-            const SizedBox(height: 50),
-            Text(
-              'forget password?'.tr(),
-              style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: AppColors.primaryColor),
-              textAlign: TextAlign.center,
+        child: Form(
+          key: _formKey,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                const SizedBox(height: 50),
+                Text(
+                  'forget password?'.tr(),
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: AppColors.primaryColor),
+                  textAlign: TextAlign.center,
+                ),
+                Text(
+                  'please enter your registered phone number to receive a one-time password (OTP).'.tr(),
+                  style: Theme.of(context).textTheme.displaySmall?.copyWith(color: AppColors.cB900),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 32),
+                CustomTextFormField(
+                  outPadding: EdgeInsets.zero,
+                  controller: AuthCubit.of(context).emailController,
+                  hintText: 'email'.tr(),
+                ),
+                const SizedBox(height: 32),
+                BlocBuilder<AuthCubit, AuthState>(
+                  builder: (context, state) => CustomTextButton(
+                    backgroundColor: AppColors.primaryColor,
+                    childText: 'continue'.tr(),
+                    padding: const EdgeInsets.symmetric(vertical: 14.5),
+                    onPress: () {
+                      if (_formKey.currentState!.validate()) {
+                        AuthCubit.of(context).forgetPassword(context: context);
+                      }
+                      //context.navigateToPage(const VerifyCodeView());
+                    },
+                  ),
+                ),
+              ],
             ),
-            Text(
-              'please enter your registered phone number to receive a one-time password (OTP).'.tr(),
-              style: Theme.of(context).textTheme.displaySmall?.copyWith(color: AppColors.cB900),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 32),
-            CustomTextFormField(
-              outPadding: EdgeInsets.zero,
-              controller: AuthCubit.of(context).emailController,
-              hintText: 'email'.tr(),
-            ),
-            const SizedBox(height: 32),
-            BlocBuilder<AuthCubit, AuthState>(
-              builder: (context, state) => CustomTextButton(
-                backgroundColor: AppColors.primaryColor,
-                childText: 'continue'.tr(),
-                padding: const EdgeInsets.symmetric(vertical: 14.5),
-                onPress: () {
-                  //context.navigateToPage(const VerifyCodeView());
-
-                  AuthCubit.of(context).forgetPassword(context: context);
-                },
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );
