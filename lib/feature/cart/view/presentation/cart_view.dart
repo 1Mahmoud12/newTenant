@@ -37,19 +37,21 @@ class _CartViewState extends State<CartView> {
 
   CheckoutDetailsCubit checkoutDetailsCubit = CheckoutDetailsCubit();
   // Handle add quantity
-  void onAdd(CartItemData item) {
+  void onAdd(CartItemData item) async {
     // Implement add quantity logic using Cubit
     // This will depend on your Cubit implementation for updating quantities
     // For now, we'll assume setState is used within the Cubit
     setState(() {
       item.quantity = (item.quantity ?? 0) + 1;
     });
+    await checkoutDetailsCubit.getCheckoutDetails(context: context);
+
     // You should add a method in the Cubit to handle this
     // _cartCubit.updateQuantity(item.id, item.quantity + 1);
   }
 
   // Handle remove quantity
-  void onRemove(CartItemData item) {
+  void onRemove(CartItemData item) async {
     final int quantity = item.quantity ?? 0;
     if (quantity > 1) {
       setState(() {
@@ -58,10 +60,11 @@ class _CartViewState extends State<CartView> {
       // You should add a method in the Cubit to handle this
       // _cartCubit.updateQuantity(item.id, item.quantity - 1);
     }
+    await checkoutDetailsCubit.getCheckoutDetails(context: context);
   }
 
   // Handle item delete
-  void onDelete(CartItemData item) {
+  void onDelete(CartItemData item) async {
     // Implement delete logic using Cubit
     // _cartCubit.removeItem(item.id);
 
@@ -69,7 +72,9 @@ class _CartViewState extends State<CartView> {
     setState(() {
       ConstantsModels.cartItemModel?.data?.remove(item);
     });
-    deleteFromCartCubit.deleteFromCart(context: context, itemId: item.id ?? -1);
+    await deleteFromCartCubit.deleteFromCart(context: context, itemId: item.id ?? -1);
+    await checkoutDetailsCubit.getCheckoutDetails(context: context);
+
     // Reload items after deletion
     // _loadCartItems();
   }
