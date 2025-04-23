@@ -105,7 +105,7 @@ class AccountView extends StatelessWidget {
                     icon: AppIcons.notificationIcon,
                     title: 'Notifications',
                     onTap: () {
-                      context.navigateToPage(const NotificationsSettingsview());
+                      context.navigateToPage(const NotificationsSettingsView());
                     },
                   ),
                   _buildMenuItem(

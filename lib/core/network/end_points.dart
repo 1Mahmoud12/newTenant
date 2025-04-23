@@ -27,6 +27,7 @@ class EndPoints {
   static const deleteImageAddress = 'Address/DeleteImage';
   static const getUserAddresses = 'Address/UserAddresses';
   static const setDefaultAddress = 'Address/SetDefaultAddresses';
+  static const getNotificationSetting = 'shop/user/settings';
 
   // Home
   static const getAllBranches = 'Report/GetAllBranches';

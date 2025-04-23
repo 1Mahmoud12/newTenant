@@ -1,6 +1,7 @@
 import 'package:dobzz_seller/feature/Categories/data/models/sub_categories_models.dart';
 import 'package:dobzz_seller/feature/account/view/myDetalis/data/models/edit_profile_model.dart';
 import 'package:dobzz_seller/feature/account/view/myOrders/data/models/order_model.dart';
+import 'package:dobzz_seller/feature/account/view/notificationSetting/data/models/general_notification_setting_model.dart';
 import 'package:dobzz_seller/feature/auth/data/models/country_code_model.dart';
 import 'package:dobzz_seller/feature/auth/data/models/register_model.dart';
 import 'package:dobzz_seller/feature/cart/data/models/cart_item_model.dart';
@@ -25,10 +26,10 @@ class ConstantsModels {
   static AddressModel? addressModel;
   static StateModel? stateModel;
   static CityModel? cityModel;
-  static OrderModel ? orderModel ;
-  static CheckoutDetailsModel ? checkoutDetailsModel ;
-  static SubCategoryModel  ? subCategoryModel  ;
-    static ProductModel? productsModel;
-    static ProductModel? searchProductsModel;
-
+  static OrderModel? orderModel;
+  static CheckoutDetailsModel? checkoutDetailsModel;
+  static SubCategoryModel? subCategoryModel;
+  static ProductModel? productsModel;
+  static ProductModel? searchProductsModel;
+  static GeneralNotificationModel ? generalNotificationModel ;
 }
