@@ -31,17 +31,16 @@ class AppIcons {
   static const star = '$baseUrl/star.svg';
 
   // Navigation
-  static const selectedProfile = '$baseUrl/selectedProfile.svg';
-  static const selectedCart = '$baseUrl/selectedCart.svg';
-  static const selectedHome = '$baseUrl/selectedHome.svg';
-  static const selectedOffers = '$baseUrl/selectedOffers.svg';
-  static const selectedOrders = '$baseUrl/selectedOrders.svg';
-  static const unSelectedCart = '$baseUrl/unSelectedCart.svg';
-  static const unSelectedHome = '$baseUrl/unSelectedHome.svg';
-  static const unSelectedOffers = '$baseUrl/unSelectedOffers.svg';
-  static const unSelectedOrders = '$baseUrl/unSelectedOrders.svg';
-  static const unSelectedProfile = '$baseUrl/unSelectedProfile.svg';
+  static const unSelectedHome = '$baseUrl/unselected-home.svg';
+  static const unSelectedCart = '$baseUrl/unselected-cartsvg.svg';
+  static const unSelectedProfile = '$baseUrl/unselected-profile.svg';
+  static const unSelectedFavorite = '$baseUrl/unselected-favorite.svg';
 
+  static const selectedHome = '$baseUrl/selected-home.svg';
+  static const selectedCart = '$baseUrl/selected-cart.svg';
+  static const selectedProfile = '$baseUrl/selected-profile.svg';
+  static const selectedFavorite = '$baseUrl/selected-favorite.svg';
+//////////////////////
   // Home
   static const location = '$baseUrl/location.svg';
   static const notification = '$baseUrl/notification.svg';

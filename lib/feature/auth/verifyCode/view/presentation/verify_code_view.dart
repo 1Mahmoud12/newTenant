@@ -148,7 +148,7 @@ class _VerifyCodeViewState extends State<VerifyCodeView> {
                   padding: const EdgeInsets.symmetric(vertical: 14.5),
                   state: state is AuthResendCodeLoadingState,
                   onPress: () {
-                    context.navigateToPage(const NavigationView());
+                    context.navigateToPage(const NavigationViewWithThemes());
 
                     //  widget.verifyButton?.call(context);
 

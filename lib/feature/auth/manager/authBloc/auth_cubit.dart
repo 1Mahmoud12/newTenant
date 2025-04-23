@@ -238,7 +238,7 @@ class AuthCubit extends Cubit<AuthState> {
           log('userCacheValue.data ==>${userCacheValue?.data}');
           Constants.token = r.data?.token ?? '';
           await userCache?.put(userCacheKey, jsonEncode(r.toJson()));
-          context.navigateToPageWithClearStack(const NavigationView());
+          context.navigateToPageWithClearStack(const NavigationViewWithThemes());
           lastNameController.clear();
           passwordController.clear();
           confirmPasswordController.clear();

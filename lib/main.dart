@@ -65,7 +65,7 @@ void main() async {
   try {
     Constants.messageGlobal = await FirebaseMessaging.instance.getInitialMessage();
     if (Constants.messageGlobal?.data != null) {
-      appStartScreen = const NavigationView();
+      appStartScreen = const NavigationViewWithThemes();
     }
     log('appStartScreen $appStartScreen');
   } catch (error) {
@@ -92,7 +92,7 @@ void main() async {
         child: DevicePreview(
           // ignore: avoid_redundant_argument_values
           enabled: true,
-        //  enabled: false,
+          //  enabled: false,
           builder: (context) => const MyApp(), // Wrap your app
         ),
       ),

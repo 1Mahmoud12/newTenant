@@ -33,7 +33,7 @@ class _SplashScreenState extends State<SplashScreen> {
       const Duration(seconds: 3),
       () {
         //   context.navigateToPage(const NavigationView());
-        context.navigateToPage(userCacheValue?.data != null ? const NavigationView() : const LoginScreen());
+        context.navigateToPage(userCacheValue?.data != null ? const NavigationViewWithThemes() : const LoginScreen());
         // userCacheValue.data != null ? context.navigateToPage(const NavigationView()) : context.navigateToPage(const LoginScreen());
         // userCache?.put(onBoardingKey, false);
       },

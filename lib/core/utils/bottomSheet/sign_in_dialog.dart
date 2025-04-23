@@ -58,7 +58,7 @@ Future<void> signInDialog(BuildContext context) async {
                   child: CustomTextButton(
                     onPress: () {
                       Navigator.pop(context);
-                      context.navigateToPage(const NavigationView());
+                      context.navigateToPage(const NavigationViewWithThemes());
                     },
                     childText: 'cancel'.tr(),
                     backgroundColor: AppColors.cSecondScaffoldBackGround,

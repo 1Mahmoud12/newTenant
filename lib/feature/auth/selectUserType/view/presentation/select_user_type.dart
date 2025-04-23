@@ -127,7 +127,7 @@ class SelectUserType extends StatelessWidget {
                             textAlign: TextAlign.center,
                           ),
                           onPress: () {
-                            context.navigateToPage(const NavigationView(), pageTransitionType: PageTransitionType.bottomToTop);
+                            context.navigateToPage(const NavigationViewWithThemes(), pageTransitionType: PageTransitionType.bottomToTop);
                           },
                         ),
                         const SizedBox(height: 14),

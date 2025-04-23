@@ -21,7 +21,7 @@ class ProcessToCheckoutCubit extends Cubit<ProcessToCheckoutState> {
           Utils.showToast(title: l.errMessage, state: UtilState.error);
         }, (r) async {
           context.navigateToPageWithReplacement(
-            const NavigationView(
+            const NavigationViewWithThemes(
               initialIndex: 1,
             ),
           );

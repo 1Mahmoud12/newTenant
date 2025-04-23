@@ -140,7 +140,7 @@ class _LoginScreenState extends State<LoginScreen> {
               BlocConsumer<AuthCubit, AuthState>(
                 listener: (context, state) {
                   if (state is AuthLoginSuccessState) {
-                    context.navigateToPage(const NavigationView());
+                    context.navigateToPage(const NavigationViewWithThemes());
                   }
                   if (state is AuthLoginErrorState) {
                     log('current State is $state');
