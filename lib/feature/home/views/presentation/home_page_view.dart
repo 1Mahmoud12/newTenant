@@ -2,6 +2,7 @@ import 'package:dobzz_seller/core/component/fields/custom_text_form_field.dart';
 import 'package:dobzz_seller/core/component/see_all_widget.dart';
 import 'package:dobzz_seller/core/utils/constant_gaping.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
+import 'package:dobzz_seller/feature/Categories/presentation/Categories_veiw.dart';
 import 'package:dobzz_seller/feature/home/views/presentation/search_product_home_view.dart';
 import 'package:dobzz_seller/feature/home/views/presentation/widgets/categories_list.dart';
 import 'package:dobzz_seller/feature/home/views/presentation/widgets/flash_sale_gride.dart';
@@ -44,9 +45,14 @@ class HomePageView extends StatelessWidget {
                 h10,
                 const HomeSlider(),
                 h10,
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: SeeAllWidget(title: 'Categories'),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: SeeAllWidget(
+                    title: 'Categories',
+                    onTap: () {
+                      context.navigateToPage(const CategoriesScreen());
+                    },
+                  ),
                 ),
                 h10,
                 const CategoriesList(),

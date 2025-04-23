@@ -1,7 +1,9 @@
+import 'package:dobzz_seller/core/component/cache_image.dart';
 import 'package:dobzz_seller/core/component/custom_app_bar.dart';
 import 'package:dobzz_seller/core/network/local/cache.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:dobzz_seller/core/utils/app_icons.dart';
+import 'package:dobzz_seller/core/utils/constants_models.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/feature/account/view/faq/presentation/faq_view.dart';
 import 'package:dobzz_seller/feature/account/view/helpCenter/presentation/help_center_view.dart';
@@ -9,6 +11,7 @@ import 'package:dobzz_seller/feature/account/view/myDetalis/presentation/my_deta
 import 'package:dobzz_seller/feature/account/view/myOrders/presentation/my_order_view.dart';
 import 'package:dobzz_seller/feature/account/view/notificationSetting/presentation/notification_setting_view.dart';
 import 'package:dobzz_seller/feature/auth/login/view/presentation/login_screen.dart';
+import 'package:dobzz_seller/feature/cart/view/address/presentation/address_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -32,38 +35,31 @@ class AccountView extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   // Profile image
-                  CircleAvatar(
-                    radius: 30,
-                    backgroundColor: Colors.grey[300],
-                    child: ClipOval(
-                      child: Container(
-                        color: Colors.grey[700],
-                        child: const Icon(
-                          Icons.person,
-                          size: 40,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
+                  CacheImage(
+                    errorColor: Colors.grey,
+                    height: 60,
+                    width: 60,
+                    circle: true,
+                    urlImage: ConstantsModels.registerModel?.data?.avatarPath ?? '',
                   ),
                   const SizedBox(height: 10),
                   // Name
-                  const Text(
-                    'Ahmed Osama',
-                    style: TextStyle(
+                  Text(
+                    ConstantsModels.registerModel?.data?.name ?? 'Unknown',
+                    style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
                     ),
                   ),
-                  const SizedBox(height: 2),
-                  // Member since
-                  Text(
-                    'member since 10/10/2024',
-                    style: TextStyle(
-                      color: Colors.grey[600],
-                      fontSize: 12,
-                    ),
-                  ),
+                  // const SizedBox(height: 2),
+                  // // Member since
+                  // Text(
+                  //   'member since 10/10/2024',
+                  //   style: TextStyle(
+                  //     color: Colors.grey[600],
+                  //     fontSize: 12,
+                  //   ),
+                  // ),
                 ],
               ),
             ),
@@ -88,7 +84,9 @@ class AccountView extends StatelessWidget {
                   _buildMenuItem(
                     icon: AppIcons.addressBook,
                     title: 'Address Book',
-                    onTap: () {},
+                    onTap: () {
+                      context.navigateToPage(const AddressView());
+                    },
                   ),
                   _buildMenuItem(
                     icon: AppIcons.paymentMethod,

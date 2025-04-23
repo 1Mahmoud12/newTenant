@@ -21,9 +21,13 @@ class _FlashSaleGridState extends State<FlashSaleGrid> {
     super.initState();
     // Fetch top products when widget initializes
     if (widget.isItWhishList!) {
-      wishListCubit.getWishList(context: context);
+      if (ConstantsModels.wishListModel == null) {
+        wishListCubit.getWishList(context: context);
+      }
     } else {
-      topProductCubit.getTopProduct(context: context);
+      if (ConstantsModels.topProductModel == null) {
+        topProductCubit.getTopProduct(context: context);
+      }
     }
   }
 
@@ -76,7 +80,7 @@ class TopProductGrid extends StatelessWidget {
             return Center(
               child: Text('Error: ${state.e}'),
             );
-          } else if (state is TopProductSuccess) {
+          } else if (ConstantsModels.topProductModel != null) {
             // Access the loaded top products
             final topProducts = ConstantsModels.topProductModel?.data;
 

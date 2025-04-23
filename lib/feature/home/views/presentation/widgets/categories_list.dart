@@ -5,6 +5,7 @@ import 'package:dobzz_seller/core/utils/constant_gaping.dart';
 import 'package:dobzz_seller/core/utils/constants_models.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/feature/Categories/presentation/Categories_veiw.dart';
+import 'package:dobzz_seller/feature/Categories/presentation/sub_category_view.dart';
 import 'package:dobzz_seller/feature/home/views/manager/categories/cubit/categories_cubit.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +27,9 @@ class _CategoriesListState extends State<CategoriesList> {
   void initState() {
     super.initState();
     _categoriesCubit = CategoriesCubit();
-    _categoriesCubit.getCategories(context: context);
+    if (ConstantsModels.categoriesModel == null) {
+      _categoriesCubit.getCategories(context: context);
+    }
   }
 
   @override
@@ -45,7 +48,7 @@ class _CategoriesListState extends State<CategoriesList> {
             return const Center(child: LoadingWidget());
           } else if (state is CategoriesError) {
             return Center(child: Text('Error: ${state.e}'));
-          } else if (state is CategoriesSuccess) {
+          } else if (ConstantsModels.categoriesModel != null) {
             // Get the categories from your model
             final categories = ConstantsModels.categoriesModel?.data ?? [];
 
@@ -62,7 +65,11 @@ class _CategoriesListState extends State<CategoriesList> {
 
                       return InkWell(
                         onTap: () {
-                          context.navigateToPage(const CategoriesScreen());
+                          context.navigateToPage(
+                            SubcategoryScreen(
+                              categoryId: categories[index].id ?? 0,
+                            ),
+                          );
                         },
                         child: Container(
                           margin: EdgeInsets.only(

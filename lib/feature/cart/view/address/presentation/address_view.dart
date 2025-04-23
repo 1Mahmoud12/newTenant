@@ -33,32 +33,68 @@ class _AddressViewState extends State<AddressView> {
     return Scaffold(
       appBar: customAppBar(context: context, title: 'Address'),
       persistentFooterButtons: [
-        BlocProvider.value(
-          value: addressCubit,
-          child: BlocBuilder<AddressCubit, AddressState>(
-            builder: (context, state) {
-              // Only show Apply button if there are addresses
-              if (state is AddressSuccess && (ConstantsModels.addressModel?.data?.isNotEmpty ?? false)) {
-                return CustomTextButton(
-                  borderRadius: 8,
-                  onPress: () {},
-                  childText: 'Apply',
-                );
-              } else {
-                // Show Add Address button instead when no addresses
-                return CustomTextButton(
-                  borderRadius: 8,
-                  onPress: () => context.navigateToPage(
-                    AddAddressView(
-                      addressCubit: addressCubit,
+        InkWell(
+          onTap: () => context.navigateToPage(
+            AddAddressView(
+              addressCubit: addressCubit,
+            ),
+          ),
+          child: Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            decoration: BoxDecoration(
+              color: AppColors.primaryColor,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Center(
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(
+                    Icons.add,
+                    color: Colors.white,
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    'Add New Address',
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
                     ),
                   ),
-                  childText: 'Add Address',
-                );
-              }
-            },
+                ],
+              ),
+            ),
           ),
         ),
+
+        // BlocProvider.value(
+        //   value: addressCubit,
+        //   child: BlocBuilder<AddressCubit, AddressState>(
+        //     builder: (context, state) {
+        //       // Only show Apply button if there are addresses
+        //       if (state is AddressSuccess && (ConstantsModels.addressModel?.data?.isNotEmpty ?? false)) {
+        //         return CustomTextButton(
+        //           borderRadius: 8,
+        //           onPress: () {},
+        //           childText: 'Apply',
+        //         );
+        //       } else {
+        //         // Show Add Address button instead when no addresses
+        //         return CustomTextButton(
+        //           borderRadius: 8,
+        //           onPress: () => context.navigateToPage(
+        //             AddAddressView(
+        //               addressCubit: addressCubit,
+        //             ),
+        //           ),
+        //           childText: 'Add Address',
+        //         );
+        //       }
+        //     },
+        //   ),
+        // ),
       ],
       body: BlocProvider.value(
         value: addressCubit,
@@ -185,7 +221,7 @@ class _AddressViewState extends State<AddressView> {
                         },
                       ),
                       const SizedBox(height: 8),
-                      _buildAddAddressButton(),
+                      // _buildAddAddressButton(),
                     ],
                   ),
                 ),
@@ -229,43 +265,8 @@ class _AddressViewState extends State<AddressView> {
               ),
             ),
             const SizedBox(height: 24),
-            _buildAddAddressButton(),
+            //   _buildAddAddressButton(),
           ],
-        ),
-      ),
-    );
-  }
-
-  // Method for the add address button to avoid duplication
-  Widget _buildAddAddressButton() {
-    return InkWell(
-      onTap: () => context.navigateToPage(
-        AddAddressView(
-          addressCubit: addressCubit,
-        ),
-      ),
-      child: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.symmetric(vertical: 16),
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey.shade300),
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Center(
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Icon(Icons.add),
-              const SizedBox(width: 8),
-              Text(
-                'Add New Address',
-                style: TextStyle(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
-          ),
         ),
       ),
     );
