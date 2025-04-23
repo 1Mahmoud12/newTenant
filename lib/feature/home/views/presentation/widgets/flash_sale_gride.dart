@@ -21,9 +21,7 @@ class _FlashSaleGridState extends State<FlashSaleGrid> {
     super.initState();
     // Fetch top products when widget initializes
     if (widget.isItWhishList!) {
-      if (ConstantsModels.wishListModel == null) {
-        wishListCubit.getWishList(context: context);
-      }
+      wishListCubit.getWishList(context: context);
     } else {
       if (ConstantsModels.topProductModel == null) {
         topProductCubit.getTopProduct(context: context);
