@@ -138,6 +138,7 @@ class AppIcons {
   static const paymentMethod = '$baseUrl/payment-method.svg';
   static const changePassword = '$baseUrl/change-passowrd.svg';
   static const notificationIcon = '$baseUrl/notification-01.svg';
+  static const notificationIc = '$baseUrl/notification-icon.svg';
   static const faq = '$baseUrl/faq.svg';
   static const helpCenter = '$baseUrl/help-center.svgg';
   static const logout = '$baseUrl/logout-05.svg';

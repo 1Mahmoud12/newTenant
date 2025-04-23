@@ -1,7 +1,9 @@
+import 'package:dobzz_seller/core/utils/app_icons.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/feature/notification/presentation/notification_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 
 class HomePageHeader extends StatelessWidget {
   const HomePageHeader({super.key});
@@ -42,7 +44,11 @@ class HomePageHeader extends StatelessWidget {
             child: Stack(
               clipBehavior: Clip.none,
               children: [
-                Icon(Icons.notifications_none, size: 28.sp),
+                SvgPicture.asset(
+                  AppIcons.notificationIc,
+                  width: 24,
+                  height: 24,
+                ),
                 Positioned(
                   top: 2,
                   right: 2,

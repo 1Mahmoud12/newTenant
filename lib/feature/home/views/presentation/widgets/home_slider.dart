@@ -24,7 +24,7 @@ class _HomeSliderState extends State<HomeSlider> {
   @override
   void initState() {
     super.initState();
-    if (ConstantsModels.sliderModel != null) {
+    if (ConstantsModels.sliderModel == null) {
       _sliderCubit.getSlider(context: context);
     }
 

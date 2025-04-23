@@ -1,10 +1,12 @@
 import 'dart:io';
 
+import 'package:dobzz_seller/core/utils/app_icons.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/feature/notification/presentation/notification_view.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 
 PreferredSizeWidget customAppBar({
   bool stopLeading = false,
@@ -33,13 +35,16 @@ PreferredSizeWidget customAppBar({
           ),
     leadingWidth: 50,
     centerTitle: centerTitle,
-    title: Text(
-      (title ?? '').tr(),
-      style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 20.sp, fontWeight: FontWeight.bold),
+    title: Padding(
+      padding: const EdgeInsets.only(top: 24),
+      child: Text(
+        (title ?? '').tr(),
+        style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 20.sp, fontWeight: FontWeight.bold),
+      ),
     ),
     actions: [
       Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
+        padding: const EdgeInsets.only(left: 16, right: 16, top: 24),
         child: InkWell(
           onTap: () {
             context.navigateToPage(const NotificationsView());
@@ -48,10 +53,14 @@ PreferredSizeWidget customAppBar({
               Stack(
                 clipBehavior: Clip.none,
                 children: [
-                  Icon(Icons.notifications_none, size: 28.sp),
+                  SvgPicture.asset(
+                    AppIcons.notificationIc,
+                    width: 24,
+                    height: 24,
+                  ),
                   Positioned(
-                    top: 2,
-                    right: 2,
+                    top: 1,
+                    right: 1,
                     child: Container(
                       width: 8,
                       height: 8,
@@ -67,6 +76,6 @@ PreferredSizeWidget customAppBar({
       ),
     ],
     bottom: bottom,
-    toolbarHeight: 60,
+    toolbarHeight: 75,
   );
 }

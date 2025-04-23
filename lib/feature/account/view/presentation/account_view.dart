@@ -17,8 +17,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
-class AccountView extends StatelessWidget {
+class AccountView extends StatefulWidget {
   const AccountView({Key? key}) : super(key: key);
+
+  @override
+  State<AccountView> createState() => _AccountViewState();
+}
+
+class _AccountViewState extends State<AccountView> {
+  final currentLanguage = 'English';
 
   @override
   Widget build(BuildContext context) {
@@ -116,6 +123,13 @@ class AccountView extends StatelessWidget {
                     },
                   ),
                   _buildMenuItem(
+                    icon: AppIcons.faq,
+                    title: 'Language',
+                    onTap: () {
+                      _showLanguageSelector(currentLanguage, context);
+                    },
+                  ),
+                  _buildMenuItem(
                     icon: AppIcons.customerSerivce,
                     title: 'Help Center',
                     onTap: () {
@@ -143,6 +157,83 @@ class AccountView extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildLanguageSection(BuildContext context) {
+    final data = ConstantsModels.generalNotificationModel?.data;
+    final currentLanguage = data?.language ?? 'English';
+
+    return Container(
+      color: Colors.white,
+      child: ListTile(
+        title: const Text(
+          'Language',
+          style: TextStyle(
+            fontSize: 16,
+            color: Colors.black87,
+          ),
+        ),
+        subtitle: Text(
+          currentLanguage,
+          style: TextStyle(
+            color: Colors.grey.shade600,
+          ),
+        ),
+        trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+        onTap: () => _showLanguageSelector(currentLanguage, context),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+      ),
+    );
+  }
+
+  void _showLanguageSelector(String currentLanguage, BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Container(
+          decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(12)),
+          child: ListView(
+            shrinkWrap: true,
+            children: [
+              const Padding(
+                padding: EdgeInsets.all(16.0),
+                child: Text(
+                  'Select Language',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+              ),
+              const Divider(),
+              _buildLanguageOption('English', currentLanguage, context),
+              _buildLanguageOption('Arabic', currentLanguage, context),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildLanguageOption(String language, String currentLanguage, BuildContext context) {
+    final isSelected = language == currentLanguage;
+
+    return ListTile(
+      title: Text(
+        language,
+        style: TextStyle(
+          fontSize: 16.sp,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
+      trailing: isSelected ? const Icon(Icons.check, color: Colors.black) : null,
+      onTap: () {
+        if (ConstantsModels.generalNotificationModel?.data != null) {
+          ConstantsModels.generalNotificationModel!.data!.language = language;
+        }
+        setState(() {});
+        Navigator.pop(context);
+        // Here you would typically call an API to save the language setting
+        // For example: _cubit.updateLanguageSetting(language: language);
+      },
     );
   }
 
