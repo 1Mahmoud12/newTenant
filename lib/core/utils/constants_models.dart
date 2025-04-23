@@ -29,5 +29,6 @@ class ConstantsModels {
   static CheckoutDetailsModel ? checkoutDetailsModel ;
   static SubCategoryModel  ? subCategoryModel  ;
     static ProductModel? productsModel;
+    static ProductModel? searchProductsModel;
 
 }

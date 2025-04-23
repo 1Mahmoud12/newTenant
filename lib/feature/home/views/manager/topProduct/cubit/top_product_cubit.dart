@@ -11,16 +11,17 @@ part 'top_product_state.dart';
 class TopProductCubit extends Cubit<TopProductState> {
   TopProductCubit() : super(TopProductInitial());
 
-  Future<void> getTopProduct({required BuildContext context, int? subCategoryId}) async {
+  Future<void> getTopProduct({required BuildContext context, int? subCategoryId, String? searchProductByName}) async {
     emit(TopProductLoading());
-    await GetTopProductDataSource.getTopProduct().then(
+    await GetTopProductDataSource.getTopProduct(subCategoryId: subCategoryId, searchProductByName: searchProductByName).then(
       (value) async {
         value.fold((l) {
           emit(TopProductError(e: l.errMessage));
         }, (r) async {
-          //   logger.i(r.toJson());
           if (subCategoryId != null) {
             ConstantsModels.productsModel = r;
+          } else if (searchProductByName != null) {
+            ConstantsModels.searchProductsModel = r;
           } else {
             ConstantsModels.topProductModel = r;
           }

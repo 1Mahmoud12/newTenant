@@ -110,9 +110,11 @@ class SubcategoryTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        context.navigateToPage(ProductView(
-          subCategoryId: subCategoryId,
-        ));
+        context.navigateToPage(
+          ProductView(
+            subCategoryId: subCategoryId,
+          ),
+        );
       },
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),

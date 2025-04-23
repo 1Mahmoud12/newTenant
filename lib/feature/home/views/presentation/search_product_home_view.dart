@@ -1,10 +1,15 @@
 import 'package:dobzz_seller/core/component/cache_image.dart';
 import 'package:dobzz_seller/core/component/custom_app_bar.dart';
 import 'package:dobzz_seller/core/component/fields/custom_text_form_field.dart';
+import 'package:dobzz_seller/core/component/loadsErros/loading_widget.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
+import 'package:dobzz_seller/core/utils/constants_models.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
+import 'package:dobzz_seller/feature/home/data/models/product_mdoel.dart';
+import 'package:dobzz_seller/feature/home/views/manager/topProduct/cubit/top_product_cubit.dart';
 import 'package:dobzz_seller/feature/product/views/presentation/product_details_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SearchProductHomeView extends StatefulWidget {
@@ -16,67 +21,12 @@ class SearchProductHomeView extends StatefulWidget {
 
 class _SearchProductHomeViewState extends State<SearchProductHomeView> {
   final TextEditingController _searchController = TextEditingController();
-  bool _isSearching = false;
 
-  // Sample data for demonstration
-  final List<String> _recentSearches = [
-    'Jeans',
-    'Casual clothes',
-    'Hoodie',
-    'Nike shoes black',
-    'V-neck tshirt',
-    'Winter clothes',
-  ];
-
-  final List<Product> _products = [
-    Product(name: 'Regular Fit Slogan', price: 11.90, image: 'assets/blue_tshirt.png'),
-    Product(name: 'Regular Fit Polo', price: 11.00, discountPercentage: 52, image: 'assets/turquoise_polo.png'),
-    Product(name: 'Regular Fit Black', price: 16.90, image: 'assets/black_tshirt.png'),
-    Product(name: 'Regular Fit V-Neck', price: 12.90, image: 'assets/vneck_tshirt.png'),
-  ];
-
-  List<Product> _filteredProducts = [];
+  TopProductCubit topProductCubit = TopProductCubit();
 
   @override
   void initState() {
     super.initState();
-    _searchController.addListener(_onSearchChanged);
-  }
-
-  @override
-  void dispose() {
-    _searchController.removeListener(_onSearchChanged);
-    _searchController.dispose();
-    super.dispose();
-  }
-
-  void _onSearchChanged() {
-    final query = _searchController.text;
-    setState(() {
-      _isSearching = query.isNotEmpty;
-      if (_isSearching) {
-        _filteredProducts = _products.where((product) => product.name.toLowerCase().contains(query.toLowerCase())).toList();
-      }
-    });
-  }
-
-  void _clearSearch() {
-    setState(() {
-      _searchController.clear();
-      _isSearching = false;
-    });
-  }
-
-  void _removeRecentSearch(int index) {
-    setState(() {
-      _recentSearches.removeAt(index);
-    });
-  }
-
-  void _clearAllRecentSearches() {
-    setState(() {
-      _recentSearches.clear();
-    });
   }
 
   @override
@@ -89,91 +39,58 @@ class _SearchProductHomeViewState extends State<SearchProductHomeView> {
             controller: _searchController,
             hintText: 'Search for clothes...',
             prefixIcon: const Icon(Icons.search),
-            suffixIcon: _isSearching
-                ? IconButton(
-                    icon: const Icon(Icons.clear),
-                    onPressed: _clearSearch,
-                  )
-                : IconButton(
-                    icon: const Icon(Icons.mic),
-                    onPressed: () {
-                      // Handle voice search
-                    },
-                  ),
+            onChange: (value) {
+              if (value.isNotEmpty) {
+                topProductCubit.getTopProduct(context: context, searchProductByName: value);
+              } else {
+                ConstantsModels.searchProductsModel = null;
+                setState(() {});
+              }
+            },
           ),
           Expanded(
-            child: _isSearching ? _buildProductsList() : _buildRecentSearches(),
+            child: BlocProvider.value(
+              value: topProductCubit,
+              child: BlocBuilder<TopProductCubit, TopProductState>(
+                builder: (context, state) {
+                  return _buildProductsList(state);
+                },
+              ),
+            ),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildRecentSearches() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                'Recent Searches',
-                style: TextStyle(
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              if (_recentSearches.isNotEmpty)
-                TextButton(
-                  onPressed: _clearAllRecentSearches,
-                  child: Text(
-                    'Clear all',
-                    style: TextStyle(color: AppColors.primaryColor, fontSize: 16.sp, fontWeight: FontWeight.w500),
-                  ),
-                ),
-            ],
-          ),
-        ),
-        Expanded(
-          child: ListView.builder(
-            itemCount: _recentSearches.length,
-            itemBuilder: (context, index) {
-              return ListTile(
-                title: Text(
-                  _recentSearches[index],
-                  style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500),
-                ),
-                trailing: IconButton(
-                  icon: const Icon(Icons.close, color: Colors.grey),
-                  onPressed: () => _removeRecentSearch(index),
-                ),
-                onTap: () {
-                  _searchController.text = _recentSearches[index];
-                },
-              );
-            },
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildProductsList() {
-    if (_filteredProducts.isEmpty) {
+  Widget _buildProductsList(TopProductState state) {
+    if (state is TopProductLoading) {
+      return const Center(child: LoadingWidget());
+    }
+    if (state is TopProductError) {
+      return Center(child: Text('Error: ${state.e}'));
+    }
+    if (ConstantsModels.searchProductsModel?.data?.isEmpty ?? true) {
       return const Center(
         child: Text('No products found'),
       );
     }
-
-    return ListView.builder(
-      itemCount: _filteredProducts.length,
-      itemBuilder: (context, index) {
-        final product = _filteredProducts[index];
-        return SearchedProductCard(product: product);
-      },
-    );
+    if (state is TopProductSuccess) {
+      final products = ConstantsModels.searchProductsModel?.data ?? [];
+      if (products.isEmpty) {
+        return const Center(
+          child: Text('No products available'),
+        );
+      }
+      return ListView.builder(
+        itemCount: products.length,
+        itemBuilder: (context, index) {
+          final product = products[index];
+          return SearchedProductCard(product: product);
+        },
+      );
+    }
+    return const SizedBox.shrink();
   }
 }
 
@@ -189,46 +106,31 @@ class SearchedProductCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       leading: CacheImage(
-        urlImage: product.image,
+        urlImage: product.imagePath ?? '',
         errorColor: Colors.grey,
         height: 60,
         width: 60,
       ),
       title: Text(
-        product.name,
+        product.name ?? '',
         style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
       ),
       subtitle: Row(
         children: [
           Text(
-            '\$${product.price.toStringAsFixed(2)}',
+            '\$${product.price?.toStringAsFixed(2)}',
             style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
           ),
-          if (product.discountPercentage != null)
-            Text(
-              ' -${product.discountPercentage}%',
-              style: TextStyle(color: Colors.red, fontSize: 16.sp, fontWeight: FontWeight.bold),
-            ),
         ],
       ),
       trailing: const Icon(Icons.arrow_outward),
       onTap: () {
-        //context.navigateToPage(const ProductDetailsView());
+        context.navigateToPage(
+          ProductDetailsView(
+            productId: product.id ?? -1,
+          ),
+        );
       },
     );
   }
-}
-
-class Product {
-  final String name;
-  final double price;
-  final int? discountPercentage;
-  final String? image;
-
-  Product({
-    required this.name,
-    required this.price,
-    this.discountPercentage,
-    this.image,
-  });
 }

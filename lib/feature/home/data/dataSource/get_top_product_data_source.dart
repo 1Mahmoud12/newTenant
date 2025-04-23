@@ -8,10 +8,14 @@ import 'package:dobzz_seller/core/network/errors/failures.dart';
 import 'package:dobzz_seller/feature/home/data/models/product_mdoel.dart';
 
 class GetTopProductDataSource {
-  static Future<Either<Failure, ProductModel>> getTopProduct({int? subCategoryId}) async {
+  static Future<Either<Failure, ProductModel>> getTopProduct({int? subCategoryId, String? searchProductByName}) async {
     try {
       final response = await DioHelper.getData(
-        url: subCategoryId != null ? '${EndPoints.getTopProduct}?filter[categories][]=$subCategoryId' : EndPoints.getTopProduct,
+        query: {
+          if (subCategoryId != null) 'filter[categories][]': subCategoryId,
+          if (searchProductByName != null) 'products?filter[name]=': searchProductByName,
+        },
+        url: EndPoints.getTopProduct,
       );
       log('Top Product Response: ${response.data['data']}');
       return Right(ProductModel.fromJson(response.data));
