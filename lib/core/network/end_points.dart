@@ -40,6 +40,7 @@ class EndPoints {
   static const getCategories = 'shop/categories';
   static const getAllServices = 'Service/GetAllServices';
   static const getAllPetPackages = 'Service/GetAllPetPackages';
+  static const slider = 'shop/home';
 
   //Notification
   static const userNotifications = 'Notification/AllUserNotifications';
