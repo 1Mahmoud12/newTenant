@@ -1,11 +1,13 @@
+import 'package:dobzz_seller/core/component/cache_image.dart';
+import 'package:dobzz_seller/core/component/custom_app_bar.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/feature/account/view/myOrders/data/models/order_model.dart';
 import 'package:dobzz_seller/feature/account/view/myOrders/presentation/expandable_section_container.dart';
 import 'package:dobzz_seller/feature/product/views/presentation/product_details_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 
 class OrderDetailsScreen extends StatelessWidget {
   final OrderData order;
@@ -16,19 +18,7 @@ class OrderDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[50],
-      appBar: AppBar(
-        title: Text(
-          'Order #${order.id}',
-          style: const TextStyle(fontSize: 18),
-        ),
-        centerTitle: true,
-        backgroundColor: Colors.white,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, size: 20),
-          onPressed: () => Navigator.pop(context),
-        ),
-      ),
+      appBar: customAppBar(context: context, title: 'Order Details'),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -38,23 +28,6 @@ class OrderDetailsScreen extends StatelessWidget {
               StatusTimeline(order: order),
 
               const SizedBox(height: 12),
-
-              // Delivery Information
-              SectionContainer(
-                title: 'Delivery Information',
-                child: AddressInfo(address: order.address),
-              ),
-
-              const SizedBox(height: 12),
-
-              // Order Summary
-              SectionContainer(
-                title: 'Payment Information',
-                child: PaymentInfo(order: order),
-              ),
-
-              const SizedBox(height: 12),
-
               SectionContainer(
                 title: 'Order Items',
                 isExpandable: true,
@@ -62,16 +35,9 @@ class OrderDetailsScreen extends StatelessWidget {
                   children: order.items?.map((item) => OrderItem(item: item)).toList() ?? [],
                 ),
               ),
-
               const SizedBox(height: 12),
 
-              // Total Summary
-              SectionContainer(
-                title: 'Order Total',
-                child: TotalSummary(order: order),
-              ),
-
-              const SizedBox(height: 24),
+              OrderInformation(order: order),
             ],
           ),
         ),
@@ -100,7 +66,6 @@ class SectionContainer extends StatelessWidget {
       return Container(
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
         decoration: BoxDecoration(
-          color: Colors.white,
           borderRadius: BorderRadius.circular(12),
         ),
         child: Column(
@@ -140,97 +105,93 @@ class StatusTimeline extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Color statusColor;
-    String statusText;
 
     switch (order.status?.toLowerCase()) {
       case 'pending':
-        statusColor = const Color(0xFFFF9800);
-        statusText = 'Your order is being processed';
+        statusColor = const Color(0xFFFF9800); // Orange
         break;
       case 'processing':
-        statusColor = const Color(0xFF2196F3);
-        statusText = 'Your order is being prepared';
+        statusColor = const Color(0xFF2196F3); // Blue
         break;
       case 'shipped':
-        statusColor = const Color(0xFF3F51B5);
-        statusText = 'Your order is on its way';
+        statusColor = const Color(0xFF3F51B5); // Indigo
         break;
       case 'delivered':
-        statusColor = const Color(0xFF4CAF50);
-        statusText = 'Your order has been delivered';
+        statusColor = const Color(0xFF4CAF50); // Green
         break;
       case 'canceled':
-        statusColor = const Color(0xFFF44336);
-        statusText = 'Your order has been canceled';
+        statusColor = const Color(0xFFF44336); // Red
         break;
       default:
         statusColor = Colors.grey;
-        statusText = 'Order status unknown';
     }
 
     return Container(
-      margin: const EdgeInsets.all(16),
-      padding: const EdgeInsets.all(16),
+      width: double.infinity,
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [statusColor.withOpacity(0.8), statusColor.withOpacity(0.6)],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: statusColor.withOpacity(0.3),
-            blurRadius: 8,
-            offset: const Offset(0, 4),
-          ),
-        ],
+        borderRadius: BorderRadius.circular(8),
       ),
+      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Text(
-                  order.status?.toUpperCase() ?? 'UNKNOWN',
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14,
-                  ),
+              Text(
+                'Order #${order.id}',
+                style: TextStyle(
+                  fontSize: 20.sp,
+                  fontWeight: FontWeight.bold,
+                  color: const Color(0xFF333333),
                 ),
               ),
               const Spacer(),
               Text(
                 order.createdAt != null ? DateFormat('MMM dd, yyyy').format(DateTime.parse(order.createdAt!)) : 'Unknown date',
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 14,
+                style: TextStyle(
+                  fontSize: 16.sp,
+                  color: Colors.grey[500],
+                  fontWeight: FontWeight.w500,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 8),
+          Row(
+            children: [
+              const Text(
+                'Your order is being processed',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                  color: Color(0xFF333333),
+                ),
+              ),
+              const Spacer(),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                decoration: BoxDecoration(
+                  color: statusColor.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Text(
+                  order.status ?? 'Unknown',
+                  style: TextStyle(
+                    color: statusColor,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 6),
           Text(
-            statusText,
-            style: const TextStyle(
-              color: Colors.white,
+            'Thank you for your order!',
+            style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w500,
-            ),
-          ),
-          const SizedBox(height: 8),
-          const Text(
-            'Thank you for your order',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 14,
+              color: Colors.green[600],
             ),
           ),
         ],
@@ -486,36 +447,22 @@ class OrderItem extends StatelessWidget {
           ),
         );
       },
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+      child: Container(
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: Colors.grey[200]!),
+        ),
+        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Product Image
-            ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: CachedNetworkImage(
-                imageUrl: item.productThumbnailPath ?? '',
-                width: 70,
-                height: 70,
-                fit: BoxFit.cover,
-                placeholder: (context, url) => Container(
-                  color: Colors.grey[200],
-                  child: const Center(
-                    child: SizedBox(
-                      width: 20,
-                      height: 20,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                      ),
-                    ),
-                  ),
-                ),
-                errorWidget: (context, url, error) => Container(
-                  color: Colors.grey[200],
-                  child: const Icon(Icons.image_not_supported_outlined, size: 20),
-                ),
-              ),
+            CacheImage(
+              urlImage: item.productThumbnailPath ?? '',
+              width: 70,
+              height: 70,
+              fit: BoxFit.cover,
             ),
             const SizedBox(width: 12),
 
@@ -673,5 +620,159 @@ class TotalSummary extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+class OrderInformation extends StatelessWidget {
+  final OrderData order;
+
+  const OrderInformation({Key? key, required this.order}) : super(key: key);
+
+  String _formatPrice(String? price) {
+    if (price == null) return '0.00';
+    try {
+      final double value = double.parse(price);
+      return value.toStringAsFixed(2);
+    } catch (e) {
+      return price;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final address = order.address;
+    final itemsCount = order.items?.length ?? 0;
+
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 10),
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Order information',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Color(0xFF333333),
+            ),
+          ),
+          const SizedBox(height: 16),
+
+          // Name
+          _buildInfoRow(
+            label: 'Name:',
+            value: address?.name ?? 'Unknown',
+          ),
+
+          const SizedBox(height: 12),
+
+          // Number (Order ID or Phone)
+          _buildInfoRow(
+            label: 'Number:',
+            value: address?.phone ?? order.id?.toString() ?? 'Unknown',
+          ),
+
+          const SizedBox(height: 12),
+
+          // Items Count
+          _buildInfoRow(
+            label: 'Items:',
+            value: itemsCount.toString(),
+          ),
+
+          const SizedBox(height: 12),
+
+          // Shipping Address
+          _buildInfoRow(
+            label: 'Shipping Address:',
+            value: address != null
+                ? [
+                    address.address,
+                    address.city,
+                    address.state,
+                    address.pinCode,
+                    address.country,
+                  ].where((e) => e != null && e.isNotEmpty).join(', ')
+                : 'Unknown',
+          ),
+
+          const SizedBox(height: 12),
+
+          // Payment Method
+          _buildInfoRow(
+            label: 'Payment method:',
+            value: order.paymentMethod == 'cash' ? 'Cash on delivery' : order.paymentMethod?.capitalize() ?? 'Unknown',
+          ),
+
+          const SizedBox(height: 12),
+
+          // Payment Status
+          _buildInfoRow(
+            label: 'Payment Status:',
+            value: order.paymentStatus?.capitalize() ?? 'Unknown',
+          ),
+
+          const SizedBox(height: 12),
+
+          // Subtotal
+          _buildInfoRow(
+            label: 'Subtotal',
+            value: '${_formatPrice(order.totalPrice)} EGP',
+          ),
+
+          const SizedBox(height: 12),
+
+          // Total
+          _buildInfoRow(
+            label: 'Total',
+            value: '${_formatPrice(order.totalPrice)} EGP',
+            valueColor: Colors.red,
+            valueFontWeight: FontWeight.bold,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildInfoRow({
+    required String label,
+    required String value,
+    Color? valueColor,
+    FontWeight? valueFontWeight,
+  }) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(
+          width: 130,
+          child: Text(
+            label,
+            style: TextStyle(
+              fontSize: 16.sp,
+              color: Colors.grey[500],
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+        Expanded(
+          child: Text(
+            value,
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: valueFontWeight ?? FontWeight.normal,
+              color: valueColor ?? const Color(0xFF333333),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+// Extension to capitalize first letter of string
+extension StringExtension on String {
+  String capitalize() {
+    return '${this[0].toUpperCase()}${substring(1)}';
   }
 }

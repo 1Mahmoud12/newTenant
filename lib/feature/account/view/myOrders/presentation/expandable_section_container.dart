@@ -55,9 +55,8 @@ class _ExpandableSectionContainerState extends State<ExpandableSectionContainer>
               width: double.infinity,
               padding: const EdgeInsets.symmetric(vertical: 12),
               alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: Colors.grey[50],
-                borderRadius: const BorderRadius.only(
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(12),
                   bottomRight: Radius.circular(12),
                 ),
@@ -104,9 +103,8 @@ class _ExpandableSectionContainerState extends State<ExpandableSectionContainer>
               width: double.infinity,
               padding: const EdgeInsets.symmetric(vertical: 12),
               alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: Colors.grey[50],
-                borderRadius: const BorderRadius.only(
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(12),
                   bottomRight: Radius.circular(12),
                 ),
@@ -137,9 +135,8 @@ class _ExpandableSectionContainerState extends State<ExpandableSectionContainer>
     }
 
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(
-        color: Colors.white,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
