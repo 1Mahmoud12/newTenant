@@ -35,40 +35,40 @@ class OrderDetailsScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Status Timeline
-              _buildStatusTimeline(context),
+              StatusTimeline(order: order),
 
               const SizedBox(height: 12),
 
               // Delivery Information
-              _buildSectionContainer(
+              SectionContainer(
                 title: 'Delivery Information',
-                child: _buildAddressInfo(context),
+                child: AddressInfo(address: order.address),
               ),
 
               const SizedBox(height: 12),
 
               // Order Summary
-              _buildSectionContainer(
+              SectionContainer(
                 title: 'Payment Information',
-                child: _buildOrderSummary(context),
+                child: PaymentInfo(order: order),
               ),
 
               const SizedBox(height: 12),
 
-              _buildSectionContainer(
+              SectionContainer(
                 title: 'Order Items',
                 isExpandable: true,
                 child: Column(
-                  children: order.items?.map((item) => _buildOrderItem(context, item)).toList() ?? [],
+                  children: order.items?.map((item) => OrderItem(item: item)).toList() ?? [],
                 ),
               ),
 
               const SizedBox(height: 12),
 
               // Total Summary
-              _buildSectionContainer(
+              SectionContainer(
                 title: 'Order Total',
-                child: _buildTotalSummary(context),
+                child: TotalSummary(order: order),
               ),
 
               const SizedBox(height: 24),
@@ -78,15 +78,25 @@ class OrderDetailsScreen extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget _buildSectionContainer({
-    required String title,
-    required Widget child,
-    bool isExpandable = false,
-    int initialVisibleItems = 2,
-  }) {
+class SectionContainer extends StatelessWidget {
+  final String title;
+  final Widget child;
+  final bool isExpandable;
+  final int initialVisibleItems;
+
+  const SectionContainer({
+    Key? key,
+    required this.title,
+    required this.child,
+    this.isExpandable = false,
+    this.initialVisibleItems = 2,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     if (!isExpandable) {
-      // Original implementation for non-expandable sections
       return Container(
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
         decoration: BoxDecoration(
@@ -114,15 +124,21 @@ class OrderDetailsScreen extends StatelessWidget {
       );
     }
 
-    // Expandable section implementation
     return ExpandableSectionContainer(
       title: title,
       initialVisibleItems: initialVisibleItems,
       child: child,
     );
   }
+}
 
-  Widget _buildStatusTimeline(BuildContext context) {
+class StatusTimeline extends StatelessWidget {
+  final OrderData order;
+
+  const StatusTimeline({Key? key, required this.order}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     Color statusColor;
     String statusText;
 
@@ -221,10 +237,15 @@ class OrderDetailsScreen extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget _buildAddressInfo(BuildContext context) {
-    final address = order.address;
+class AddressInfo extends StatelessWidget {
+  final Address? address;
 
+  const AddressInfo({Key? key, this.address}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     if (address == null) {
       return const Padding(
         padding: EdgeInsets.all(16.0),
@@ -253,7 +274,7 @@ class OrderDetailsScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      address.name ?? 'Unknown',
+                      address!.name ?? 'Unknown',
                       style: const TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.w500,
@@ -261,7 +282,7 @@ class OrderDetailsScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      address.phone ?? 'No phone number',
+                      address!.phone ?? 'No phone number',
                       style: TextStyle(
                         fontSize: 14,
                         color: Colors.grey[600],
@@ -299,11 +320,11 @@ class OrderDetailsScreen extends StatelessWidget {
                     const SizedBox(height: 4),
                     Text(
                       [
-                        address.address,
-                        address.city,
-                        address.state,
-                        address.country,
-                        address.pinCode,
+                        address!.address,
+                        address!.city,
+                        address!.state,
+                        address!.country,
+                        address!.pinCode,
                       ].where((e) => e != null && e.isNotEmpty).join(', '),
                       style: TextStyle(
                         fontSize: 14,
@@ -320,69 +341,24 @@ class OrderDetailsScreen extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget _buildOrderSummary(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        children: [
-          _buildInfoRow(
-            icon: Icons.payment_outlined,
-            iconColor: Colors.purple,
-            label: 'Payment Method',
-            value: _formatPaymentMethod(order.paymentMethod ?? 'Unknown'),
-          ),
-          const SizedBox(height: 16),
-          _buildInfoRow(
-            icon: Icons.account_balance_wallet_outlined,
-            iconColor: Colors.orange,
-            label: 'Payment Status',
-            value: _formatPaymentStatus(order.paymentStatus ?? 'Unknown'),
-          ),
-          if (order.isPreorder == true) ...[
-            const SizedBox(height: 16),
-            _buildInfoRow(
-              icon: Icons.calendar_today_outlined,
-              iconColor: Colors.blue,
-              label: 'Order Type',
-              value: 'Pre-order',
-            ),
-          ],
-        ],
-      ),
-    );
-  }
+class InfoRow extends StatelessWidget {
+  final IconData icon;
+  final Color iconColor;
+  final String label;
+  final String value;
 
-  String _formatPaymentMethod(String method) {
-    switch (method.toLowerCase()) {
-      case 'card':
-        return 'Credit/Debit Card';
-      case 'cash':
-        return 'Cash on Delivery';
-      default:
-        return method;
-    }
-  }
+  const InfoRow({
+    Key? key,
+    required this.icon,
+    required this.iconColor,
+    required this.label,
+    required this.value,
+  }) : super(key: key);
 
-  String _formatPaymentStatus(String status) {
-    switch (status.toLowerCase()) {
-      case 'paid':
-        return 'Paid';
-      case 'unpaid':
-        return 'Unpaid';
-      case 'refunded':
-        return 'Refunded';
-      default:
-        return status;
-    }
-  }
-
-  Widget _buildInfoRow({
-    required IconData icon,
-    required Color iconColor,
-    required String label,
-    required String value,
-  }) {
+  @override
+  Widget build(BuildContext context) {
     return Row(
       children: [
         Container(
@@ -419,8 +395,89 @@ class OrderDetailsScreen extends StatelessWidget {
       ],
     );
   }
+}
 
-  Widget _buildOrderItem(BuildContext context, Items item) {
+class PaymentInfo extends StatelessWidget {
+  final OrderData order;
+
+  const PaymentInfo({Key? key, required this.order}) : super(key: key);
+
+  String _formatPaymentMethod(String method) {
+    switch (method.toLowerCase()) {
+      case 'card':
+        return 'Credit/Debit Card';
+      case 'cash':
+        return 'Cash on Delivery';
+      default:
+        return method;
+    }
+  }
+
+  String _formatPaymentStatus(String status) {
+    switch (status.toLowerCase()) {
+      case 'paid':
+        return 'Paid';
+      case 'unpaid':
+        return 'Unpaid';
+      case 'refunded':
+        return 'Refunded';
+      default:
+        return status;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        children: [
+          InfoRow(
+            icon: Icons.payment_outlined,
+            iconColor: Colors.purple,
+            label: 'Payment Method',
+            value: _formatPaymentMethod(order.paymentMethod ?? 'Unknown'),
+          ),
+          const SizedBox(height: 16),
+          InfoRow(
+            icon: Icons.account_balance_wallet_outlined,
+            iconColor: Colors.orange,
+            label: 'Payment Status',
+            value: _formatPaymentStatus(order.paymentStatus ?? 'Unknown'),
+          ),
+          if (order.isPreorder == true) ...[
+            const SizedBox(height: 16),
+            const InfoRow(
+              icon: Icons.calendar_today_outlined,
+              iconColor: Colors.blue,
+              label: 'Order Type',
+              value: 'Pre-order',
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+class OrderItem extends StatelessWidget {
+  final Items item;
+
+  const OrderItem({Key? key, required this.item}) : super(key: key);
+
+  String _formatPrice(String? price) {
+    if (price == null) return '0.00';
+
+    try {
+      final double value = double.parse(price);
+      return value.toStringAsFixed(2);
+    } catch (e) {
+      return price;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
         context.navigateToPage(
@@ -511,8 +568,41 @@ class OrderDetailsScreen extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget _buildTotalSummary(BuildContext context) {
+class TotalSummary extends StatelessWidget {
+  final OrderData order;
+
+  const TotalSummary({Key? key, required this.order}) : super(key: key);
+
+  String _formatPrice(String? price) {
+    if (price == null) return '0.00';
+
+    try {
+      final double value = double.parse(price);
+      return value.toStringAsFixed(2);
+    } catch (e) {
+      return price;
+    }
+  }
+
+  String _calculateSubtotal() {
+    if (order.items == null || order.items!.isEmpty) {
+      return _formatPrice(order.totalPrice);
+    }
+
+    double total = 0;
+    for (final item in order.items!) {
+      if (item.price != null) {
+        total += double.tryParse(item.price!) ?? 0;
+      }
+    }
+
+    return '${total.toStringAsFixed(2)} EGP';
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
@@ -583,31 +673,5 @@ class OrderDetailsScreen extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  String _calculateSubtotal() {
-    if (order.items == null || order.items!.isEmpty) {
-      return _formatPrice(order.totalPrice);
-    }
-
-    double total = 0;
-    for (final item in order.items!) {
-      if (item.price != null) {
-        total += double.tryParse(item.price!) ?? 0;
-      }
-    }
-
-    return '${total.toStringAsFixed(2)} EGP';
-  }
-
-  String _formatPrice(String? price) {
-    if (price == null) return '0.00';
-
-    try {
-      final double value = double.parse(price);
-      return value.toStringAsFixed(2);
-    } catch (e) {
-      return price;
-    }
   }
 }
