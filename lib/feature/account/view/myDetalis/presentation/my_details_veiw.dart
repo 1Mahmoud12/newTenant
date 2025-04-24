@@ -236,17 +236,18 @@ class _MyDetailsViewState extends State<MyDetailsView> {
                   lastName: _lastNameController.text,
                   email: _emailController.text,
                   phone: _phoneController.text,
-                  image: _profileImage, 
+                  image: _profileImage,
                 );
               },
               child: state is UpdateProfileLoading
                   ? const SizedBox(
-                      width: 20,
-                      height: 20,
+                      width: 27,
+                      height: 27,
                       child: Center(
-                        child: CircularProgressIndicator(
-                          color: AppColors.white,
-                          strokeWidth: 2,
+                        child: FittedBox(
+                          child: CircularProgressIndicator(
+                            color: AppColors.white,
+                          ),
                         ),
                       ),
                     )

@@ -48,12 +48,12 @@ class _AccountViewState extends State<AccountView> {
                     height: 60,
                     width: 60,
                     circle: true,
-                    urlImage: ConstantsModels.registerModel?.data?.avatarPath ?? '',
+                    urlImage: userCacheValue?.data?.avatarPath ?? '',
                   ),
                   const SizedBox(height: 10),
                   // Name
                   Text(
-                    ConstantsModels.registerModel?.data?.name ?? 'Unknown',
+                    userCacheValue?.data?.name ?? 'Unknown',
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,

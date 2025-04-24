@@ -188,11 +188,11 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(widget.borderRadius ?? 8)),
-                  borderSide: BorderSide(color: widget.focusedBorderColor ?? AppColors.primaryColor.withOpacity(.1)),
+                  borderSide: BorderSide(color: widget.focusedBorderColor ?? AppColors.primaryColor.withOpacity(.4)),
                 ),
                 focusedErrorBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(widget.borderRadius ?? 8)),
-                  borderSide: BorderSide(color: widget.focusedBorderColor ?? AppColors.primaryColor.withOpacity(.1)),
+                  borderSide: BorderSide(color: widget.focusedBorderColor ?? AppColors.primaryColor.withOpacity(.4)),
                 ),
                 errorBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(widget.borderRadius ?? 8)),
@@ -200,7 +200,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
                 ),
                 disabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(widget.borderRadius ?? 8)),
-                  borderSide: BorderSide(color: widget.focusedBorderColor ?? AppColors.primaryColor.withOpacity(.1)),
+                  borderSide: BorderSide(color: widget.focusedBorderColor ?? AppColors.black.withOpacity(.1)),
                 ),
                 suffixIcon: widget.password != null && widget.password!
                     ? Padding(

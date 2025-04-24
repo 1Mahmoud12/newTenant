@@ -15,7 +15,7 @@ class FavoriteView extends StatelessWidget {
           children: [
             Expanded(child: FlashSaleGrid(isItWhishList: true)),
             SizedBox(
-              height: 100,
+              height: 90,
             ),
           ],
         ),

@@ -22,30 +22,7 @@ class MyOrderView extends StatefulWidget {
 }
 
 class _MyOrderViewState extends State<MyOrderView> {
-  List<OrderItem> ongoingOrders = [
-    OrderItem(name: 'Product 1', size: 'L', price: '\$29.99'),
-    OrderItem(name: 'Product 2', size: 'M', price: '\$19.99'),
-  ];
-
-  List<OrderItem> completedOrders = [
-    OrderItem(name: 'Product 3', size: 'S', price: '\$39.99'),
-    OrderItem(name: 'Product 4', size: 'XL', price: '\$49.99'),
-    OrderItem(name: 'Product 5', size: 'M', price: '\$59.99'),
-  ];
-
   final PageController _pageController = PageController();
-  int _activeTabIndex = 0;
-
-  void _onTabTapped(int index) {
-    setState(() {
-      _activeTabIndex = index;
-    });
-    _pageController.animateToPage(
-      index,
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.ease,
-    );
-  }
 
   @override
   void dispose() {
@@ -529,9 +506,9 @@ class OrderCard extends StatelessWidget {
   Color _getStatusColor(String status) {
     switch (status.toLowerCase()) {
       case 'pending':
-        return Colors.blue;
-      case 'processing':
         return Colors.amber;
+      case 'processing':
+        return Colors.blue;
       case 'shipped':
         return Colors.indigo;
       case 'delivered':
