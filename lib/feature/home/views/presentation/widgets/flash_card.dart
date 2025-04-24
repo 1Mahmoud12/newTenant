@@ -1,4 +1,3 @@
-import 'package:dobzz_seller/core/component/buttons/custom_text_button.dart';
 import 'package:dobzz_seller/core/component/cache_image.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:dobzz_seller/core/utils/app_icons.dart';
@@ -77,7 +76,7 @@ class _ProductCardState extends State<ProductCard> {
                 CacheImage(
                   urlImage: widget.imagePath,
                   errorColor: Colors.grey,
-                  height: MediaQuery.sizeOf(context).height * 0.27,
+                  height: 150,
                   width: double.infinity,
                   fit: BoxFit.cover,
                 ),
@@ -107,13 +106,15 @@ class _ProductCardState extends State<ProductCard> {
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Text(
                 widget.title,
-                style: const TextStyle(
-                  fontSize: 16,
+                style: TextStyle(
+                  fontSize: 16.sp,
                   fontWeight: FontWeight.bold,
                 ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
-            const SizedBox(height: 4),
+            // const SizedBox(height: 4),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Row(
@@ -126,17 +127,6 @@ class _ProductCardState extends State<ProductCard> {
                       color: Colors.grey.shade700,
                     ),
                   ),
-                  if (widget.discountPercentage != null) ...[
-                    const SizedBox(width: 8),
-                    Text(
-                      '-${widget.discountPercentage}',
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        color: Colors.red,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
                   s,
                   AddToCartButton(
                     productId: widget.productId,
