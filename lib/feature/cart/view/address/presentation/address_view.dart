@@ -5,6 +5,7 @@ import 'package:dobzz_seller/core/utils/constants_models.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/feature/cart/view/address/presentation/add_address_view.dart';
 import 'package:dobzz_seller/feature/cart/view/address/presentation/manager/address/cubit/address_cubit.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -30,7 +31,7 @@ class _AddressViewState extends State<AddressView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: customAppBar(context: context, title: 'Address'),
+      appBar: customAppBar(context: context, title: 'Address'.tr()),
       persistentFooterButtons: [
         InkWell(
           onTap: () => context.navigateToPage(
@@ -55,7 +56,7 @@ class _AddressViewState extends State<AddressView> {
                   ),
                   const SizedBox(width: 8),
                   Text(
-                    'Add New Address',
+                    'Add New Address'.tr(),
                     style: TextStyle(
                       fontSize: 16.sp,
                       fontWeight: FontWeight.bold,
@@ -127,7 +128,7 @@ class _AddressViewState extends State<AddressView> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Saved Address',
+                        'Saved Address'.tr(),
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 20.sp,
@@ -182,7 +183,7 @@ class _AddressViewState extends State<AddressView> {
                                           borderRadius: BorderRadius.circular(4),
                                         ),
                                         child: Text(
-                                          address?.isDefault ?? false ? 'Default' : '',
+                                          address?.isDefault ?? false ? 'Default'.tr() : '',
                                           style: const TextStyle(
                                             fontSize: 12,
                                             color: Colors.grey,
@@ -248,7 +249,7 @@ class _AddressViewState extends State<AddressView> {
             ),
             const SizedBox(height: 16),
             Text(
-              'No addresses saved yet',
+              'No addresses saved yet'.tr(),
               style: TextStyle(
                 fontSize: 18.sp,
                 fontWeight: FontWeight.bold,
@@ -256,7 +257,7 @@ class _AddressViewState extends State<AddressView> {
             ),
             const SizedBox(height: 8),
             Text(
-              'Please add a delivery address to continue',
+              'Please add a delivery address to continue'.tr(),
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 16.sp,

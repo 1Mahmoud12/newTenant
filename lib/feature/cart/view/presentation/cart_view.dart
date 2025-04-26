@@ -10,6 +10,7 @@ import 'package:dobzz_seller/feature/cart/view/checkout/presentation/check_out_v
 import 'package:dobzz_seller/feature/cart/view/checkout/presentation/manager/checkoutDetails/cubit/checkout_details_cubit.dart';
 import 'package:dobzz_seller/feature/cart/view/manager/cartItems/cubit/cart_items_cubit.dart';
 import 'package:dobzz_seller/feature/cart/view/manager/deleteFromCart/cubit/delete_from_cart_cubit.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -94,7 +95,7 @@ class _CartViewState extends State<CartView> {
                     ),
                   ]
                 : null,
-            appBar: customAppBar(context: context, title: 'Cart', stopLeading: true),
+            appBar: customAppBar(context: context, title: 'Cart'.tr(), stopLeading: true),
             body: BlocProvider.value(
               value: cartCubit,
               child: BlocBuilder<CartItemsCubit, CartItemsState>(
@@ -106,10 +107,10 @@ class _CartViewState extends State<CartView> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text('Error: ${state.e}'),
+                          Text('${'Error:'.tr()}${state.e}'),
                           ElevatedButton(
                             onPressed: _loadCartItems,
-                            child: const Text('Retry'),
+                            child: Text('Retry'.tr()),
                           ),
                         ],
                       ),
@@ -118,8 +119,8 @@ class _CartViewState extends State<CartView> {
                     final cartItems = ConstantsModels.cartItemModel?.data ?? [];
 
                     if (cartItems.isEmpty) {
-                      return const Center(
-                        child: Text('Your cart is empty'),
+                      return Center(
+                        child: Text('Your cart is empty'.tr()),
                       );
                     }
 
@@ -142,8 +143,8 @@ class _CartViewState extends State<CartView> {
                     );
                   } else {
                     // Initial state or any other state
-                    return const Center(
-                      child: Text('Loading cart...'),
+                    return Center(
+                      child: Text('Loading cart...'.tr()),
                     );
                   }
                 },
@@ -173,7 +174,7 @@ class GoToCheckOutButton extends StatelessWidget {
             child: BlocBuilder<CheckoutDetailsCubit, CheckoutDetailsState>(
               builder: (context, state) {
                 return CheckOutItem(
-                  label: 'Sub-total',
+                  label: 'Sub-total'.tr(),
                   value: ConstantsModels.checkoutDetailsModel?.subTotalPrice.toString() ?? '0',
                 );
               },
@@ -194,7 +195,7 @@ class GoToCheckOutButton extends StatelessWidget {
               children: [
                 const Spacer(),
                 Text(
-                  'Go To Check out',
+                  'Go To Check out'.tr(),
                   style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500, color: Colors.white),
                 ),
                 w10,
@@ -315,7 +316,7 @@ class CartItemWidget extends StatelessWidget {
                     ],
                   ),
                   Text(
-                    'Size ${cartItem.size}',
+                    '${'Size'.tr()} ${cartItem.size}',
                     style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14.sp, color: Colors.grey),
                   ),
                   const SizedBox(height: 8),

@@ -9,6 +9,7 @@ import 'package:dobzz_seller/feature/cart/view/address/presentation/manager/addA
 import 'package:dobzz_seller/feature/cart/view/address/presentation/manager/address/cubit/address_cubit.dart';
 import 'package:dobzz_seller/feature/cart/view/address/presentation/manager/city/cubit/city_cubit.dart';
 import 'package:dobzz_seller/feature/cart/view/address/presentation/manager/state/cubit/state_cubit.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -36,7 +37,7 @@ class _AddAddressViewState extends State<AddAddressView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: customAppBar(context: context, title: 'New Address'),
+      appBar: customAppBar(context: context, title: 'New Address'.tr()),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -48,7 +49,7 @@ class _AddAddressViewState extends State<AddAddressView> {
                 outPadding: EdgeInsets.zero,
                 controller: addAddressCubit.addressNicknameController,
                 hintText: 'Enter your address nickname',
-                nameField: 'Address Nickname',
+                nameField: 'Address Nickname'.tr(),
                 hintStyle: const TextStyle(
                   color: Colors.black,
                   fontSize: 16,
@@ -64,8 +65,8 @@ class _AddAddressViewState extends State<AddAddressView> {
               CustomTextFormField(
                 outPadding: EdgeInsets.zero,
                 controller: addAddressCubit.phoneController,
-                hintText: 'Enter your number',
-                nameField: 'number',
+                hintText: 'Enter your number'.tr(),
+                nameField: 'number'.tr(),
                 textInputType: TextInputType.number,
                 hintStyle: const TextStyle(
                   color: Colors.black,
@@ -84,9 +85,9 @@ class _AddAddressViewState extends State<AddAddressView> {
                 child: BlocBuilder<StateCubit, StateState>(
                   builder: (context, state) {
                     return CustomDropDownMenu(
-                      nameField: 'State',
+                      nameField: 'State'.tr(),
                       borderColor: Colors.grey.withOpacity(0.2),
-                      selectedItem: DropDownModel(name: 'Choose your state', value: 0),
+                      selectedItem: DropDownModel(name: 'Choose your state'.tr(), value: 0),
                       items: ConstantsModels.stateModel?.data?.map((e) {
                             return DropDownModel(name: e.name ?? '', value: e.id ?? -1);
                           }).toList() ??
@@ -109,7 +110,7 @@ class _AddAddressViewState extends State<AddAddressView> {
                       return CustomDropDownMenu(
                         nameField: 'City',
                         borderColor: Colors.grey.withOpacity(0.2),
-                        selectedItem: DropDownModel(name: 'Choose your city', value: 0),
+                        selectedItem: DropDownModel(name: 'Choose your city'.tr(), value: 0),
                         items: ConstantsModels.cityModel?.data?.map((e) {
                               return DropDownModel(name: e.name ?? '', value: e.id ?? -1);
                             }).toList() ??
@@ -147,10 +148,10 @@ class _AddAddressViewState extends State<AddAddressView> {
                                 ),
                               ),
                             )
-                          : const Center(
+                          : Center(
                               child: Text(
-                                'Add',
-                                style: TextStyle(
+                                'Add'.tr(),
+                                style: const TextStyle(
                                   fontSize: 16,
                                   color: Colors.white,
                                   fontWeight: FontWeight.w500,
