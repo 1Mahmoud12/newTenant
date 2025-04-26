@@ -75,7 +75,7 @@ class AddPasswordViewState extends State<AddPasswordView> {
               if (state is AuthSignUpSuccessState) {
                 context.navigateToPageWithReplacement(
                   VerifyCodeView(
-                    email: AuthCubit.of(context).phoneController.text,
+                    phone: AuthCubit.of(context).phoneController.text,
                     // phoneNumber: AuthCubit.of(context).phoneController.text,
                     // countryCodeId: AuthCubit.of(context).countryCodeId,
                     // verifyButton: (context) {

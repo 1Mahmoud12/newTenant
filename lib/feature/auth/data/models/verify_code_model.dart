@@ -1,13 +1,13 @@
 class VerifyCodeModel {
   String? otp;
-  String? phone;
+  String? customerId;
 
-  VerifyCodeModel({this.otp, this.phone});
+  VerifyCodeModel({this.otp, this.customerId});
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['otp'] = otp;
-    map['phone'] = phone;
+    map['customer_id'] = customerId;
     return map;
   }
 }

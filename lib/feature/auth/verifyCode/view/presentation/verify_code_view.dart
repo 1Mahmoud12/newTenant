@@ -11,7 +11,7 @@ import 'package:dobzz_seller/feature/auth/manager/authBloc/auth_state.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 class VerifyCodeView extends StatefulWidget {
-  final String email;
+  final String phone;
   // final int countryCodeId;
 
   final Function(BuildContext context)? verifyButton;
@@ -19,7 +19,7 @@ class VerifyCodeView extends StatefulWidget {
 
   const VerifyCodeView({
     super.key,
-    required this.email,
+    required this.phone,
     this.onChanged,
     this.verifyButton,
     //  required this.phoneNumber, this.verifyButton, required this.countryCodeId, this.onChanged
@@ -107,12 +107,12 @@ class _VerifyCodeViewState extends State<VerifyCodeView> {
                   //registerBloc?.verificationNumber = value;
                   //registerBloc?.beforeRegisterSendCode(context);
                 },
-                validator: (code) {
-                  if (code == null || code.isEmpty) return ''; // Don't show error yet
-                  if (code.length < 6) return ''; // Still typing
-                  if (code != '123456') return 'Invalid code'; // Example condition
-                  return '';
-                },
+                // validator: (code) {
+                //   // if (code == null || code.isEmpty) return ''; // Don't show error yet
+                //   // if (code.length < 6) return ''; // Still typing
+                //   // if (code != '123456') return 'Invalid code'; // Example condition
+                //   // return '';
+                // },
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -125,7 +125,7 @@ class _VerifyCodeViewState extends State<VerifyCodeView> {
                     onTap: _start != 0
                         ? null
                         : () {
-                            //     AuthCubit.of(context).resendCode(context: context);
+                            AuthCubit.of(context).resendCode(context: context);
                             _timer.cancel();
                             startTimer();
                           },
@@ -180,7 +180,7 @@ class VerificationCode extends StatelessWidget {
     final availableWidth = screenWidth - 60 - 32;
 
     // Calculate field width (with minimum and maximum constraints)
-    final fieldWidth = (availableWidth / 6).clamp(40.0, 60.0);
+    final fieldWidth = (availableWidth / 4).clamp(40.0, 60.0);
 
     // Make field height proportional to width but not too tall
     final fieldHeight = fieldWidth * 1.2;
@@ -188,7 +188,7 @@ class VerificationCode extends StatelessWidget {
     return Directionality(
       textDirection: TextDirection.ltr,
       child: PinCodeTextField(
-        length: 6,
+        length: 4,
         animationType: AnimationType.fade,
         animationDuration: const Duration(milliseconds: 300),
         appContext: context,

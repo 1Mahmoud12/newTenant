@@ -1,18 +1,18 @@
 class EndPoints {
   static const domain = 'https://backend.dobzz.com';
- // static const domain = 'https://kadin.dobzz.com';
+  // static const domain = 'https://kadin.dobzz.com';
   static const baseUrl = '$domain/api/v1/';
 
   // Auth
   static const countryCodes = 'Account/CountryCodes';
   static const register = 'shop/auth/register';
   static const login = 'shop/auth/login';
-  static const validateOTP = 'shop/auth/verify-otp';
+  static const validateOTP = 'shop/auth/verify-otp-way';
   static const updateFcmToken = 'Account/UpdateFCMToken';
   static const appVisit = 'AppSetting/Admin_UpdateAppVisit';
   static const forgetPassword = 'shop/auth/forgot-password';
   static const resetPassword = 'Account/ResetPassword';
-  static const resendOtp = 'Account/ResendOtp';
+  static const resendOtp = 'shop/auth/send-otp';
   static const deleteUser = 'Account/DeleteUser';
 
   // EditProfile

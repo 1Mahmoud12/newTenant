@@ -5,6 +5,7 @@ import 'package:dobzz_seller/feature/home/views/presentation/home_page_view.dart
 import 'package:dobzz_seller/feature/navigation/view/presentation/navigation_bar_theme/circled_border_Theme.dart';
 import 'package:dobzz_seller/feature/navigation/view/presentation/navigation_bar_theme/reguler_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 enum NavigationTheme {
   circular,
@@ -49,23 +50,39 @@ class _NavigationViewWithThemesState extends State<NavigationViewWithThemes> {
     const AccountView(),
   ];
 
+  // Function to handle back button press
+  Future<bool> _onWillPop() async {
+    // Exit the app when back button is pressed
+    SystemNavigator.pop();
+    return false; // Return false to prevent default back navigation
+  }
+
+  @override
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          _screens[_selectedIndex],
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: NavigationThemeSwitcher(
-              selectedIndex: _selectedIndex,
-              onItemTapped: _onItemTapped,
-              theme: _theme,
+    return PopScope(
+      canPop: false, // Prevents default pop behavior
+      onPopInvokedWithResult: (didPop, o) {
+        if (!didPop) {
+          SystemNavigator.pop(); // Close the app manually
+        }
+      },
+      child: Scaffold(
+        body: Stack(
+          children: [
+            _screens[_selectedIndex],
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: NavigationThemeSwitcher(
+                selectedIndex: _selectedIndex,
+                onItemTapped: _onItemTapped,
+                theme: _theme,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

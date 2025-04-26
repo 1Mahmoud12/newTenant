@@ -18,6 +18,7 @@ import 'package:dobzz_seller/feature/product/data/model/product_details_model.da
 class ConstantsModels {
   static CountryCodeModel? countryCodeModel;
   static RegisterModel? registerModel;
+  static RegisterModel? requiredValidationModel;
   static ProductModel? topProductModel;
   static CartItemModel? cartItemModel;
   static WishListModel? wishListModel;

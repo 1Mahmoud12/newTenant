@@ -3,6 +3,10 @@ import 'dart:developer';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:dobzz_seller/core/network/errors/api_error_model.dart';
+import 'package:dobzz_seller/core/utils/constants_models.dart';
+import 'package:dobzz_seller/core/utils/navigate.dart';
+import 'package:dobzz_seller/feature/auth/manager/authBloc/auth_cubit.dart';
+import 'package:dobzz_seller/feature/auth/verifyCode/view/presentation/verify_code_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:dobzz_seller/core/network/dio_helper.dart';
 import 'package:dobzz_seller/core/network/end_points.dart';
@@ -19,7 +23,7 @@ abstract class AuthDataSource {
 
   Future<Either<Failure, String>> forgetPassword(BuildContext context, {required String email});
 
-  Future<Either<Failure, String>> resendCode(BuildContext context, String phoneNumber, int countryCodeId);
+  Future<Either<Failure, String>> resendCode(BuildContext context, {required String customerId});
 
   Future<Either<Failure, String>> resetPasswordPassword(BuildContext context, ResetPasswordParams resetPasswordParams);
 
@@ -137,6 +141,14 @@ class AuthDataSourceImpl implements AuthDataSource {
       if (statusCode! == 200 && response.data['status']) {
         log('Success response: ${response.data}');
         return right(RegisterModel.fromJson(response.data));
+      } else if (response.data['status'] == false && response.data['message'] == 'You have To Verify Your Phone') {
+        ConstantsModels.requiredValidationModel = RegisterModel.fromJson(response.data);
+        return left(
+          ServerFailure(
+            'You have To Verify Your Phone',
+            apiError: ApiError.fromJson(response.data, statusCode: statusCode),
+          ),
+        );
       }
       // Error case - we get here because we're treating 4xx as valid responses
       else {
@@ -186,12 +198,14 @@ class AuthDataSourceImpl implements AuthDataSource {
   }
 
   @override
-  Future<Either<Failure, String>> resendCode(BuildContext context, String phoneNumber, int countryCodeId) async {
+  Future<Either<Failure, String>> resendCode(BuildContext context, {required String customerId}) async {
     try {
-      final String endpoint = '${EndPoints.resendOtp}?PhoneNumber=$phoneNumber&CountryCodeId=$countryCodeId';
+      const String endpoint = EndPoints.resendOtp;
       await DioHelper.postData(
         endPoint: endpoint,
-        data: {},
+        data: {
+          'customer_id': customerId,
+        },
         context: context,
       );
       //  idUserValue = response.dataSource['Data']['UserId'];

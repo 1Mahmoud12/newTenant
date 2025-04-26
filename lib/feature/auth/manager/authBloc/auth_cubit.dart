@@ -67,7 +67,7 @@ class AuthCubit extends Cubit<AuthState> {
         }, (r) async {
           context.navigateToPage(
             VerifyCodeView(
-              email: phoneController.text,
+              phone: phoneController.text,
               // phoneNumber: phoneController.text,
               // countryCodeId: countryCodeId,
               verifyButton: (context) {
@@ -81,23 +81,23 @@ class AuthCubit extends Cubit<AuthState> {
     );
   }
 
-  // void resendCode({required BuildContext context}) async {
-  //   emit(AuthResendCodeLoadingState());
-  //   animationDialogLoading(context);
-  //   customShowToast(context, 'we_send_again_code_for_you'.tr());
-  //   authDataSource.resendCode(context, lastNameController.text, countryCodeId).then(
-  //     (value) async {
-  //       closeDialog(context);
-  //       // bool result = await InternetConnectionChecker().hasConnection;
-  //       value.fold((l) {
-  //         failureModalBottomSheetWithReason(context, reasons: [l.errMessage], onPress: () {});
-  //         emit(AuthResendCodeErrorState(l.errMessage));
-  //       }, (r) async {
-  //         emit(AuthResendCodeSuccessState());
-  //       });
-  //     },
-  //   );
-  // }
+  void resendCode({required BuildContext context}) async {
+    emit(AuthResendCodeLoadingState());
+    animationDialogLoading(context);
+    //   customShowToast(context, 'we_send_again_code_for_you'.tr());
+    authDataSource.resendCode(context, customerId: ConstantsModels.requiredValidationModel?.data?.id.toString() ?? '-1').then(
+      (value) async {
+        closeDialog(context);
+        // bool result = await InternetConnectionChecker().hasConnection;
+        value.fold((l) {
+          failureModalBottomSheetWithReason(context, reasons: [l.errMessage], onPress: () {});
+          emit(AuthResendCodeErrorState(l.errMessage));
+        }, (r) async {
+          emit(AuthResendCodeSuccessState());
+        });
+      },
+    );
+  }
 
   TextEditingController nameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
@@ -172,7 +172,7 @@ class AuthCubit extends Cubit<AuthState> {
       context,
       VerifyCodeModel(
         otp: otpController.text,
-        phone: countryCode + phoneController.text,
+        customerId: ConstantsModels.requiredValidationModel?.data?.id.toString() ?? '-1',
       ),
     )
         .then(
@@ -230,7 +230,29 @@ class AuthCubit extends Cubit<AuthState> {
           } else {
             errorReasons = [l.errMessage];
           }
-          failureModalBottomSheetWithReason(context, reasons: errorReasons, onPress: () {});
+          if (l.errMessage == 'You have To Verify Your Phone') {
+            authDataSource.resendCode(context, customerId: ConstantsModels.requiredValidationModel?.data?.id.toString() ?? '-1');
+            failureModalBottomSheetWithReason(
+              buttonName: 'verify_code'.tr(),
+              context,
+              reasons: errorReasons,
+              onPress: () {
+                context.navigateToPage(
+                  VerifyCodeView(
+                    phone: AuthCubit.of(context).phoneController.text,
+                    // phoneNumber: AuthCubit.of(context).phoneController.text,
+                    // countryCodeId: AuthCubit.of(context).countryCodeId,
+                    // verifyButton: (context) {
+                    //   AuthCubit.of(context).verifyCode(context);
+                    // },
+                  ),
+                );
+              },
+            );
+          } else {
+            failureModalBottomSheetWithReason(context, reasons: errorReasons, onPress: () {});
+          }
+
           emit(AuthLoginErrorState(l.errMessage));
         }, (r) async {
           ConstantsModels.registerModel = r;

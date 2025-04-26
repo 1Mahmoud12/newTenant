@@ -71,7 +71,7 @@ class _SignUpViewState extends State<SignUpView> {
                 //   const SizedBox(height: 20),
                 Text(
                   'Create an account'.tr(),
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: AppColors.primaryColor),
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: AppColors.black),
                 ),
                 const SizedBox(height: 10),
                 Form(
@@ -91,7 +91,7 @@ class _SignUpViewState extends State<SignUpView> {
                       CustomTextFormField(
                         outPadding: EdgeInsets.zero,
                         controller: AuthCubit.of(context).passwordController,
-                        helperText: 'enter your password'.tr(), 
+                        helperText: 'enter your password'.tr(),
                         hintText: 'password'.tr(),
                         labelText: 'password'.tr(),
                         password: true,
@@ -145,7 +145,7 @@ class _SignUpViewState extends State<SignUpView> {
                     if (state is AuthSignUpSuccessState) {
                       context.navigateToPageWithReplacement(
                         VerifyCodeView(
-                          email: AuthCubit.of(context).phoneController.text,
+                          phone: AuthCubit.of(context).phoneController.text,
                           // phoneNumber: AuthCubit.of(context).phoneController.text,
                           // countryCodeId: AuthCubit.of(context).countryCodeId,
                           // verifyButton: (context) {

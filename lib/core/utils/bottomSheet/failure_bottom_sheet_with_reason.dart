@@ -4,7 +4,7 @@ import 'package:dobzz_seller/core/component/buttons/custom_text_button.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:dobzz_seller/core/utils/item_above_modal_bottom_sheet.dart';
 
-Future<void> failureModalBottomSheetWithReason(BuildContext context, {required List reasons, required Function onPress}) async {
+Future<void> failureModalBottomSheetWithReason(BuildContext context, {required List reasons, required Function onPress, String? buttonName}) async {
   showModalBottomSheet(
     context: context,
     isScrollControlled: true,
@@ -63,7 +63,7 @@ Future<void> failureModalBottomSheetWithReason(BuildContext context, {required L
                 const SizedBox(height: 12),
                 CustomTextButton(
                   child: Text(
-                    'ok'.tr(),
+                    buttonName ?? 'ok'.tr(),
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w600, color: AppColors.white),
                     textAlign: TextAlign.center,
                   ),
