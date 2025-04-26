@@ -116,7 +116,7 @@ class Product {
   // List<void>? subCategories;
   List<Sizes>? sizes;
   // List<Colors>? colors;
-  String? totalSold;
+  dynamic totalSold;
   dynamic tax;
   num? taxId;
   int? stock;

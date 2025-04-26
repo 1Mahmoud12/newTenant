@@ -17,7 +17,7 @@ class OrderDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[50],
+      // backgroundColor: Colors.grey[50],
       appBar: customAppBar(context: context, title: 'Order Details'),
       body: SafeArea(
         child: SingleChildScrollView(

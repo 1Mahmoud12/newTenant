@@ -1,3 +1,25 @@
 {
- "": ""
+    "Search product..": "ابحث عن منتج..",
+    "Categories": "الفئات",
+    "Flash Sale": "تخفيضات سريعة",
+    "Location": "الموقع",
+    "Search": "بحث",
+    "Search for clothes...": "ابحث عن الملابس...",
+    "Error:": "خطأ:",
+    "No products found": "لم يتم العثور على منتجات",
+    "No products available": "لا توجد منتجات متاحة",
+    "product_details": "تفاصيل المنتج",
+    "retry": "إعادة المحاولة",
+    "error": "خطأ",
+    "choose_size": "اختر المقاس",
+    "quantity": "الكمية",
+    "add_to_cart": "أضف إلى السلة",
+    "description": "الوصف",
+    "reviews": "التقييمات",
+    "related_products": "منتجات ذات صلة",
+    "Error": "خطأ",
+    "Unknown Product": "منتج غير معروف",
+    "No favorites products available": "لا توجد منتجات مفضلة متاحة",
+    "This field is required": "هذا الحقل مطلوب"
+  
 }

@@ -7,6 +7,7 @@ import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/feature/home/data/models/product_mdoel.dart';
 import 'package:dobzz_seller/feature/home/views/manager/topProduct/cubit/top_product_cubit.dart';
 import 'package:dobzz_seller/feature/product/views/presentation/product_details_view.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -31,12 +32,12 @@ class _SearchProductHomeViewState extends State<SearchProductHomeView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: customAppBar(context: context, title: 'Search'),
+      appBar: customAppBar(context: context, title: 'Search'.tr()),
       body: Column(
         children: [
           CustomTextFormField(
             controller: _searchController,
-            hintText: 'Search for clothes...',
+            hintText: 'Search for clothes...'.tr(),
             prefixIcon: const Icon(Icons.search),
             onChange: (value) {
               if (value.isNotEmpty) {
@@ -67,18 +68,18 @@ class _SearchProductHomeViewState extends State<SearchProductHomeView> {
       return const Center(child: LoadingWidget());
     }
     if (state is TopProductError) {
-      return Center(child: Text('Error: ${state.e}'));
+      return Center(child: Text('${'Error:'.tr()}${state.e}'));
     }
     if (ConstantsModels.searchProductsModel?.data?.isEmpty ?? true) {
-      return const Center(
-        child: Text('No products found'),
+      return  Center(
+        child: Text('No products found'.tr()),
       );
     }
     if (state is TopProductSuccess) {
       final products = ConstantsModels.searchProductsModel?.data ?? [];
       if (products.isEmpty) {
-        return const Center(
-          child: Text('No products available'),
+        return  Center(
+          child: Text('No products available'.tr()),
         );
       }
       return ListView.builder(

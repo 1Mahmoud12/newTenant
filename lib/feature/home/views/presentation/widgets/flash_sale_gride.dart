@@ -4,6 +4,7 @@ import 'package:dobzz_seller/feature/home/views/manager/addToWhishlist/cubit/add
 import 'package:dobzz_seller/feature/home/views/manager/removeFromWhislist/cubit/remove_from_whish_list_cubit.dart';
 import 'package:dobzz_seller/feature/home/views/manager/topProduct/cubit/top_product_cubit.dart';
 import 'package:dobzz_seller/feature/home/views/presentation/widgets/flash_card.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dobzz_seller/core/utils/constants_models.dart';
@@ -76,15 +77,15 @@ class TopProductGrid extends StatelessWidget {
             );
           } else if (state is TopProductError) {
             return Center(
-              child: Text('Error: ${state.e}'),
+              child: Text('${'Error:'.tr()}${state.e}'),
             );
           } else if (ConstantsModels.topProductModel != null) {
             // Access the loaded top products
             final topProducts = ConstantsModels.topProductModel?.data;
 
             if (topProducts == null || topProducts.isEmpty) {
-              return const Center(
-                child: Text('No products available'),
+              return Center(
+                child: Text('No products available'.tr()),
               );
             }
             return GridView.builder(
@@ -115,7 +116,7 @@ class TopProductGrid extends StatelessWidget {
                     }
                   },
                   imagePath: product.imagePath ?? '',
-                  title: product.name ?? 'Unknown Product',
+                  title: product.name ?? 'Unknown Product'.tr(),
                   price: '\$${product.price?.toString() ?? '0'}',
                 );
               },
@@ -154,15 +155,15 @@ class FavoriteGrid extends StatelessWidget {
             );
           } else if (state is WishListError) {
             return Center(
-              child: Text('Error: ${state.e}'),
+              child: Text('${'Error:'.tr()}${state.e}'),
             );
           } else if (state is WishListSuccess) {
             // Access the loaded top products
             final wishList = ConstantsModels.wishListModel?.data;
 
             if (wishList == null || wishList.isEmpty) {
-              return const Center(
-                child: Text('No favorites products available'),
+              return Center(
+                child: Text('No favorites products available'.tr()),
               );
             }
             return GridView.builder(
@@ -190,7 +191,7 @@ class FavoriteGrid extends StatelessWidget {
                     }
                   },
                   imagePath: wishListItem.productImagePath ?? '',
-                  title: wishListItem.product ?? 'Unknown Product',
+                  title: wishListItem.product ?? 'Unknown Product'.tr(),
                   price: '\$${wishListItem.priceForProduct?.toString() ?? '0'}',
                 );
               },

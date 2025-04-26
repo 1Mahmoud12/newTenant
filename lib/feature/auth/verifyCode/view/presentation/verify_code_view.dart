@@ -15,13 +15,14 @@ class VerifyCodeView extends StatefulWidget {
   final String email;
   // final int countryCodeId;
 
- final Function(BuildContext context)? verifyButton;
+  final Function(BuildContext context)? verifyButton;
   final void Function(String)? onChanged;
 
   const VerifyCodeView({
     super.key,
     required this.email,
-    this.onChanged, this.verifyButton,
+    this.onChanged,
+    this.verifyButton,
     //  required this.phoneNumber, this.verifyButton, required this.countryCodeId, this.onChanged
   });
 
@@ -181,7 +182,7 @@ class VerificationCode extends StatelessWidget {
     return Directionality(
       textDirection: TextDirection.ltr,
       child: PinCodeTextField(
-        length: 4,
+        length: 6,
         animationType: AnimationType.fade,
         animationDuration: const Duration(milliseconds: 300),
         appContext: context,
@@ -201,6 +202,7 @@ class VerificationCode extends StatelessWidget {
           return validator?.call(value);
         },
         errorTextSpace: 32,
+        controller: AuthCubit.of(context).otpController,
         textStyle: Theme.of(context).textTheme.titleSmall,
         hintStyle: Theme.of(context).textTheme.titleSmall,
         pinTheme: PinTheme(

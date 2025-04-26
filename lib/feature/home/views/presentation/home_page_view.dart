@@ -8,6 +8,7 @@ import 'package:dobzz_seller/feature/home/views/presentation/widgets/categories_
 import 'package:dobzz_seller/feature/home/views/presentation/widgets/flash_sale_gride.dart';
 import 'package:dobzz_seller/feature/home/views/presentation/widgets/home_page_header.dart';
 import 'package:dobzz_seller/feature/home/views/presentation/widgets/home_slider.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -37,7 +38,7 @@ class HomePageView extends StatelessWidget {
                       prefixIcon: const Icon(Icons.search),
                       enable: false,
                       controller: TextEditingController(),
-                      hintText: 'Search product..',
+                      hintText: 'Search product..'.tr(),
                       outPadding: EdgeInsets.zero,
                     ),
                   ),
@@ -48,7 +49,7 @@ class HomePageView extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: SeeAllWidget(
-                    title: 'Categories',
+                    title: 'Categories'.tr(),
                     onTap: () {
                       context.navigateToPage(const CategoriesScreen());
                     },
@@ -60,7 +61,7 @@ class HomePageView extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Text(
-                    'Flash Sale',
+                    'Flash Sale'.tr(),
                     style: TextStyle(
                       fontSize: 20.sp,
                       fontWeight: FontWeight.bold,

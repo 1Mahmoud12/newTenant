@@ -28,6 +28,7 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  android_id: ^0.4.0
   awesome_notifications: any
   cached_network_image: ^3.4.1
   connectivity_plus: ^6.1.0

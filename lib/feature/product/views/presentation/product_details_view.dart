@@ -81,7 +81,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
               else
                 const SizedBox(height: 56),
             ],
-            appBar: customAppBar(context: context, title: 'Product Details'),
+            appBar: customAppBar(context: context, title: 'Product Details'.tr()),
             body: _buildBody(state, productId: widget.productId),
           );
         },
@@ -97,11 +97,11 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Error: ${state.e}'),
+            Text('${'Error:'.tr()}${state.e}'),
             const SizedBox(height: 16),
             CustomTextButton(
               onPress: _loadProductDetails,
-              childText: 'Retry',
+              childText: 'Retry'.tr(),
             ),
           ],
         ),
@@ -164,7 +164,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
     }
 
     // Initial state or any other state
-    return const Center(child: Text('Loading product details...'));
+    return  Center(child: Text('Loading product details...'.tr()));
   }
 }
 
@@ -209,7 +209,7 @@ class RatingAndReview extends StatelessWidget {
         ),
         const SizedBox(width: 4),
         Text(
-          '($reviewCount reviews)',
+          '($reviewCount ${"reviews".tr()})',
           style: TextStyle(fontSize: 12.sp, color: Colors.grey),
         ),
       ],
@@ -244,7 +244,7 @@ class SizeSelectorSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('Choose size', style: TextStyle(fontWeight: FontWeight.bold)),
+         Text('Choose size'.tr(), style: TextStyle(fontWeight: FontWeight.bold)),
         const SizedBox(height: 10),
         SizeSelector(onSelectSize: onSelectSize),
       ],
@@ -269,7 +269,7 @@ class QuantitySelector extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        const Text('Quantity', style: TextStyle(fontWeight: FontWeight.bold)),
+         Text('Quantity'.tr(), style: TextStyle(fontWeight: FontWeight.bold)),
         const SizedBox(width: 16),
         Container(
           decoration: BoxDecoration(
@@ -423,11 +423,11 @@ class _PriceAndAddToCartWidgetState extends State<PriceAndAddToCartWidget> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Price',
+                'Price'.tr(),
                 style: TextStyle(fontSize: 16.sp, color: Colors.grey, fontWeight: FontWeight.w500),
               ),
               Text(
-                '${widget.price} EGP',
+                '${widget.price} ${"EGP".tr()}',
                 style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
               ),
             ],
@@ -455,7 +455,7 @@ class _PriceAndAddToCartWidgetState extends State<PriceAndAddToCartWidget> {
                               s,
                               const Icon(Icons.shopping_cart, color: Colors.white),
                               Text(
-                                'Add to Cart',
+                                'Add to Cart'.tr(),
                                 style: TextStyle(color: Colors.white, fontSize: 16.sp, fontWeight: FontWeight.w500),
                               ),
                               s,

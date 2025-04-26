@@ -5,7 +5,6 @@ import 'package:dio/dio.dart';
 import 'package:dobzz_seller/core/network/dio_helper.dart';
 import 'package:dobzz_seller/core/network/end_points.dart';
 import 'package:dobzz_seller/core/network/errors/failures.dart';
-import 'package:dobzz_seller/feature/account/view/myDetalis/data/models/edit_profile_model.dart';
 import 'package:dobzz_seller/feature/auth/data/models/register_model.dart';
 
 class EditProfileDataSource {

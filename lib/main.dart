@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:device_preview/device_preview.dart';
 import 'package:dobzz_seller/feature/splash/view/presentation/splash_screen.dart';
+import 'package:dobzz_seller/mainCubit/cubit/main_cubit_cubit.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -39,6 +40,10 @@ void main() async {
   await DioHelper.init();
 
   userCache = await openHiveBox(userCacheBoxKey);
+  // get device id
+  final MainCubitCubit mainCubit = MainCubitCubit();
+  Constants.deviceId = await mainCubit.getDeviceIdentifier() ?? '';
+  log('deviceId ==>${Constants.deviceId}');
 
   onBoardingValue = userCache?.get(onBoardingKey, defaultValue: true);
   darkModeValue = userCache?.get(darkModeKey, defaultValue: false);
@@ -91,8 +96,8 @@ void main() async {
         startLocale: const Locale('en', 'US'),
         child: DevicePreview(
           // ignore: avoid_redundant_argument_values
-        enabled: true,
-         // enabled: false,
+          enabled: true,
+          // enabled: false,
           builder: (context) => const MyApp(), // Wrap your app
         ),
       ),

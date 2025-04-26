@@ -46,7 +46,7 @@ class _CategoriesListState extends State<CategoriesList> {
           if (state is CategoriesLoading) {
             return const Center(child: LoadingWidget());
           } else if (state is CategoriesError) {
-            return Center(child: Text('Error: ${state.e}'));
+            return Center(child: Text('${'Error:'.tr()}${state.e}'));
           } else if (ConstantsModels.categoriesModel != null) {
             // Get the categories from your model
             final categories = ConstantsModels.categoriesModel?.data ?? [];

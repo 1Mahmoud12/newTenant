@@ -1,3 +1,24 @@
 {
- "": ""
+    "Search product..": "Search product..",
+    "Categories": "Categories",
+    "Flash Sale": "Flash Sale",
+    "Location": "Location",
+    "Search": "Search",
+    "Search for clothes...": "Search for clothes...",
+    "Error:": "Error:",
+    "No products found": "No products found",
+    "No products available": "No products available",
+    "product_details": "Product Details",
+    "retry": "Retry",
+    "error": "Error",
+    "choose_size": "Choose Size",
+    "quantity": "Quantity",
+    "add_to_cart": "Add to Cart",
+    "description": "Description",
+    "reviews": "Reviews",
+    "related_products": "Related Products",
+    "Error": "Error",
+    "Unknown Product": "Unknown Product",
+    "No favorites products available": "No favorites products available",
+    "This field is required": "This field is required"
 }

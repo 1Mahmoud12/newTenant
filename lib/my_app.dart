@@ -1,3 +1,4 @@
+import 'package:dobzz_seller/mainCubit/cubit/main_cubit_cubit.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -42,9 +43,9 @@ class _MyAppState extends State<MyApp> {
             lazy: false,
             create: (context) => AuthCubit()..getCountryCode(),
           ),
-          // BlocProvider(
-          //   create: (context) => AddressCubit(),
-          // ),
+          BlocProvider(
+            create: (context) => MainCubitCubit(),
+          ),
           // BlocProvider(
           //   create: (context) => BookCubit(),
           // ),

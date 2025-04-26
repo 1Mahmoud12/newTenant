@@ -105,6 +105,7 @@ class AuthCubit extends Cubit<AuthState> {
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
   TextEditingController nationalIdController = TextEditingController();
+  TextEditingController otpController = TextEditingController();
   int gender = 1;
   int countryCodeId = 1;
   Country country = countries.first;
@@ -172,7 +173,7 @@ class AuthCubit extends Cubit<AuthState> {
       context,
       VerifyCodeModel(
         otp: 'codeController.text',
-        phone: emailController.text,
+        phone: otpController.text,
       ),
     )
         .then(
@@ -187,18 +188,18 @@ class AuthCubit extends Cubit<AuthState> {
           userCacheValue = r;
           Constants.token = r.data?.token ?? '';
           userCache?.put(userCacheKey, jsonEncode(r.toJson()));
-          // successModalBottomSheet(
-          //   context,
-          //   title: 'user_confirmed_successfully'.tr(),
-          //   subTitle: 'you_can_now_entertainment_with_the_app',
-          //   nameButton: 'go_home',
-          //   onPress: () {
-          //     //context.navigateToPageWithReplacement(const NavigationView());
-          //     lastNameController.clear();
-          //     passwordController.clear();
-          //     confirmPasswordController.clear();
-          //   },
-          // );
+          successModalBottomSheet(
+            context,
+            title: 'user_confirmed_successfully'.tr(),
+            subTitle: 'you_can_now_entertainment_with_the_app',
+            nameButton: 'go_home',
+            onPress: () {
+              //context.navigateToPageWithReplacement(const NavigationView());
+              lastNameController.clear();
+              passwordController.clear();
+              confirmPasswordController.clear();
+            },
+          );
           emit(AuthVerifySuccessState());
         });
       },
