@@ -125,7 +125,7 @@ class _VerifyCodeViewState extends State<VerifyCodeView> {
                     onTap: _start != 0
                         ? null
                         : () {
-                            AuthCubit.of(context).resendCode(context: context);
+                            //     AuthCubit.of(context).resendCode(context: context);
                             _timer.cancel();
                             startTimer();
                           },

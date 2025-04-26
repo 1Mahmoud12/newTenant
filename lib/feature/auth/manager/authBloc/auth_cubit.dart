@@ -47,7 +47,7 @@ class AuthCubit extends Cubit<AuthState> {
           emit(AuthGetCountryCodeErrorState(l.errMessage));
         }, (r) async {
           ConstantsModels.countryCodeModel = r;
-          setCountryCodeId(r.data?.first.id ?? 1);
+          // setCountryCodeId(r.data?.first.id ?? 1);
           emit(AuthGetCountryCodeSuccessState());
         });
       },
@@ -81,23 +81,23 @@ class AuthCubit extends Cubit<AuthState> {
     );
   }
 
-  void resendCode({required BuildContext context}) async {
-    emit(AuthResendCodeLoadingState());
-    animationDialogLoading(context);
-    customShowToast(context, 'we_send_again_code_for_you'.tr());
-    authDataSource.resendCode(context, lastNameController.text, countryCodeId).then(
-      (value) async {
-        closeDialog(context);
-        // bool result = await InternetConnectionChecker().hasConnection;
-        value.fold((l) {
-          failureModalBottomSheetWithReason(context, reasons: [l.errMessage], onPress: () {});
-          emit(AuthResendCodeErrorState(l.errMessage));
-        }, (r) async {
-          emit(AuthResendCodeSuccessState());
-        });
-      },
-    );
-  }
+  // void resendCode({required BuildContext context}) async {
+  //   emit(AuthResendCodeLoadingState());
+  //   animationDialogLoading(context);
+  //   customShowToast(context, 'we_send_again_code_for_you'.tr());
+  //   authDataSource.resendCode(context, lastNameController.text, countryCodeId).then(
+  //     (value) async {
+  //       closeDialog(context);
+  //       // bool result = await InternetConnectionChecker().hasConnection;
+  //       value.fold((l) {
+  //         failureModalBottomSheetWithReason(context, reasons: [l.errMessage], onPress: () {});
+  //         emit(AuthResendCodeErrorState(l.errMessage));
+  //       }, (r) async {
+  //         emit(AuthResendCodeSuccessState());
+  //       });
+  //     },
+  //   );
+  // }
 
   TextEditingController nameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
@@ -107,7 +107,7 @@ class AuthCubit extends Cubit<AuthState> {
   TextEditingController nationalIdController = TextEditingController();
   TextEditingController otpController = TextEditingController();
   int gender = 1;
-  int countryCodeId = 1;
+  String countryCode = '+966';
   Country country = countries.first;
 
   void setGender(int value) {
@@ -115,11 +115,11 @@ class AuthCubit extends Cubit<AuthState> {
     emit(AuthSetGenderState());
   }
 
-  void setCountryCodeId(int value) {
-    countryCodeId = value;
-    country = countries.firstWhere((element) => element.id == value);
-    emit(AuthSetCountryCodeState());
-  }
+  // void setCountryCodeId(int value) {
+  //   countryCodeId = value;
+  //   country = countries.firstWhere((element) => element.id == value);
+  //   emit(AuthSetCountryCodeState());
+  // }
 
   void signUp(BuildContext context) async {
     emit(AuthSignUpLoadingState());
@@ -129,7 +129,7 @@ class AuthCubit extends Cubit<AuthState> {
       context,
       SignUpParams(
         name: nameController.text,
-        phone: phoneController.text,
+        phone: countryCode + phoneController.text,
         password: passwordController.text,
         termAndCondition: termAndCondition,
       ),
@@ -149,7 +149,7 @@ class AuthCubit extends Cubit<AuthState> {
           // customShowToast(context, l.errMessage, showToastStatus: ShowToastStatus.error);
           emit(AuthSignUpErrorState(l.errMessage));
         }, (r) async {
-          closeDialog(context);
+          // closeDialog(context);
           // customShowToast(context, 'created_user_successfully'.tr());
           emit(AuthSignUpSuccessState());
         });

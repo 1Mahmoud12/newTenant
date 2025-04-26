@@ -47,11 +47,11 @@ class PhonePickerField extends StatelessWidget {
             // },
             prefixIcon: InkWell(
               onTap: () async {
-                await selectCountryCodeDialog(context, country: cubit.country, onPress: () {}).then(
-                  (value) {
-                    cubit.setCountryCodeId(value.id);
-                  },
-                );
+                // await selectCountryCodeDialog(context, country: cubit.country, onPress: () {}).then(
+                //   // (value) {
+                //   //   cubit.setCountryCodeId(value.id);
+                //   // },
+                // );
               },
               child: BlocBuilder<AuthCubit, AuthState>(
                 builder: (context, state) => Row(
