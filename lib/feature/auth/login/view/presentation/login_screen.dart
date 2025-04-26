@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:dobzz_seller/core/component/phone_number_field.dart';
 import 'package:dobzz_seller/core/utils/app_images.dart';
 import 'package:dobzz_seller/feature/auth/widgets/authRich_text_link.dart';
 import 'package:easy_localization/easy_localization.dart' as easy;
@@ -82,24 +83,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   key: formKey,
                   child: Column(
                     children: [
-                      Row(
-                        children: [
-                          Expanded(
-                            child: BlocBuilder<AuthCubit, AuthState>(
-                              builder: (context, state) => CustomTextFormField(
-                                outPadding: EdgeInsets.zero,
-                                controller: AuthCubit.of(context).phoneController,
-                                validator: (value) {
-                                  if (value.isEmpty) return 'required email'.tr();
-                                  if (AuthCubit.of(context).errorMessage != null) return AuthCubit.of(context).errorMessage;
-                                },
-                                helperText: 'enter your phone'.tr(),
-                                hintText: 'phone'.tr(),
-                                labelText: 'phone'.tr(),
-                              ),
-                            ),
-                          ),
-                        ],
+                      PhoneNumberField(
+                        outPadding: EdgeInsets.zero,
+                        controller: AuthCubit.of(context).phoneController,
                       ),
                       const SizedBox(height: 16),
                       Row(

@@ -172,7 +172,7 @@ class AuthCubit extends Cubit<AuthState> {
       context,
       VerifyCodeModel(
         otp: otpController.text,
-        phone: phoneController.text,
+        phone: countryCode + phoneController.text,
       ),
     )
         .then(
@@ -214,7 +214,7 @@ class AuthCubit extends Cubit<AuthState> {
         .postLogin(
       context,
       LoginParams(
-        phone: phoneController.text,
+        phone: countryCode + phoneController.text,
         password: passwordController.text,
       ),
     )
