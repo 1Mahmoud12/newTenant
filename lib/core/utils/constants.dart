@@ -76,7 +76,7 @@ class CountryFlag {
 }
 
 List<CountryFlag> countriesflage = [
-  CountryFlag(id: 1, name: 'egy', code: '20', image: AppIcons.AEIc),
-  CountryFlag(id: 2, name: 'sau', code: '966', image: AppIcons.EGIc),
-  CountryFlag(id: 3, name: 'ema', code: '973', image: AppIcons.SAIc),
+  CountryFlag(id: 2, name: 'SA', code: '966', image: AppIcons.SAIc),
+  CountryFlag(id: 1, name: 'EG', code: '20', image: AppIcons.EGIc),
+  CountryFlag(id: 3, name: 'EM', code: '973', image: AppIcons.AEIc),
 ];

@@ -16,6 +16,7 @@ import 'package:dobzz_seller/feature/auth/manager/authBloc/auth_cubit.dart';
 import 'package:dobzz_seller/feature/auth/manager/authBloc/auth_state.dart';
 import 'package:dobzz_seller/feature/auth/signUp/view/presentation/add_password_view.dart';
 import 'package:dobzz_seller/feature/auth/verifyCode/view/presentation/verify_code_view.dart';
+import 'package:dobzz_seller/core/component/phone_number_field.dart';
 
 class SignUpView extends StatefulWidget {
   const SignUpView({super.key});
@@ -83,17 +84,14 @@ class _SignUpViewState extends State<SignUpView> {
                         hintText: 'Name'.tr(),
                         labelText: 'Name'.tr(),
                       ),
-                      CustomTextFormField(
+                      PhoneNumberField(
                         outPadding: EdgeInsets.zero,
                         controller: AuthCubit.of(context).phoneController,
-                        hintText: 'Phone'.tr(),
-                        labelText: 'Phone'.tr(),
-                        textInputType: TextInputType.number,
                       ),
                       CustomTextFormField(
                         outPadding: EdgeInsets.zero,
                         controller: AuthCubit.of(context).passwordController,
-                        helperText: 'enter your password'.tr(),
+                        helperText: 'enter your password'.tr(), 
                         hintText: 'password'.tr(),
                         labelText: 'password'.tr(),
                         password: true,
