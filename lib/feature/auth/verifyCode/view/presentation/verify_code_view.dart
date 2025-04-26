@@ -109,8 +109,8 @@ class _VerifyCodeViewState extends State<VerifyCodeView> {
                 },
                 validator: (code) {
                   if (code == null || code.isEmpty) return ''; // Don't show error yet
-                  if (code.length < 4) return ''; // Still typing
-                  if (code != '1234') return 'Invalid code'; // Example condition
+                  if (code.length < 6) return ''; // Still typing
+                  if (code != '123456') return 'Invalid code'; // Example condition
                   return '';
                 },
               ),

@@ -122,6 +122,8 @@ class _CheckoutViewState extends State<CheckoutView> {
                             child: BlocBuilder<AddressCubit, AddressState>(
                               builder: (context, state) {
                                 return CustomDropDownMenu(
+                                  hasError: ConstantsModels.addressModel?.data?.isEmpty ?? true,
+                                  errorText: 'you should create address first',
                                   nameField: 'Address'.tr(),
                                   borderColor: Colors.grey.withOpacity(0.2),
                                   selectedItem: DropDownModel(name: 'Choose your address'.tr(), value: 0),

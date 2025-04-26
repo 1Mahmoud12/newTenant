@@ -214,7 +214,7 @@ class AuthCubit extends Cubit<AuthState> {
         .postLogin(
       context,
       LoginParams(
-        email: phoneController.text,
+        phone: phoneController.text,
         password: passwordController.text,
       ),
     )

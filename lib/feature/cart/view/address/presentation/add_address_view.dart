@@ -85,6 +85,8 @@ class _AddAddressViewState extends State<AddAddressView> {
                 child: BlocBuilder<StateCubit, StateState>(
                   builder: (context, state) {
                     return CustomDropDownMenu(
+                      hasError: ConstantsModels.stateModel?.data?.isEmpty ?? true,
+                      errorText: 'there is no state available',
                       nameField: 'State'.tr(),
                       borderColor: Colors.grey.withOpacity(0.2),
                       selectedItem: DropDownModel(name: 'Choose your state'.tr(), value: 0),
@@ -108,6 +110,8 @@ class _AddAddressViewState extends State<AddAddressView> {
                   child: BlocBuilder<CityCubit, CityState>(
                     builder: (context, state) {
                       return CustomDropDownMenu(
+                        hasError: ConstantsModels.cityModel?.data?.isEmpty ?? true,
+                        errorText: 'there is no cites available',
                         nameField: 'City',
                         borderColor: Colors.grey.withOpacity(0.2),
                         selectedItem: DropDownModel(name: 'Choose your city'.tr(), value: 0),
