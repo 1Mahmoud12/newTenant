@@ -7,7 +7,7 @@ class VerifyCodeModel {
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['otp'] = otp;
-    map['email'] = phone;
+    map['phone'] = phone;
     return map;
   }
 }
