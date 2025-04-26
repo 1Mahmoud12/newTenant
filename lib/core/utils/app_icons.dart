@@ -1,11 +1,11 @@
 class AppIcons {
   static const baseUrl = 'assets/images/svg';
 
-  static const hidePassword = '$baseUrl/hidePasswordIc.svg';
+  static const hidePassword = '$baseUrl/eye-off.svg';
   static const successDialogIc = '$baseUrl/successDialogIc.svg';
   static const appLogo = '$baseUrl/appLogo.svg';
   static const nameLogo = '$baseUrl/nameLogo.svg';
-  static const passwordShow = '$baseUrl/showPassordIc.svg';
+  static const passwordShow = '$baseUrl/Eye.svg';
   static const logoInbox = '$baseUrl/logoInbox.svg';
   static const infoIc = '$baseUrl/infoIc.svg';
   static const infoInvoiceIc = '$baseUrl/infoInvoiceIc.svg';

@@ -68,32 +68,14 @@ class AddPasswordViewState extends State<AddPasswordView> {
           const SizedBox(height: 26),
           Form(
             key: formKey,
-            child: Column(
-              children: [
-                CustomTextFormField(
-                  outPadding: EdgeInsets.zero,
-                  controller: AuthCubit.of(context).passwordController,
-                  helperText: 'enter your password'.tr(),
-                  hintText: 'password'.tr(),
-                  labelText: 'password'.tr(),
-                  password: true,
-                ),
-                CustomTextFormField(
-                  outPadding: EdgeInsets.zero,
-                  controller: AuthCubit.of(context).confirmPasswordController,
-                  hintText: 're-password'.tr(),
-                  labelText: 're-enter password'.tr(),
-                  password: true,
-                ),
-              ].paddingDirectional(bottom: 16),
-            ),
+            child: const Column(),
           ),
           BlocConsumer<AuthCubit, AuthState>(
             listener: (context, state) {
               if (state is AuthSignUpSuccessState) {
                 context.navigateToPageWithReplacement(
                   VerifyCodeView(
-                    email: AuthCubit.of(context).emailController.text,
+                    email: AuthCubit.of(context).phoneController.text,
                     // phoneNumber: AuthCubit.of(context).phoneController.text,
                     // countryCodeId: AuthCubit.of(context).countryCodeId,
                     // verifyButton: (context) {
@@ -114,7 +96,6 @@ class AddPasswordViewState extends State<AddPasswordView> {
                     customShowToast(context, 'you must agree with the terms & condition'.tr(), showToastStatus: ShowToastStatus.error);
                   } else {
                     //  context.navigateToPage(const NavigationView());
-                    AuthCubit.of(context).signUp(context);
                   }
                 }
               },

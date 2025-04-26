@@ -1,5 +1,6 @@
 class EndPoints {
   static const domain = 'https://backend.dobzz.com';
+ // static const domain = 'https://kadin.dobzz.com';
   static const baseUrl = '$domain/api/v1/';
 
   // Auth

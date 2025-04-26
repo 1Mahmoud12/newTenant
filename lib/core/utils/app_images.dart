@@ -3,6 +3,7 @@ class AppImages {
 
   static const splashTwo = '$baseUrl/splashTwo.png';
   static const appLogo = '$baseUrl/logo.png';
+  static const appLogoWhite = '$baseUrl/logo-white-color.png';
   static const splashLogo = '$baseUrl/splash-app-logo.png';
   static const backgroundSplashTwo = '$baseUrl/backgroundSplashTwo.png';
   static const backGroundSuccessToast = '$baseUrl/backGroundSuccessToast.png';

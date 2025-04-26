@@ -206,6 +206,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
                     ? Padding(
                         padding: const EdgeInsets.all(10.0),
                         child: InkWell(
+                          overlayColor: const WidgetStatePropertyAll(Colors.transparent),
                           onTap: _toggle,
                           child: _obscureText
                               ? SvgPicture.asset(

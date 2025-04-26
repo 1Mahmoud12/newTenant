@@ -1,4 +1,5 @@
 import 'package:dobzz_seller/core/utils/app_images.dart';
+import 'package:dobzz_seller/core/utils/utils.dart';
 import 'package:dobzz_seller/feature/auth/widgets/authRich_text_link.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/gestures.dart';
@@ -26,6 +27,26 @@ class SignUpView extends StatefulWidget {
 class _SignUpViewState extends State<SignUpView> {
   bool checkBoxValue = false;
   GlobalKey<FormState> formKey = GlobalKey();
+  String? validatePassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Password is required'.tr();
+    }
+    if (value.length < 6) {
+      return 'Password must be at least 6 characters'.tr();
+    }
+    return null;
+  }
+
+  String? validateConfirmPassword(String? value) {
+    final password = AuthCubit.of(context).passwordController.text;
+    if (value == null || value.isEmpty) {
+      return 'Confirm password is required'.tr();
+    }
+    if (value != password) {
+      return 'Passwords do not match'.tr();
+    }
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,22 +79,33 @@ class _SignUpViewState extends State<SignUpView> {
                     children: [
                       CustomTextFormField(
                         outPadding: EdgeInsets.zero,
-                        controller: AuthCubit.of(context).firstNameController,
-                        hintText: 'first name'.tr(),
-                        labelText: 'first name'.tr(),
+                        controller: AuthCubit.of(context).nameController,
+                        hintText: 'Name'.tr(),
+                        labelText: 'Name'.tr(),
                       ),
                       CustomTextFormField(
                         outPadding: EdgeInsets.zero,
-                        controller: AuthCubit.of(context).lastNameController,
-                        hintText: 'last name'.tr(),
-                        labelText: 'last name'.tr(),
+                        controller: AuthCubit.of(context).phoneController,
+                        hintText: 'Phone'.tr(),
+                        labelText: 'Phone'.tr(),
+                        textInputType: TextInputType.number,
                       ),
                       CustomTextFormField(
                         outPadding: EdgeInsets.zero,
-                        controller: AuthCubit.of(context).emailController,
-                        hintText: 'enter your email'.tr(),
-                        labelText: 'enter your email'.tr(),
-                        textInputType: TextInputType.emailAddress,
+                        controller: AuthCubit.of(context).passwordController,
+                        helperText: 'enter your password'.tr(),
+                        hintText: 'password'.tr(),
+                        labelText: 'password'.tr(),
+                        password: true,
+                        validator: validatePassword,
+                      ),
+                      CustomTextFormField(
+                        outPadding: EdgeInsets.zero,
+                        controller: AuthCubit.of(context).confirmPasswordController,
+                        hintText: 're-password'.tr(),
+                        labelText: 're-enter password'.tr(),
+                        password: true,
+                        validator: validateConfirmPassword,
                       ),
                       CustomCheckBox(
                         checkBox: checkBoxValue,
@@ -115,7 +147,7 @@ class _SignUpViewState extends State<SignUpView> {
                     if (state is AuthSignUpSuccessState) {
                       context.navigateToPageWithReplacement(
                         VerifyCodeView(
-                          email: AuthCubit.of(context).emailController.text,
+                          email: AuthCubit.of(context).phoneController.text,
                           // phoneNumber: AuthCubit.of(context).phoneController.text,
                           // countryCodeId: AuthCubit.of(context).countryCodeId,
                           // verifyButton: (context) {
@@ -131,7 +163,11 @@ class _SignUpViewState extends State<SignUpView> {
                     padding: const EdgeInsets.symmetric(vertical: 14.5),
                     onPress: () {
                       if (formKey.currentState!.validate()) {
-                        context.navigateToPage(const AddPasswordView());
+                        if (AuthCubit.of(context).termAndCondition == 1) {
+                          AuthCubit.of(context).signUp(context);
+                        } else {
+                          Utils.showToast(title: 'Please accept the terms and conditions to continue'.tr(), state: UtilState.error);
+                        }
                       }
                     },
                   ),

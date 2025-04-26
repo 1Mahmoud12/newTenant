@@ -33,7 +33,7 @@ class _SplashScreenState extends State<SplashScreen> {
       const Duration(seconds: 3),
       () {
         //   context.navigateToPage(const NavigationView());
-        context.navigateToPage(userCacheValue?.data != null ? const NavigationViewWithThemes() : const LoginScreen());
+        context.navigateToPage(userCacheValue?.data != null ? const NavigationViewWithThemes() : const NavigationViewWithThemes());
         // userCacheValue.data != null ? context.navigateToPage(const NavigationView()) : context.navigateToPage(const LoginScreen());
         // userCache?.put(onBoardingKey, false);
       },
@@ -71,7 +71,7 @@ class _SplashScreenState extends State<SplashScreen> {
     Constants.currentLanguage = context.locale.languageCode;
     Utils.buildSetSystemUIOverlayStyle();
     return Scaffold(
-      backgroundColor: AppColors.primaryColor,
+      backgroundColor: const Color(0xfffff5f7),
       body: Stack(
         // mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -94,7 +94,8 @@ class _SplashScreenState extends State<SplashScreen> {
           ),
           Center(
             child: Image.asset(
-              AppImages.splashLogo,
+              AppImages.appLogo,
+              width: 200,
             ),
           ),
         ],

@@ -54,7 +54,7 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
                 const SizedBox(height: 32),
                 CustomTextFormField(
                   outPadding: EdgeInsets.zero,
-                  controller: AuthCubit.of(context).emailController,
+                  controller: AuthCubit.of(context).phoneController,
                   hintText: 'email'.tr(),
                 ),
                 const SizedBox(height: 32),

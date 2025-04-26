@@ -57,7 +57,7 @@ class AuthCubit extends Cubit<AuthState> {
   void forgetPassword({required BuildContext context}) async {
     emit(AuthGetCountryCodeLoadingState());
     animationDialogLoading(context);
-    authDataSource.forgetPassword(context, email: emailController.text).then(
+    authDataSource.forgetPassword(context, email: phoneController.text).then(
       (value) async {
         closeDialog(context);
         // bool result = await InternetConnectionChecker().hasConnection;
@@ -67,7 +67,7 @@ class AuthCubit extends Cubit<AuthState> {
         }, (r) async {
           context.navigateToPage(
             VerifyCodeView(
-              email: emailController.text,
+              email: phoneController.text,
               // phoneNumber: phoneController.text,
               // countryCodeId: countryCodeId,
               verifyButton: (context) {
@@ -99,9 +99,9 @@ class AuthCubit extends Cubit<AuthState> {
     );
   }
 
-  TextEditingController firstNameController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
   TextEditingController nationalIdController = TextEditingController();
@@ -128,9 +128,8 @@ class AuthCubit extends Cubit<AuthState> {
         .postSignUp(
       context,
       SignUpParams(
-        firstName: firstNameController.text,
-        email: emailController.text,
-        lastName: lastNameController.text,
+        name: nameController.text,
+        phone: phoneController.text,
         password: passwordController.text,
         termAndCondition: termAndCondition,
       ),
@@ -172,8 +171,8 @@ class AuthCubit extends Cubit<AuthState> {
         .verifyCode(
       context,
       VerifyCodeModel(
-        otp: 'codeController.text',
-        phone: otpController.text,
+        otp: otpController.text,
+        phone: phoneController.text,
       ),
     )
         .then(
@@ -194,7 +193,7 @@ class AuthCubit extends Cubit<AuthState> {
             subTitle: 'you_can_now_entertainment_with_the_app',
             nameButton: 'go_home',
             onPress: () {
-              //context.navigateToPageWithReplacement(const NavigationView());
+              context.navigateToPage(const NavigationViewWithThemes());
               lastNameController.clear();
               passwordController.clear();
               confirmPasswordController.clear();
@@ -215,7 +214,7 @@ class AuthCubit extends Cubit<AuthState> {
         .postLogin(
       context,
       LoginParams(
-        email: emailController.text,
+        email: phoneController.text,
         password: passwordController.text,
       ),
     )

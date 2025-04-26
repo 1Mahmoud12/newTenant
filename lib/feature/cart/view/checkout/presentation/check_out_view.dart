@@ -12,6 +12,7 @@ import 'package:dobzz_seller/feature/cart/view/address/presentation/add_address_
 import 'package:dobzz_seller/feature/cart/view/address/presentation/manager/address/cubit/address_cubit.dart';
 import 'package:dobzz_seller/feature/cart/view/checkout/presentation/manager/discount/cubit/discount_cubit.dart';
 import 'package:dobzz_seller/feature/cart/view/checkout/presentation/manager/processToCheckout/cubit/process_to_checkout_cubit.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -24,7 +25,7 @@ class CheckoutView extends StatefulWidget {
 }
 
 class _CheckoutViewState extends State<CheckoutView> {
-  String selectedPaymentMethod = 'Card';
+  String selectedPaymentMethod = 'Card'.tr();
   final TextEditingController promoCodeController = TextEditingController();
   AddressCubit addressCubit = AddressCubit();
   ProcessToCheckoutCubit processToCheckoutCubit = ProcessToCheckoutCubit();
@@ -63,7 +64,7 @@ class _CheckoutViewState extends State<CheckoutView> {
                       )
                     : Center(
                         child: Text(
-                          'Place Order',
+                          'Place Order'.tr(),
                           style: TextStyle(
                             fontSize: 16.sp,
                             color: Colors.white,
@@ -76,7 +77,7 @@ class _CheckoutViewState extends State<CheckoutView> {
           ),
         ),
       ],
-      appBar: customAppBar(context: context, title: 'Checkout'),
+      appBar: customAppBar(context: context, title: 'Checkout'.tr()),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
@@ -92,9 +93,9 @@ class _CheckoutViewState extends State<CheckoutView> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
-                          'Delivery Address',
-                          style: TextStyle(
+                        Text(
+                          'Delivery Address'.tr(),
+                          style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                           ),
@@ -121,9 +122,9 @@ class _CheckoutViewState extends State<CheckoutView> {
                             child: BlocBuilder<AddressCubit, AddressState>(
                               builder: (context, state) {
                                 return CustomDropDownMenu(
-                                  nameField: 'Address',
+                                  nameField: 'Address'.tr(),
                                   borderColor: Colors.grey.withOpacity(0.2),
-                                  selectedItem: DropDownModel(name: 'Choose your address', value: 0),
+                                  selectedItem: DropDownModel(name: 'Choose your address'.tr(), value: 0),
                                   items: ConstantsModels.addressModel?.data?.map((e) {
                                         return DropDownModel(name: e.name ?? '', value: e.id ?? -1);
                                       }).toList() ??
@@ -148,9 +149,9 @@ class _CheckoutViewState extends State<CheckoutView> {
                     ),
                     const SizedBox(height: 8),
                     // Payment Method Section
-                    const Text(
-                      'Payment Method',
-                      style: TextStyle(
+                    Text(
+                      'Payment Method'.tr(),
+                      style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),
@@ -160,7 +161,7 @@ class _CheckoutViewState extends State<CheckoutView> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 5),
                       child: CustomList(
-                        tabs: const ['Card', 'Cash', 'Apple Pay'],
+                        tabs: ['Card'.tr(), 'Cash'.tr(), 'Apple Pay'.tr()],
                         prefixIcon: true,
                         icons: const [Icons.credit_card, Icons.monetization_on_outlined, Icons.apple],
                         onTabChanged: (index) {
@@ -178,19 +179,19 @@ class _CheckoutViewState extends State<CheckoutView> {
                     // Payment Method Section
 
                     // Order Summary Section
-                    const Text(
-                      'Order Summary',
-                      style: TextStyle(
+                    Text(
+                      'Order Summary'.tr(),
+                      style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     const SizedBox(height: 16),
-                    _buildOrderSummaryRow('Sub-total', '\$ ${ConstantsModels.checkoutDetailsModel?.subTotalPrice ?? 0}'),
+                    _buildOrderSummaryRow('Sub-total'.tr(), '\$ ${ConstantsModels.checkoutDetailsModel?.subTotalPrice ?? 0}'),
                     const SizedBox(height: 12),
-                    _buildOrderSummaryRow('VAT (%)', '\$ 0.00'),
+                    _buildOrderSummaryRow('VAT (%)'.tr(), '\$ 0.00'),
                     const SizedBox(height: 12),
-                    _buildOrderSummaryRow('Shipping fee', '\$ 0.00'),
+                    _buildOrderSummaryRow('Shipping fee'.tr(), '\$ 0.00'),
                     const SizedBox(height: 8),
                     Divider(
                       thickness: 0.7,
@@ -198,7 +199,7 @@ class _CheckoutViewState extends State<CheckoutView> {
                     ),
                     const SizedBox(height: 8),
                     // Payment Method Section
-                    _buildOrderSummaryRow('Total', '\$ ${ConstantsModels.checkoutDetailsModel?.subTotalPrice ?? 0}', isTotal: true),
+                    _buildOrderSummaryRow('Total'.tr(), '\$ ${ConstantsModels.checkoutDetailsModel?.subTotalPrice ?? 0}', isTotal: true),
 
                     // Payment Method Section
                     const SizedBox(height: 8),
@@ -271,7 +272,7 @@ class _PromoCodeState extends State<PromoCode> {
                 ),
                 outPadding: EdgeInsets.zero,
                 controller: widget.discountCubit.discountCode,
-                hintText: 'promo code',
+                hintText: 'promo code'.tr(),
               ),
             ),
             w10,
@@ -280,7 +281,7 @@ class _PromoCodeState extends State<PromoCode> {
               child: InkWell(
                 onTap: () {
                   if (widget.discountCubit.discountCode.text.isEmpty) {
-                    Utils.showToast(title: 'Please Enter promo code ', state: UtilState.error);
+                    Utils.showToast(title: 'Please Enter promo code'.tr(), state: UtilState.error);
                   } else {
                     widget.discountCubit.discount(context: context);
                   }
@@ -306,7 +307,7 @@ class _PromoCodeState extends State<PromoCode> {
                               )
                             : Center(
                                 child: Text(
-                                  'Add',
+                                  'Add'.tr(),
                                   style: TextStyle(
                                     fontSize: 16.sp,
                                     color: Colors.white,

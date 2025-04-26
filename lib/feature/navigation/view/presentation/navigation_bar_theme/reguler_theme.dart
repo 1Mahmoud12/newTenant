@@ -1,3 +1,4 @@
+import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:dobzz_seller/core/utils/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -42,8 +43,8 @@ class RegularNavigationBar extends StatelessWidget {
           ),
           RegularNavItem(
             index: 1,
-            outlinedIcon: AppIcons.unSelectedCartR,
-            filledIcon: AppIcons.selectedCartR,
+            outlinedIcon: AppIcons.unSelectedCartC,
+            filledIcon: AppIcons.selectedCartC,
             isSelected: selectedIndex == 1,
             onTap: onItemTapped,
           ),
@@ -107,6 +108,7 @@ class RegularNavItem extends StatelessWidget {
                   isSelected ? filledIcon : outlinedIcon,
                   width: 24,
                   height: 24,
+                  colorFilter: ColorFilter.mode(isSelected ? AppColors.primaryColor : Colors.black, BlendMode.srcIn),
                 ),
               ),
             ),

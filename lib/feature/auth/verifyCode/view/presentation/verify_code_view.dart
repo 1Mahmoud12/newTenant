@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dobzz_seller/core/component/buttons/custom_text_button.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
-import 'package:dobzz_seller/core/utils/extensions.dart';
 import 'package:dobzz_seller/feature/auth/manager/authBloc/auth_cubit.dart';
 import 'package:dobzz_seller/feature/auth/manager/authBloc/auth_state.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
@@ -149,16 +148,9 @@ class _VerifyCodeViewState extends State<VerifyCodeView> {
                   padding: const EdgeInsets.symmetric(vertical: 14.5),
                   state: state is AuthResendCodeLoadingState,
                   onPress: () {
-                    context.navigateToPage(const NavigationViewWithThemes());
-
-                    //  widget.verifyButton?.call(context);
-
-                    //  registerBloc?.beforeRegisterSendCode(context);
-                    /*if (RegisterBloc.get(context).verificationNumber.round().toString() == newValue) {
-                          context.navigateToPageWithClearStack(resetPassword ? const ResetPassword() : const CreatePassword());
-                        } else {
-                          Utils.showToast(title: 'Invalid Code', state: UtilState.error);
-                        }*/
+                    AuthCubit.of(context).verifyCode(
+                      context,
+                    );
                   },
                 ),
               ),
@@ -179,6 +171,20 @@ class VerificationCode extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Get the available width
+    final screenWidth = MediaQuery.of(context).size.width;
+
+    // Calculate field size based on screen width
+    // Add padding between fields (5 gaps × 12 padding = 60)
+    // Leave 16 padding on each side of the screen
+    final availableWidth = screenWidth - 60 - 32;
+
+    // Calculate field width (with minimum and maximum constraints)
+    final fieldWidth = (availableWidth / 6).clamp(40.0, 60.0);
+
+    // Make field height proportional to width but not too tall
+    final fieldHeight = fieldWidth * 1.2;
+
     return Directionality(
       textDirection: TextDirection.ltr,
       child: PinCodeTextField(
@@ -207,16 +213,17 @@ class VerificationCode extends StatelessWidget {
         hintStyle: Theme.of(context).textTheme.titleSmall,
         pinTheme: PinTheme(
           shape: PinCodeFieldShape.box,
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(8),
           errorBorderColor: AppColors.cBorderPinColor,
           selectedColor: AppColors.primaryColor,
           selectedFillColor: AppColors.cBorderTextFormField,
           inactiveColor: AppColors.cBorderPinColor.withOpacity(.15),
           activeColor: AppColors.primaryColor,
-          fieldWidth: context.screenWidth * .2,
-          fieldHeight: context.screenWidth * .17,
+          fieldWidth: fieldWidth,
+          fieldHeight: fieldHeight,
         ),
-        // hintCharacter: '-',
+        // Add mainAxisAlignment to ensure fields are properly spaced
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       ),
     );
   }

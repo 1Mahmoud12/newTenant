@@ -58,7 +58,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -88,7 +88,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             child: BlocBuilder<AuthCubit, AuthState>(
                               builder: (context, state) => CustomTextFormField(
                                 outPadding: EdgeInsets.zero,
-                                controller: AuthCubit.of(context).emailController,
+                                controller: AuthCubit.of(context).phoneController,
                                 validator: (value) {
                                   if (value.isEmpty) return 'required email'.tr();
                                   if (AuthCubit.of(context).errorMessage != null) return AuthCubit.of(context).errorMessage;
@@ -191,7 +191,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 AuthRichTextLink(
                   isCentered: true,
                   text: "Don't have an account? ",
-                  linkText: 'Join',
+                  linkText: 'Create account',
                   onTap: () {
                     context.navigateToPage(const SignUpView());
                   },

@@ -3,6 +3,7 @@ import 'package:dobzz_seller/core/component/cache_image.dart';
 import 'package:dobzz_seller/core/component/custom_app_bar.dart';
 import 'package:dobzz_seller/core/component/loadsErros/loading_widget.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
+import 'package:dobzz_seller/core/utils/app_icons.dart';
 import 'package:dobzz_seller/core/utils/constant_gaping.dart';
 import 'package:dobzz_seller/core/utils/constants_models.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
@@ -15,6 +16,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class ProductDetailsView extends StatefulWidget {
@@ -164,7 +166,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
     }
 
     // Initial state or any other state
-    return  Center(child: Text('Loading product details...'.tr()));
+    return Center(child: Text('Loading product details...'.tr()));
   }
 }
 
@@ -244,7 +246,7 @@ class SizeSelectorSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-         Text('Choose size'.tr(), style: TextStyle(fontWeight: FontWeight.bold)),
+        Text('Choose size'.tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
         const SizedBox(height: 10),
         SizeSelector(onSelectSize: onSelectSize),
       ],
@@ -269,7 +271,7 @@ class QuantitySelector extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-         Text('Quantity'.tr(), style: TextStyle(fontWeight: FontWeight.bold)),
+        Text('Quantity'.tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
         const SizedBox(width: 16),
         Container(
           decoration: BoxDecoration(
@@ -450,10 +452,11 @@ class _PriceAndAddToCartWidgetState extends State<PriceAndAddToCartWidget> {
                             ),
                           )
                         : Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               s,
-                              const Icon(Icons.shopping_cart, color: Colors.white),
+                              SvgPicture.asset(AppIcons.unSelectedCartC),
+                              w5,
                               Text(
                                 'Add to Cart'.tr(),
                                 style: TextStyle(color: Colors.white, fontSize: 16.sp, fontWeight: FontWeight.w500),

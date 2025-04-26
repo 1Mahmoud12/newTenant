@@ -1,3 +1,4 @@
+import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -30,7 +31,7 @@ class AuthRichTextLink extends StatelessWidget {
           TextSpan(
             text: linkText,
             style: const TextStyle(
-              color: Colors.black,
+              color: AppColors.primaryColor,
               fontWeight: FontWeight.bold,
               decoration: TextDecoration.underline,
             ),

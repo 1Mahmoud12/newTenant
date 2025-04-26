@@ -104,7 +104,7 @@ class NavItem extends StatelessWidget {
               isSelected ? filledIcon : outlinedIcon,
               width: 25,
               height: 25,
-              colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
+              colorFilter: ColorFilter.mode(isSelected ? AppColors.primaryColor : Colors.white, BlendMode.srcIn),
             ),
             if (isSelected)
               Container(
