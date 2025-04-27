@@ -10,6 +10,7 @@ class AppImages {
 
   // splash shap
   static const splashShape = '$baseUrl/splash-shap.png';
+  static const saleImageDemo = '$baseUrl/sale-image-demo.png';
 
   //Temporary
   static const projectsTemporary = '$baseUrl/projectsTemporary.png';

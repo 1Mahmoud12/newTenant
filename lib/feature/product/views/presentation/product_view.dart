@@ -8,8 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProductView extends StatefulWidget {
-  const ProductView({super.key, required this.subCategoryId});
-  final int subCategoryId;
+  const ProductView({super.key, this.subCategoryId});
+  final int? subCategoryId;
   @override
   State<ProductView> createState() => _ProductViewState();
 }
@@ -44,7 +44,7 @@ class _ProductViewState extends State<ProductView> {
                 );
               } else if (state is TopProductSuccess) {
                 // Access the loaded top products
-                final products = ConstantsModels.productsModel?.data;
+                final products = widget.subCategoryId == null ? ConstantsModels.topProductModel?.data : ConstantsModels.productsModel?.data;
 
                 if (products == null || products.isEmpty) {
                   return const Center(
@@ -59,7 +59,7 @@ class _ProductViewState extends State<ProductView> {
                     crossAxisCount: 2,
                     mainAxisSpacing: 16,
                     crossAxisSpacing: 16,
-                    childAspectRatio: 0.6,
+                    childAspectRatio: 0.58,
                   ),
                   itemBuilder: (context, index) {
                     final product = products[index];

@@ -89,7 +89,7 @@ class TopProductGrid extends StatelessWidget {
               );
             }
             return GridView.builder(
-              itemCount: topProducts.length,
+              itemCount: topProducts.length > 2 ? 2 : topProducts.length,
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               padding: EdgeInsets.zero,

@@ -363,10 +363,15 @@ class CartItemWidget extends StatelessWidget {
                       ),
                     ],
                   ),
-                  Text(
-                    '${'Size'.tr()} ${cartItem.selectedSize}',
-                    style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14.sp, color: Colors.grey),
-                  ),
+                  if (cartItem.selectedSize != null)
+                    Text(
+                      '${'Size'.tr()} ${cartItem.selectedSize}',
+                      style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14.sp, color: Colors.grey),
+                    )
+                  else
+                    const SizedBox(
+                      height: 10,
+                    ),
                   const SizedBox(height: 8),
                   Row(
                     children: [
