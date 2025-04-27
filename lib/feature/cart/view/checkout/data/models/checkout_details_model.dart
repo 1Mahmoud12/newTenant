@@ -124,7 +124,7 @@ class Product {
   // List<SubCategories>? subCategories;
   List<Sizes>? sizes;
   // List<Colors>? colors;
-  String? totalSold;
+  num? totalSold;
   //  tax;
   // void taxId;
   int? stock;

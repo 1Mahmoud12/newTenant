@@ -25,4 +25,23 @@ class AddToCartDataSource {
       return Left(ServerFailure(error.toString()));
     }
   }
+
+  static Future<Either<Failure, void>> updateCartItem({required int cartItemId, required int quantity}) async {
+    try {
+      final response = await DioHelper.postData(
+        endPoint: '${EndPoints.cartItems}/$cartItemId',
+        data: {
+          'quantity': quantity,
+          '_method': 'put',
+        },
+      );
+      log('add to cart Response: ${response.data}');
+      return const Right(null);
+    } catch (error) {
+      if (error is DioException) {
+        return Left(ServerFailure.fromDioException(error));
+      }
+      return Left(ServerFailure(error.toString()));
+    }
+  }
 }

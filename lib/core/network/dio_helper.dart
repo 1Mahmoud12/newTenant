@@ -84,7 +84,7 @@ class DioHelper {
       'subdomain': Constants.subdomain,
       'Apipassword': Constants.apiPassword,
       'lang': Constants.currentLanguage,
-     // 'uuid': userCache?.get(deviceIdKey, defaultValue: ''),
+      // 'uuid': userCache?.get(deviceIdKey, defaultValue: ''),
     };
 
     log('=======================================================');
@@ -138,7 +138,10 @@ class DioHelper {
       'Authorization': 'Bearer ${Constants.token}',
       'Accept': 'application/json',
       'Content-Type': 'application/x-www-form-urlencoded',
-     // 'uuid': userCache?.get(deviceIdKey, defaultValue: ''),
+      'Apipassword': Constants.apiPassword,
+      'subdomain': Constants.subdomain,
+
+      // 'uuid': userCache?.get(deviceIdKey, defaultValue: ''),
     };
     log('=======================================================');
     log('Headers in put method ${dio!.options.baseUrl}/$endPoint');
@@ -180,7 +183,7 @@ class DioHelper {
       'subdomain': Constants.subdomain,
       'Apipassword': Constants.apiPassword,
       'lang': Constants.currentLanguage,
-     // 'uuid': userCache?.get(deviceIdKey, defaultValue: ''),
+      // 'uuid': userCache?.get(deviceIdKey, defaultValue: ''),
     };
     log('=======================================================');
     log('Headers in delete method ${dio!.options.baseUrl}/$endPoint');

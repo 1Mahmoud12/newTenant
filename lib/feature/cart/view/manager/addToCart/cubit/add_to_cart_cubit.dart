@@ -28,4 +28,20 @@ class AddToCartCubit extends Cubit<AddToCartState> {
       },
     );
   }
+
+  Future<void> updateCartItem({required BuildContext context, required int cartItemId,required int quantity}) async {
+    emit(AddToCartLoading());
+    await AddToCartDataSource.updateCartItem(cartItemId: cartItemId, quantity: quantity).then(
+      (value) async {
+        value.fold(
+          (l) {
+            Utils.showToast(title: l.errMessage, state: UtilState.error);
+          },
+          (r) async {
+
+          },
+        );
+      },
+    );
+  }
 }
