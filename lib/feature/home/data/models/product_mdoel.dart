@@ -49,7 +49,7 @@ class Product {
   List<Category>? subCategories;
   List<Size>? sizes;
   List<Color>? colors;
-  String? totalSold;
+  num? totalSold;
   String? tax;
   int? taxId;
   int? stock;
