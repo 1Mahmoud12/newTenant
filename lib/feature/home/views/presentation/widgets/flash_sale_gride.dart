@@ -95,9 +95,9 @@ class TopProductGrid extends StatelessWidget {
               padding: EdgeInsets.zero,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
-                mainAxisSpacing: 16,
-                crossAxisSpacing: 16,
-                childAspectRatio: 0.62,
+                mainAxisSpacing: 10,
+                crossAxisSpacing: 10,
+                childAspectRatio: 0.6,
               ),
               itemBuilder: (context, index) {
                 final product = topProducts[index];
@@ -178,7 +178,7 @@ class FavoriteGrid extends StatelessWidget {
                 crossAxisCount: 2,
                 mainAxisSpacing: 16,
                 crossAxisSpacing: 16,
-                childAspectRatio: 0.63,
+                childAspectRatio: 0.6,
               ),
               itemBuilder: (context, index) {
                 final wishListItem = wishList[index];

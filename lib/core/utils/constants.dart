@@ -3,10 +3,9 @@ import 'package:dobzz_seller/feature/home/data/models/categories_model.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:dobzz_seller/core/sharedModel/services_model.dart';
 
 class Constants {
-  static String fontFamily = 'ALMAMLAKAFONT';
+  static String fontFamily = 'Cairo';
   static String appName = 'El-Mamlaka';
   static LatLng locationCache = const LatLng(30.033333, 31.233334);
   static int distance = 100; // Km

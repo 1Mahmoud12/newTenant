@@ -60,7 +60,7 @@ void main() async {
 
   arabicLanguage = await userCache?.get(languageAppKey, defaultValue: false);
   log('arabicLanguage ==>$arabicLanguage');
-  Constants.fontFamily = arabicLanguage ? 'ALMAMLAKAFONT' : 'ALMAMLAKAFONT';
+  Constants.fontFamily = arabicLanguage ? 'Cairo' : 'Cairo';
   Bloc.observer = MyBlocObserver();
 
   await Firebase.initializeApp(

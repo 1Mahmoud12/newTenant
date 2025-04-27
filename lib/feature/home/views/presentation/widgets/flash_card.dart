@@ -1,7 +1,6 @@
 import 'package:dobzz_seller/core/component/cache_image.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:dobzz_seller/core/utils/app_icons.dart';
-import 'package:dobzz_seller/core/utils/constant_gaping.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/feature/cart/view/manager/addToCart/cubit/add_to_cart_cubit.dart';
 import 'package:dobzz_seller/feature/home/views/manager/addToWhishlist/cubit/add_to_wish_list_cubit.dart';
@@ -75,6 +74,8 @@ class _ProductCardState extends State<ProductCard> {
           borderRadius: BorderRadius.circular(10),
         ),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween, // important
+
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Stack(
@@ -141,7 +142,7 @@ class _ProductCardState extends State<ProductCard> {
             ),
             const SizedBox(height: 4),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -158,8 +159,9 @@ class _ProductCardState extends State<ProductCard> {
                 ],
               ),
             ),
+
             // Removed the separate row for AddToCartButton
-            const SizedBox(height: 8), // Added bottom padding for better spacing
+            // Added bottom padding for better spacing
           ],
         ),
       ),
