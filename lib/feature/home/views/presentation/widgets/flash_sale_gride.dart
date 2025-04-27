@@ -97,7 +97,7 @@ class TopProductGrid extends StatelessWidget {
                 crossAxisCount: 2,
                 mainAxisSpacing: 16,
                 crossAxisSpacing: 16,
-                childAspectRatio: 0.68,
+                childAspectRatio: 0.62,
               ),
               itemBuilder: (context, index) {
                 final product = topProducts[index];
@@ -176,7 +176,7 @@ class FavoriteGrid extends StatelessWidget {
                 crossAxisCount: 2,
                 mainAxisSpacing: 16,
                 crossAxisSpacing: 16,
-                childAspectRatio: 0.68,
+                childAspectRatio: 0.63,
               ),
               itemBuilder: (context, index) {
                 final wishListItem = wishList[index];

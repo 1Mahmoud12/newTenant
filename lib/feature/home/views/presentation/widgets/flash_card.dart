@@ -15,15 +15,20 @@ class ProductCard extends StatefulWidget {
   final String title;
   final String price;
   final String? discountPercentage;
+  final String description; // Added description parameter
+  final double rating; // Added rating parameter
   final Function(bool isNowLiked)? onLikeTap;
   final int productId;
   final bool initialLiked;
+
   const ProductCard({
     Key? key,
     required this.imagePath,
     required this.title,
     required this.price,
     this.discountPercentage,
+    this.description = 'No description available', // Default value
+    this.rating = 0.0, // Default value
     this.onLikeTap,
     required this.initialLiked,
     required this.productId,
@@ -102,23 +107,42 @@ class _ProductCardState extends State<ProductCard> {
               ],
             ),
             const SizedBox(height: 8),
+            Row(
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Text(
+                      widget.title,
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ),
+                Review(widget: widget),
+              ],
+            ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Text(
-                widget.title,
+                widget.description,
                 style: TextStyle(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.bold,
+                  fontSize: 12.sp,
+                  color: Colors.grey.shade600,
                 ),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-            // const SizedBox(height: 4),
+            const SizedBox(height: 4),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
                     widget.price,
@@ -127,15 +151,50 @@ class _ProductCardState extends State<ProductCard> {
                       color: Colors.grey.shade700,
                     ),
                   ),
-                  s,
                   AddToCartButton(
                     productId: widget.productId,
                   ),
                 ],
               ),
             ),
+            // Removed the separate row for AddToCartButton
+            const SizedBox(height: 8), // Added bottom padding for better spacing
           ],
         ),
+      ),
+    );
+  }
+}
+
+class Review extends StatelessWidget {
+  const Review({
+    super.key,
+    required this.widget,
+  });
+
+  final ProductCard widget;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 5),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(
+            Icons.star,
+            color: Colors.amber,
+            size: 16.sp,
+          ),
+          const SizedBox(width: 2),
+          Text(
+            widget.rating.toStringAsFixed(1),
+            style: TextStyle(
+              fontSize: 12.sp,
+              color: Colors.grey.shade700,
+            ),
+          ),
+        ],
       ),
     );
   }

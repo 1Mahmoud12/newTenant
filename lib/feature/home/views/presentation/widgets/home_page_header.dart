@@ -1,3 +1,4 @@
+import 'package:dobzz_seller/core/network/local/cache.dart';
 import 'package:dobzz_seller/core/utils/app_icons.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/feature/notification/presentation/notification_view.dart';
@@ -18,18 +19,18 @@ class HomePageHeader extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Location', // corrected spelling from "Loaction"
+                'Hi', // corrected spelling from "Loaction"
                 style: TextStyle(
-                  fontSize: 16.sp,
+                  fontSize: 20.sp,
                   color: Colors.grey,
                   fontWeight: FontWeight.w500,
                 ),
               ),
               const SizedBox(height: 4),
               Text(
-                'Dhaka, Bangladesh', // added space after comma
+                'Welcome, ${userCacheValue?.data?.name}', // added space after comma
                 style: TextStyle(
-                  fontSize: 20.sp,
+                  fontSize: 22.sp,
                   fontWeight: FontWeight.bold,
                   color: Colors.black87,
                 ),
