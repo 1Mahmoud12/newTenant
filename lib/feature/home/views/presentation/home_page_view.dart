@@ -9,6 +9,7 @@ import 'package:dobzz_seller/feature/home/views/presentation/widgets/categories_
 import 'package:dobzz_seller/feature/home/views/presentation/widgets/flash_sale_gride.dart';
 import 'package:dobzz_seller/feature/home/views/presentation/widgets/home_page_header.dart';
 import 'package:dobzz_seller/feature/home/views/presentation/widgets/home_slider.dart';
+import 'package:dobzz_seller/feature/home/views/presentation/widgets/horizotal_product_list.dart';
 import 'package:dobzz_seller/feature/home/views/presentation/widgets/sale_widget.dart';
 import 'package:dobzz_seller/feature/product/views/presentation/product_view.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -73,10 +74,7 @@ class HomePageView extends StatelessWidget {
                     },
                   ),
                 ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: FlashSaleGrid(),
-                ),
+                const FlashSaleHorizontalList(),
                 h10,
                 SaleCountdownBanner(
                   endTime: endTime,
@@ -97,10 +95,7 @@ class HomePageView extends StatelessWidget {
                     },
                   ),
                 ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: FlashSaleGrid(),
-                ),
+                const FlashSaleHorizontalList(),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                   child: SeeAllWidget(
@@ -110,10 +105,7 @@ class HomePageView extends StatelessWidget {
                     },
                   ),
                 ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: FlashSaleGrid(),
-                ),
+                const FlashSaleHorizontalList(),
                 const SizedBox(
                   height: 100,
                 ),
