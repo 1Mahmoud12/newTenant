@@ -15,6 +15,7 @@ class ProductCard extends StatefulWidget {
   final String title;
   final String price;
   final String? discountPercentage;
+
   final String description; // Added description parameter
   final double rating; // Added rating parameter
   final Function(bool isNowLiked)? onLikeTap;

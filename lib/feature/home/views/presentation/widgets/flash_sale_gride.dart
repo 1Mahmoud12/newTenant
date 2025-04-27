@@ -102,6 +102,8 @@ class TopProductGrid extends StatelessWidget {
               itemBuilder: (context, index) {
                 final product = topProducts[index];
                 return ProductCard(
+                  description: product.description ?? 'No description available'.tr(),
+                  rating: product.reviewsCount?.toDouble() ?? 0.0,
                   productId: product.id ?? -1,
                   initialLiked: widget.isItWhishList!,
                   onLikeTap: (isNowLiked) {
