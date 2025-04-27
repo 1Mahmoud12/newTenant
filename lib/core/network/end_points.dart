@@ -76,6 +76,7 @@ class EndPoints {
   static const submitCancellationRequest = 'Order/SubmitCancellationRequest';
   static const getOrderVisitTime = 'Order/GetOrderVisitTime';
   static const cartItems = 'shop/cart';
+  static const deleteAccount = 'shop/auth/delete-account';
   static const discount = 'shop/checkout/apply-code';
   static const order = 'shop/orders';
   static const checkoutDetails = 'shop/checkout';

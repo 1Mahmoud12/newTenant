@@ -6,14 +6,16 @@ class CustomList extends StatefulWidget {
   final List<String> tabs;
   final void Function(int index)? onTabChanged;
   final bool? prefixIcon;
-  final List<IconData>? icons; // Add icons list
+  final List<IconData>? icons;
+  final bool borderOnlySelection; // New property for border-only selection
 
   const CustomList({
     Key? key,
     required this.tabs,
     this.onTabChanged,
     this.prefixIcon = false,
-    this.icons, // Accept icons list
+    this.icons,
+    this.borderOnlySelection = false, // Default to false to maintain original behavior
   }) : super(key: key);
 
   @override
@@ -30,6 +32,26 @@ class _CustomListState extends State<CustomList> {
       child: Row(
         children: List.generate(widget.tabs.length, (index) {
           final isSelected = index == selectedIndex;
+
+          // Determine colors based on selection style
+          Color backgroundColor = Colors.white;
+          Color textColor = Colors.black;
+          Color borderColor = Colors.grey.withOpacity(0.3);
+
+          if (isSelected) {
+            if (widget.borderOnlySelection) {
+              // Border-only selection style
+              backgroundColor = Colors.white;
+              textColor = AppColors.primaryColor;
+              borderColor = AppColors.primaryColor;
+            } else {
+              // Original filled selection style
+              backgroundColor = AppColors.primaryColor;
+              textColor = Colors.white;
+              borderColor = AppColors.primaryColor;
+            }
+          }
+
           return Padding(
             padding: const EdgeInsets.only(right: 8.0),
             child: GestureDetector(
@@ -44,10 +66,11 @@ class _CustomListState extends State<CustomList> {
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
                 decoration: BoxDecoration(
-                  color: isSelected ? AppColors.primaryColor : Colors.white,
+                  color: backgroundColor,
                   borderRadius: BorderRadius.circular(8),
                   border: Border.all(
-                    color: isSelected ? AppColors.primaryColor : Colors.grey.withOpacity(0.3),
+                    color: borderColor,
+                    width: isSelected ? 1.5 : 1.0, // Make selected border slightly thicker
                   ),
                 ),
                 child: Row(
@@ -58,13 +81,13 @@ class _CustomListState extends State<CustomList> {
                         child: Icon(
                           widget.icons![index],
                           size: 18.sp,
-                          color: isSelected ? Colors.white : Colors.black,
+                          color: textColor,
                         ),
                       ),
                     Text(
                       widget.tabs[index],
                       style: TextStyle(
-                        color: isSelected ? Colors.white : Colors.black,
+                        color: textColor,
                         fontWeight: FontWeight.w500,
                         fontSize: 16.sp,
                       ),

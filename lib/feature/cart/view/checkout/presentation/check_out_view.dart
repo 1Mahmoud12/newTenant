@@ -163,6 +163,7 @@ class _CheckoutViewState extends State<CheckoutView> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 5),
                       child: CustomList(
+                        borderOnlySelection: true,
                         tabs: ['Card'.tr(), 'Cash'.tr(), 'Apple Pay'.tr()],
                         prefixIcon: true,
                         icons: const [Icons.credit_card, Icons.monetization_on_outlined, Icons.apple],

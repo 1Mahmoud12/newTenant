@@ -7,6 +7,7 @@ import 'package:dobzz_seller/core/utils/constants_models.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/feature/account/view/faq/presentation/faq_view.dart';
 import 'package:dobzz_seller/feature/account/view/helpCenter/presentation/help_center_view.dart';
+import 'package:dobzz_seller/feature/account/view/manager/deleteAccount/cubit/delete_account_cubit.dart';
 import 'package:dobzz_seller/feature/account/view/myDetalis/presentation/my_details_veiw.dart';
 import 'package:dobzz_seller/feature/account/view/myOrders/presentation/my_order_view.dart';
 import 'package:dobzz_seller/feature/account/view/notificationSetting/presentation/notification_setting_view.dart';
@@ -26,135 +27,139 @@ class AccountView extends StatefulWidget {
 
 class _AccountViewState extends State<AccountView> {
   final currentLanguage = 'English';
-
+  DeleteAccountCubit deleteAccountCubit = DeleteAccountCubit();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: customAppBar(context: context, title: 'Account', stopLeading: true),
-      backgroundColor: Colors.white,
       body: SafeArea(
-        child: Column(
-          children: [
-            // Profile header
-            Container(
-              padding: const EdgeInsets.symmetric(vertical: 20),
-              width: double.infinity,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  // Profile image
-                  CacheImage(
-                    errorColor: Colors.grey,
-                    height: 60,
-                    width: 60,
-                    circle: true,
-                    urlImage: userCacheValue?.data?.avatarPath ?? '',
-                  ),
-                  const SizedBox(height: 10),
-                  // Name
-                  Text(
-                    userCacheValue?.data?.name ?? 'Unknown',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              customAppBar(context: context, title: 'Account', stopLeading: true),
+              // Profile header
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                width: double.infinity,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    // Profile image
+                    CacheImage(
+                      errorColor: Colors.grey,
+                      height: 60,
+                      width: 60,
+                      circle: true,
+                      urlImage: userCacheValue?.data?.avatarPath ?? '',
                     ),
-                  ),
-                  // const SizedBox(height: 2),
-                  // // Member since
-                  // Text(
-                  //   'member since 10/10/2024',
-                  //   style: TextStyle(
-                  //     color: Colors.grey[600],
-                  //     fontSize: 12,
-                  //   ),
-                  // ),
-                ],
+                    const SizedBox(height: 10),
+                    // Name
+                    Text(
+                      userCacheValue?.data?.name ?? 'Unknown',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
+                    // const SizedBox(height: 2),
+                    // // Member since
+                    // Text(
+                    //   'member since 10/10/2024',
+                    //   style: TextStyle(
+                    //     color: Colors.grey[600],
+                    //     fontSize: 12,
+                    //   ),
+                    // ),
+                  ],
+                ),
               ),
-            ),
-            // Menu items
-            Expanded(
-              child: ListView(
-                children: [
-                  _buildMenuItem(
-                    icon: AppIcons.myOrders,
-                    title: 'My Orders',
-                    onTap: () {
-                      context.navigateToPage(const MyOrderView());
-                    },
-                  ),
-                  _buildMenuItem(
-                    icon: AppIcons.myDetails,
-                    title: 'My Details',
-                    onTap: () {
-                      context.navigateToPage(const MyDetailsView());
-                    },
-                  ),
-                  _buildMenuItem(
-                    icon: AppIcons.addressBook,
-                    title: 'Address Book',
-                    onTap: () {
-                      context.navigateToPage(const AddressView());
-                    },
-                  ),
-                  _buildMenuItem(
-                    icon: AppIcons.changePassword,
-                    title: 'Change Password',
-                    onTap: () {
-                      context.navigateToPage(const ForgetPasswordView());
-                    },
-                  ),
-                  // _buildMenuItem(
-                  //   icon: AppIcons.paymentMethod,
-                  //   title: 'Payment Methods',
-                  //   onTap: () {},
-                  // ),
-                  _buildMenuItem(
-                    icon: AppIcons.notificationIcon,
-                    title: 'Notifications',
-                    onTap: () {
-                      context.navigateToPage(const NotificationsSettingsView());
-                    },
-                  ),
-                  _buildMenuItem(
-                    icon: AppIcons.faq,
-                    title: 'FAQs',
-                    onTap: () {
-                      context.navigateToPage(const FaqsView());
-                    },
-                  ),
-                  _buildMenuItem(
-                    icon: AppIcons.faq,
-                    title: 'Language',
-                    onTap: () {
-                      _showLanguageSelector(currentLanguage, context);
-                    },
-                  ),
-                  _buildMenuItem(
-                    icon: AppIcons.customerSerivce,
-                    title: 'Help Center',
-                    onTap: () {
-                      context.navigateToPage(const HelpCenterView());
-                    },
-                  ),
-                  _buildMenuItem(
-                    icon: AppIcons.logout,
-                    title: 'Logout',
-                    onTap: () {
-                      showLogoutDialog(context, () async {
-                        userCacheValue = null;
-                        await userCache?.clear();
-                        context.navigateToPageWithClearStack(const LoginScreen());
-                      });
-                    },
-                    isLogout: true,
-                  ),
-                  const SizedBox(
-                    height: 100,
-                  ),
-                ],
+
+              // Menu items
+              _buildMenuItem(
+                icon: AppIcons.myOrders,
+                title: 'My Orders',
+                onTap: () {
+                  context.navigateToPage(const MyOrderView());
+                },
               ),
-            ),
-          ],
+              _buildMenuItem(
+                icon: AppIcons.myDetails,
+                title: 'My Details',
+                onTap: () {
+                  context.navigateToPage(const MyDetailsView());
+                },
+              ),
+              _buildMenuItem(
+                icon: AppIcons.addressBook,
+                title: 'Address Book',
+                onTap: () {
+                  context.navigateToPage(const AddressView());
+                },
+              ),
+              _buildMenuItem(
+                icon: AppIcons.changePassword,
+                title: 'Change Password',
+                onTap: () {
+                  context.navigateToPage(const ForgetPasswordView());
+                },
+              ),
+              // _buildMenuItem(
+              //   icon: AppIcons.paymentMethod,
+              //   title: 'Payment Methods',
+              //   onTap: () {},
+              // ),
+              _buildMenuItem(
+                icon: AppIcons.notificationIcon,
+                title: 'Notifications',
+                onTap: () {
+                  context.navigateToPage(const NotificationsSettingsView());
+                },
+              ),
+              // _buildMenuItem(
+              //   icon: AppIcons.faq,
+              //   title: 'FAQs',
+              //   onTap: () {
+              //     context.navigateToPage(const FaqsView());
+              //   },
+              // ),
+              _buildMenuItem(
+                icon: AppIcons.faq,
+                title: 'Language',
+                onTap: () {
+                  _showLanguageSelector(currentLanguage, context);
+                },
+              ),
+              _buildMenuItem(
+                icon: AppIcons.customerSerivce,
+                title: 'Help Center',
+                onTap: () {
+                  context.navigateToPage(const HelpCenterView());
+                },
+              ),
+              _buildMenuItem(
+                icon: AppIcons.logout,
+                title: 'Logout',
+                onTap: () {
+                  showLogoutDialog(context, () async {
+                    userCacheValue = null;
+                    await userCache?.clear();
+                    context.navigateToPageWithClearStack(const LoginScreen());
+                  });
+                },
+                isLogout: true,
+              ),
+              _buildMenuItem(
+                icon: AppIcons.deleteIcon,
+                title: 'Delete Account',
+                onTap: () {
+                  showDeleteAccountDialog(context, () async {
+                    await deleteAccountCubit.deleteAccount(context: context);
+                  });
+                },
+                isDeleteAccount: true,
+              ),
+              const SizedBox(height: 100),
+            ],
+          ),
         ),
       ),
     );
@@ -237,7 +242,48 @@ class _AccountViewState extends State<AccountView> {
     );
   }
 
+  /// Shows a confirmation dialog for logging out
   void showLogoutDialog(BuildContext context, VoidCallback onConfirm) {
+    _showConfirmationDialog(
+      context,
+      icon: const Icon(
+        Icons.logout_rounded,
+        color: AppColors.primaryColor,
+        size: 48,
+      ),
+      title: 'Logout?',
+      message: 'Are you sure you want to logout?',
+      confirmButtonText: 'Yes, Logout',
+      onConfirm: onConfirm,
+    );
+  }
+
+  /// Shows a confirmation dialog for deleting account
+  void showDeleteAccountDialog(BuildContext context, VoidCallback onConfirm) {
+    _showConfirmationDialog(
+      context,
+      icon: const Icon(
+        Icons.delete_forever_rounded,
+        color: AppColors.primaryColor,
+        size: 48,
+      ),
+      title: 'Delete Account?',
+      message: 'Are you sure you want to delete your account? This action cannot be undone.',
+      confirmButtonText: 'Yes, Delete Account',
+      onConfirm: onConfirm,
+    );
+  }
+
+  /// Private helper method to avoid code duplication between the two dialogs
+  void _showConfirmationDialog(
+    BuildContext context, {
+    required Widget icon,
+    required String title,
+    required String message,
+    required String confirmButtonText,
+    required VoidCallback onConfirm,
+    Color confirmButtonColor = AppColors.primaryColor,
+  }) {
     showDialog(
       context: context,
       builder: (context) {
@@ -249,23 +295,20 @@ class _AccountViewState extends State<AccountView> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(
-                  Icons.error_outline,
-                  color: AppColors.primaryColor,
-                  size: 48,
-                ),
+                icon,
                 const SizedBox(height: 16),
-                const Text(
-                  'Logout?',
-                  style: TextStyle(
+                Text(
+                  title,
+                  style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Are you sure you want to logout?',
+                  message,
                   style: TextStyle(color: Colors.grey, fontSize: 16.sp, fontWeight: FontWeight.w500),
+                  textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 24),
                 ElevatedButton(
@@ -274,15 +317,15 @@ class _AccountViewState extends State<AccountView> {
                     onConfirm();
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primaryColor,
+                    backgroundColor: confirmButtonColor,
                     minimumSize: const Size(double.infinity, 50),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  child: const Text(
-                    'Yes, Logout',
-                    style: TextStyle(color: Colors.white),
+                  child: Text(
+                    confirmButtonText,
+                    style: const TextStyle(color: Colors.white),
                   ),
                 ),
                 const SizedBox(height: 12),
@@ -315,25 +358,30 @@ class _AccountViewState extends State<AccountView> {
     required String title,
     required VoidCallback onTap,
     bool isLogout = false,
+    bool isDeleteAccount = false,
   }) {
+    Color textColor = Colors.black;
+    if (isLogout) textColor = Colors.red;
+    if (isDeleteAccount) textColor = Colors.red;
+
     return ListTile(
       leading: SvgPicture.asset(
         icon,
         width: 24,
         height: 24,
         colorFilter: ColorFilter.mode(
-          isLogout ? Colors.red : Colors.black,
+          isLogout || isDeleteAccount ? Colors.red : Colors.black,
           BlendMode.srcIn,
         ),
       ),
       title: Text(
         title,
         style: TextStyle(
-          color: isLogout ? Colors.red : Colors.black,
+          color: textColor,
           fontSize: 14,
         ),
       ),
-      trailing: isLogout ? null : SvgPicture.asset(AppIcons.arrowRight),
+      trailing: (isLogout || isDeleteAccount) ? null : SvgPicture.asset(AppIcons.arrowRight),
       onTap: onTap,
       contentPadding: const EdgeInsets.symmetric(horizontal: 20),
     );

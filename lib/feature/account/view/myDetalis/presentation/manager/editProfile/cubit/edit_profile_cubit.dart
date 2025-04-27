@@ -30,15 +30,14 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     );
   }
 
-  Future<void> updateUserData({required BuildContext context, File? image, String? firstName, String? lastName, String? email, String? phone}) async {
+  Future<void> updateUserData({required BuildContext context, File? image, String? name, String? email, String? phone}) async {
     emit(UpdateProfileLoading());
     await EditProfileDataSource.updateUserData(
       data: {
         if (image != null) 'avatar': await MultipartFile.fromFile(image.path),
-        if (firstName != null) 'first_name': firstName,
-        if (firstName != null) 'last_name': lastName,
-        if (firstName != null) 'email': email,
-        if (firstName != null) 'phone': phone,
+        if (name != null) 'name': name,
+        if (email != null) 'email': email,
+        if (phone != null) 'phone': phone,
         '_method': 'put',
       },
     ).then(
@@ -48,6 +47,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
 
           emit(UpdateProfileError(e: l.errMessage));
         }, (r) async {
+          Navigator.pop(context);
           Utils.showToast(title: 'Profile updated successfully', state: UtilState.success);
 
           emit(UpdateProfileSuccess());

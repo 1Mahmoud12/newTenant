@@ -6,12 +6,10 @@ import 'package:image_picker/image_picker.dart';
 import 'package:dobzz_seller/core/component/buttons/custom_text_button.dart';
 import 'package:dobzz_seller/core/component/cache_image.dart';
 import 'package:dobzz_seller/core/component/custom_app_bar.dart';
-import 'package:dobzz_seller/core/component/custom_drop_down_menu.dart';
 import 'package:dobzz_seller/core/component/fields/custom_text_form_field.dart';
 import 'package:dobzz_seller/core/component/loadsErros/loading_widget.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:dobzz_seller/core/utils/constant_gaping.dart';
-import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:dobzz_seller/core/utils/constants_models.dart';
 import 'package:dobzz_seller/core/utils/file.dart';
 import 'package:dobzz_seller/feature/account/view/myDetalis/presentation/manager/editProfile/cubit/edit_profile_cubit.dart';
@@ -69,7 +67,7 @@ class _MyDetailsViewState extends State<MyDetailsView> {
   void _populateFormFields() {
     if (ConstantsModels.editProfileModel?.data != null) {
       final userData = ConstantsModels.editProfileModel!.data!;
-      _firstNameController.text = userData.firstName ?? 'N/A';
+      _firstNameController.text = userData.name ?? 'N/A';
       _lastNameController.text = userData.lastName ?? 'N/A';
       _emailController.text = userData.email ?? 'N/A';
       _phoneController.text = userData.phone ?? 'N/A';
@@ -86,8 +84,7 @@ class _MyDetailsViewState extends State<MyDetailsView> {
   void _handleSubmit() {
     _editProfileCubit.updateUserData(
       context: context,
-      firstName: _firstNameController.text,
-      lastName: _lastNameController.text,
+      name: _firstNameController.text,
       email: _emailController.text,
       phone: _phoneController.text,
       image: _profileImage,
@@ -242,15 +239,9 @@ class UserDetailsForm extends StatelessWidget {
     return Column(
       children: [
         CustomTextFormField(
-          nameField: 'First Name',
+          nameField: 'Name',
           controller: firstNameController,
           hintText: 'Enter your first name',
-        ),
-        h10,
-        CustomTextFormField(
-          nameField: 'Last Name',
-          controller: lastNameController,
-          hintText: 'Enter your last name',
         ),
         h10,
         CustomTextFormField(
@@ -266,15 +257,6 @@ class UserDetailsForm extends StatelessWidget {
     );
   }
 }
-
-
-
-
-
-
-
-
-
 
 class SubmitButtonWidget extends StatelessWidget {
   final VoidCallback onSubmit;

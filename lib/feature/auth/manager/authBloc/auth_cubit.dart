@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:dobzz_seller/core/network/errors/failures.dart';
 import 'package:dobzz_seller/feature/auth/forgetPassword/view/presentation/reset_password_view.dart';
+import 'package:dobzz_seller/feature/auth/login/view/presentation/login_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -189,7 +190,7 @@ class AuthCubit extends Cubit<AuthState> {
           userCacheValue = r;
           Constants.token = r.data?.token ?? '';
           userCache?.put(userCacheKey, jsonEncode(r.toJson()));
-          context.navigateToPage(const NavigationViewWithThemes());
+          context.navigateToPage(const LoginScreen());
           //  emit(AuthVerifySuccessState());
         });
       },
@@ -290,22 +291,26 @@ class AuthCubit extends Cubit<AuthState> {
     );
   }
 
-  void disposeControllers() {
-    // Dispose all text controllers
-    nameController.dispose();
-    lastNameController.dispose();
-    phoneController.dispose();
-    passwordController.dispose();
-    confirmPasswordController.dispose();
-    nationalIdController.dispose();
-    otpController.dispose();
-    codeController.dispose();
-  }
+  // void disposeControllers() {
+  //   // Dispose all text controllers
+  //   nameController.dispose();
+  //   lastNameController.dispose();
+  //   phoneController.dispose();
+  //   passwordController.dispose();
+  //   confirmPasswordController.dispose();
+  //   nationalIdController.dispose();
+  //   otpController.dispose();
+  //   codeController.dispose();
+  // }
 
-  @override
-  Future<void> close() {
-    // Dispose controllers before closing the cubit
-    disposeControllers();
-    return super.close();
-  }
+  // @override
+  // Future<void> close() {
+  //   // Dispose controllers before closing the cubit
+  //   disposeControllers();
+  //   return super.close();
+  // }
+
+
+
+
 }
