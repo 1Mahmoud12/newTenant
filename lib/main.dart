@@ -35,15 +35,15 @@ void main() async {
   EasyLocalization.logger.enableBuildModes = [];
   // Hive
   await Hive.initFlutter();
-
+  //await selectTokens();
   // Dio
   await DioHelper.init();
 
   userCache = await openHiveBox(userCacheBoxKey);
   // get device id
-  final MainCubitCubit mainCubit = MainCubitCubit();
-  Constants.deviceId = await mainCubit.getDeviceIdentifier() ?? '';
-  log('deviceId ==>${Constants.deviceId}');
+  // final MainCubitCubit mainCubit = MainCubitCubit();
+  // Constants.deviceId = await mainCubit.getDeviceIdentifier() ?? '';
+  // log('deviceId ==>${Constants.deviceId}');
 
   onBoardingValue = userCache?.get(onBoardingKey, defaultValue: true);
   darkModeValue = userCache?.get(darkModeKey, defaultValue: false);
@@ -79,7 +79,7 @@ void main() async {
   // rootBundle.loadString('assets/services/map.json').then((string) {
   //   Constants.mapStyleString = string;
   // });
-  //selectTokens();
+
   //Constants.jsonServerKey = await loadJsonFile();
 
   SystemChrome.setPreferredOrientations([

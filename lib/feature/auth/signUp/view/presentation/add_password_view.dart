@@ -74,14 +74,13 @@ class AddPasswordViewState extends State<AddPasswordView> {
             listener: (context, state) {
               if (state is AuthSignUpSuccessState) {
                 context.navigateToPageWithReplacement(
-                  VerifyCodeView(
-                    phone: AuthCubit.of(context).phoneController.text,
-                    // phoneNumber: AuthCubit.of(context).phoneController.text,
-                    // countryCodeId: AuthCubit.of(context).countryCodeId,
-                    // verifyButton: (context) {
-                    //   AuthCubit.of(context).verifyCode(context);
-                    // },
-                  ),
+                  const VerifyCodeView(
+                      // phoneNumber: AuthCubit.of(context).phoneController.text,
+                      // countryCodeId: AuthCubit.of(context).countryCodeId,
+                      // verifyButton: (context) {
+                      //   AuthCubit.of(context).verifyCode(context);
+                      // },
+                      ),
                 );
               }
             },

@@ -1,4 +1,5 @@
 import 'package:dobzz_seller/core/utils/app_images.dart';
+import 'package:dobzz_seller/core/utils/constants_models.dart';
 import 'package:dobzz_seller/core/utils/utils.dart';
 import 'package:dobzz_seller/feature/auth/widgets/authRich_text_link.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -14,7 +15,6 @@ import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/feature/auth/login/view/presentation/login_screen.dart';
 import 'package:dobzz_seller/feature/auth/manager/authBloc/auth_cubit.dart';
 import 'package:dobzz_seller/feature/auth/manager/authBloc/auth_state.dart';
-import 'package:dobzz_seller/feature/auth/signUp/view/presentation/add_password_view.dart';
 import 'package:dobzz_seller/feature/auth/verifyCode/view/presentation/verify_code_view.dart';
 import 'package:dobzz_seller/core/component/phone_number_field.dart';
 
@@ -26,8 +26,33 @@ class SignUpView extends StatefulWidget {
 }
 
 class _SignUpViewState extends State<SignUpView> {
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   bool checkBoxValue = false;
-  GlobalKey<FormState> formKey = GlobalKey();
+
+  late final TextEditingController nameController;
+  late final TextEditingController phoneController;
+  late final TextEditingController passwordController;
+  late final TextEditingController confirmPasswordController;
+
+  @override
+  void initState() {
+    super.initState();
+    final authCubit = AuthCubit.of(context);
+    nameController = authCubit.nameController;
+    phoneController = authCubit.phoneController;
+    passwordController = authCubit.passwordController;
+    confirmPasswordController = authCubit.confirmPasswordController;
+  }
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    phoneController.dispose();
+    passwordController.dispose();
+    confirmPasswordController.dispose();
+    super.dispose();
+  }
+
   String? validatePassword(String? value) {
     if (value == null || value.isEmpty) {
       return 'Password is required'.tr();
@@ -39,11 +64,10 @@ class _SignUpViewState extends State<SignUpView> {
   }
 
   String? validateConfirmPassword(String? value) {
-    final password = AuthCubit.of(context).passwordController.text;
     if (value == null || value.isEmpty) {
       return 'Confirm password is required'.tr();
     }
-    if (value != password) {
+    if (value != passwordController.text) {
       return 'Passwords do not match'.tr();
     }
     return null;
@@ -59,19 +83,20 @@ class _SignUpViewState extends State<SignUpView> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(
-                  height: 40,
+                const SizedBox(height: 40),
+                Center(
+                  child: Image.asset(
+                    AppImages.appLogo,
+                    height: 60,
+                    width: 130,
+                  ),
                 ),
-                Image.asset(
-                  AppImages.appLogo,
-                  height: 60,
-                  width: 130,
-                  // fit: BoxFit.contain,
-                ),
-                //   const SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Text(
                   'Create an account'.tr(),
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: AppColors.black),
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                        color: AppColors.black,
+                      ),
                 ),
                 const SizedBox(height: 10),
                 Form(
@@ -79,40 +104,43 @@ class _SignUpViewState extends State<SignUpView> {
                   child: Column(
                     children: [
                       CustomTextFormField(
-                        outPadding: EdgeInsets.zero,
-                        controller: AuthCubit.of(context).nameController,
+                        controller: nameController,
                         hintText: 'Name'.tr(),
                         labelText: 'Name'.tr(),
+                        outPadding: EdgeInsets.zero,
                       ),
                       PhoneNumberField(
+                        controller: phoneController,
                         outPadding: EdgeInsets.zero,
-                        controller: AuthCubit.of(context).phoneController,
                       ),
                       CustomTextFormField(
-                        outPadding: EdgeInsets.zero,
-                        controller: AuthCubit.of(context).passwordController,
-                        helperText: 'enter your password'.tr(),
-                        hintText: 'password'.tr(),
-                        labelText: 'password'.tr(),
+                        controller: passwordController,
+                        hintText: 'Password'.tr(),
+                        labelText: 'Password'.tr(),
+                        helperText: 'Enter your password'.tr(),
                         password: true,
                         validator: validatePassword,
+                        outPadding: EdgeInsets.zero,
                       ),
                       CustomTextFormField(
-                        outPadding: EdgeInsets.zero,
-                        controller: AuthCubit.of(context).confirmPasswordController,
-                        hintText: 're-password'.tr(),
-                        labelText: 're-enter password'.tr(),
+                        controller: confirmPasswordController,
+                        hintText: 'Re-enter password'.tr(),
+                        labelText: 'Re-enter password'.tr(),
                         password: true,
                         validator: validateConfirmPassword,
+                        outPadding: EdgeInsets.zero,
                       ),
                       CustomCheckBox(
                         checkBox: checkBoxValue,
                         onTap: () {
-                          checkBoxValue = !checkBoxValue;
-                          if (checkBoxValue) {
-                            AuthCubit.of(context).termAndCondition = 1;
-                          }
-                          setState(() {});
+                          setState(() {
+                            checkBoxValue = !checkBoxValue;
+                            if (checkBoxValue) {
+                              AuthCubit.of(context).termAndCondition = 1;
+                            } else {
+                              AuthCubit.of(context).termAndCondition = 0;
+                            }
+                          });
                         },
                         child: Padding(
                           padding: EdgeInsets.only(
@@ -121,15 +149,16 @@ class _SignUpViewState extends State<SignUpView> {
                           ),
                           child: Text.rich(
                             TextSpan(
-                              text: 'agree with '.tr(),
+                              text: 'Agree with '.tr(),
                               style: Theme.of(context).textTheme.displayMedium,
                               children: [
                                 TextSpan(
-                                  text: 'terms & condition'.tr(),
+                                  text: 'Terms & Conditions'.tr(),
                                   style: Theme.of(context).textTheme.displayMedium?.copyWith(color: AppColors.primaryColor),
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () {
-                                      //context.navigateToPage(const TermsAndConditionsView());
+                                      // Navigate to Terms and Conditions page if you want
+                                      // context.navigateToPage(const TermsAndConditionsView());
                                     },
                                 ),
                               ],
@@ -143,40 +172,36 @@ class _SignUpViewState extends State<SignUpView> {
                 BlocConsumer<AuthCubit, AuthState>(
                   listener: (context, state) {
                     if (state is AuthSignUpSuccessState) {
-                      context.navigateToPageWithReplacement(
-                        VerifyCodeView(
-                          phone: AuthCubit.of(context).phoneController.text,
-                          // phoneNumber: AuthCubit.of(context).phoneController.text,
-                          // countryCodeId: AuthCubit.of(context).countryCodeId,
-                          // verifyButton: (context) {
-                          //   AuthCubit.of(context).verifyCode(context);
-                          // },
-                        ),
+                      context.navigateToPage(
+                        const VerifyCodeView(),
                       );
                     }
                   },
-                  builder: (context, state) => CustomTextButton(
-                    borderRadius: 8,
-                    childText: 'Create an account'.tr(),
-                    padding: const EdgeInsets.symmetric(vertical: 14.5),
-                    onPress: () {
-                      if (formKey.currentState!.validate()) {
-                        if (AuthCubit.of(context).termAndCondition == 1) {
-                          AuthCubit.of(context).signUp(context);
-                        } else {
-                          Utils.showToast(title: 'Please accept the terms and conditions to continue'.tr(), state: UtilState.error);
+                  builder: (context, state) {
+                    return CustomTextButton(
+                      childText: 'Create an account'.tr(),
+                      borderRadius: 8,
+                      padding: const EdgeInsets.symmetric(vertical: 14.5),
+                      onPress: () {
+                        if (formKey.currentState?.validate() ?? false) {
+                          if (AuthCubit.of(context).termAndCondition == 1) {
+                            AuthCubit.of(context).signUp(context);
+                          } else {
+                            Utils.showToast(
+                              title: 'Please accept the terms and conditions to continue'.tr(),
+                              state: UtilState.error,
+                            );
+                          }
                         }
-                      }
-                    },
-                  ),
+                      },
+                    );
+                  },
                 ),
-                const SizedBox(
-                  height: 20,
-                ),
+                const SizedBox(height: 20),
                 AuthRichTextLink(
                   isCentered: true,
-                  text: 'Do have an account? '.tr(),
-                  linkText: 'login'.tr(),
+                  text: 'Already have an account? '.tr(),
+                  linkText: 'Login'.tr(),
                   onTap: () {
                     context.navigateToPage(const LoginScreen());
                   },

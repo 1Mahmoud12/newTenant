@@ -12,7 +12,6 @@ import 'package:dobzz_seller/core/utils/bottomSheet/select_county_code_dialog.da
 import 'package:dobzz_seller/core/utils/bottomSheet/success_bottom_sheet.dart';
 import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:dobzz_seller/core/utils/constants_models.dart';
-import 'package:dobzz_seller/core/utils/custom_show_toast.dart';
 import 'package:dobzz_seller/core/utils/errorLoadingWidgets/dialog_loading_animation.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/feature/auth/data/dataSource/aut_data_source.dart';
@@ -67,7 +66,6 @@ class AuthCubit extends Cubit<AuthState> {
         }, (r) async {
           context.navigateToPage(
             VerifyCodeView(
-              phone: phoneController.text,
               // phoneNumber: phoneController.text,
               // countryCodeId: countryCodeId,
               verifyButton: (context) {
@@ -149,6 +147,7 @@ class AuthCubit extends Cubit<AuthState> {
           // customShowToast(context, l.errMessage, showToastStatus: ShowToastStatus.error);
           emit(AuthSignUpErrorState(l.errMessage));
         }, (r) async {
+          closeDialog(context);
           // closeDialog(context);
           // customShowToast(context, 'created_user_successfully'.tr());
           emit(AuthSignUpSuccessState());
@@ -165,41 +164,33 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   void verifyCode(BuildContext context) async {
+    final otpValue = otpController.text;
     emit(AuthVerifyLoadingState());
     animationDialogLoading(context);
     authDataSource
         .verifyCode(
       context,
       VerifyCodeModel(
-        otp: otpController.text,
+        otp: otpValue,
         customerId: ConstantsModels.requiredValidationModel?.data?.id.toString() ?? '-1',
       ),
     )
         .then(
       (value) async {
-        closeDialog(context);
+        // closeDialog(context);
         // bool result = await InternetConnectionChecker().hasConnection;
         value.fold((l) {
+          closeDialog(context);
           failureModalBottomSheetWithReason(context, reasons: [l.errMessage], onPress: () {});
           emit(AuthVerifyErrorState(l.errMessage));
         }, (r) async {
+          closeDialog(context);
           ConstantsModels.registerModel = r;
           userCacheValue = r;
           Constants.token = r.data?.token ?? '';
           userCache?.put(userCacheKey, jsonEncode(r.toJson()));
-          successModalBottomSheet(
-            context,
-            title: 'user_confirmed_successfully'.tr(),
-            subTitle: 'you_can_now_entertainment_with_the_app',
-            nameButton: 'go_home',
-            onPress: () {
-              context.navigateToPage(const NavigationViewWithThemes());
-              lastNameController.clear();
-              passwordController.clear();
-              confirmPasswordController.clear();
-            },
-          );
-          emit(AuthVerifySuccessState());
+          context.navigateToPage(const NavigationViewWithThemes());
+          //  emit(AuthVerifySuccessState());
         });
       },
     );
@@ -238,14 +229,13 @@ class AuthCubit extends Cubit<AuthState> {
               reasons: errorReasons,
               onPress: () {
                 context.navigateToPage(
-                  VerifyCodeView(
-                    phone: AuthCubit.of(context).phoneController.text,
-                    // phoneNumber: AuthCubit.of(context).phoneController.text,
-                    // countryCodeId: AuthCubit.of(context).countryCodeId,
-                    // verifyButton: (context) {
-                    //   AuthCubit.of(context).verifyCode(context);
-                    // },
-                  ),
+                  const VerifyCodeView(
+                      // phoneNumber: AuthCubit.of(context).phoneController.text,
+                      // countryCodeId: AuthCubit.of(context).countryCodeId,
+                      // verifyButton: (context) {
+                      //   AuthCubit.of(context).verifyCode(context);
+                      // },
+                      ),
                 );
               },
             );
@@ -298,5 +288,24 @@ class AuthCubit extends Cubit<AuthState> {
         });
       },
     );
+  }
+
+  void disposeControllers() {
+    // Dispose all text controllers
+    nameController.dispose();
+    lastNameController.dispose();
+    phoneController.dispose();
+    passwordController.dispose();
+    confirmPasswordController.dispose();
+    nationalIdController.dispose();
+    otpController.dispose();
+    codeController.dispose();
+  }
+
+  @override
+  Future<void> close() {
+    // Dispose controllers before closing the cubit
+    disposeControllers();
+    return super.close();
   }
 }

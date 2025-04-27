@@ -76,7 +76,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 //   const SizedBox(height: 20),
                 Text(
                   'Login to your account'.tr(),
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: AppColors.primaryColor),
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: AppColors.black),
                 ),
                 const SizedBox(height: 10),
                 Form(

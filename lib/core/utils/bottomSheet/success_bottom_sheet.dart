@@ -19,9 +19,9 @@ Future<void> successModalBottomSheet(
     context: context,
     builder: (context) {
       return Dialog(
-              backgroundColor: AppColors.white, child: SuccessBottomSheet(title: title, subTitle: subTitle, nameButton: nameButton, onPress: onPress))
-          .animate()
-          .slideY(begin: 1);
+        backgroundColor: AppColors.white,
+        child: SuccessBottomSheet(title: title, subTitle: subTitle, nameButton: nameButton, onPress: onPress),
+      ).animate().slideY(begin: 1);
     },
   );
 }
@@ -62,7 +62,7 @@ class _SuccessBottomSheetState extends State<SuccessBottomSheet> {
               const SizedBox(
                 height: 40,
               ),
-              SvgPicture.asset(AppIcons.successDialogIc),
+              //   SvgPicture.asset(AppIcons.successDialogIc),
               Text(
                 widget.title.tr(),
                 textAlign: TextAlign.center,

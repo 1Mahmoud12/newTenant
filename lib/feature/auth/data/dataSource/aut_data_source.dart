@@ -4,9 +4,6 @@ import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:dobzz_seller/core/network/errors/api_error_model.dart';
 import 'package:dobzz_seller/core/utils/constants_models.dart';
-import 'package:dobzz_seller/core/utils/navigate.dart';
-import 'package:dobzz_seller/feature/auth/manager/authBloc/auth_cubit.dart';
-import 'package:dobzz_seller/feature/auth/verifyCode/view/presentation/verify_code_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:dobzz_seller/core/network/dio_helper.dart';
 import 'package:dobzz_seller/core/network/end_points.dart';
@@ -74,10 +71,11 @@ class AuthDataSourceImpl implements AuthDataSource {
 
       // Now check if the response indicates success or an error
       final statusCode = response.statusCode;
-      log('A7a========>$response');
+      log('A7a========>$statusCode');
       // Success case
-      if (statusCode! == 200 && response.data['status']) {
-        log('Success response: ${response.data}');
+      if (statusCode == 200 && response.data['status']) {
+        ConstantsModels.requiredValidationModel = RegisterModel.fromJson(response.data);
+        log('print response ${response.data}');
         return right('');
       }
       // Error case - we get here because we're treating 4xx as valid responses

@@ -1,28 +1,19 @@
 import 'dart:async';
-import 'package:dobzz_seller/core/utils/navigate.dart';
-import 'package:dobzz_seller/feature/navigation/view/presentation/navigation_view.dart';
 import 'package:easy_localization/easy_localization.dart' as easy;
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dobzz_seller/core/component/buttons/custom_text_button.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:dobzz_seller/feature/auth/manager/authBloc/auth_cubit.dart';
-import 'package:dobzz_seller/feature/auth/manager/authBloc/auth_state.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 class VerifyCodeView extends StatefulWidget {
-  final String phone;
-  // final int countryCodeId;
-
   final Function(BuildContext context)? verifyButton;
   final void Function(String)? onChanged;
 
   const VerifyCodeView({
     super.key,
-    required this.phone,
     this.onChanged,
     this.verifyButton,
-    //  required this.phoneNumber, this.verifyButton, required this.countryCodeId, this.onChanged
   });
 
   @override
@@ -31,21 +22,21 @@ class VerifyCodeView extends StatefulWidget {
 
 class _VerifyCodeViewState extends State<VerifyCodeView> {
   late Timer _timer;
-  int _start = 60; // Initialize the countdown value
+  int _start = 60;
   final FocusNode _focusNode = FocusNode();
 
   void startTimer() {
-    _start = 60; // Reset to 60 seconds
+    _start = 60;
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      setState(() {
-        if (_start > 0) {
-          _start--; // Decrement the countdown value
-        } else {
-          _timer.cancel();
-          // Restart the timer after the countdown reaches 0
-          //  startTimer(); // Restart the timer by calling startTimer again
-        }
-      });
+      if (mounted) {
+        setState(() {
+          if (_start > 0) {
+            _start--;
+          } else {
+            _timer.cancel();
+          }
+        });
+      }
     });
   }
 
@@ -53,12 +44,13 @@ class _VerifyCodeViewState extends State<VerifyCodeView> {
   void initState() {
     super.initState();
     _focusNode.requestFocus();
-    startTimer(); // Call this to start the timer initially
+    startTimer();
   }
 
   @override
   void dispose() {
-    _timer.cancel(); // Stop the current timer
+    _timer.cancel();
+    _focusNode.dispose();
     super.dispose();
   }
 
@@ -90,29 +82,12 @@ class _VerifyCodeViewState extends State<VerifyCodeView> {
               ),
               const SizedBox(height: 37),
               VerificationCode(
+                controller: AuthCubit.of(context).otpController,
                 focusNode: _focusNode,
-                onChanged: (value) {
-                  if (widget.onChanged != null) {
-                    widget.onChanged!(value);
-                  } else {
-                    AuthCubit.of(context).setCodeController(value);
-                    // log('Code ${AuthCubit.of(context).codeController.text}');
-                  }
+                onChanged: (value) {},
+                onCompleted: (p0) {
+                  AuthCubit.of(context).verifyCode(context);
                 },
-                onCompleted: (value) {
-                  AuthCubit.of(context).verifyCode(
-                    context,
-                  );
-                  widget.verifyButton?.call(context);
-                  //registerBloc?.verificationNumber = value;
-                  //registerBloc?.beforeRegisterSendCode(context);
-                },
-                // validator: (code) {
-                //   // if (code == null || code.isEmpty) return ''; // Don't show error yet
-                //   // if (code.length < 6) return ''; // Still typing
-                //   // if (code != '123456') return 'Invalid code'; // Example condition
-                //   // return '';
-                // },
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -142,17 +117,12 @@ class _VerifyCodeViewState extends State<VerifyCodeView> {
                 ],
               ),
               const SizedBox(height: 32),
-              BlocBuilder<AuthCubit, AuthState>(
-                builder: (context, state) => CustomTextButton(
-                  childText: 'verify'.tr(),
-                  padding: const EdgeInsets.symmetric(vertical: 14.5),
-                  state: state is AuthResendCodeLoadingState,
-                  onPress: () {
-                    AuthCubit.of(context).verifyCode(
-                      context,
-                    );
-                  },
-                ),
+              CustomTextButton(
+                childText: 'verify'.tr(),
+                padding: const EdgeInsets.symmetric(vertical: 14.5),
+                onPress: () {
+                  AuthCubit.of(context).verifyCode(context);
+                },
               ),
             ],
           ),
@@ -162,53 +132,51 @@ class _VerifyCodeViewState extends State<VerifyCodeView> {
   }
 }
 
-class VerificationCode extends StatelessWidget {
+class VerificationCode extends StatefulWidget {
   final void Function(String value)? onChanged;
   final void Function(String)? onCompleted;
   final String Function(String?)? validator;
   final FocusNode focusNode;
-  const VerificationCode({super.key, this.onChanged, this.onCompleted, required this.focusNode, this.validator});
+  const VerificationCode({super.key, this.onChanged, this.onCompleted, required this.focusNode, this.validator, this.controller});
+  final TextEditingController? controller;
 
   @override
+  State<VerificationCode> createState() => _VerificationCodeState();
+}
+
+class _VerificationCodeState extends State<VerificationCode> {
+  @override
   Widget build(BuildContext context) {
-    // Get the available width
     final screenWidth = MediaQuery.of(context).size.width;
-
-    // Calculate field size based on screen width
-    // Add padding between fields (5 gaps × 12 padding = 60)
-    // Leave 16 padding on each side of the screen
     final availableWidth = screenWidth - 60 - 32;
-
-    // Calculate field width (with minimum and maximum constraints)
     final fieldWidth = (availableWidth / 4).clamp(40.0, 60.0);
-
-    // Make field height proportional to width but not too tall
     final fieldHeight = fieldWidth * 1.2;
 
     return Directionality(
       textDirection: TextDirection.ltr,
       child: PinCodeTextField(
+        autoDisposeControllers: false,
         length: 4,
         animationType: AnimationType.fade,
         animationDuration: const Duration(milliseconds: 300),
         appContext: context,
-        focusNode: focusNode,
+        focusNode: widget.focusNode,
         keyboardType: TextInputType.number,
         onChanged: (value) {
-          if (onChanged != null) {
-            onChanged!.call(value);
+          if (widget.onChanged != null) {
+            widget.onChanged!.call(value);
           }
         },
         onCompleted: (value) {
-          if (onCompleted != null) {
-            onCompleted!.call(value);
+          if (widget.onCompleted != null) {
+            widget.onCompleted!.call(value);
           }
         },
         validator: (value) {
-          return validator?.call(value);
+          return widget.validator?.call(value);
         },
         errorTextSpace: 32,
-        controller: AuthCubit.of(context).otpController,
+        controller: widget.controller,
         textStyle: Theme.of(context).textTheme.titleSmall,
         hintStyle: Theme.of(context).textTheme.titleSmall,
         pinTheme: PinTheme(
@@ -222,7 +190,6 @@ class VerificationCode extends StatelessWidget {
           fieldWidth: fieldWidth,
           fieldHeight: fieldHeight,
         ),
-        // Add mainAxisAlignment to ensure fields are properly spaced
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       ),
     );
