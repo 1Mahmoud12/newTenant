@@ -32,12 +32,40 @@ class CartItemModel {
   }
 }
 
+class SizeModel {
+  int? id;
+  String? name;
+  String? code;
+  String? createdAt;
+  String? updatedAt;
+
+  SizeModel({this.id, this.name, this.code, this.createdAt, this.updatedAt});
+
+  SizeModel.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    code = json['code'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['code'] = code;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    return data;
+  }
+}
+
 class CartItemData {
   int? id;
   Product? product;
   int? productId;
   dynamic color;
-  dynamic size;
+  List<SizeModel>? size;
   int? priceForProduct;
   String? productImagePath;
   String? productThumbnailPath;
@@ -66,7 +94,7 @@ class CartItemData {
     product = json['product'] != null ? Product.fromJson(json['product']) : null;
     productId = json['product_id'];
     color = json['color'];
-    size = json['size'];
+    size = json['size'] != null ? (json['size'] as List).map((i) => SizeModel.fromJson(i)).toList() : null;
     priceForProduct = json['priceForProduct'];
     productImagePath = json['product_image_path'];
     productThumbnailPath = json['product_thumbnail_path'];

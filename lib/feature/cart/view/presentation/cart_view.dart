@@ -89,9 +89,7 @@ class _CartViewState extends State<CartView> {
         _updateLocalSubtotal();
       });
       // Show error to user
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to update quantity. Please try again.'.tr())),
-      );
+      Utils.showToast(title: 'Failed to update quantity. Please try again.', state: UtilState.error);
     }
   }
 
@@ -118,9 +116,7 @@ class _CartViewState extends State<CartView> {
         _updateLocalSubtotal();
       });
       // Show error to user
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to delete item. Please try again.'.tr())),
-      );
+      Utils.showToast(title: 'Failed to update quantity. Please try again.', state: UtilState.error);
     }
   }
 
@@ -371,10 +367,11 @@ class CartItemWidget extends StatelessWidget {
                       ),
                     ],
                   ),
-                  Text(
-                    '${'Size'.tr()} ${cartItem.size}',
-                    style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14.sp, color: Colors.grey),
-                  ),
+                  if (cartItem.size != null)
+                    Text(
+                      '${'Size'.tr()} ${cartItem.size![0].name}',
+                      style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14.sp, color: Colors.grey),
+                    ),
                   const SizedBox(height: 8),
                   Row(
                     children: [
