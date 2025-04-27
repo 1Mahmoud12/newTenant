@@ -10,6 +10,7 @@ import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/feature/cart/view/manager/addToCart/cubit/add_to_cart_cubit.dart';
 import 'package:dobzz_seller/feature/home/views/manager/addToWhishlist/cubit/add_to_wish_list_cubit.dart';
 import 'package:dobzz_seller/feature/home/views/manager/removeFromWhislist/cubit/remove_from_whish_list_cubit.dart';
+import 'package:dobzz_seller/feature/product/data/model/product_details_model.dart';
 import 'package:dobzz_seller/feature/product/views/manager/productDetails/cubit/product_details_cubit.dart';
 import 'package:dobzz_seller/feature/review/presentation/review_veiw.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -33,12 +34,13 @@ class ProductDetailsView extends StatefulWidget {
 }
 
 class _ProductDetailsViewState extends State<ProductDetailsView> {
-  String selectedSize = 'M';
+  String selectedSize = ConstantsModels.productDetailsModel?.data?.sizes?[0].code ?? '';
   final PageController controller = PageController();
   final AddToCartCubit addToCartCubit = AddToCartCubit();
   final ProductDetailsCubit productDetailsCubit = ProductDetailsCubit();
   AddToWishListCubit addToWishListCubit = AddToWishListCubit();
   RemoveFromWhishListCubit removeFromWhishListCubit = RemoveFromWhishListCubit();
+
   @override
   void initState() {
     super.initState();
@@ -76,6 +78,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
             persistentFooterButtons: [
               if (state is ProductDetailsSuccess)
                 PriceAndAddToCartWidget(
+                  sizeCode: selectedSize,
                   price: ConstantsModels.productDetailsModel?.data?.price ?? 0,
                   addToCartCubit: addToCartCubit,
                   productId: widget.productId,
@@ -142,14 +145,14 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
             ),
             const SizedBox(height: 12),
             ProductDescription(description: productDetails?.description ?? ''),
-            // if (productDetails?.sizes?.isNotEmpty ?? false)
-            //   SizeSelectorSection(
-            //     sizes: productDetails!.sizes!,
-            //     selectedSize: selectedSize,
-            //     onSelectSize: (value) {
-            //       setState(() => selectedSize = value);
-            //     },
-            //   ),
+            if (productDetails?.sizes?.isNotEmpty ?? false)
+              SizeSelectorSection(
+                selectedSize: ConstantsModels.productDetailsModel?.data?.sizes?[0].code ?? '',
+                onSelectSize: (value) {
+                  setState(() => selectedSize = value);
+                },
+                sizes: productDetails?.sizes! ?? [],
+              ),
             QuantitySelector(
               addToCartCubit: addToCartCubit,
               quantity: addToCartCubit.quantity,
@@ -234,22 +237,108 @@ class ProductDescription extends StatelessWidget {
 class SizeSelectorSection extends StatelessWidget {
   final String selectedSize;
   final ValueChanged<String> onSelectSize;
+  final List<AvailableProductSize> sizes;
 
   const SizeSelectorSection({
     required this.selectedSize,
     required this.onSelectSize,
+    required this.sizes,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text('Choose size'.tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-        const SizedBox(height: 10),
-        SizeSelector(onSelectSize: onSelectSize),
-      ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('Choose size'.tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+          const SizedBox(height: 10),
+          SizeSelector(
+            onSelectSize: onSelectSize,
+            selectedSize: selectedSize,
+            sizes: sizes,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class SizeSelector extends StatefulWidget {
+  final Function(String) onSelectSize;
+  final String selectedSize;
+  final List<AvailableProductSize> sizes;
+
+  const SizeSelector({
+    Key? key,
+    required this.onSelectSize,
+    required this.selectedSize,
+    required this.sizes,
+  }) : super(key: key);
+
+  @override
+  State<SizeSelector> createState() => _SizeSelectorState();
+}
+
+class _SizeSelectorState extends State<SizeSelector> {
+  late String _selectedSize;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedSize = widget.selectedSize;
+  }
+
+  @override
+  void didUpdateWidget(SizeSelector oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.selectedSize != widget.selectedSize) {
+      _selectedSize = widget.selectedSize;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: widget.sizes.map((size) {
+          final sizeCode = size.code ?? '';
+          final isSelected = _selectedSize == sizeCode;
+
+          return GestureDetector(
+            onTap: () {
+              setState(() {
+                _selectedSize = sizeCode;
+              });
+              widget.onSelectSize(sizeCode); // Call parent callback
+            },
+            child: Container(
+              margin: const EdgeInsets.only(right: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 9),
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: isSelected ? Colors.black : Colors.grey,
+                ),
+                borderRadius: BorderRadius.circular(10),
+                color: isSelected ? Colors.black : Colors.white,
+              ),
+              child: Center(
+                child: Text(
+                  size.name ?? '',
+                  style: TextStyle(
+                    color: isSelected ? Colors.white : Colors.black,
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+            ),
+          );
+        }).toList(),
+      ),
     );
   }
 }
@@ -404,10 +493,12 @@ class PriceAndAddToCartWidget extends StatefulWidget {
     required this.addToCartCubit,
     required this.price,
     required this.productId,
+    required this.sizeCode,
   });
   final AddToCartCubit addToCartCubit;
   final num price;
   final int productId;
+  final String sizeCode;
   @override
   State<PriceAndAddToCartWidget> createState() => _PriceAndAddToCartWidgetState();
 }
@@ -465,7 +556,7 @@ class _PriceAndAddToCartWidgetState extends State<PriceAndAddToCartWidget> {
                             ],
                           ),
                     onPress: () async {
-                      await widget.addToCartCubit.addToCart(context: context, productId: widget.productId);
+                      await widget.addToCartCubit.addToCart(context: context, productId: widget.productId, sizeCode: widget.sizeCode);
                       Navigator.pop(context);
                     },
                   );
@@ -475,62 +566,6 @@ class _PriceAndAddToCartWidgetState extends State<PriceAndAddToCartWidget> {
           ),
         ],
       ),
-    );
-  }
-}
-
-class SizeSelector extends StatefulWidget {
-  final Function(String) onSelectSize;
-
-  const SizeSelector({
-    Key? key,
-    required this.onSelectSize,
-  }) : super(key: key);
-
-  @override
-  State<SizeSelector> createState() => _SizeSelectorState();
-}
-
-class _SizeSelectorState extends State<SizeSelector> {
-  String _selectedSize = 'M'; // Default selected size
-
-  @override
-  Widget build(BuildContext context) {
-    final sizes = ['S', 'M', 'L'];
-
-    return Row(
-      children: sizes.map((size) {
-        final isSelected = _selectedSize == size;
-
-        return GestureDetector(
-          onTap: () {
-            setState(() {
-              _selectedSize = size;
-            });
-            widget.onSelectSize(size); // Call parent callback
-          },
-          child: Container(
-            height: 50,
-            margin: const EdgeInsets.only(right: 10),
-            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: isSelected ? Colors.black : Colors.grey,
-              ),
-              borderRadius: BorderRadius.circular(10),
-              color: isSelected ? Colors.black : Colors.white,
-            ),
-            child: Center(
-              child: Text(
-                size,
-                style: TextStyle(
-                  color: isSelected ? Colors.white : Colors.black,
-                ),
-              ),
-            ),
-          ),
-        );
-      }).toList(),
     );
   }
 }

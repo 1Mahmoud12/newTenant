@@ -11,9 +11,10 @@ part 'add_to_cart_state.dart';
 class AddToCartCubit extends Cubit<AddToCartState> {
   AddToCartCubit() : super(AddToCartInitial());
   int quantity = 1;
-  Future<void> addToCart({required BuildContext context, required int productId}) async {
+
+  Future<void> addToCart({required BuildContext context, required int productId, String? sizeCode}) async {
     emit(AddToCartLoading());
-    await AddToCartDataSource.addToCart(productId: productId, quantity: quantity).then(
+    await AddToCartDataSource.addToCart(productId: productId, quantity: quantity, sizeCode: sizeCode).then(
       (value) async {
         value.fold((l) {
           emit(AddToCartError(e: l.errMessage));
@@ -29,7 +30,7 @@ class AddToCartCubit extends Cubit<AddToCartState> {
     );
   }
 
-  Future<void> updateCartItem({required BuildContext context, required int cartItemId,required int quantity}) async {
+  Future<void> updateCartItem({required BuildContext context, required int cartItemId, required int quantity}) async {
     emit(AddToCartLoading());
     await AddToCartDataSource.updateCartItem(cartItemId: cartItemId, quantity: quantity).then(
       (value) async {
@@ -37,9 +38,7 @@ class AddToCartCubit extends Cubit<AddToCartState> {
           (l) {
             Utils.showToast(title: l.errMessage, state: UtilState.error);
           },
-          (r) async {
-
-          },
+          (r) async {},
         );
       },
     );

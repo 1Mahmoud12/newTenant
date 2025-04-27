@@ -72,6 +72,7 @@ class CartItemData {
   int? quantity;
   int? price;
   String? createdAt;
+  String? selectedSize;
   String? updatedAt;
 
   CartItemData({
@@ -80,6 +81,7 @@ class CartItemData {
     this.productId,
     this.color,
     this.size,
+    this.selectedSize,
     this.priceForProduct,
     this.productImagePath,
     this.productThumbnailPath,
@@ -93,8 +95,14 @@ class CartItemData {
     id = json['id'];
     product = json['product'] != null ? Product.fromJson(json['product']) : null;
     productId = json['product_id'];
+    selectedSize = json['size'];
     color = json['color'];
-    size = json['size'] != null ? (json['size'] as List).map((i) => SizeModel.fromJson(i)).toList() : null;
+    final sizeData = json['size'];
+    if (sizeData is List) {
+      size = sizeData.map((i) => SizeModel.fromJson(i)).toList();
+    } else {
+      size = null; // or you can handle it differently if needed
+    }
     priceForProduct = json['priceForProduct'];
     productImagePath = json['product_image_path'];
     productThumbnailPath = json['product_thumbnail_path'];

@@ -42,80 +42,76 @@ class _CartViewState extends State<CartView> {
   }
 
   // Handle add quantity with optimistic UI update
+  // Handle add quantity with optimistic UI update
   void onAdd(CartItemData item) async {
-    // First update UI optimistically
     final previousQuantity = item.quantity ?? 0;
+    if (!mounted) return;
     setState(() {
       item.quantity = previousQuantity + 1;
-      // Also update subtotal price estimate for immediate feedback
       _updateLocalSubtotal();
     });
 
     try {
-      // Then send request to server
       await addToCartCubit.updateCartItem(context: context, cartItemId: item.id ?? -1, quantity: item.quantity ?? 0);
-      await checkoutDetailsCubit.getCheckoutDetails(context: context);
+      if (mounted) {
+        await checkoutDetailsCubit.getCheckoutDetails(context: context);
+      }
     } catch (e) {
-      // If server request fails, revert the optimistic update
+      if (!mounted) return;
       setState(() {
         item.quantity = previousQuantity;
         _updateLocalSubtotal();
       });
-      // Show error to user
       Utils.showToast(title: 'Failed to update quantity. Please try again.', state: UtilState.error);
     }
   }
 
-  // Handle remove quantity with optimistic UI update
+// Handle remove quantity with optimistic UI update
   void onRemove(CartItemData item) async {
     final previousQuantity = item.quantity ?? 0;
     if (previousQuantity <= 1) return;
-
-    // First update UI optimistically
+    if (!mounted) return;
     setState(() {
       item.quantity = previousQuantity - 1;
-      // Also update subtotal price estimate for immediate feedback
       _updateLocalSubtotal();
     });
 
     try {
-      // Then send request to server
       await addToCartCubit.updateCartItem(context: context, cartItemId: item.id ?? -1, quantity: item.quantity ?? 0);
-      await checkoutDetailsCubit.getCheckoutDetails(context: context);
+      if (mounted) {
+        await checkoutDetailsCubit.getCheckoutDetails(context: context);
+      }
     } catch (e) {
-      // If server request fails, revert the optimistic update
+      if (!mounted) return;
       setState(() {
         item.quantity = previousQuantity;
         _updateLocalSubtotal();
       });
-      // Show error to user
       Utils.showToast(title: 'Failed to update quantity. Please try again.', state: UtilState.error);
     }
   }
 
-  // Handle item delete with optimistic UI update
+// Handle item delete with optimistic UI update
   void onDelete(CartItemData item) async {
-    // Store item for potential restoration
     final itemIndex = ConstantsModels.cartItemModel?.data?.indexOf(item) ?? -1;
     if (itemIndex == -1) return;
-
-    // First update UI optimistically
+    if (!mounted) return;
     setState(() {
       ConstantsModels.cartItemModel?.data?.removeAt(itemIndex);
       _updateLocalSubtotal();
     });
 
     try {
-      // Then send request to server
       await deleteFromCartCubit.deleteFromCart(context: context, itemId: item.id ?? -1);
-      await checkoutDetailsCubit.getCheckoutDetails(context: context);
+      if (mounted) {
+        await checkoutDetailsCubit.getCheckoutDetails(context: context);
+      }
     } catch (e) {
-      // If server request fails, revert the optimistic update
+      if (!mounted) return;
       setState(() {
         ConstantsModels.cartItemModel?.data?.insert(itemIndex, item);
         _updateLocalSubtotal();
       });
-      // Show error to user
       Utils.showToast(title: 'Failed to update quantity. Please try again.', state: UtilState.error);
     }
   }
@@ -367,11 +363,10 @@ class CartItemWidget extends StatelessWidget {
                       ),
                     ],
                   ),
-                  if (cartItem.size != null)
-                    Text(
-                      '${'Size'.tr()} ${cartItem.size![0].name}',
-                      style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14.sp, color: Colors.grey),
-                    ),
+                  Text(
+                    '${'Size'.tr()} ${cartItem.selectedSize}',
+                    style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14.sp, color: Colors.grey),
+                  ),
                   const SizedBox(height: 8),
                   Row(
                     children: [

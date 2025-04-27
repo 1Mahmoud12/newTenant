@@ -32,9 +32,9 @@ class ProductData {
   List<Category>? categories;
   List<Category>? mainCategories;
   List<dynamic>? subCategories;
-  List<Size>? sizes;
+  List<AvailableProductSize>? sizes;
   List<ColorModel>? colors;
-  String? totalSold;
+  num? totalSold;
   String? tax;
   int? taxId;
   int? stock;
@@ -101,7 +101,7 @@ class ProductData {
         categories: (json['categories'] as List?)?.map((e) => Category.fromJson(e)).toList(),
         mainCategories: (json['main_categories'] as List?)?.map((e) => Category.fromJson(e)).toList(),
         subCategories: json['sub_categories'],
-        sizes: (json['sizes'] as List?)?.map((e) => Size.fromJson(e)).toList(),
+        sizes: (json['sizes'] as List?)?.map((e) => AvailableProductSize.fromJson(e)).toList(),
         colors: (json['colors'] as List?)?.map((e) => ColorModel.fromJson(e)).toList(),
         totalSold: json['total_sold'],
         tax: json['tax'],
@@ -173,16 +173,16 @@ class Pivot {
       );
 }
 
-class Size {
+class AvailableProductSize {
   int? id;
   String? name;
   String? code;
   String? createdAt;
   String? updatedAt;
 
-  Size({this.id, this.name, this.code, this.createdAt, this.updatedAt});
+  AvailableProductSize({this.id, this.name, this.code, this.createdAt, this.updatedAt});
 
-  factory Size.fromJson(Map<String, dynamic> json) => Size(
+  factory AvailableProductSize.fromJson(Map<String, dynamic> json) => AvailableProductSize(
         id: json['id'],
         name: json['name'],
         code: json['code'],
