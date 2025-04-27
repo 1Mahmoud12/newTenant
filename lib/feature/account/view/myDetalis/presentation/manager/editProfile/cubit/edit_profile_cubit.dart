@@ -1,6 +1,9 @@
+import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
+import 'package:dobzz_seller/core/network/local/cache.dart';
 import 'package:dobzz_seller/core/utils/constants_models.dart';
 import 'package:dobzz_seller/core/utils/utils.dart';
 import 'package:dobzz_seller/feature/account/view/myDetalis/data/dataSource/edit_profile_data_source.dart';
@@ -20,10 +23,13 @@ class EditProfileCubit extends Cubit<EditProfileState> {
           emit(EditProfileError(e: l.errMessage));
         }, (r) async {
           ConstantsModels.editProfileModel = r;
-          // userCacheValue = r;
-          // // log('userCacheValue.data ==>${userCacheValue?.data}');
+          userCacheValue?.data?.name = r.data?.name ?? 'unKnow name';
+          userCacheValue?.data?.email = r.data?.email ?? 'unKnow email';
+          userCacheValue?.data?.phone = r.data?.phone ?? 'unKnow phone';
+          userCacheValue?.data?.avatarPath = r.data?.avatarPath ?? '';
+          await userCache?.put(userCacheKey, jsonEncode(userCacheValue?.toJson()));
+          log('userCacheValue.data ==>${userCacheValue?.data?.name}');
 
-          // await userCache?.put(userCacheKey, jsonEncode(r.toJson()));
           emit(EditProfileSuccess());
         });
       },

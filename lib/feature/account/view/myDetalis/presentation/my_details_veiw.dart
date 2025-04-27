@@ -15,8 +15,8 @@ import 'package:dobzz_seller/core/utils/file.dart';
 import 'package:dobzz_seller/feature/account/view/myDetalis/presentation/manager/editProfile/cubit/edit_profile_cubit.dart';
 
 class MyDetailsView extends StatefulWidget {
-  const MyDetailsView({super.key});
-
+  const MyDetailsView({super.key, required this.editProfileCubit});
+  final EditProfileCubit editProfileCubit;
   @override
   State<MyDetailsView> createState() => _MyDetailsViewState();
 }
@@ -31,12 +31,10 @@ class _MyDetailsViewState extends State<MyDetailsView> {
   // State variables
   final ImagePicker _picker = ImagePicker();
   File? _profileImage;
-  late final EditProfileCubit _editProfileCubit;
 
   @override
   void initState() {
     super.initState();
-    _editProfileCubit = EditProfileCubit();
     _loadUserData();
   }
 
@@ -51,7 +49,7 @@ class _MyDetailsViewState extends State<MyDetailsView> {
 
   // Methods
   Future<void> _loadUserData() async {
-    await _editProfileCubit.getUserData(context: context);
+    await widget.editProfileCubit.getUserData(context: context);
     await _loadProfileImage();
     _populateFormFields();
   }
@@ -81,14 +79,15 @@ class _MyDetailsViewState extends State<MyDetailsView> {
     }
   }
 
-  void _handleSubmit() {
-    _editProfileCubit.updateUserData(
+  void _handleSubmit() async {
+    await widget.editProfileCubit.updateUserData(
       context: context,
       name: _firstNameController.text,
       email: _emailController.text,
       phone: _phoneController.text,
       image: _profileImage,
     );
+    await widget.editProfileCubit.getUserData(context: context);
   }
 
   @override
@@ -96,7 +95,7 @@ class _MyDetailsViewState extends State<MyDetailsView> {
     return Scaffold(
       appBar: customAppBar(context: context, title: 'My Details'),
       body: BlocProvider.value(
-        value: _editProfileCubit,
+        value: widget.editProfileCubit,
         child: DetailViewBody(
           firstNameController: _firstNameController,
           lastNameController: _lastNameController,
@@ -105,7 +104,7 @@ class _MyDetailsViewState extends State<MyDetailsView> {
           profileImage: _profileImage,
           onPickImage: _pickImage,
           onSubmit: _handleSubmit,
-          editProfileCubit: _editProfileCubit,
+          editProfileCubit: widget.editProfileCubit,
         ),
       ),
     );

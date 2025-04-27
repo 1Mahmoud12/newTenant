@@ -50,7 +50,7 @@ void main() async {
   locationCacheValue = userCache?.get(locationCacheKey);
   userCacheValue = RegisterModel.fromJson(jsonDecode(await userCache?.get(userCacheKey, defaultValue: '{}')));
   log('userCacheValue ==>$userCacheValue');
-  log('userCacheValue.data ==>${userCacheValue?.data}');
+  log('userCacheValue.data ==>${userCacheValue?.data?.name}');
   Constants.token = userCacheValue?.data?.token ?? '';
   // ConstantsModels.advertiseModel = AdvertiseModel.fromJson(jsonDecode(await userCache!.get(advertiseModelKey, defaultValue: '{}')));
   // ConstantsModels.categoriesModel = CategoriesModel.fromJson(jsonDecode(await userCache!.get(categoriesModelKey, defaultValue: '{}')));

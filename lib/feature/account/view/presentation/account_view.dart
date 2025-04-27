@@ -5,9 +5,9 @@ import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:dobzz_seller/core/utils/app_icons.dart';
 import 'package:dobzz_seller/core/utils/constants_models.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
-import 'package:dobzz_seller/feature/account/view/faq/presentation/faq_view.dart';
 import 'package:dobzz_seller/feature/account/view/helpCenter/presentation/help_center_view.dart';
 import 'package:dobzz_seller/feature/account/view/manager/deleteAccount/cubit/delete_account_cubit.dart';
+import 'package:dobzz_seller/feature/account/view/myDetalis/presentation/manager/editProfile/cubit/edit_profile_cubit.dart';
 import 'package:dobzz_seller/feature/account/view/myDetalis/presentation/my_details_veiw.dart';
 import 'package:dobzz_seller/feature/account/view/myOrders/presentation/my_order_view.dart';
 import 'package:dobzz_seller/feature/account/view/notificationSetting/presentation/notification_setting_view.dart';
@@ -15,6 +15,7 @@ import 'package:dobzz_seller/feature/auth/forgetPassword/view/presentation/forge
 import 'package:dobzz_seller/feature/auth/login/view/presentation/login_screen.dart';
 import 'package:dobzz_seller/feature/cart/view/address/presentation/address_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -28,6 +29,7 @@ class AccountView extends StatefulWidget {
 class _AccountViewState extends State<AccountView> {
   final currentLanguage = 'English';
   DeleteAccountCubit deleteAccountCubit = DeleteAccountCubit();
+  EditProfileCubit editProfileCubit = EditProfileCubit();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,22 +46,34 @@ class _AccountViewState extends State<AccountView> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     // Profile image
-                    CacheImage(
-                      errorColor: Colors.grey,
-                      height: 60,
-                      width: 60,
-                      circle: true,
-                      urlImage: userCacheValue?.data?.avatarPath ?? '',
-                    ),
-                    const SizedBox(height: 10),
-                    // Name
-                    Text(
-                      userCacheValue?.data?.name ?? 'Unknown',
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
+                    BlocProvider.value(
+                      value: editProfileCubit,
+                      child: BlocBuilder<EditProfileCubit, EditProfileState>(
+                        builder: (context, state) {
+                          return Column(
+                            children: [
+                              CacheImage(
+                                errorColor: Colors.grey,
+                                height: 60,
+                                width: 60,
+                                circle: true,
+                                urlImage: userCacheValue?.data?.avatarPath ?? '',
+                              ),
+                              const SizedBox(height: 10),
+                              // Name
+                              Text(
+                                userCacheValue?.data?.name ?? 'Unknown',
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ],
+                          );
+                        },
                       ),
                     ),
+
                     // const SizedBox(height: 2),
                     // // Member since
                     // Text(
@@ -85,7 +99,9 @@ class _AccountViewState extends State<AccountView> {
                 icon: AppIcons.myDetails,
                 title: 'My Details',
                 onTap: () {
-                  context.navigateToPage(const MyDetailsView());
+                  context.navigateToPage(MyDetailsView(
+                    editProfileCubit: editProfileCubit,
+                  ));
                 },
               ),
               _buildMenuItem(
