@@ -26,22 +26,25 @@ class CategoriesScreen extends StatelessWidget {
       ),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: TextField(
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: Colors.grey[100],
-                hintText: 'Find your favorite items',
-                prefixIcon: const Icon(Icons.search, color: Colors.grey),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide.none,
-                ),
-                contentPadding: const EdgeInsets.symmetric(),
-              ),
-            ),
+          // Padding(
+          //   padding: const EdgeInsets.all(16.0),
+          //   child: TextField(
+          //     decoration: InputDecoration(
+          //       filled: true,
+          //       fillColor: Colors.grey[100],
+          //       hintText: 'Find your favorite items',
+          //       prefixIcon: const Icon(Icons.search, color: Colors.grey),
+          //       border: OutlineInputBorder(
+          //         borderRadius: BorderRadius.circular(10),
+          //         borderSide: BorderSide.none,
+          //       ),
+          //       contentPadding: const EdgeInsets.symmetric(),
+          //     ),
+          //   ),
+          const SizedBox(
+            height: 20,
           ),
+          // ),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),

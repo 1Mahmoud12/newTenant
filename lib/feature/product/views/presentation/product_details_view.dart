@@ -134,13 +134,13 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
               rating: productDetails?.reviewsCount.toString() ?? '0',
               reviewCount: productDetails?.reviews?.length ?? 0,
               onTap: () {
-                context.navigateToPage(
-                  const ReviewsView(
+                // context.navigateToPage(
+                //   const ReviewsView(
 
-                      // productId: widget.productId
+                //       // productId: widget.productId
 
-                      ),
-                );
+                //       ),
+                // );
               },
             ),
             const SizedBox(height: 12),

@@ -18,7 +18,7 @@ import 'package:dobzz_seller/feature/auth/data/models/verify_code_model.dart';
 abstract class AuthDataSource {
   Future<Either<Failure, CountryCodeModel>> getCountryCode();
 
-  Future<Either<Failure, String>> forgetPassword(BuildContext context, {required String email});
+  Future<Either<Failure, String>> forgetPassword(BuildContext context, {required String phone});
 
   Future<Either<Failure, String>> resendCode(BuildContext context, {required String customerId});
 
@@ -173,14 +173,14 @@ class AuthDataSourceImpl implements AuthDataSource {
   }
 
   @override
-  Future<Either<Failure, String>> forgetPassword(BuildContext context, {required String email}) async {
+  Future<Either<Failure, String>> forgetPassword(BuildContext context, {required String phone}) async {
     try {
       const String endpoint = EndPoints.forgetPassword;
       await DioHelper.postData(
         endPoint: endpoint,
         context: context,
         data: {
-          'email': email,
+          'phone': phone,
         },
       );
 

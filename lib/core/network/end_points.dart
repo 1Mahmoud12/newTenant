@@ -11,7 +11,7 @@ class EndPoints {
   static const updateFcmToken = 'Account/UpdateFCMToken';
   static const appVisit = 'AppSetting/Admin_UpdateAppVisit';
   static const forgetPassword = 'shop/auth/forgot-password';
-  static const resetPassword = 'Account/ResetPassword';
+  static const resetPassword = 'shop/auth/reset-password';
   static const resendOtp = 'shop/auth/send-otp';
   static const deleteUser = 'Account/DeleteUser';
 

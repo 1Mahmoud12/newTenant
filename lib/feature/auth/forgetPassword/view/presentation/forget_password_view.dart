@@ -1,5 +1,6 @@
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:dobzz_seller/core/component/fields/custom_text_form_field.dart';
+import 'package:dobzz_seller/core/component/phone_number_field.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -52,10 +53,9 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 32),
-                CustomTextFormField(
-                  outPadding: EdgeInsets.zero,
+                PhoneNumberField(
                   controller: AuthCubit.of(context).phoneController,
-                  hintText: 'email'.tr(),
+                  outPadding: EdgeInsets.zero,
                 ),
                 const SizedBox(height: 32),
                 BlocBuilder<AuthCubit, AuthState>(

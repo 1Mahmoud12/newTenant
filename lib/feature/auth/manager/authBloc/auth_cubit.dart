@@ -57,7 +57,7 @@ class AuthCubit extends Cubit<AuthState> {
   void forgetPassword({required BuildContext context}) async {
     emit(AuthGetCountryCodeLoadingState());
     animationDialogLoading(context);
-    authDataSource.forgetPassword(context, email: phoneController.text).then(
+    authDataSource.forgetPassword(context, phone: countryCode + phoneController.text).then(
       (value) async {
         closeDialog(context);
         // bool result = await InternetConnectionChecker().hasConnection;
@@ -65,11 +65,13 @@ class AuthCubit extends Cubit<AuthState> {
           failureModalBottomSheetWithReason(context, reasons: [l.errMessage], onPress: () {});
           emit(AuthGetCountryCodeErrorState(l.errMessage));
         }, (r) async {
+          //   await authDataSource.resendCode(context, customerId: userCacheValue?.data?.id.toString() ?? '-1');
+
           context.navigateToPage(
             VerifyCodeView(
               // phoneNumber: phoneController.text,
               // countryCodeId: countryCodeId,
-              verifyButton: (context) {
+              verifyButton: (context) async {
                 context.navigateToPage(const ResetPasswordView());
               },
             ),
@@ -268,8 +270,6 @@ class AuthCubit extends Cubit<AuthState> {
         .resetPasswordPassword(
       context,
       ResetPasswordParams(
-        userId: idUserValue,
-        code: int.parse(codeController.text),
         password: passwordController.text,
         confirmPassword: confirmPasswordController.text,
       ),
@@ -309,8 +309,4 @@ class AuthCubit extends Cubit<AuthState> {
   //   disposeControllers();
   //   return super.close();
   // }
-
-
-
-
 }

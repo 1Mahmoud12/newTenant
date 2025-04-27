@@ -12,6 +12,7 @@ import 'package:dobzz_seller/feature/account/view/myDetalis/presentation/my_deta
 import 'package:dobzz_seller/feature/account/view/myOrders/presentation/my_order_view.dart';
 import 'package:dobzz_seller/feature/account/view/notificationSetting/presentation/notification_setting_view.dart';
 import 'package:dobzz_seller/feature/auth/forgetPassword/view/presentation/forget_password_view.dart';
+import 'package:dobzz_seller/feature/auth/forgetPassword/view/presentation/reset_password_view.dart';
 import 'package:dobzz_seller/feature/auth/login/view/presentation/login_screen.dart';
 import 'package:dobzz_seller/feature/cart/view/address/presentation/address_view.dart';
 import 'package:flutter/material.dart';
@@ -99,9 +100,11 @@ class _AccountViewState extends State<AccountView> {
                 icon: AppIcons.myDetails,
                 title: 'My Details',
                 onTap: () {
-                  context.navigateToPage(MyDetailsView(
-                    editProfileCubit: editProfileCubit,
-                  ));
+                  context.navigateToPage(
+                    MyDetailsView(
+                      editProfileCubit: editProfileCubit,
+                    ),
+                  );
                 },
               ),
               _buildMenuItem(
@@ -115,7 +118,7 @@ class _AccountViewState extends State<AccountView> {
                 icon: AppIcons.changePassword,
                 title: 'Change Password',
                 onTap: () {
-                  context.navigateToPage(const ForgetPasswordView());
+                  context.navigateToPage(const ResetPasswordView());
                 },
               ),
               // _buildMenuItem(
