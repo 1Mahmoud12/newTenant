@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/core/utils/utils.dart';
 import 'package:dobzz_seller/feature/account/view/myOrders/presentation/my_order_view.dart';
@@ -11,7 +12,7 @@ part 'process_to_checkout_state.dart';
 
 class ProcessToCheckoutCubit extends Cubit<ProcessToCheckoutState> {
   ProcessToCheckoutCubit() : super(ProcessToCheckoutInitial());
-  String addressId = '';
+  String addressId = Constants.defaultAddress.addressId.toString();
   Future<void> processToCheckout({required BuildContext context}) async {
     emit(ProcessToCheckoutLoading());
     await ProcessToCheckoutDataSource.processToCheckout(addressId: addressId).then(

@@ -1,3 +1,5 @@
+import 'package:dobzz_seller/core/utils/constants.dart';
+
 class AddressModel {
   bool? status;
   String? message;
@@ -66,7 +68,7 @@ class Data {
   });
 
   Data.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
+    id = json['id'] ?? -1;
     name = json['name'];
     phone = json['phone'];
     countryId = json['country_id'];
@@ -77,7 +79,14 @@ class Data {
     city = json['city'];
     address = json['address'];
     pinCode = json['pin_code'];
-    isDefault = json['is_default'];
+    isDefault = json['is_default'] ?? false;
+    if (isDefault != null && isDefault!) {
+      Constants.defaultAddress.name = name ?? 'unknown address';
+      if (id != null) {
+        Constants.defaultAddress.addressId = id ?? -1;
+      }
+    }
+
     createdAt = json['created_at'];
     updateAt = json['update_at'];
   }

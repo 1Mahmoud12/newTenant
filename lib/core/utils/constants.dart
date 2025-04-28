@@ -11,6 +11,7 @@ class Constants {
   static int distance = 100; // Km
 
   static String notificationChannelKey = 'channel_id1';
+  static AddressModel defaultAddress = AddressModel(-1, 'unknown address');
   static String fcmToken = '';
   static String deviceId = '';
   static String subdomain = 'shine';
@@ -38,6 +39,12 @@ class Constants {
 enum StatusRequest { completed, pending, canceled }
 
 bool arabicLanguage = true;
+
+class AddressModel {
+  String? name;
+  int? addressId;
+  AddressModel(this.addressId, this.name);
+}
 
 class IconAndText {
   final String icon;

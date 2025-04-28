@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
+import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:dobzz_seller/core/utils/constants_models.dart';
 import 'package:dobzz_seller/core/utils/utils.dart';
 import 'package:dobzz_seller/feature/cart/view/address/data/dataSourec/address_data_source.dart';
@@ -19,6 +22,8 @@ class AddressCubit extends Cubit<AddressState> {
           emit(AddressError(e: l.errMessage));
         }, (r) async {
           ConstantsModels.addressModel = r;
+          log('print address ====>${ConstantsModels.addressModel?.toJson()}');
+          log('default address ====>${Constants.defaultAddress.addressId}');
           emit(AddressSuccess());
         });
       },

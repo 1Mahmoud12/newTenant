@@ -1,3 +1,4 @@
+import 'package:dobzz_seller/feature/cart/view/address/presentation/manager/address/cubit/address_cubit.dart';
 import 'package:dobzz_seller/mainCubit/cubit/main_cubit_cubit.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -25,10 +26,12 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   void initState() {
+    addressCubit.getAddress(context: context);
     // HomeDataSourceImpl().appVisit();
     super.initState();
   }
 
+  AddressCubit addressCubit = AddressCubit();
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(

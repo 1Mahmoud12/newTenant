@@ -5,6 +5,7 @@ import 'package:dobzz_seller/core/component/custom_list.dart';
 import 'package:dobzz_seller/core/component/fields/custom_text_form_field.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:dobzz_seller/core/utils/constant_gaping.dart';
+import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:dobzz_seller/core/utils/constants_models.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/core/utils/utils.dart';
@@ -126,7 +127,7 @@ class _CheckoutViewState extends State<CheckoutView> {
                                   errorText: 'you should create address first',
                                   nameField: 'Address'.tr(),
                                   borderColor: Colors.grey.withOpacity(0.2),
-                                  selectedItem: DropDownModel(name: 'Choose your address'.tr(), value: 0),
+                                  selectedItem: DropDownModel(name: Constants.defaultAddress!.name!, value: 0),
                                   items: ConstantsModels.addressModel?.data?.map((e) {
                                         return DropDownModel(name: e.name ?? '', value: e.id ?? -1);
                                       }).toList() ??
