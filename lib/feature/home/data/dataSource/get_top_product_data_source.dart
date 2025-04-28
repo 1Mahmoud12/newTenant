@@ -13,9 +13,9 @@ class GetTopProductDataSource {
       final response = await DioHelper.getData(
         query: {
           if (subCategoryId != null) 'filter[categories][]': subCategoryId,
-          if (searchProductByName != null) 'products?filter[name]=': searchProductByName,
+          if (searchProductByName != null) 'filter[name]': searchProductByName,
         },
-        url: EndPoints.getTopProduct,
+        url: EndPoints.search,
       );
       log('Top Product Response: ${response.data['data']}');
       return Right(ProductModel.fromJson(response.data));
