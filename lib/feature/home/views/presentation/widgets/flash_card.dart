@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dobzz_seller/core/component/cache_image.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:dobzz_seller/core/utils/app_icons.dart';
@@ -216,6 +218,14 @@ class AddToCartButton extends StatefulWidget {
 class _AddToCartButtonState extends State<AddToCartButton> {
   AddToCartCubit addToCartCubit = AddToCartCubit();
   bool _isAdded = false;
+  Timer? _resetTimer;
+
+  @override
+  void dispose() {
+    // Cancel the timer when the widget is disposed
+    _resetTimer?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -227,13 +237,18 @@ class _AddToCartButtonState extends State<AddToCartButton> {
           productId: widget.productId,
         )
             .then((_) {
+          if (!mounted) return; // Check if still mounted before setState
           setState(() {
             _isAdded = true;
           });
 
-          // Optional: Reset back to cart icon after a delay
-          Future.delayed(const Duration(seconds: 2), () {
+          // Cancel any existing timer
+          _resetTimer?.cancel();
+
+          // Create a new timer and store the reference
+          _resetTimer = Timer(const Duration(seconds: 2), () {
             if (mounted) {
+              // Check if still mounted before setState
               setState(() {
                 _isAdded = false;
               });

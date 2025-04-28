@@ -37,8 +37,11 @@ class AddToCartCubit extends Cubit<AddToCartState> {
         value.fold(
           (l) {
             Utils.showToast(title: l.errMessage, state: UtilState.error);
+            emit(AddToCartError(e: l.errMessage));
           },
-          (r) async {},
+          (r) async {
+            emit(AddToCartSuccess());
+          },
         );
       },
     );

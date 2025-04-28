@@ -30,6 +30,9 @@ class _CartViewState extends State<CartView> {
   final DeleteFromCartCubit deleteFromCartCubit = DeleteFromCartCubit();
   final CheckoutDetailsCubit checkoutDetailsCubit = CheckoutDetailsCubit();
 
+  // Track items that are currently loading
+  final Map<int, bool> loadingItems = {};
+
   @override
   void initState() {
     super.initState();
@@ -41,92 +44,112 @@ class _CartViewState extends State<CartView> {
     checkoutDetailsCubit.getCheckoutDetails(context: context);
   }
 
-  // Handle add quantity with optimistic UI update
-  // Handle add quantity with optimistic UI update
+  // Handle add quantity with loading indicator
+// Handle add quantity with loading indicator
   void onAdd(CartItemData item) async {
-    final previousQuantity = item.quantity ?? 0;
-    if (!mounted) return;
+    final itemId = item.id ?? -1;
+    if (itemId == -1 || loadingItems[itemId] == true) return;
+
     setState(() {
-      item.quantity = previousQuantity + 1;
-      _updateLocalSubtotal();
+      item.quantity = (item.quantity ?? 0) + 1; // Fixed parentheses
     });
 
+    // Rest of your method remains the same
     try {
-      await addToCartCubit.updateCartItem(context: context, cartItemId: item.id ?? -1, quantity: item.quantity ?? 0);
+      await addToCartCubit.updateCartItem(
+        context: context,
+        cartItemId: itemId,
+        quantity: item.quantity ?? 0, // Use the updated quantity
+      );
+
+      // Refresh checkout details and cart items from server
       if (mounted) {
         await checkoutDetailsCubit.getCheckoutDetails(context: context);
       }
     } catch (e) {
-      if (!mounted) return;
-      setState(() {
-        item.quantity = previousQuantity;
-        _updateLocalSubtotal();
-      });
-      Utils.showToast(title: 'Failed to update quantity. Please try again.', state: UtilState.error);
+      if (mounted) {
+        Utils.showToast(title: 'Failed to update quantity. Please try again.', state: UtilState.error);
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          loadingItems[itemId] = false;
+        });
+      }
     }
   }
 
-// Handle remove quantity with optimistic UI update
+// Handle remove quantity with loading indicator
   void onRemove(CartItemData item) async {
-    final previousQuantity = item.quantity ?? 0;
-    if (previousQuantity <= 1) return;
-    if (!mounted) return;
+    final itemId = item.id ?? -1;
+    if (itemId == -1 || loadingItems[itemId] == true || (item.quantity ?? 0) <= 1) return;
+
     setState(() {
-      item.quantity = previousQuantity - 1;
-      _updateLocalSubtotal();
+      item.quantity = (item.quantity ?? 0) - 1; // Fixed parentheses
     });
 
+    // Rest of your method is the same
     try {
-      await addToCartCubit.updateCartItem(context: context, cartItemId: item.id ?? -1, quantity: item.quantity ?? 0);
+      await addToCartCubit.updateCartItem(
+        context: context,
+        cartItemId: itemId,
+        quantity: item.quantity ?? 0, // Use the updated quantity
+      );
+
       if (mounted) {
         await checkoutDetailsCubit.getCheckoutDetails(context: context);
       }
     } catch (e) {
-      if (!mounted) return;
-      setState(() {
-        item.quantity = previousQuantity;
-        _updateLocalSubtotal();
-      });
-      Utils.showToast(title: 'Failed to update quantity. Please try again.', state: UtilState.error);
+      if (mounted) {
+        Utils.showToast(title: 'Failed to update quantity. Please try again.', state: UtilState.error);
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          loadingItems[itemId] = false;
+        });
+      }
     }
   }
 
-// Handle item delete with optimistic UI update
+  // Handle item delete with loading indicator
   void onDelete(CartItemData item) async {
-    final itemIndex = ConstantsModels.cartItemModel?.data?.indexOf(item) ?? -1;
-    if (itemIndex == -1) return;
-    if (!mounted) return;
+    final itemId = item.id ?? -1;
+    if (itemId == -1 || loadingItems[itemId] == true) return;
+
+    // Set this item as loading
     setState(() {
-      ConstantsModels.cartItemModel?.data?.removeAt(itemIndex);
-      _updateLocalSubtotal();
+      loadingItems[itemId] = true;
     });
 
     try {
-      await deleteFromCartCubit.deleteFromCart(context: context, itemId: item.id ?? -1);
+      // Send the delete request to the server
+      await deleteFromCartCubit.deleteFromCart(context: context, itemId: itemId);
+
+      // Immediately remove the item from the local list
+      setState(() {
+        if (ConstantsModels.cartItemModel?.data != null) {
+          ConstantsModels.cartItemModel!.data!.removeWhere((element) => element.id == itemId);
+        }
+      });
+
+      // Refresh checkout details and cart items from server
       if (mounted) {
         await checkoutDetailsCubit.getCheckoutDetails(context: context);
+        // We can keep this commented out since we've already updated the UI
+        // await cartCubit.getCartItems(context: context);
       }
     } catch (e) {
-      if (!mounted) return;
-      setState(() {
-        ConstantsModels.cartItemModel?.data?.insert(itemIndex, item);
-        _updateLocalSubtotal();
-      });
-      Utils.showToast(title: 'Failed to update quantity. Please try again.', state: UtilState.error);
-    }
-  }
-
-  // Update local subtotal price estimate for immediate UI feedback
-  void _updateLocalSubtotal() {
-    if (ConstantsModels.cartItemModel?.data == null) return;
-
-    double subtotal = 0;
-    for (final item in ConstantsModels.cartItemModel!.data!) {
-      subtotal += (item.price ?? 0) * (item.quantity ?? 0);
-    }
-
-    if (ConstantsModels.checkoutDetailsModel != null) {
-      ConstantsModels.checkoutDetailsModel!.subTotalPrice = subtotal.toInt();
+      if (mounted) {
+        Utils.showToast(title: 'Failed to delete item. Please try again.', state: UtilState.error);
+      }
+    } finally {
+      // Clear loading state if we're still mounted
+      if (mounted) {
+        setState(() {
+          loadingItems[itemId] = false;
+        });
+      }
     }
   }
 
@@ -136,6 +159,8 @@ class _CartViewState extends State<CartView> {
       providers: [
         BlocProvider.value(value: cartCubit),
         BlocProvider.value(value: checkoutDetailsCubit),
+        BlocProvider.value(value: addToCartCubit),
+        BlocProvider.value(value: deleteFromCartCubit),
       ],
       child: BlocBuilder<CartItemsCubit, CartItemsState>(
         builder: (context, state) {
@@ -190,6 +215,7 @@ class _CartViewState extends State<CartView> {
               // Loop through the cart items list to create CartItemWidget for each
               for (final item in cartItems)
                 CartItemWidget(
+                  addToCartCubit: addToCartCubit,
                   cartItem: item,
                   onRemove: () => onRemove(item),
                   onAdd: () => onAdd(item),
@@ -313,13 +339,14 @@ class CartItemWidget extends StatelessWidget {
   final VoidCallback onRemove;
   final VoidCallback onAdd;
   final VoidCallback onDelete;
-
+  final AddToCartCubit addToCartCubit;
   const CartItemWidget({
     super.key,
     required this.cartItem,
     required this.onRemove,
     required this.onAdd,
     required this.onDelete,
+    required this.addToCartCubit,
   });
 
   @override
@@ -357,9 +384,16 @@ class CartItemWidget extends StatelessWidget {
                           ),
                         ),
                       ),
-                      GestureDetector(
-                        onTap: onDelete,
-                        child: Icon(Icons.delete_outline, color: Colors.red, size: 20.sp),
+                      BlocProvider.value(
+                        value: addToCartCubit,
+                        child: BlocBuilder<AddToCartCubit, AddToCartState>(
+                          builder: (context, state) {
+                            return GestureDetector(
+                              onTap: state is AddToCartLoading ? null : onDelete,
+                              child: Icon(Icons.delete_outline, color: state is AddToCartLoading ? Colors.grey : Colors.red, size: 20.sp),
+                            );
+                          },
+                        ),
                       ),
                     ],
                   ),
@@ -376,17 +410,24 @@ class CartItemWidget extends StatelessWidget {
                   Row(
                     children: [
                       Text(
-                        cartItem.price.toString(),
+                        cartItem.priceForProduct.toString(),
                         style: TextStyle(
                           fontSize: 16.sp,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
                       const Spacer(),
-                      _QuantityButton(
-                        icon: Icons.remove,
-                        onTap: onRemove,
-                        isEnabled: (cartItem.quantity ?? 0) > 1,
+                      BlocProvider.value(
+                        value: addToCartCubit,
+                        child: BlocBuilder<AddToCartCubit, AddToCartState>(
+                          builder: (context, state) {
+                            return _QuantityButton(
+                              icon: Icons.remove,
+                              onTap: onRemove,
+                              isLoading: state is AddToCartLoading,
+                            );
+                          },
+                        ),
                       ),
                       const SizedBox(width: 8),
                       SizedBox(
@@ -400,9 +441,17 @@ class CartItemWidget extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 8),
-                      _QuantityButton(
-                        icon: Icons.add,
-                        onTap: onAdd,
+                      BlocProvider.value(
+                        value: addToCartCubit,
+                        child: BlocBuilder<AddToCartCubit, AddToCartState>(
+                          builder: (context, state) {
+                            return _QuantityButton(
+                              icon: Icons.add,
+                              onTap: onAdd,
+                              isLoading: state is AddToCartLoading,
+                            );
+                          },
+                        ),
                       ),
                     ],
                   ),
@@ -419,30 +468,30 @@ class CartItemWidget extends StatelessWidget {
 class _QuantityButton extends StatelessWidget {
   final IconData icon;
   final VoidCallback onTap;
-  final bool isEnabled;
+  final bool isLoading;
 
   const _QuantityButton({
     required this.icon,
     required this.onTap,
-    this.isEnabled = true,
+    this.isLoading = false,
   });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: isEnabled ? onTap : null,
+      onTap: isLoading ? null : onTap,
       child: Container(
         width: 30.w,
         height: 30.w,
         decoration: BoxDecoration(
-          border: Border.all(color: isEnabled ? Colors.grey.shade400 : Colors.grey.shade200),
+          border: Border.all(color: isLoading ? Colors.grey.shade200 : Colors.grey.shade400),
           borderRadius: BorderRadius.circular(6.r),
-          color: isEnabled ? Colors.transparent : Colors.grey.shade100,
+          color: isLoading ? Colors.grey.shade100 : Colors.transparent,
         ),
         child: Icon(
           icon,
           size: 18.sp,
-          color: isEnabled ? Colors.black : Colors.grey.shade400,
+          color: isLoading ? Colors.grey.shade400 : Colors.black,
         ),
       ),
     );
