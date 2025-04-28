@@ -18,7 +18,7 @@ class AddressCubit extends Cubit<AddressState> {
     await AddressDataSource.getAddress().then(
       (value) async {
         value.fold((l) {
-          Utils.showToast(title: l.errMessage, state: UtilState.error);
+       //   Utils.showToast(title: l.errMessage, state: UtilState.error);
           emit(AddressError(e: l.errMessage));
         }, (r) async {
           ConstantsModels.addressModel = r;

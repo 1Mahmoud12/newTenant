@@ -57,7 +57,7 @@ class AuthCubit extends Cubit<AuthState> {
   void forgetPassword({required BuildContext context}) async {
     emit(AuthGetCountryCodeLoadingState());
     animationDialogLoading(context);
-    authDataSource.forgetPassword(context, phone: countryCode + phoneController.text).then(
+    authDataSource.forgetPassword(context, phone: countryCode + forgetPasswordPhoneController.text).then(
       (value) async {
         closeDialog(context);
         // bool result = await InternetConnectionChecker().hasConnection;
@@ -100,6 +100,15 @@ class AuthCubit extends Cubit<AuthState> {
     );
   }
 
+// login controllers
+  TextEditingController loginPhoneController = TextEditingController();
+  TextEditingController loginPasswordController = TextEditingController();
+// reset password
+  TextEditingController resetPasswordController = TextEditingController();
+  TextEditingController resetConfirmationPasswordController = TextEditingController();
+//forget password controller
+  TextEditingController forgetPasswordPhoneController = TextEditingController();
+//
   TextEditingController nameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
@@ -184,6 +193,7 @@ class AuthCubit extends Cubit<AuthState> {
         // bool result = await InternetConnectionChecker().hasConnection;
         value.fold((l) {
           closeDialog(context);
+          otpController.clear();
           failureModalBottomSheetWithReason(context, reasons: [l.errMessage], onPress: () {});
           emit(AuthVerifyErrorState(l.errMessage));
         }, (r) async {
@@ -208,8 +218,8 @@ class AuthCubit extends Cubit<AuthState> {
         .postLogin(
       context,
       LoginParams(
-        phone: countryCode + phoneController.text,
-        password: passwordController.text,
+        phone: countryCode + loginPhoneController.text,
+        password: loginPasswordController.text,
       ),
     )
         .then(
@@ -254,9 +264,8 @@ class AuthCubit extends Cubit<AuthState> {
           Constants.token = r.data?.token ?? '';
           await userCache?.put(userCacheKey, jsonEncode(r.toJson()));
           context.navigateToPageWithClearStack(const NavigationViewWithThemes());
-          lastNameController.clear();
-          passwordController.clear();
-          confirmPasswordController.clear();
+          loginPhoneController.clear();
+          loginPasswordController.clear();
           emit(AuthLoginSuccessState());
         });
       },
@@ -270,8 +279,8 @@ class AuthCubit extends Cubit<AuthState> {
         .resetPasswordPassword(
       context,
       ResetPasswordParams(
-        password: passwordController.text,
-        confirmPassword: confirmPasswordController.text,
+        password: resetPasswordController.text,
+        confirmPassword: resetConfirmationPasswordController.text,
       ),
     )
         .then(
@@ -282,6 +291,8 @@ class AuthCubit extends Cubit<AuthState> {
           failureModalBottomSheetWithReason(context, reasons: [l.errMessage], onPress: () {});
           emit(AuthResetPasswordErrorState(l.errMessage));
         }, (r) async {
+          userCacheValue = null;
+          await userCache?.clear();
           lastNameController.clear();
           passwordController.clear();
           confirmPasswordController.clear();
@@ -290,23 +301,4 @@ class AuthCubit extends Cubit<AuthState> {
       },
     );
   }
-
-  // void disposeControllers() {
-  //   // Dispose all text controllers
-  //   nameController.dispose();
-  //   lastNameController.dispose();
-  //   phoneController.dispose();
-  //   passwordController.dispose();
-  //   confirmPasswordController.dispose();
-  //   nationalIdController.dispose();
-  //   otpController.dispose();
-  //   codeController.dispose();
-  // }
-
-  // @override
-  // Future<void> close() {
-  //   // Dispose controllers before closing the cubit
-  //   disposeControllers();
-  //   return super.close();
-  // }
 }

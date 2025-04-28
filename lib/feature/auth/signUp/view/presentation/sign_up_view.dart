@@ -1,5 +1,4 @@
 import 'package:dobzz_seller/core/utils/app_images.dart';
-import 'package:dobzz_seller/core/utils/constants_models.dart';
 import 'package:dobzz_seller/core/utils/utils.dart';
 import 'package:dobzz_seller/feature/auth/widgets/authRich_text_link.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -203,7 +202,7 @@ class _SignUpViewState extends State<SignUpView> {
                   text: 'Already have an account? '.tr(),
                   linkText: 'Login'.tr(),
                   onTap: () {
-                    context.navigateToPage(const LoginScreen());
+                    context.navigateToPageWithClearStack(const LoginScreen());
                   },
                 ),
               ],

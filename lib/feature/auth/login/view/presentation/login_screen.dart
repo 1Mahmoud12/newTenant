@@ -85,7 +85,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     children: [
                       PhoneNumberField(
                         outPadding: EdgeInsets.zero,
-                        controller: AuthCubit.of(context).phoneController,
+                        controller: AuthCubit.of(context).loginPhoneController,
                       ),
                       const SizedBox(height: 16),
                       Row(
@@ -94,7 +94,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             child: BlocBuilder<AuthCubit, AuthState>(
                               builder: (context, state) => CustomTextFormField(
                                 outPadding: EdgeInsets.zero,
-                                controller: AuthCubit.of(context).passwordController,
+                                controller: AuthCubit.of(context).loginPasswordController,
                                 validator: (value) {
                                   if (value.isEmpty) return 'required password'.tr();
                                   if (AuthCubit.of(context).errorMessage != null) return AuthCubit.of(context).errorMessage;
@@ -179,7 +179,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   text: "Don't have an account? ",
                   linkText: 'Create account',
                   onTap: () {
-                    context.navigateToPage(const SignUpView());
+                    context.navigateToPageWithClearStack(const SignUpView());
                   },
                 ),
               ],

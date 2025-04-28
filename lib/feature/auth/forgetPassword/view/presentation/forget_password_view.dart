@@ -54,7 +54,7 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
                 ),
                 const SizedBox(height: 32),
                 PhoneNumberField(
-                  controller: AuthCubit.of(context).phoneController,
+                  controller: AuthCubit.of(context).forgetPasswordPhoneController,
                   outPadding: EdgeInsets.zero,
                 ),
                 const SizedBox(height: 32),

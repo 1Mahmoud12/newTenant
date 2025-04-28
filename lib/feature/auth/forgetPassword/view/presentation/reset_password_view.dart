@@ -50,7 +50,7 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
                   Expanded(
                     child: CustomTextFormField(
                       outPadding: EdgeInsets.zero,
-                      controller: AuthCubit.of(context).passwordController,
+                      controller: AuthCubit.of(context).resetPasswordController,
                       validator: (value) {
                         if (value == null) return 'wrong_password,_please_try_again'.tr();
                       },
@@ -68,7 +68,7 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
                   Expanded(
                     child: CustomTextFormField(
                       outPadding: EdgeInsets.zero,
-                      controller: AuthCubit.of(context).confirmPasswordController,
+                      controller: AuthCubit.of(context).resetConfirmationPasswordController,
                       validator: (value) {
                         if (value == null) return 'wrong_password,_please_try_again'.tr();
                       },
@@ -84,7 +84,7 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
               BlocConsumer<AuthCubit, AuthState>(
                 listener: (context, state) {
                   if (state is AuthResetPasswordSuccessState) {
-                    context.navigateToPageWithReplacement(const LoginScreen());
+                    context.navigateToPageWithClearStack(const LoginScreen());
                   }
                 },
                 builder: (context, state) => CustomTextButton(
