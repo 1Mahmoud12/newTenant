@@ -1,5 +1,12 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:dobzz_seller/core/network/errors/api_error_model.dart';
+import 'package:dobzz_seller/core/network/local/cache.dart';
+import 'package:dobzz_seller/core/utils/constants.dart';
+import 'package:dobzz_seller/feature/auth/login/view/presentation/login_screen.dart';
+import 'package:dobzz_seller/main.dart';
+import 'package:flutter/material.dart';
 
 abstract class Failure {
   final String errMessage;
@@ -62,15 +69,34 @@ class ServerFailure extends Failure {
   }
 
   factory ServerFailure.fromResponse(int? statusCode, dynamic response) {
-    if (statusCode == 400 || statusCode == 401 || statusCode == 403 || statusCode == 422) {
-      // return ServerFailure(response['error']['message']);
-      return ServerFailure(response);
+    if (statusCode == 400 || statusCode == 401 || statusCode == 403 || statusCode == 422 || statusCode == 302) {
+      if (response != null &&
+          response['message'] != null &&
+          (response['message'].toString().toLowerCase().contains('token is expired') ||
+              response['message'].toString().toLowerCase().contains('authorization token not found'))) {
+        try {
+          Future.delayed(Duration.zero, () {
+            navigatorKey.currentState!.pushReplacement(
+              MaterialPageRoute(
+                builder: (context) => const LoginScreen(),
+              ),
+            );
+          });
+          Constants.token = '';
+          userCache?.put(userCacheKey, '{}');
+        } catch (e) {
+          log('error in put value in hive $e');
+        }
+      }
+      return ServerFailure(response['message'].toString());
     } else if (statusCode == 404) {
       return ServerFailure('Your request not found, Please try later!');
     } else if (statusCode == 500) {
       // log('object::>> ${response}');
       return ServerFailure('Internal Server error, Please try later');
     } else {
+      log('what is wrong ==> $response');
+
       return ServerFailure('Opps There was an Error, Please try again');
     }
   }
