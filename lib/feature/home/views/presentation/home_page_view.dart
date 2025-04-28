@@ -9,6 +9,7 @@ import 'package:dobzz_seller/feature/home/data/models/sales_model.dart';
 import 'package:dobzz_seller/feature/home/views/manager/salesBanner/cubit/sales_banner_cubit.dart';
 import 'package:dobzz_seller/feature/home/views/presentation/search_product_home_view.dart';
 import 'package:dobzz_seller/feature/home/views/presentation/widgets/categories_list.dart';
+import 'package:dobzz_seller/feature/home/views/presentation/widgets/featured_category.dart';
 import 'package:dobzz_seller/feature/home/views/presentation/widgets/flash_sale_gride.dart';
 import 'package:dobzz_seller/feature/home/views/presentation/widgets/home_page_header.dart';
 import 'package:dobzz_seller/feature/home/views/presentation/widgets/home_slider.dart';
@@ -89,6 +90,7 @@ class _HomePageViewState extends State<HomePageView> {
                     },
                   ),
                 ),
+                h10,
                 const FlashSaleHorizontalList(),
                 h10,
                 BlocProvider.value(
@@ -124,6 +126,8 @@ class _HomePageViewState extends State<HomePageView> {
                   ),
                 ),
                 const FlashSaleHorizontalList(),
+                h10,
+                const FeaturedCategory(),
                 const SizedBox(
                   height: 100,
                 ),

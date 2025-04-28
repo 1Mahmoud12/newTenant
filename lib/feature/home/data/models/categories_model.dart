@@ -2,7 +2,7 @@ class CategoriesModel {
   bool? status;
   int? code;
   String? message;
-  List<Data>? data;
+  List<CategoryData>? data;
 
   CategoriesModel({this.status, this.code, this.message, this.data});
 
@@ -11,9 +11,9 @@ class CategoriesModel {
     code = json['code'];
     message = json['message'];
     if (json['data'] != null) {
-      data = <Data>[];
+      data = <CategoryData>[];
       json['data'].forEach((v) {
-        data!.add(Data.fromJson(v));
+        data!.add(CategoryData.fromJson(v));
       });
     }
   }
@@ -30,7 +30,7 @@ class CategoriesModel {
   }
 }
 
-class Data {
+class CategoryData {
   int? id;
   String? name;
   String? parent;
@@ -42,7 +42,7 @@ class Data {
   String? createdAt;
   String? updatedAt;
 
-  Data({
+  CategoryData({
     this.id,
     this.name,
     this.parent,
@@ -55,7 +55,7 @@ class Data {
     this.updatedAt,
   });
 
-  Data.fromJson(Map<String, dynamic> json) {
+  CategoryData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     parent = json['parent'];
