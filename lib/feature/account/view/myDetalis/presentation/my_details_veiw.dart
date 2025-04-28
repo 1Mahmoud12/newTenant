@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:dobzz_seller/core/component/phone_number_field.dart';
+import 'package:dobzz_seller/core/network/local/cache.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -219,7 +220,7 @@ class ProfileImageWidget extends StatelessWidget {
   }
 }
 
-class UserDetailsForm extends StatelessWidget {
+class UserDetailsForm extends StatefulWidget {
   final TextEditingController firstNameController;
   final TextEditingController lastNameController;
   final TextEditingController emailController;
@@ -234,26 +235,66 @@ class UserDetailsForm extends StatelessWidget {
   });
 
   @override
+  State<UserDetailsForm> createState() => _UserDetailsFormState();
+}
+
+class _UserDetailsFormState extends State<UserDetailsForm> {
+  @override
+  void initState() {
+    getCountryCode(number: userCacheValue?.data?.phone ?? '+966');
+    super.initState();
+  }
+
+  String initialCountryCode = '+966';
+  @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         CustomTextFormField(
           nameField: 'Name',
-          controller: firstNameController,
+          controller: widget.firstNameController,
           hintText: 'Enter your first name',
         ),
         h10,
         CustomTextFormField(
           nameField: 'Email Address',
-          controller: emailController,
+          controller: widget.emailController,
           hintText: 'Enter your email address',
           textInputType: TextInputType.emailAddress,
         ),
         h10,
-        PhoneNumberField(controller: phoneController),
+        // The controller already has the full number with country code (e.g. "+201124980094")
+        PhoneNumberField(
+          initialCountryCode: initialCountryCode,
+          controller: formatPhone(number: userCacheValue?.data?.phone ?? ' ', initialCountryCode: initialCountryCode),
+        ),
         h10,
       ],
     );
+  }
+
+  void getCountryCode({required String number}) {
+    if (number.substring(0, 3) == '+20') {
+      initialCountryCode = '+2';
+    } else {
+      initialCountryCode = number.substring(0, 3);
+    }
+  }
+
+  TextEditingController formatPhone({required String number, required String initialCountryCode}) {
+    final TextEditingController phone = TextEditingController(text: '');
+    if (initialCountryCode == '+2') {
+      // remove the first two letters
+      if (number.length >= 2) {
+        phone.text = number.substring(2);
+      }
+    } else {
+      // remove the first three letters
+      if (number.length >= 3) {
+        phone.text = number.substring(3);
+      }
+    }
+    return phone;
   }
 }
 

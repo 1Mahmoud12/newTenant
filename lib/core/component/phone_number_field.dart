@@ -10,11 +10,13 @@ import 'package:flutter/material.dart';
 class PhoneNumberField extends StatefulWidget {
   final TextEditingController controller;
   final EdgeInsets? outPadding;
+  final String? initialCountryCode; // New parameter for initial country code
 
   const PhoneNumberField({
     super.key,
     required this.controller,
     this.outPadding,
+    this.initialCountryCode, // Add this parameter
   });
 
   @override
@@ -22,9 +24,9 @@ class PhoneNumberField extends StatefulWidget {
 }
 
 class _PhoneNumberFieldState extends State<PhoneNumberField> {
-  // Default to the first country in the list
-  String _countryCode = countriesflage.first.code;
-  String _phoneHint = '05xxxxxxxx'; // Default Saudi format
+  late String _countryCode;
+  late String _phoneHint;
+  late int _selectedCountryIndex;
 
   void _updatePhoneHint(String countryCode) {
     setState(() {
@@ -49,8 +51,29 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
   @override
   void initState() {
     super.initState();
-    // Initialize with default country
+    // Initialize with provided country code or default
+    if (widget.initialCountryCode != null) {
+      // Find the index of the country with the matching code
+      final countryIndex = countriesflage.indexWhere(
+        (country) => country.code == widget.initialCountryCode,
+      );
+
+      // If found, use that index, otherwise default to 0
+      _selectedCountryIndex = countryIndex >= 0 ? countryIndex : 0;
+      _countryCode = countriesflage[_selectedCountryIndex].code;
+    } else {
+      // Default to the first country in the list
+      _selectedCountryIndex = 0;
+      _countryCode = countriesflage.first.code;
+    }
+
+    // Initialize the phone hint based on the selected country code
     _updatePhoneHint(_countryCode);
+
+    // Update AuthCubit with the initial country code
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      AuthCubit.of(context).countryCode = _countryCode;
+    });
   }
 
   @override
@@ -73,6 +96,7 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
             children: [
               Expanded(
                 child: CountryCodeDropdown(
+                  initialCountryIndex: _selectedCountryIndex, // Pass the selected index
                   onCountryChanged: (countryCode) {
                     _updatePhoneHint(countryCode);
                     authCubit.countryCode = countryCode;
@@ -133,10 +157,12 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
 
 class CountryCodeDropdown extends StatelessWidget {
   final Function(String countryCode) onCountryChanged;
+  final int initialCountryIndex; // Add parameter for initial country index
 
   const CountryCodeDropdown({
     super.key,
     required this.onCountryChanged,
+    this.initialCountryIndex = 0, // Default to first country
   });
 
   @override
@@ -151,11 +177,11 @@ class CountryCodeDropdown extends StatelessWidget {
         onCountryChanged(selectedCountry.code);
       },
       selectedItem: DropDownModel(
-        name: countriesflage.first.name,
-        value: countriesflage.first.id,
+        name: countriesflage[initialCountryIndex].name,
+        value: countriesflage[initialCountryIndex].id,
         showName: false,
         showImage: true,
-        image: countriesflage.first.image,
+        image: countriesflage[initialCountryIndex].image,
       ),
       items: countriesflage
           .map(
