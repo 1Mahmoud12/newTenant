@@ -39,9 +39,6 @@ class _HomePageViewState extends State<HomePageView> {
   SalesBannerCubit salesBannerCubit = SalesBannerCubit();
   @override
   Widget build(BuildContext context) {
-    final endTime = DateTime.now().add(
-      const Duration(days: 6, hours: 4, minutes: 50, seconds: 27),
-    );
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(

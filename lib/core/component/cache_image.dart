@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:dobzz_seller/core/utils/app_images.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -39,19 +40,19 @@ class CacheImage extends StatelessWidget {
       height: height,
       child: ClipOval(
         clipBehavior: circle ? Clip.hardEdge : Clip.none,
-        child: _buildImageWidget(),
+        child: _buildImageWidget(context),
       ),
     );
   }
 
-  Widget _buildImageWidget() {
+  Widget _buildImageWidget(BuildContext context) {
     // Priority order: fileImage -> assetImage -> urlImage
     if (fileImage != null) {
       return _buildFileImage();
     } else if (assetImage != null) {
       return _buildAssetImage();
     } else if (urlImage != null) {
-      return urlImage!.contains('.svg') ? _buildSvgNetworkImage() : _buildNetworkImage();
+      return urlImage!.contains('.svg') ? _buildSvgNetworkImage() : _buildNetworkImage(context);
     } else {
       // Fallback for no image source provided
       return _buildErrorImage();
@@ -67,6 +68,10 @@ class CacheImage extends StatelessWidget {
         width: width,
         height: height,
         errorBuilder: (context, error, stackTrace) => _buildErrorImage(),
+        // loadingBuilder: (context, child, loadingProgress) {
+        //   if (loadingProgress == null) return child;
+        //   return _buildLoadingIndicator();
+        // },
       ),
     );
   }
@@ -80,6 +85,7 @@ class CacheImage extends StatelessWidget {
               width: width,
               height: height,
               fit: fit ?? BoxFit.cover,
+              placeholderBuilder: (context) => _buildLoadingIndicator(),
             )
           : Image.asset(
               assetImage!,
@@ -87,11 +93,15 @@ class CacheImage extends StatelessWidget {
               height: height,
               fit: fit ?? BoxFit.cover,
               errorBuilder: (context, error, stackTrace) => _buildErrorImage(),
+              // loadingBuilder: (context, child, loadingProgress) {
+              //   if (loadingProgress == null) return child;
+              //   return _buildLoadingIndicator();
+              // },
             ),
     );
   }
 
-  Widget _buildNetworkImage() {
+  Widget _buildNetworkImage(BuildContext context) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(borderRadius ?? 8),
       child: CachedNetworkImage(
@@ -100,6 +110,7 @@ class CacheImage extends StatelessWidget {
         width: width,
         height: height,
         errorWidget: (context, url, error) => _buildErrorImage(),
+        placeholder: (context, url) => _buildLoadingIndicator(),
       ),
     );
   }
@@ -107,26 +118,38 @@ class CacheImage extends StatelessWidget {
   Widget _buildSvgNetworkImage() {
     return SvgPictureNetwork(
       url: urlImage ?? '',
-      errorBuilder: (p0) => SizedBox(
+      placeholderBuilder: (context) => _buildLoadingIndicator(),
+      errorBuilder: (context) => SizedBox(
         width: width ?? 30,
         height: height ?? 30,
-        child: const Icon(
-          Icons.error,
-          color: Colors.grey,
-        ),
+        child: _buildErrorImage(),
       ),
-      placeholderBuilder: (p0) => SizedBox(
-        width: width ?? 30,
-        height: height ?? 30,
-        child: const Icon(
-          Icons.error,
-          color: Colors.grey,
+    );
+  }
+
+  Widget _buildLoadingIndicator() {
+    return Container(
+      width: width,
+      height: height,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(borderRadius ?? 8),
+        color: Colors.grey[200],
+      ),
+      child: const Center(
+        child: SizedBox(
+          width: 24,
+          height: 24,
+          child: CircularProgressIndicator(
+            strokeWidth: 2,
+            valueColor: AlwaysStoppedAnimation<Color>(AppColors.primaryColor),
+          ),
         ),
       ),
     );
   }
 
   Widget _buildErrorImage() {
+    // When errorColor is provided, use it for the background
     if (errorColor != null) {
       return Container(
         width: width,
@@ -136,9 +159,13 @@ class CacheImage extends StatelessWidget {
           color: errorColor,
         ),
       );
-    } else if (profileImage == true) {
+    }
+    // For profile images
+    else if (profileImage == true) {
       return Image.asset(AppImages.appLogo);
-    } else {
+    }
+    // Default fallback
+    else {
       return Image.asset(
         AppImages.noImage,
         fit: fit ?? BoxFit.cover,
@@ -165,7 +192,8 @@ class SvgPictureNetwork extends StatefulWidget {
 
 class _SvgPictureNetworkState extends State<SvgPictureNetwork> {
   Uint8List? _svgFile;
-  var _shouldCallErrorBuilder = false;
+  bool _isLoading = true;
+  bool _hasError = false;
 
   @override
   void initState() {
@@ -175,25 +203,37 @@ class _SvgPictureNetworkState extends State<SvgPictureNetwork> {
 
   Future<void> _loadSVG() async {
     try {
+      setState(() {
+        _isLoading = true;
+      });
+
       final svgLoader = SvgNetworkLoader(widget.url);
       final svg = await svgLoader.prepareMessage(context);
 
       if (!mounted) return;
 
       setState(() {
-        _shouldCallErrorBuilder = svg == null;
+        _isLoading = false;
+        _hasError = svg == null;
         _svgFile = svg;
       });
     } catch (_) {
+      if (!mounted) return;
+
       setState(() {
-        _shouldCallErrorBuilder = true;
+        _isLoading = false;
+        _hasError = true;
       });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_shouldCallErrorBuilder && widget.errorBuilder != null) {
+    if (_isLoading && widget.placeholderBuilder != null) {
+      return widget.placeholderBuilder!(context);
+    }
+
+    if (_hasError && widget.errorBuilder != null) {
       return widget.errorBuilder!(context);
     }
 

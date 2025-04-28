@@ -206,7 +206,7 @@ class _SaleCountdownBannerState extends State<SaleCountdownBanner> with SingleTi
 
               // Discount text
               Text(
-                widget.bannerData.pannerDiscount ?? 'Up To 50%',
+                'Up To ${widget.bannerData.pannerDiscount}%' ?? 'Up To 50%',
                 style: const TextStyle(
                   color: Colors.white,
                   fontSize: 18,
