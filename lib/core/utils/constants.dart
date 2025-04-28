@@ -14,7 +14,8 @@ class Constants {
   static AddressModel defaultAddress = AddressModel(-1, 'unknown address');
   static String fcmToken = '';
   static String deviceId = '';
-  static String subdomain = 'shine';
+  static String subdomain2 = 'shine';
+  static String subdomain = 'kadin';
   static String apiPassword = '123#Social_Codgoo#321';
 
   static FirebaseMessaging messaging = FirebaseMessaging.instance;

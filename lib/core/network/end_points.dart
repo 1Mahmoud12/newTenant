@@ -1,7 +1,7 @@
 class EndPoints {
   static const domain = 'https://backend.dobzz.com';
   // static const domain = 'https://kadin.dobzz.com';
-  static const baseUrl = '$domain/api/v1';
+  static const baseUrl = '$domain/api/v1/';
 
   // Auth
   static const countryCodes = 'Account/CountryCodes';
@@ -36,7 +36,7 @@ class EndPoints {
   static const getAdvertises = 'Advertise/GetAdvertises';
   static const getTopProduct = 'shop/top-products';
   static const search = 'shop/products';
-  static const wishlist = 'shop/user/wishlist';
+  static const wishlist = 'shop/wishlist';
 
   //  Service
   static const getCategories = 'shop/categories';
@@ -99,7 +99,7 @@ class EndPoints {
   static const contactUs = 'SocialMedia/GetAllActiveSocialMedia';
 
   // wish list
-  static const addToWishList = 'shop/user/wishlist';
+  static const addToWishList = 'shop/wishlist';
 
   //product details
   static const getProductDetails = 'shop/products';

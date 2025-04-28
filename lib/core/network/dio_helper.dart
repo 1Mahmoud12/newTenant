@@ -3,11 +3,10 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
-import 'package:dobzz_seller/core/network/local/cache.dart';
-import 'package:flutter/material.dart';
 import 'package:dobzz_seller/core/network/end_points.dart';
 import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:dobzz_seller/core/utils/utils.dart';
+import 'package:flutter/material.dart';
 
 // ignore: avoid_classes_with_only_static_members
 class DioHelper {
@@ -38,6 +37,7 @@ class DioHelper {
       'subdomain': Constants.subdomain,
       'Apipassword': Constants.apiPassword,
       'lang': Constants.currentLanguage,
+      'uuid': Constants.deviceId,
       //'uuid': userCache?.get(deviceIdKey, defaultValue: ''),
     };
     log('=======================================================');
@@ -84,6 +84,7 @@ class DioHelper {
       'subdomain': Constants.subdomain,
       'Apipassword': Constants.apiPassword,
       'lang': Constants.currentLanguage,
+      'uuid': Constants.deviceId,
       // 'uuid': userCache?.get(deviceIdKey, defaultValue: ''),
     };
 
@@ -140,7 +141,7 @@ class DioHelper {
       'Content-Type': 'application/x-www-form-urlencoded',
       'Apipassword': Constants.apiPassword,
       'subdomain': Constants.subdomain,
-
+      'uuid': Constants.deviceId,
       // 'uuid': userCache?.get(deviceIdKey, defaultValue: ''),
     };
     log('=======================================================');
@@ -183,6 +184,7 @@ class DioHelper {
       'subdomain': Constants.subdomain,
       'Apipassword': Constants.apiPassword,
       'lang': Constants.currentLanguage,
+      'uuid': Constants.deviceId,
       // 'uuid': userCache?.get(deviceIdKey, defaultValue: ''),
     };
     log('=======================================================');
