@@ -1,8 +1,12 @@
 import 'dart:convert';
 import 'dart:developer';
+
 import 'package:device_preview/device_preview.dart';
+import 'package:dobzz_seller/core/utils/bloc_observe.dart';
+import 'package:dobzz_seller/core/utils/constants.dart';
+import 'package:dobzz_seller/feature/auth/data/models/register_model.dart';
+import 'package:dobzz_seller/feature/navigation/view/presentation/navigation_view.dart';
 import 'package:dobzz_seller/feature/splash/view/presentation/splash_screen.dart';
-import 'package:dobzz_seller/mainCubit/cubit/main_cubit_cubit.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -11,10 +15,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:dobzz_seller/core/utils/bloc_observe.dart';
-import 'package:dobzz_seller/core/utils/constants.dart';
-import 'package:dobzz_seller/feature/auth/data/models/register_model.dart';
-import 'package:dobzz_seller/feature/navigation/view/presentation/navigation_view.dart';
+
 import 'core/network/dio_helper.dart';
 import 'core/network/local/cache.dart';
 import 'core/network/local/hive_data_base.dart';
@@ -96,7 +97,7 @@ void main() async {
         startLocale: const Locale('en', 'US'),
         child: DevicePreview(
           // ignore: avoid_redundant_argument_values
-          enabled: true,
+          enabled: false,
           // enabled: false,
           builder: (context) => const MyApp(), // Wrap your app
         ),

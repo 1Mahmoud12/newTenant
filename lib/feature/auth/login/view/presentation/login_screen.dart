@@ -1,19 +1,20 @@
 import 'dart:developer';
-import 'package:dobzz_seller/core/component/phone_number_field.dart';
-import 'package:dobzz_seller/core/utils/app_images.dart';
-import 'package:dobzz_seller/feature/auth/widgets/authRich_text_link.dart';
-import 'package:easy_localization/easy_localization.dart' as easy;
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:dobzz_seller/core/component/buttons/custom_text_button.dart';
 import 'package:dobzz_seller/core/component/fields/custom_text_form_field.dart';
+import 'package:dobzz_seller/core/component/phone_number_field.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
+import 'package:dobzz_seller/core/utils/app_images.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/feature/auth/forgetPassword/view/presentation/forget_password_view.dart';
 import 'package:dobzz_seller/feature/auth/manager/authBloc/auth_cubit.dart';
 import 'package:dobzz_seller/feature/auth/manager/authBloc/auth_state.dart';
 import 'package:dobzz_seller/feature/auth/signUp/view/presentation/sign_up_view.dart';
+import 'package:dobzz_seller/feature/auth/widgets/authRich_text_link.dart';
 import 'package:dobzz_seller/feature/navigation/view/presentation/navigation_view.dart';
+import 'package:easy_localization/easy_localization.dart' as easy;
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -143,32 +144,69 @@ class _LoginScreenState extends State<LoginScreen> {
                       });
                     }
                   },
-                  builder: (context, state) => CustomTextButton(
-                    borderRadius: 8,
-                    backgroundColor: AppColors.primaryColor,
-                    padding: const EdgeInsets.symmetric(vertical: 14.5),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            'log in'.tr(),
-                            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                                  fontWeight: FontWeight.w500,
-                                  color: AppColors.white,
+                  builder: (context, state) => Row(
+                    children: [
+                      Expanded(
+                        flex: 2,
+                        child: CustomTextButton(
+                          borderRadius: 8,
+                          backgroundColor: AppColors.primaryColor,
+                          padding: const EdgeInsets.symmetric(vertical: 14.5),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  'log in'.tr(),
+                                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                                        fontWeight: FontWeight.w500,
+                                        color: AppColors.white,
+                                      ),
+                                  textAlign: TextAlign.center,
                                 ),
-                            textAlign: TextAlign.center,
+                              ),
+                            ],
                           ),
-                        ),
-                      ],
-                    ),
-                    onPress: () {
-                      AuthCubit.of(context).errorMessage = null;
-                      if (formKey.currentState!.validate()) {
-                        //context.navigateToPage(const NavigationView());
+                          onPress: () {
+                            AuthCubit.of(context).errorMessage = null;
+                            if (formKey.currentState!.validate()) {
+                              //context.navigateToPage(const NavigationView());
 
-                        AuthCubit.of(context).login(context);
-                      }
-                    },
+                              AuthCubit.of(context).login(context);
+                            }
+                          },
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Expanded(
+                        child: CustomTextButton(
+                          borderRadius: 8,
+                          backgroundColor: AppColors.primaryColor,
+                          padding: const EdgeInsets.symmetric(vertical: 14.5),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  'guest'.tr(),
+                                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                                        fontWeight: FontWeight.w500,
+                                        color: AppColors.white,
+                                      ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ],
+                          ),
+                          onPress: () {
+                            AuthCubit.of(context).countryCode = '+20';
+                            AuthCubit.of(context).loginPhoneController.text = '1124980094';
+                            AuthCubit.of(context).loginPasswordController.text = '12345678';
+                            AuthCubit.of(context).login(context);
+                          },
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 const SizedBox(
