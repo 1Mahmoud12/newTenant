@@ -48,7 +48,7 @@ class AppImages {
   static const emptyWallet = '$baseUrl/emptyWallet.png';
   static const newUpdates = '$baseUrl/newUpdates.png';
   static const noAnnouncements = '$baseUrl/noAnnouncements.png';
-  static const noInternetConnection = '$baseUrl/noInternetConnection.png';
+  static const noInternetConnection = '$baseUrl/no-internet-connection.png';
   static const anErrorOccurred = '$baseUrl/anErrorOccurred.png';
   static const noMessagesInbox = '$baseUrl/noMessagesInbox.png';
   static const noNotificationYet = '$baseUrl/noNotificationYet.png';
