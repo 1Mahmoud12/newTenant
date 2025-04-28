@@ -183,6 +183,7 @@ class FavoriteGrid extends StatelessWidget {
               itemBuilder: (context, index) {
                 final wishListItem = wishList[index];
                 return ProductCard(
+                //  rating: wishListItem.,
                   productId: wishListItem.productId?.toInt() ?? -1,
                   initialLiked: true,
                   onLikeTap: (isNowLiked) {

@@ -1,3 +1,4 @@
+import 'package:dobzz_seller/core/utils/utils.dart';
 import 'package:dobzz_seller/feature/account/view/presentation/account_view.dart';
 import 'package:dobzz_seller/feature/cart/view/presentation/cart_view.dart';
 import 'package:dobzz_seller/feature/favorites/views/presentation/favorite_view.dart';
@@ -30,6 +31,9 @@ class _NavigationViewWithThemesState extends State<NavigationViewWithThemes> {
   int _selectedIndex = 0;
   late NavigationTheme _theme;
 
+  // Track the last time back was pressed
+  DateTime? _lastBackPressTime;
+
   @override
   void initState() {
     _selectedIndex = widget.initialIndex!;
@@ -50,21 +54,34 @@ class _NavigationViewWithThemesState extends State<NavigationViewWithThemes> {
     const AccountView(),
   ];
 
-  // Function to handle back button press
+  // Handle back button press with double-press detection
   Future<bool> _onWillPop() async {
-    // Exit the app when back button is pressed
-    SystemNavigator.pop();
-    return false; // Return false to prevent default back navigation
+    final now = DateTime.now();
+    if (_lastBackPressTime == null || now.difference(_lastBackPressTime!) > const Duration(seconds: 2)) {
+      // First time pressed or pressed after timeout
+      _lastBackPressTime = now;
+
+      // Show "press again to exit" toast
+      Utils.showToast(title: 'Press again', state: UtilState.error);
+
+      return false; // Prevent app from closing
+    }
+
+    // Second press within 2 seconds, allow app to close
+    return true;
   }
 
-  @override
   @override
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false, // Prevents default pop behavior
-      onPopInvokedWithResult: (didPop, o) {
+      onPopInvokedWithResult: (didPop, _) async {
         if (!didPop) {
-          SystemNavigator.pop(); // Close the app manually
+          // Check if user should exit or show toast
+          final shouldExit = await _onWillPop();
+          if (shouldExit) {
+            SystemNavigator.pop(); // Close the app
+          }
         }
       },
       child: Scaffold(
