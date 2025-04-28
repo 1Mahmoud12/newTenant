@@ -1,6 +1,8 @@
 import 'package:dobzz_seller/core/network/local/cache.dart';
 import 'package:dobzz_seller/core/utils/app_icons.dart';
+import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
+import 'package:dobzz_seller/feature/cart/view/address/presentation/address_view.dart';
 import 'package:dobzz_seller/feature/notification/presentation/notification_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -15,27 +17,32 @@ class HomePageHeader extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Row(
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Hi', // corrected spelling from "Loaction"
-                style: TextStyle(
-                  fontSize: 20.sp,
-                  color: Colors.grey,
-                  fontWeight: FontWeight.w500,
+          InkWell(
+            onTap: () {
+              context.navigateToPage(const AddressView());
+            },
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Location', // corrected spelling from "Loaction"
+                  style: TextStyle(
+                    fontSize: 18.sp,
+                    color: Colors.grey,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                'Welcome, ${userCacheValue?.data?.name}', // added space after comma
-                style: TextStyle(
-                  fontSize: 22.sp,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black87,
+                const SizedBox(height: 4),
+                Text(
+                  '${Constants.defaultAddress.name}', // added space after comma
+                  style: TextStyle(
+                    fontSize: 20.sp,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           const Spacer(),
           InkWell(
