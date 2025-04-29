@@ -123,7 +123,7 @@ class Utils {
         color = AppColors.amber;
         break;
       case UtilState.error:
-        color = AppColors.red;
+        color = AppColors.black;
         break;
       case UtilState.none:
         color = AppColors.black;

@@ -127,7 +127,7 @@ class _CheckoutViewState extends State<CheckoutView> {
                                   errorText: 'you should create address first',
                                   nameField: 'Address'.tr(),
                                   borderColor: Colors.grey.withOpacity(0.2),
-                                  selectedItem: DropDownModel(name: Constants.defaultAddress!.name!, value: 0),
+                                  selectedItem: DropDownModel(name: Constants.defaultAddress.name!, value: 0),
                                   items: ConstantsModels.addressModel?.data?.map((e) {
                                         return DropDownModel(name: e.name ?? '', value: e.id ?? -1);
                                       }).toList() ??

@@ -29,7 +29,7 @@ class Constants {
   static String? mapStyleString;
   static bool noInternet = false;
   static bool tablet = false;
-  static String versionApp = '';
+  static String versionApp = '';  
   static String packageName = 'com.mah852.dobbz_user';
   static String appleId = '6745216210';
 

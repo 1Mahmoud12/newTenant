@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:dobzz_seller/core/network/dio_helper.dart';
@@ -8,7 +10,8 @@ import 'package:dobzz_seller/feature/cart/view/address/data/models/city_model.da
 class CityDataSource {
   static Future<Either<Failure, CityModel>> getCities({required int stateId}) async {
     try {
-      final response = await DioHelper.getData(url: '${EndPoints.cities}$stateId');
+      final response = await DioHelper.getData(url: '${EndPoints.cities}?filter[state_id]=$stateId');
+      log('response1234===>${response.data}');
       return Right(CityModel.fromJson(response.data));
     } catch (error) {
       if (error is DioException) {

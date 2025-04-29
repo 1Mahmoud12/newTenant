@@ -3,7 +3,7 @@ import 'package:dobzz_seller/core/component/loadsErros/loading_widget.dart';
 import 'package:dobzz_seller/core/utils/constants_models.dart';
 import 'package:dobzz_seller/feature/home/views/manager/addToWhishlist/cubit/add_to_wish_list_cubit.dart';
 import 'package:dobzz_seller/feature/home/views/manager/topProduct/cubit/top_product_cubit.dart';
-import 'package:dobzz_seller/feature/home/views/presentation/widgets/flash_card.dart';
+import 'package:dobzz_seller/feature/home/views/presentation/widgets/product_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

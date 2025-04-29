@@ -5,6 +5,7 @@ import 'package:dobzz_seller/core/utils/constant_gaping.dart';
 import 'package:dobzz_seller/core/utils/constants_models.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/feature/Categories/presentation/Categories_veiw.dart';
+import 'package:dobzz_seller/feature/home/data/models/categories_model.dart';
 import 'package:dobzz_seller/feature/home/data/models/sales_model.dart';
 import 'package:dobzz_seller/feature/home/views/manager/salesBanner/cubit/sales_banner_cubit.dart';
 import 'package:dobzz_seller/feature/home/views/presentation/search_product_home_view.dart';
@@ -91,7 +92,10 @@ class _HomePageViewState extends State<HomePageView> {
                   ),
                 ),
                 h10,
-                const FlashSaleHorizontalList(),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 7),
+                  child: FlashSaleHorizontalList(),
+                ),
                 h10,
                 BlocProvider.value(
                   value: salesBannerCubit,
@@ -115,7 +119,10 @@ class _HomePageViewState extends State<HomePageView> {
                     },
                   ),
                 ),
-                const FlashSaleHorizontalList(),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 7),
+                  child: FlashSaleHorizontalList(),
+                ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                   child: SeeAllWidget(
@@ -125,7 +132,10 @@ class _HomePageViewState extends State<HomePageView> {
                     },
                   ),
                 ),
-                const FlashSaleHorizontalList(),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 7),
+                  child: FlashSaleHorizontalList(),
+                ),
                 h10,
                 const FeaturedCategory(),
                 const FeaturedList(),
@@ -148,48 +158,37 @@ class FeaturedList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final int length = (ConstantsModels.categoriesModel?.data?.length ?? 0) >= 4 ? 4 : (ConstantsModels.categoriesModel?.data?.length ?? 0);
+    return Column(
+      children: List.generate(length, (index) {
+        return FeaturedCategoriesItem(
+          featuredName: ConstantsModels.categoriesModel?.data![index].name ?? 'unKnown',
+        );
+      }),
+    );
+  }
+}
+
+class FeaturedCategoriesItem extends StatelessWidget {
+  const FeaturedCategoriesItem({super.key, required this.featuredName});
+  final String featuredName;
+  @override
+  Widget build(BuildContext context) {
     return Column(
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
           child: SeeAllWidget(
-            title: 'Accessories'.tr(),
+            title: featuredName,
             onTap: () {
               context.navigateToPage(const ProductView());
             },
           ),
         ),
-        const FlashSaleHorizontalList(),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-          child: SeeAllWidget(
-            title: 'Kids'.tr(),
-            onTap: () {
-              context.navigateToPage(const ProductView());
-            },
-          ),
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 7),
+          child: FlashSaleHorizontalList(),
         ),
-        const FlashSaleHorizontalList(),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-          child: SeeAllWidget(
-            title: 'Men'.tr(),
-            onTap: () {
-              context.navigateToPage(const ProductView());
-            },
-          ),
-        ),
-        const FlashSaleHorizontalList(),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-          child: SeeAllWidget(
-            title: 'Women'.tr(),
-            onTap: () {
-              context.navigateToPage(const ProductView());
-            },
-          ),
-        ),
-        const FlashSaleHorizontalList(),
       ],
     );
   }

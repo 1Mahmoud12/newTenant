@@ -4,6 +4,7 @@ import 'package:dobzz_seller/feature/home/data/models/sales_model.dart';
 import 'package:dobzz_seller/feature/home/views/manager/salesBanner/cubit/sales_banner_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 // Countdown Timer Components
 class TimerBox extends StatelessWidget {
@@ -35,7 +36,7 @@ class TimerBox extends StatelessWidget {
             value.toString().padLeft(2, '0'),
             style: TextStyle(
               color: textColor,
-              fontSize: 16,
+              fontSize: 12.sp,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -43,7 +44,7 @@ class TimerBox extends StatelessWidget {
             label,
             style: TextStyle(
               color: textColor,
-              fontSize: 12,
+              fontSize: 12.sp,
             ),
           ),
         ],
@@ -75,11 +76,12 @@ class ActionButton extends StatelessWidget {
         style: TextStyle(
           color: textColor,
           fontWeight: FontWeight.bold,
+          fontSize: 14.sp,
         ),
       ),
       label: Icon(
         Icons.arrow_forward,
-        size: 16,
+        size: 14.sp,
         color: textColor,
       ),
       style: ElevatedButton.styleFrom(
@@ -87,7 +89,7 @@ class ActionButton extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
         ),
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
       ),
     );
   }
@@ -182,8 +184,8 @@ class _SaleCountdownBannerState extends State<SaleCountdownBanner> with SingleTi
               ? DecorationImage(
                   image: NetworkImage(widget.bannerData.pannerImagePath!),
                   fit: BoxFit.cover,
-                  colorFilter: ColorFilter.mode(
-                    Colors.black.withOpacity(0.4),
+                  colorFilter: const ColorFilter.mode(
+                    Colors.transparent,
                     BlendMode.darken,
                   ),
                 )
@@ -195,26 +197,31 @@ class _SaleCountdownBannerState extends State<SaleCountdownBanner> with SingleTi
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Sale title text
-              Text(
-                widget.bannerData.pannerHeading ?? 'Sale',
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
+
+              const SizedBox(
+                height: 40,
               ),
 
-              // Discount text
-              Text(
-                'Up To ${widget.bannerData.pannerDiscount}%' ?? 'Up To 50%',
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
+              // Text(
+              //   widget.bannerData.pannerHeading ?? 'Sale',
+              //   style: const TextStyle(
+              //     color: Colors.white,
+              //     fontSize: 24,
+              //     fontWeight: FontWeight.bold,
+              //   ),
+              // ),
 
-              const SizedBox(height: 10),
+              // // Discount text
+              // Text(
+              //   'Up To ${widget.bannerData.pannerDiscount}%' ?? 'Up To 50%',
+              //   style: const TextStyle(
+              //     color: Colors.white,
+              //     fontSize: 18,
+              //     fontWeight: FontWeight.w500,
+              //   ),
+              // ),
+
+              // const SizedBox(height: 10),
 
               // Timer and action button row
               Row(

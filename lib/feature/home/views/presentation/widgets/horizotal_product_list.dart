@@ -4,7 +4,7 @@ import 'package:dobzz_seller/feature/favorites/views/manager/wishList/cubit/wish
 import 'package:dobzz_seller/feature/home/views/manager/addToWhishlist/cubit/add_to_wish_list_cubit.dart';
 import 'package:dobzz_seller/feature/home/views/manager/removeFromWhislist/cubit/remove_from_whish_list_cubit.dart';
 import 'package:dobzz_seller/feature/home/views/manager/topProduct/cubit/top_product_cubit.dart';
-import 'package:dobzz_seller/feature/home/views/presentation/widgets/flash_card.dart';
+import 'package:dobzz_seller/feature/home/views/presentation/widgets/product_card.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -98,73 +98,39 @@ class TopProductHorizontalList extends StatelessWidget {
             //return SizedBox();
             return SingleChildScrollView(
               scrollDirection: Axis.horizontal,
-              child: Row(children: [
-                ...List.generate(
-                  topProducts.length > 4 ? 4 : topProducts.length,
-                  (index) {
-                    final product = topProducts[index];
-                    return Container(
-                      width: itemWidth,
-                      margin: const EdgeInsets.only(right: 16),
-                      child: ProductCard(
-                        description: product.description ?? 'No description available'.tr(),
-                        rating: product.reviewsCount?.toDouble() ?? 0.0,
-                        productId: product.id ?? -1,
-                        initialLiked: widget.isItWhishList!,
-                        onLikeTap: (isNowLiked) {
-                          if (isNowLiked) {
-                            // Add to wishlist
-                            if (widget.isItWhishList!) {
-                              // Remove from wishlist
-                              removeFromWhishListCubit.removeFromWishList(context: context, productId: product.id ?? -1);
-                            } else {
-                              addToWishListCubit.addToWishList(context: context, productId: product.id ?? -1);
+              child: Row(
+                children: [
+                  ...List.generate(
+                    topProducts.length > 4 ? 4 : topProducts.length,
+                    (index) {
+                      final product = topProducts[index];
+                      return Container(
+                        width: itemWidth,
+                        margin: const EdgeInsets.only(right: 16),
+                        child: ProductCard(
+                          description: product.description ?? 'No description available'.tr(),
+                          rating: product.reviewsCount?.toDouble() ?? 0.0,
+                          productId: product.id ?? -1,
+                          initialLiked: widget.isItWhishList!,
+                          onLikeTap: (isNowLiked) {
+                            if (isNowLiked) {
+                              // Add to wishlist
+                              if (widget.isItWhishList!) {
+                                // Remove from wishlist
+                                removeFromWhishListCubit.removeFromWishList(context: context, productId: product.id ?? -1);
+                              } else {
+                                addToWishListCubit.addToWishList(context: context, productId: product.id ?? -1);
+                              }
                             }
-                          }
-                        },
-                        imagePath: product.imagePath ?? '',
-                        title: product.name ?? 'Unknown Product'.tr(),
-                        price: '\$${product.price?.toString() ?? '0'}',
-                      ),
-                    );
-                  },
-                ),
-              ]),
-            );
-
-            return SizedBox(
-              height: itemHeight,
-              child: ListView.builder(
-                itemCount: topProducts.length > 4 ? 4 : topProducts.length, // Show more items in horizontal list
-                scrollDirection: Axis.horizontal,
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                itemBuilder: (context, index) {
-                  final product = topProducts[index];
-                  return Container(
-                    //       width: itemWidth,
-                    margin: const EdgeInsets.only(right: 16),
-                    child: ProductCard(
-                      description: product.description ?? 'No description available'.tr(),
-                      rating: product.reviewsCount?.toDouble() ?? 0.0,
-                      productId: product.id ?? -1,
-                      initialLiked: widget.isItWhishList!,
-                      onLikeTap: (isNowLiked) {
-                        if (isNowLiked) {
-                          // Add to wishlist
-                          if (widget.isItWhishList!) {
-                            // Remove from wishlist
-                            removeFromWhishListCubit.removeFromWishList(context: context, productId: product.id ?? -1);
-                          } else {
-                            addToWishListCubit.addToWishList(context: context, productId: product.id ?? -1);
-                          }
-                        }
-                      },
-                      imagePath: product.imagePath ?? '',
-                      title: product.name ?? 'Unknown Product'.tr(),
-                      price: '\$${product.price?.toString() ?? '0'}',
-                    ),
-                  );
-                },
+                          },
+                          imagePath: product.imagePath ?? '',
+                          title: product.name ?? 'Unknown Product'.tr(),
+                          price: '\$${product.price?.toString() ?? '0'}',
+                        ),
+                      );
+                    },
+                  ),
+                ],
               ),
             );
           }
@@ -217,7 +183,8 @@ class FavoriteHorizontalList extends StatelessWidget {
             const double itemHeight = 280; // Adjust as needed
             const double itemWidth = 180; // Adjust as needed
 
-            return SizedBox(
+            return Container(
+              margin: const EdgeInsets.symmetric(horizontal: 10),
               height: itemHeight,
               child: ListView.builder(
                 itemCount: wishList.length,

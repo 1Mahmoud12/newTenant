@@ -48,8 +48,9 @@ class _AddAddressViewState extends State<AddAddressView> {
               CustomTextFormField(
                 outPadding: EdgeInsets.zero,
                 controller: addAddressCubit.addressNicknameController,
-                hintText: 'Enter your address nickname',
-                nameField: 'Address Nickname'.tr(),
+                hintText: 'Enter your address Details',
+                maxLines: 5,
+                nameField: 'Address Details'.tr(),
                 hintStyle: const TextStyle(
                   color: Colors.black,
                   fontSize: 16,
@@ -96,8 +97,8 @@ class _AddAddressViewState extends State<AddAddressView> {
                           [],
                       onChanged: (value) {
                         setState(() {});
-                        cityCubit.getAddress(context: context, stateId: addAddressCubit.stateId);
                         addAddressCubit.stateId = value?.value ?? -1;
+                        cityCubit.getAddress(context: context, stateId: addAddressCubit.stateId);
                       },
                     );
                   },

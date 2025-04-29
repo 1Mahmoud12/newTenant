@@ -107,5 +107,5 @@ class EndPoints {
   // address
   static const address = 'shop/user/addresses';
   static const state = 'shop/user/states';
-  static const cities = '/shop/user/cities?filter[state_id]=';
+  static const cities = '/shop/user/cities';
 }

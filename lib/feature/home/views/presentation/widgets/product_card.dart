@@ -30,8 +30,8 @@ class ProductCard extends StatefulWidget {
     required this.title,
     required this.price,
     this.discountPercentage,
-    this.description = 'No description available', // Default value
-    this.rating = 0.0, // Default value
+    this.description = 'No description available',
+    this.rating = 0.0,
     this.onLikeTap,
     required this.initialLiked,
     required this.productId,

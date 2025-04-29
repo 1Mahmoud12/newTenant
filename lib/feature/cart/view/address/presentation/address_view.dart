@@ -1,6 +1,8 @@
 import 'package:dobzz_seller/core/component/custom_app_bar.dart';
 import 'package:dobzz_seller/core/component/loadsErros/loading_widget.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
+import 'package:dobzz_seller/core/utils/app_icons.dart';
+import 'package:dobzz_seller/core/utils/constant_gaping.dart';
 import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:dobzz_seller/core/utils/constants_models.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
@@ -10,6 +12,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 
 class AddressView extends StatefulWidget {
   const AddressView({super.key});
@@ -196,23 +199,56 @@ class _AddressViewState extends State<AddressView> {
                                 ),
                                 subtitle: Padding(
                                   padding: const EdgeInsets.only(top: 4.0),
-                                  child: Row(
+                                  child: Column(
                                     children: [
-                                      const Icon(
-                                        Icons.location_on_outlined,
-                                        size: 16,
-                                        color: Colors.grey,
-                                      ),
-                                      const SizedBox(width: 4),
-                                      Expanded(
-                                        child: Text(
-                                          '${address?.country ?? ''} - ${address?.state ?? ''} - ${address?.city ?? ''} - ${address?.pinCode ?? ''}',
-                                          style: TextStyle(
-                                            color: Colors.grey.shade600,
-                                            fontSize: 14,
+                                      Row(
+                                        children: [
+                                          const Icon(
+                                            Icons.location_on_outlined,
+                                            size: 16,
+                                            color: Colors.grey,
                                           ),
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
+                                          const SizedBox(width: 4),
+                                          Expanded(
+                                            child: Text(
+                                              '${address?.country ?? ''} - ${address?.state ?? ''} - ${address?.city ?? ''} - ${address?.pinCode ?? ''}',
+                                              style: TextStyle(
+                                                color: Colors.grey.shade600,
+                                                fontSize: 14,
+                                              ),
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      h10,
+                                      Row(
+                                        children: [
+                                          s,
+                                          InkWell(
+                                            onTap: () {},
+                                            child: Text(
+                                              'Edit',
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodySmall
+                                                  ?.copyWith(fontWeight: FontWeight.w500, fontSize: 14.sp, color: const Color(0xff808080)),
+                                            ),
+                                          ),
+                                          SvgPicture.asset(AppIcons.edit),
+                                          w10,
+                                          InkWell(
+                                            onTap: () {},
+                                            child: Text(
+                                              'Delete',
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodySmall
+                                                  ?.copyWith(fontWeight: FontWeight.w500, fontSize: 14.sp, color: const Color(0xffDD5A5D)),
+                                            ),
+                                          ),
+                                          SvgPicture.asset(AppIcons.deleteIc),
+                                        ],
                                       ),
                                     ],
                                   ),

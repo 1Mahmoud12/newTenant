@@ -92,11 +92,12 @@ class AppIcons {
 
   // Profile
   static const editIc = '$baseUrl/editIc.svg';
+  static const edit = '$baseUrl/edit-2.svg';
 
   // Settings
   static const appModeIc = '$baseUrl/appMode.svg';
   static const changeLanguageIc = '$baseUrl/changeLanguageIc.svg';
-  static const deleteIc = '$baseUrl/deleteIc.svg';
+  static const deleteIc = '$baseUrl/trash.svg';
   static const cartDeleteIc = '$baseUrl/cartDeleteIc.svg';
 
   // Address
