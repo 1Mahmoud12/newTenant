@@ -278,3 +278,281 @@ class _AddToCartButtonState extends State<AddToCartButton> {
     );
   }
 }
+
+class HorizontalProductCard extends StatefulWidget {
+  final String imagePath;
+  final String title;
+  final String price;
+  final String? discountPercentage;
+  final String description;
+  final double rating;
+  final Function(bool isNowLiked)? onLikeTap;
+  final int productId;
+  final bool initialLiked;
+
+  const HorizontalProductCard({
+    Key? key,
+    required this.imagePath,
+    required this.title,
+    required this.price,
+    this.discountPercentage,
+    this.description = 'No description available',
+    this.rating = 0.0,
+    this.onLikeTap,
+    required this.initialLiked,
+    required this.productId,
+  }) : super(key: key);
+
+  @override
+  State<HorizontalProductCard> createState() => _HorizontalProductCardState();
+}
+
+class _HorizontalProductCardState extends State<HorizontalProductCard> {
+  @override
+  void initState() {
+    super.initState();
+    isLiked = widget.initialLiked;
+  }
+
+  bool isLiked = false;
+  AddToWishListCubit addToWishListCubit = AddToWishListCubit();
+
+  void toggleLike() {
+    setState(() {
+      isLiked = !isLiked;
+    });
+    widget.onLikeTap?.call(isLiked);
+    debugPrint('Liked: $isLiked for ${widget.title}');
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // Fixed height to prevent overflow
+    return InkWell(
+      onTap: () {
+        context.navigateToPage(
+          ProductDetailsView(
+            initialLiked: widget.initialLiked,
+            productId: widget.productId,
+          ),
+        );
+      },
+      child: Container(
+        height: 120, // Fixed height
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: Colors.grey.withOpacity(0.3),
+          ),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch, // Stretch to fill height
+          children: [
+            // Left side - Product image with like button
+            AspectRatio(
+              aspectRatio: 1, // Square image
+              child: Stack(
+                children: [
+                  ClipRRect(
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(9),
+                      bottomLeft: Radius.circular(9),
+                    ),
+                    child: CacheImage(
+                      urlImage: widget.imagePath,
+                      errorColor: Colors.grey,
+                      height: double.infinity,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  Positioned(
+                    top: 8,
+                    right: 8,
+                    child: GestureDetector(
+                      onTap: toggleLike,
+                      child: Container(
+                        padding: const EdgeInsets.all(6),
+                        decoration: const BoxDecoration(
+                          color: Colors.black87,
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          isLiked ? Icons.favorite : Icons.favorite_border,
+                          color: Colors.white,
+                          size: 14,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            // Right side - Product information
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    // Title and rating - limited height
+                    Expanded(
+                      flex: 3, // Title and rating take 3/10 of the space
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              widget.title,
+                              style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          const SizedBox(width: 4),
+                          Row(
+                            children: [
+                              const Icon(
+                                Icons.star,
+                                color: Colors.amber,
+                                size: 14,
+                              ),
+                              const SizedBox(width: 2),
+                              Text(
+                                widget.rating.toStringAsFixed(1),
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.grey.shade700,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    // Description - limited height
+                    Expanded(
+                      flex: 4, // Description takes 4/10 of the space
+                      child: Text(
+                        widget.description,
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.grey.shade600,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+
+                    // Price and add to cart button - limited height
+                    Expanded(
+                      flex: 3, // Price and button take 3/10 of the space
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            widget.price,
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey.shade700,
+                            ),
+                          ),
+                          SvgPicture.asset(
+                            AppIcons.currency,
+                            colorFilter: const ColorFilter.mode(Colors.black, BlendMode.srcIn),
+                            height: 14,
+                            width: 14,
+                          ),
+                          HorizontalAddToCartButton(
+                            productId: widget.productId,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class HorizontalAddToCartButton extends StatefulWidget {
+  const HorizontalAddToCartButton({
+    super.key,
+    required this.productId,
+  });
+
+  final int productId;
+
+  @override
+  State<HorizontalAddToCartButton> createState() => _HorizontalAddToCartButtonState();
+}
+
+class _HorizontalAddToCartButtonState extends State<HorizontalAddToCartButton> {
+  AddToCartCubit addToCartCubit = AddToCartCubit();
+  bool _isAdded = false;
+  Timer? _resetTimer;
+
+  @override
+  void dispose() {
+    _resetTimer?.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        addToCartCubit
+            .addToCart(
+          context: context,
+          productId: widget.productId,
+        )
+            .then((_) {
+          if (!mounted) return;
+          setState(() {
+            _isAdded = true;
+          });
+
+          _resetTimer?.cancel();
+          _resetTimer = Timer(const Duration(seconds: 2), () {
+            if (mounted) {
+              setState(() {
+                _isAdded = false;
+              });
+            }
+          });
+        });
+      },
+      child: Container(
+        padding: const EdgeInsets.all(5),
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: _isAdded ? Colors.green : AppColors.primaryColor,
+        ),
+        child: _isAdded
+            ? const Icon(
+                Icons.check,
+                color: Colors.white,
+                size: 20,
+              )
+            : SvgPicture.asset(
+                AppIcons.unSelectedCartC,
+                width: 20,
+                height: 20,
+              ),
+      ),
+    );
+  }
+}

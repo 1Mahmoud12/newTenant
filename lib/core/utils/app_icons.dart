@@ -49,6 +49,7 @@ class AppIcons {
   static const selectedCartC = '$baseUrl/selected-cart-c.svg';
   static const selectedProfileC = '$baseUrl/selected-profile-c.svg';
   static const selectedFavoriteC = '$baseUrl/selected-favorite-c.svg';
+  static const currency = '$baseUrl/currency.svg';
 //////////////////////////////
   // Home
   static const location = '$baseUrl/location.svg';

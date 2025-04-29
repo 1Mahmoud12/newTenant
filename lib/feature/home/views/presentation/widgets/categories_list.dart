@@ -5,6 +5,7 @@ import 'package:dobzz_seller/core/utils/constant_gaping.dart';
 import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:dobzz_seller/core/utils/constants_models.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
+import 'package:dobzz_seller/feature/Categories/presentation/categorized_product_veiw.dart';
 import 'package:dobzz_seller/feature/Categories/presentation/sub_category_view.dart';
 import 'package:dobzz_seller/feature/home/views/manager/categories/cubit/categories_cubit.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -66,7 +67,7 @@ class _CategoriesListState extends State<CategoriesList> {
                       return InkWell(
                         onTap: () {
                           context.navigateToPage(
-                            SubcategoryScreen(
+                            CategorizedProductView(
                               categoryId: categories[index].id ?? 0,
                             ),
                           );

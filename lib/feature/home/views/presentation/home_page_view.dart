@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:dobzz_seller/core/component/fields/custom_text_form_field.dart';
+import 'package:dobzz_seller/core/component/loadsErros/loading_widget.dart';
 import 'package:dobzz_seller/core/component/see_all_widget.dart';
 import 'package:dobzz_seller/core/utils/app_images.dart';
 import 'package:dobzz_seller/core/utils/constant_gaping.dart';
@@ -7,11 +10,11 @@ import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/feature/Categories/presentation/Categories_veiw.dart';
 import 'package:dobzz_seller/feature/home/data/models/categories_model.dart';
 import 'package:dobzz_seller/feature/home/data/models/sales_model.dart';
+import 'package:dobzz_seller/feature/home/views/manager/categories/cubit/categories_cubit.dart';
 import 'package:dobzz_seller/feature/home/views/manager/salesBanner/cubit/sales_banner_cubit.dart';
 import 'package:dobzz_seller/feature/home/views/presentation/search_product_home_view.dart';
 import 'package:dobzz_seller/feature/home/views/presentation/widgets/categories_list.dart';
 import 'package:dobzz_seller/feature/home/views/presentation/widgets/featured_category.dart';
-import 'package:dobzz_seller/feature/home/views/presentation/widgets/flash_sale_gride.dart';
 import 'package:dobzz_seller/feature/home/views/presentation/widgets/home_page_header.dart';
 import 'package:dobzz_seller/feature/home/views/presentation/widgets/home_slider.dart';
 import 'package:dobzz_seller/feature/home/views/presentation/widgets/horizotal_product_list.dart';
@@ -20,7 +23,6 @@ import 'package:dobzz_seller/feature/product/views/presentation/product_view.dar
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class HomePageView extends StatefulWidget {
   const HomePageView({super.key});
@@ -94,7 +96,9 @@ class _HomePageViewState extends State<HomePageView> {
                 h10,
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 7),
-                  child: FlashSaleHorizontalList(),
+                  child: FlashSaleHorizontalList(
+                    isHorizontal: true,
+                  ),
                 ),
                 h10,
                 BlocProvider.value(
@@ -121,7 +125,9 @@ class _HomePageViewState extends State<HomePageView> {
                 ),
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 7),
-                  child: FlashSaleHorizontalList(),
+                  child: FlashSaleHorizontalList(
+                    isHorizontal: true,
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
@@ -134,7 +140,9 @@ class _HomePageViewState extends State<HomePageView> {
                 ),
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 7),
-                  child: FlashSaleHorizontalList(),
+                  child: FlashSaleHorizontalList(
+                    isHorizontal: true,
+                  ),
                 ),
                 h10,
                 const FeaturedCategory(),
@@ -151,20 +159,69 @@ class _HomePageViewState extends State<HomePageView> {
   }
 }
 
-class FeaturedList extends StatelessWidget {
-  const FeaturedList({
-    super.key,
-  });
+class FeaturedList extends StatefulWidget {
+  const FeaturedList({super.key});
+
+  @override
+  State<FeaturedList> createState() => _FeaturedListState();
+}
+
+class _FeaturedListState extends State<FeaturedList> {
+  late CategoriesCubit _categoriesCubit;
+
+  @override
+  void initState() {
+    super.initState();
+    _categoriesCubit = CategoriesCubit();
+    
+    // Always fetch categories when this widget is initialized
+    _categoriesCubit.getCategories(context: context);
+  }
+
+  @override
+  void dispose() {
+    _categoriesCubit.close();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final int length = (ConstantsModels.categoriesModel?.data?.length ?? 0) >= 4 ? 4 : (ConstantsModels.categoriesModel?.data?.length ?? 0);
-    return Column(
-      children: List.generate(length, (index) {
-        return FeaturedCategoriesItem(
-          featuredName: ConstantsModels.categoriesModel?.data![index].name ?? 'unKnown',
-        );
-      }),
+    return BlocProvider.value(
+      value: _categoriesCubit,
+      child: BlocBuilder<CategoriesCubit, CategoriesState>(
+        builder: (context, state) {
+          if (state is CategoriesLoading) {
+            return const Center(
+              child: LoadingWidget(),
+            );
+          } else if (state is CategoriesError) {
+            return Center(
+              child: Text('Failed to load categories'.tr()),
+            );
+          } else if (state is CategoriesSuccess || ConstantsModels.categoriesModel != null) {
+            // Use the categories model from state or from constants if available
+            final categoriesData = ConstantsModels.categoriesModel?.data ?? [];
+            final int length = categoriesData.length >= 4 ? 4 : categoriesData.length;
+            
+            if (length == 0) {
+              return const SizedBox();
+            }
+            
+            log('Categories loaded successfully with $length items');
+            
+            return Column(
+              children: List.generate(length, (index) {
+                return FeaturedCategoriesItem(
+                  featuredName: categoriesData[index].name ?? 'Unknown',
+                );
+              }),
+            );
+          }
+          
+          // Return empty container for initial state
+          return const SizedBox();
+        },
+      ),
     );
   }
 }
@@ -187,7 +244,9 @@ class FeaturedCategoriesItem extends StatelessWidget {
         ),
         const Padding(
           padding: EdgeInsets.symmetric(horizontal: 7),
-          child: FlashSaleHorizontalList(),
+          child: FlashSaleHorizontalList(
+            isHorizontal: false,
+          ),
         ),
       ],
     );

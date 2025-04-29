@@ -10,9 +10,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class FlashSaleHorizontalList extends StatefulWidget {
-  const FlashSaleHorizontalList({super.key, this.isItWhishList = false});
+  const FlashSaleHorizontalList({super.key, this.isItWhishList = false, required this.isHorizontal});
 
   final bool? isItWhishList;
+  final bool isHorizontal;
 
   @override
   State<FlashSaleHorizontalList> createState() => _FlashSaleHorizontalListState();
@@ -46,6 +47,7 @@ class _FlashSaleHorizontalListState extends State<FlashSaleHorizontalList> {
             removeFromWhishListCubit: removeFromWhishListCubit,
           )
         : TopProductHorizontalList(
+            isHorizontal: widget.isHorizontal,
             topProductCubit: topProductCubit,
             widget: widget,
             removeFromWhishListCubit: removeFromWhishListCubit,
@@ -61,12 +63,14 @@ class TopProductHorizontalList extends StatelessWidget {
     required this.widget,
     required this.removeFromWhishListCubit,
     required this.addToWishListCubit,
+    required this.isHorizontal,
   });
 
   final TopProductCubit topProductCubit;
   final FlashSaleHorizontalList widget;
   final RemoveFromWhishListCubit removeFromWhishListCubit;
   final AddToWishListCubit addToWishListCubit;
+  final bool isHorizontal;
 
   @override
   Widget build(BuildContext context) {
@@ -93,7 +97,7 @@ class TopProductHorizontalList extends StatelessWidget {
             }
             // Set a fixed height for the horizontal list items
             const double itemHeight = 280; // Adjust as needed
-            const double itemWidth = 180; // Adjust as needed
+            final double itemWidth = isHorizontal ? 300 : 180; // Adjust as needed
 
             //return SizedBox();
             return SingleChildScrollView(
@@ -107,26 +111,47 @@ class TopProductHorizontalList extends StatelessWidget {
                       return Container(
                         width: itemWidth,
                         margin: const EdgeInsets.only(right: 16),
-                        child: ProductCard(
-                          description: product.description ?? 'No description available'.tr(),
-                          rating: product.reviewsCount?.toDouble() ?? 0.0,
-                          productId: product.id ?? -1,
-                          initialLiked: widget.isItWhishList!,
-                          onLikeTap: (isNowLiked) {
-                            if (isNowLiked) {
-                              // Add to wishlist
-                              if (widget.isItWhishList!) {
-                                // Remove from wishlist
-                                removeFromWhishListCubit.removeFromWishList(context: context, productId: product.id ?? -1);
-                              } else {
-                                addToWishListCubit.addToWishList(context: context, productId: product.id ?? -1);
-                              }
-                            }
-                          },
-                          imagePath: product.imagePath ?? '',
-                          title: product.name ?? 'Unknown Product'.tr(),
-                          price: '\$${product.price?.toString() ?? '0'}',
-                        ),
+                        child: isHorizontal
+                            ? HorizontalProductCard(
+                                description: product.description ?? 'No description available'.tr(),
+                                rating: product.reviewsCount?.toDouble() ?? 0.0,
+                                productId: product.id ?? -1,
+                                initialLiked: widget.isItWhishList!,
+                                onLikeTap: (isNowLiked) {
+                                  if (isNowLiked) {
+                                    // Add to wishlist
+                                    if (widget.isItWhishList!) {
+                                      // Remove from wishlist
+                                      removeFromWhishListCubit.removeFromWishList(context: context, productId: product.id ?? -1);
+                                    } else {
+                                      addToWishListCubit.addToWishList(context: context, productId: product.id ?? -1);
+                                    }
+                                  }
+                                },
+                                imagePath: product.imagePath ?? '',
+                                title: product.name ?? 'Unknown Product'.tr(),
+                                price: product.price?.toString() ?? '0',
+                              )
+                            : ProductCard(
+                                description: product.description ?? 'No description available'.tr(),
+                                rating: product.reviewsCount?.toDouble() ?? 0.0,
+                                productId: product.id ?? -1,
+                                initialLiked: widget.isItWhishList!,
+                                onLikeTap: (isNowLiked) {
+                                  if (isNowLiked) {
+                                    // Add to wishlist
+                                    if (widget.isItWhishList!) {
+                                      // Remove from wishlist
+                                      removeFromWhishListCubit.removeFromWishList(context: context, productId: product.id ?? -1);
+                                    } else {
+                                      addToWishListCubit.addToWishList(context: context, productId: product.id ?? -1);
+                                    }
+                                  }
+                                },
+                                imagePath: product.imagePath ?? '',
+                                title: product.name ?? 'Unknown Product'.tr(),
+                                price: '\$${product.price?.toString() ?? '0'}',
+                              ),
                       );
                     },
                   ),
