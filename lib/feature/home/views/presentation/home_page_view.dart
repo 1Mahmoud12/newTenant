@@ -128,6 +128,7 @@ class _HomePageViewState extends State<HomePageView> {
                 const FlashSaleHorizontalList(),
                 h10,
                 const FeaturedCategory(),
+                const FeaturedList(),
                 const SizedBox(
                   height: 100,
                 ),
@@ -136,6 +137,60 @@ class _HomePageViewState extends State<HomePageView> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class FeaturedList extends StatelessWidget {
+  const FeaturedList({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          child: SeeAllWidget(
+            title: 'Accessories'.tr(),
+            onTap: () {
+              context.navigateToPage(const ProductView());
+            },
+          ),
+        ),
+        const FlashSaleHorizontalList(),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          child: SeeAllWidget(
+            title: 'Kids'.tr(),
+            onTap: () {
+              context.navigateToPage(const ProductView());
+            },
+          ),
+        ),
+        const FlashSaleHorizontalList(),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          child: SeeAllWidget(
+            title: 'Men'.tr(),
+            onTap: () {
+              context.navigateToPage(const ProductView());
+            },
+          ),
+        ),
+        const FlashSaleHorizontalList(),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          child: SeeAllWidget(
+            title: 'Women'.tr(),
+            onTap: () {
+              context.navigateToPage(const ProductView());
+            },
+          ),
+        ),
+        const FlashSaleHorizontalList(),
+      ],
     );
   }
 }

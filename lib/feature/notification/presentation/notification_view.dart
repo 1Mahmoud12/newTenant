@@ -1,5 +1,6 @@
 import 'package:dobzz_seller/core/component/custom_app_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class NotificationsView extends StatelessWidget {
   const NotificationsView({Key? key}) : super(key: key);
@@ -61,14 +62,27 @@ class NotificationsView extends StatelessWidget {
         title: 'Notification',
         actions: const SizedBox.shrink(),
       ),
-      body: ListView.builder(
-        itemCount: notificationGroups.length,
-        itemBuilder: (context, index) {
-          return NotificationGroupWidget(
-            group: notificationGroups[index],
-          );
-        },
+      body: Column(
+        children: [
+          const Spacer(),
+          Center(
+            child: Icon(
+              Icons.notification_important_outlined,
+              size: 60.sp,
+            ),
+          ),
+          const Text('Empty notification received!'),
+          const Spacer(),
+        ],
       ),
+      // body: ListView.builder(
+      //   itemCount: notificationGroups.length,
+      //   itemBuilder: (context, index) {
+      //     return NotificationGroupWidget(
+      //       group: notificationGroups[index],
+      //     );
+      //   },
+      // ),
     );
   }
 }
