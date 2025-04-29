@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:dobzz_seller/core/component/cache_image.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:dobzz_seller/core/utils/app_icons.dart';
+import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/feature/cart/view/manager/addToCart/cubit/add_to_cart_cubit.dart';
 import 'package:dobzz_seller/feature/home/views/manager/addToWhishlist/cubit/add_to_wish_list_cubit.dart';
@@ -49,6 +50,7 @@ class _ProductCardState extends State<ProductCard> {
 
   bool isLiked = false;
   AddToWishListCubit addToWishListCubit = AddToWishListCubit();
+
   void toggleLike() {
     setState(() {
       isLiked = !isLiked;
@@ -119,7 +121,7 @@ class _ProductCardState extends State<ProductCard> {
                     child: Text(
                       widget.title,
                       style: TextStyle(
-                        fontSize: 16.sp,
+                        fontSize: Constants.tablet ? 16 : 16.sp,
                         fontWeight: FontWeight.bold,
                       ),
                       maxLines: 1,
@@ -135,7 +137,7 @@ class _ProductCardState extends State<ProductCard> {
               child: Text(
                 widget.description,
                 style: TextStyle(
-                  fontSize: 12.sp,
+                  fontSize: Constants.tablet ? 12 : 12.sp,
                   color: Colors.grey.shade600,
                 ),
                 maxLines: 1,
@@ -210,7 +212,9 @@ class AddToCartButton extends StatefulWidget {
     super.key,
     required this.productId,
   });
+
   final int productId;
+
   @override
   State<AddToCartButton> createState() => _AddToCartButtonState();
 }

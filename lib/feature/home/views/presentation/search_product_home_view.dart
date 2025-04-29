@@ -2,6 +2,7 @@ import 'package:dobzz_seller/core/component/cache_image.dart';
 import 'package:dobzz_seller/core/component/custom_app_bar.dart';
 import 'package:dobzz_seller/core/component/fields/custom_text_form_field.dart';
 import 'package:dobzz_seller/core/component/loadsErros/loading_widget.dart';
+import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:dobzz_seller/core/utils/constants_models.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/feature/home/data/models/product_mdoel.dart';
@@ -71,14 +72,14 @@ class _SearchProductHomeViewState extends State<SearchProductHomeView> {
       return Center(child: Text('${'Error:'.tr()}${state.e}'));
     }
     if (ConstantsModels.searchProductsModel?.data?.isEmpty ?? true) {
-      return  Center(
+      return Center(
         child: Text('No products found'.tr()),
       );
     }
     if (state is TopProductSuccess) {
       final products = ConstantsModels.searchProductsModel?.data ?? [];
       if (products.isEmpty) {
-        return  Center(
+        return Center(
           child: Text('No products available'.tr()),
         );
       }
@@ -113,13 +114,13 @@ class SearchedProductCard extends StatelessWidget {
       ),
       title: Text(
         product.name ?? '',
-        style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
+        style: TextStyle(fontSize: Constants.tablet ? 16 : 16.sp, fontWeight: FontWeight.bold),
       ),
       subtitle: Row(
         children: [
           Text(
             '\$${product.price?.toStringAsFixed(2)}',
-            style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: Constants.tablet ? 14 : 14.sp, fontWeight: FontWeight.bold),
           ),
         ],
       ),

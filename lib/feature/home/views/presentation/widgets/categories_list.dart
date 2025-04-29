@@ -2,6 +2,7 @@ import 'package:dobzz_seller/core/component/cache_image.dart';
 import 'package:dobzz_seller/core/component/loadsErros/loading_widget.dart';
 import 'package:dobzz_seller/core/utils/app_icons.dart';
 import 'package:dobzz_seller/core/utils/constant_gaping.dart';
+import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:dobzz_seller/core/utils/constants_models.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/feature/Categories/presentation/sub_category_view.dart';
@@ -87,7 +88,7 @@ class _CategoriesListState extends State<CategoriesList> {
                               Text(
                                 name.tr(),
                                 style: TextStyle(
-                                  fontSize: 16.sp,
+                                  fontSize: Constants.tablet ? 16 : 16.sp,
                                   fontWeight: FontWeight.w500,
                                 ),
                                 maxLines: 1,

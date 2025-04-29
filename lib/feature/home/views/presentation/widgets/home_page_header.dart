@@ -1,4 +1,3 @@
-import 'package:dobzz_seller/core/network/local/cache.dart';
 import 'package:dobzz_seller/core/utils/app_icons.dart';
 import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
@@ -27,7 +26,7 @@ class HomePageHeader extends StatelessWidget {
                 Text(
                   'Location', // corrected spelling from "Loaction"
                   style: TextStyle(
-                    fontSize: 18.sp,
+                    fontSize: Constants.tablet ? 18 : 18.sp,
                     color: Colors.grey,
                     fontWeight: FontWeight.w500,
                   ),

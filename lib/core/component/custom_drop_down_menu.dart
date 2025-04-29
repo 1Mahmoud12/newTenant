@@ -1,7 +1,7 @@
 import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:dobzz_seller/core/themes/styles.dart';
-import 'package:dobzz_seller/core/utils/app_icons.dart';
 import 'package:dobzz_seller/core/utils/constant_gaping.dart';
+import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -184,7 +184,7 @@ class _CustomDropDownMenuState extends State<CustomDropDownMenu> {
               widget.errorText!,
               style: TextStyle(
                 color: Colors.red,
-                fontSize: 12.sp,
+                fontSize: Constants.tablet ? 12 : 12.sp,
               ),
             ),
           ),

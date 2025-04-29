@@ -1,6 +1,7 @@
+import 'package:dobzz_seller/core/themes/colors.dart';
+import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SeeAllWidget extends StatelessWidget {
@@ -22,7 +23,7 @@ class SeeAllWidget extends StatelessWidget {
       children: [
         Text(
           title.tr(),
-          style: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 18.sp, fontWeight: FontWeight.bold),
+          style: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: Constants.tablet ? 18 : 18.sp, fontWeight: FontWeight.bold),
         ),
         InkWell(
           onTap: onTap,

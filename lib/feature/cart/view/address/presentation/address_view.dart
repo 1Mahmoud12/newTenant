@@ -1,6 +1,7 @@
 import 'package:dobzz_seller/core/component/custom_app_bar.dart';
 import 'package:dobzz_seller/core/component/loadsErros/loading_widget.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
+import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:dobzz_seller/core/utils/constants_models.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/feature/cart/view/address/presentation/add_address_view.dart';
@@ -22,6 +23,7 @@ class _AddressViewState extends State<AddressView> {
   bool hasAddresses = false;
 
   AddressCubit addressCubit = AddressCubit();
+
   @override
   void initState() {
     addressCubit.getAddress(context: context);
@@ -58,7 +60,7 @@ class _AddressViewState extends State<AddressView> {
                   Text(
                     'Add New Address'.tr(),
                     style: TextStyle(
-                      fontSize: 16.sp,
+                      fontSize: Constants.tablet ? 16 : 16.sp,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),
@@ -108,7 +110,7 @@ class _AddressViewState extends State<AddressView> {
                 child: Text(
                   state.e,
                   style: TextStyle(
-                    fontSize: 16.sp,
+                    fontSize: Constants.tablet ? 16 : 16.sp,
                     color: Colors.red,
                   ),
                 ),
@@ -131,7 +133,7 @@ class _AddressViewState extends State<AddressView> {
                         'Saved Address'.tr(),
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 20.sp,
+                          fontSize: Constants.tablet ? 20 : 20.sp,
                         ),
                       ),
                       const SizedBox(height: 16),
@@ -171,7 +173,7 @@ class _AddressViewState extends State<AddressView> {
                                       address?.name ?? '',
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
-                                        fontSize: 16.sp,
+                                        fontSize: Constants.tablet ? 16 : 16.sp,
                                       ),
                                     ),
                                     if (address?.isDefault ?? false)
@@ -244,14 +246,14 @@ class _AddressViewState extends State<AddressView> {
           children: [
             Icon(
               Icons.location_off_outlined,
-              size: 80.sp,
+              size: Constants.tablet ? 80 : 80.sp,
               color: Colors.grey.shade400,
             ),
             const SizedBox(height: 16),
             Text(
               'No addresses saved yet'.tr(),
               style: TextStyle(
-                fontSize: 18.sp,
+                fontSize: Constants.tablet ? 18 : 18.sp,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -260,7 +262,7 @@ class _AddressViewState extends State<AddressView> {
               'Please add a delivery address to continue'.tr(),
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 16.sp,
+                fontSize: Constants.tablet ? 16 : 16.sp,
                 color: Colors.grey.shade600,
               ),
             ),

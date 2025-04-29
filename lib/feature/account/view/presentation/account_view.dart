@@ -3,6 +3,7 @@ import 'package:dobzz_seller/core/component/custom_app_bar.dart';
 import 'package:dobzz_seller/core/network/local/cache.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:dobzz_seller/core/utils/app_icons.dart';
+import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:dobzz_seller/core/utils/constants_models.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/feature/account/view/helpCenter/presentation/help_center_view.dart';
@@ -30,6 +31,7 @@ class _AccountViewState extends State<AccountView> {
   final currentLanguage = 'English';
   DeleteAccountCubit deleteAccountCubit = DeleteAccountCubit();
   EditProfileCubit editProfileCubit = EditProfileCubit();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -243,7 +245,7 @@ class _AccountViewState extends State<AccountView> {
       title: Text(
         language,
         style: TextStyle(
-          fontSize: 16.sp,
+          fontSize: Constants.tablet ? 16 : 16.sp,
           fontWeight: FontWeight.w500,
         ),
       ),
@@ -325,7 +327,7 @@ class _AccountViewState extends State<AccountView> {
                 const SizedBox(height: 8),
                 Text(
                   message,
-                  style: TextStyle(color: Colors.grey, fontSize: 16.sp, fontWeight: FontWeight.w500),
+                  style: TextStyle(color: Colors.grey, fontSize: Constants.tablet ? 16 : 16.sp, fontWeight: FontWeight.w500),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 24),

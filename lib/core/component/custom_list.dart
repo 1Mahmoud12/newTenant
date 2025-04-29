@@ -1,4 +1,5 @@
 import 'package:dobzz_seller/core/themes/colors.dart';
+import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -80,7 +81,7 @@ class _CustomListState extends State<CustomList> {
                         padding: const EdgeInsets.only(right: 6.0),
                         child: Icon(
                           widget.icons![index],
-                          size: 18.sp,
+                          size: Constants.tablet ? 18 : 18.sp,
                           color: textColor,
                         ),
                       ),

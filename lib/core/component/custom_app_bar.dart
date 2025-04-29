@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dobzz_seller/core/utils/app_icons.dart';
+import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/feature/notification/presentation/notification_view.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -39,7 +40,7 @@ PreferredSizeWidget customAppBar({
       padding: const EdgeInsets.only(top: 24),
       child: Text(
         (title ?? '').tr(),
-        style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 20.sp, fontWeight: FontWeight.bold),
+        style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: Constants.tablet ? 20 : 20.sp, fontWeight: FontWeight.bold),
       ),
     ),
     actions: [
