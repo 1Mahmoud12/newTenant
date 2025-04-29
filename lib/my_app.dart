@@ -28,10 +28,8 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     addressCubit.getAddress(context: context);
-    // HomeDataSourceImpl().appVisit();
     super.initState();
   }
-
   AddressCubit addressCubit = AddressCubit();
   @override
   Widget build(BuildContext context) {
@@ -50,7 +48,7 @@ class _MyAppState extends State<MyApp> {
           BlocProvider(
             create: (context) => MainCubitCubit(),
           ),
-        
+
           // BlocProvider(
           //   create: (context) => OrderCubit(),
           // ),

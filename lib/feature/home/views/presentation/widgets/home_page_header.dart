@@ -3,14 +3,28 @@ import 'package:dobzz_seller/core/utils/app_icons.dart';
 import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/feature/cart/view/address/presentation/address_view.dart';
+import 'package:dobzz_seller/feature/cart/view/address/presentation/manager/address/cubit/address_cubit.dart';
 import 'package:dobzz_seller/feature/notification/presentation/notification_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
-class HomePageHeader extends StatelessWidget {
+class HomePageHeader extends StatefulWidget {
   const HomePageHeader({super.key});
 
+  @override
+  State<HomePageHeader> createState() => _HomePageHeaderState();
+}
+
+class _HomePageHeaderState extends State<HomePageHeader> {
+  @override
+  void initState() {
+    addressCubit.getAddress(context: context);
+    super.initState();
+  }
+
+  AddressCubit addressCubit = AddressCubit();
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -33,12 +47,19 @@ class HomePageHeader extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 4),
-                Text(
-                  '${Constants.defaultAddress.name}', // added space after comma
-                  style: TextStyle(
-                    fontSize: 20.sp,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black87,
+                BlocProvider.value(
+                  value: addressCubit,
+                  child: BlocBuilder<AddressCubit, AddressState>(
+                    builder: (context, state) {
+                      return Text(
+                        '${Constants.defaultAddress.name}', // added space after comma
+                        style: TextStyle(
+                          fontSize: 20.sp,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black87,
+                        ),
+                      );
+                    },
                   ),
                 ),
               ],
