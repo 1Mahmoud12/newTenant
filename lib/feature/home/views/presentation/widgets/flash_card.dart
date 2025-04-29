@@ -153,7 +153,7 @@ class _ProductCardState extends State<ProductCard> {
                   Text(
                     widget.price,
                     style: TextStyle(
-                      fontSize: 16.sp,
+                      fontSize: Constants.tablet ? 16 : 16.sp,
                       color: Colors.grey.shade700,
                     ),
                   ),

@@ -107,6 +107,7 @@ class _DobzzSellerAppState extends State<DobzzSellerApp> {
 
   @override
   Widget build(BuildContext context) {
+    Constants.tablet = MediaQuery.of(context).size.width > 600;
     return appStartScreen;
   }
 }
