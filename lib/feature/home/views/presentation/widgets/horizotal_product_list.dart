@@ -1,4 +1,5 @@
 import 'package:dobzz_seller/core/component/loadsErros/loading_widget.dart';
+import 'package:dobzz_seller/core/utils/constants_models.dart';
 import 'package:dobzz_seller/feature/favorites/views/manager/wishList/cubit/wish_list_cubit.dart';
 import 'package:dobzz_seller/feature/home/views/manager/addToWhishlist/cubit/add_to_wish_list_cubit.dart';
 import 'package:dobzz_seller/feature/home/views/manager/removeFromWhislist/cubit/remove_from_whish_list_cubit.dart';
@@ -7,11 +8,12 @@ import 'package:dobzz_seller/feature/home/views/presentation/widgets/flash_card.
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:dobzz_seller/core/utils/constants_models.dart';
 
 class FlashSaleHorizontalList extends StatefulWidget {
   const FlashSaleHorizontalList({super.key, this.isItWhishList = false});
+
   final bool? isItWhishList;
+
   @override
   State<FlashSaleHorizontalList> createState() => _FlashSaleHorizontalListState();
 }
@@ -34,6 +36,7 @@ class _FlashSaleHorizontalListState extends State<FlashSaleHorizontalList> {
   AddToWishListCubit addToWishListCubit = AddToWishListCubit();
   RemoveFromWhishListCubit removeFromWhishListCubit = RemoveFromWhishListCubit();
   WishListCubit wishListCubit = WishListCubit();
+
   @override
   Widget build(BuildContext context) {
     return widget.isItWhishList!
@@ -88,10 +91,46 @@ class TopProductHorizontalList extends StatelessWidget {
                 child: Text('No products available'.tr()),
               );
             }
-
             // Set a fixed height for the horizontal list items
             const double itemHeight = 280; // Adjust as needed
             const double itemWidth = 180; // Adjust as needed
+
+            //return SizedBox();
+            return SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(children: [
+                ...List.generate(
+                  topProducts.length > 4 ? 4 : topProducts.length,
+                  (index) {
+                    final product = topProducts[index];
+                    return Container(
+                      width: itemWidth,
+                      margin: const EdgeInsets.only(right: 16),
+                      child: ProductCard(
+                        description: product.description ?? 'No description available'.tr(),
+                        rating: product.reviewsCount?.toDouble() ?? 0.0,
+                        productId: product.id ?? -1,
+                        initialLiked: widget.isItWhishList!,
+                        onLikeTap: (isNowLiked) {
+                          if (isNowLiked) {
+                            // Add to wishlist
+                            if (widget.isItWhishList!) {
+                              // Remove from wishlist
+                              removeFromWhishListCubit.removeFromWishList(context: context, productId: product.id ?? -1);
+                            } else {
+                              addToWishListCubit.addToWishList(context: context, productId: product.id ?? -1);
+                            }
+                          }
+                        },
+                        imagePath: product.imagePath ?? '',
+                        title: product.name ?? 'Unknown Product'.tr(),
+                        price: '\$${product.price?.toString() ?? '0'}',
+                      ),
+                    );
+                  },
+                ),
+              ]),
+            );
 
             return SizedBox(
               height: itemHeight,
@@ -102,7 +141,7 @@ class TopProductHorizontalList extends StatelessWidget {
                 itemBuilder: (context, index) {
                   final product = topProducts[index];
                   return Container(
-                    width: itemWidth,
+                    //       width: itemWidth,
                     margin: const EdgeInsets.only(right: 16),
                     child: ProductCard(
                       description: product.description ?? 'No description available'.tr(),

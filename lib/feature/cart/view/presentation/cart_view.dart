@@ -3,6 +3,7 @@ import 'package:dobzz_seller/core/component/cache_image.dart';
 import 'package:dobzz_seller/core/component/custom_app_bar.dart';
 import 'package:dobzz_seller/core/component/loadsErros/loading_widget.dart';
 import 'package:dobzz_seller/core/utils/constant_gaping.dart';
+import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:dobzz_seller/core/utils/constants_models.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/core/utils/utils.dart';
@@ -239,7 +240,9 @@ class GoToCheckOutButton extends StatelessWidget {
     super.key,
     required this.checkoutDetailsCubit,
   });
+
   final CheckoutDetailsCubit checkoutDetailsCubit;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -270,7 +273,7 @@ class GoToCheckOutButton extends StatelessWidget {
                 const Spacer(),
                 Text(
                   'Go To Check out'.tr(),
-                  style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500, color: Colors.white),
+                  style: TextStyle(fontSize: Constants.tablet ? 16 : 16.sp, fontWeight: FontWeight.w500, color: Colors.white),
                 ),
                 w10,
                 const Icon(Icons.arrow_forward, color: Colors.white),
@@ -294,9 +297,11 @@ class CheckOutItem extends StatelessWidget {
     required this.value,
     this.labelColor,
   });
+
   final String label;
   final String value;
   final Color? labelColor;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -305,12 +310,12 @@ class CheckOutItem extends StatelessWidget {
         children: [
           Text(
             label,
-            style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16.sp, color: labelColor ?? Colors.grey.shade400),
+            style: TextStyle(fontWeight: FontWeight.w500, fontSize: Constants.tablet ? 16 : 16.sp, color: labelColor ?? Colors.grey.shade400),
           ),
           const Spacer(),
           Text(
             value,
-            style: TextStyle(fontSize: 16.sp, color: Colors.black),
+            style: TextStyle(fontSize: Constants.tablet ? 16 : 16.sp, color: Colors.black),
           ),
         ],
       ),
@@ -340,6 +345,7 @@ class CartItemWidget extends StatelessWidget {
   final VoidCallback onAdd;
   final VoidCallback onDelete;
   final AddToCartCubit addToCartCubit;
+
   const CartItemWidget({
     super.key,
     required this.cartItem,
@@ -379,7 +385,7 @@ class CartItemWidget extends StatelessWidget {
                         child: Text(
                           cartItem.product?.name ?? '',
                           style: TextStyle(
-                            fontSize: 16.sp,
+                            fontSize: Constants.tablet ? 16 : 16.sp,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
@@ -390,7 +396,8 @@ class CartItemWidget extends StatelessWidget {
                           builder: (context, state) {
                             return GestureDetector(
                               onTap: state is AddToCartLoading ? null : onDelete,
-                              child: Icon(Icons.delete_outline, color: state is AddToCartLoading ? Colors.grey : Colors.red, size: 20.sp),
+                              child: Icon(Icons.delete_outline,
+                                  color: state is AddToCartLoading ? Colors.grey : Colors.red, size: Constants.tablet ? 20 : 20.sp),
                             );
                           },
                         ),
@@ -400,7 +407,7 @@ class CartItemWidget extends StatelessWidget {
                   if (cartItem.selectedSize != null)
                     Text(
                       '${'Size'.tr()} ${cartItem.selectedSize}',
-                      style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14.sp, color: Colors.grey),
+                      style: TextStyle(fontWeight: FontWeight.w500, fontSize: Constants.tablet ? 14 : 14.sp, color: Colors.grey),
                     )
                   else
                     const SizedBox(
@@ -412,7 +419,7 @@ class CartItemWidget extends StatelessWidget {
                       Text(
                         cartItem.priceForProduct.toString(),
                         style: TextStyle(
-                          fontSize: 16.sp,
+                          fontSize: Constants.tablet ? 16 : 16.sp,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -436,7 +443,7 @@ class CartItemWidget extends StatelessWidget {
                           fit: BoxFit.scaleDown,
                           child: Text(
                             cartItem.quantity.toString(),
-                            style: TextStyle(fontSize: 16.sp),
+                            style: TextStyle(fontSize: Constants.tablet ? 16 : 16.sp),
                           ),
                         ),
                       ),
@@ -490,7 +497,7 @@ class _QuantityButton extends StatelessWidget {
         ),
         child: Icon(
           icon,
-          size: 18.sp,
+          size: Constants.tablet ? 18 : 18.sp,
           color: isLoading ? Colors.grey.shade400 : Colors.black,
         ),
       ),

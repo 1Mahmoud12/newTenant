@@ -67,7 +67,7 @@ class _CheckoutViewState extends State<CheckoutView> {
                         child: Text(
                           'Place Order'.tr(),
                           style: TextStyle(
-                            fontSize: 16.sp,
+                            fontSize: Constants.tablet ? 16 : 16.sp,
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
                           ),
@@ -252,13 +252,16 @@ class PromoCode extends StatefulWidget {
     super.key,
     required this.discountCubit,
   });
+
   final DiscountCubit discountCubit;
+
   @override
   State<PromoCode> createState() => _PromoCodeState();
 }
 
 class _PromoCodeState extends State<PromoCode> {
   final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -315,7 +318,7 @@ class _PromoCodeState extends State<PromoCode> {
                                 child: Text(
                                   'Add'.tr(),
                                   style: TextStyle(
-                                    fontSize: 16.sp,
+                                    fontSize: Constants.tablet ? 16 : 16.sp,
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
                                   ),

@@ -3,6 +3,7 @@ import 'package:dobzz_seller/core/network/local/cache.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:dobzz_seller/core/utils/app_images.dart';
 import 'package:dobzz_seller/core/utils/constant_gaping.dart';
+import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/feature/auth/login/view/presentation/login_screen.dart';
 import 'package:flutter/material.dart';
@@ -35,7 +36,7 @@ class _SplashTwoScreenState extends State<SplashTwoScreen> {
                 'Get Start',
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 16.sp,
+                  fontSize: Constants.tablet ? 16 : 16.sp,
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -66,7 +67,7 @@ class _SplashTwoScreenState extends State<SplashTwoScreen> {
                 child: Text(
                   'Define\nyourself in\nyour unique\nway.',
                   style: TextStyle(
-                    fontSize: 50.sp,
+                    fontSize: Constants.tablet ? 50 : 50.sp,
                     height: 0.9,
                     color: AppColors.primaryColor,
                   ),

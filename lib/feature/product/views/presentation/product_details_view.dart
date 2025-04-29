@@ -5,14 +5,13 @@ import 'package:dobzz_seller/core/component/loadsErros/loading_widget.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:dobzz_seller/core/utils/app_icons.dart';
 import 'package:dobzz_seller/core/utils/constant_gaping.dart';
+import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:dobzz_seller/core/utils/constants_models.dart';
-import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/feature/cart/view/manager/addToCart/cubit/add_to_cart_cubit.dart';
 import 'package:dobzz_seller/feature/home/views/manager/addToWhishlist/cubit/add_to_wish_list_cubit.dart';
 import 'package:dobzz_seller/feature/home/views/manager/removeFromWhislist/cubit/remove_from_whish_list_cubit.dart';
 import 'package:dobzz_seller/feature/product/data/model/product_details_model.dart';
 import 'package:dobzz_seller/feature/product/views/manager/productDetails/cubit/product_details_cubit.dart';
-import 'package:dobzz_seller/feature/review/presentation/review_veiw.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -180,7 +179,7 @@ class ProductTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       productName,
-      style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold),
+      style: TextStyle(fontSize: Constants.tablet ? 14 : 24.sp, fontWeight: FontWeight.bold),
     );
   }
 }
@@ -205,7 +204,7 @@ class RatingAndReview extends StatelessWidget {
               children: [
                 Text(
                   rating,
-                  style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500, height: 1),
+                  style: TextStyle(fontSize: Constants.tablet ? 16 : 16.sp, fontWeight: FontWeight.w500, height: 1),
                 ),
                 Container(height: 1, color: Colors.black),
               ],
@@ -215,7 +214,7 @@ class RatingAndReview extends StatelessWidget {
         const SizedBox(width: 4),
         Text(
           '($reviewCount ${"reviews".tr()})',
-          style: TextStyle(fontSize: 12.sp, color: Colors.grey),
+          style: TextStyle(fontSize: Constants.tablet ? 12 : 12.sp, color: Colors.grey),
         ),
       ],
     );
@@ -229,7 +228,7 @@ class ProductDescription extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       description,
-      style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500, color: Colors.grey),
+      style: TextStyle(fontSize: Constants.tablet ? 16 : 16.sp, fontWeight: FontWeight.w500, color: Colors.grey),
     );
   }
 }
@@ -330,7 +329,7 @@ class _SizeSelectorState extends State<SizeSelector> {
                   size.name ?? '',
                   style: TextStyle(
                     color: isSelected ? Colors.white : Colors.black,
-                    fontSize: 16.sp,
+                    fontSize: Constants.tablet ? 16 : 16.sp,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -373,7 +372,7 @@ class QuantitySelector extends StatelessWidget {
                 onPressed: onDecrease,
                 icon: const Icon(Icons.remove),
               ),
-              Text('${addToCartCubit.quantity}', style: TextStyle(fontSize: 16.sp)),
+              Text('${addToCartCubit.quantity}', style: TextStyle(fontSize: Constants.tablet ? 16 : 16.sp)),
               IconButton(
                 onPressed: onIncrease,
                 icon: const Icon(Icons.add),
@@ -517,11 +516,11 @@ class _PriceAndAddToCartWidgetState extends State<PriceAndAddToCartWidget> {
             children: [
               Text(
                 'Price'.tr(),
-                style: TextStyle(fontSize: 16.sp, color: Colors.grey, fontWeight: FontWeight.w500),
+                style: TextStyle(fontSize: Constants.tablet ? 16 : 16.sp, color: Colors.grey, fontWeight: FontWeight.w500),
               ),
               Text(
                 '${widget.price} ${"EGP".tr()}',
-                style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: Constants.tablet ? 20 : 20.sp, fontWeight: FontWeight.bold),
               ),
             ],
           ),
@@ -550,7 +549,7 @@ class _PriceAndAddToCartWidgetState extends State<PriceAndAddToCartWidget> {
                               w5,
                               Text(
                                 'Add to Cart'.tr(),
-                                style: TextStyle(color: Colors.white, fontSize: 16.sp, fontWeight: FontWeight.w500),
+                                style: TextStyle(color: Colors.white, fontSize: Constants.tablet ? 16 : 16.sp, fontWeight: FontWeight.w500),
                               ),
                               s,
                             ],

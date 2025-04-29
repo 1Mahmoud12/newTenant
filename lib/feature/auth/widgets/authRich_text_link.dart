@@ -1,4 +1,5 @@
 import 'package:dobzz_seller/core/themes/colors.dart';
+import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -25,7 +26,7 @@ class AuthRichTextLink extends StatelessWidget {
         text: text,
         style: TextStyle(
           color: Colors.black.withOpacity(0.6),
-          fontSize: 16.sp,
+          fontSize: Constants.tablet ? 16 : 16.sp,
         ),
         children: [
           TextSpan(

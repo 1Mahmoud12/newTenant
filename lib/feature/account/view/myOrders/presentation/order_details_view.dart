@@ -1,6 +1,7 @@
 import 'package:dobzz_seller/core/component/cache_image.dart';
 import 'package:dobzz_seller/core/component/custom_app_bar.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
+import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/feature/account/view/myOrders/data/models/order_model.dart';
 import 'package:dobzz_seller/feature/account/view/myOrders/presentation/expandable_section_container.dart';
@@ -140,7 +141,7 @@ class StatusTimeline extends StatelessWidget {
               Text(
                 'Order #${order.id}',
                 style: TextStyle(
-                  fontSize: 20.sp,
+                  fontSize: Constants.tablet ? 20 : 20.sp,
                   fontWeight: FontWeight.bold,
                   color: const Color(0xFF333333),
                 ),

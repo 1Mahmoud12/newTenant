@@ -1,12 +1,13 @@
+import 'package:dobzz_seller/core/themes/colors.dart';
+import 'package:dobzz_seller/core/themes/styles.dart';
+import 'package:dobzz_seller/core/utils/app_icons.dart';
+import 'package:dobzz_seller/core/utils/constants.dart';
+import 'package:dobzz_seller/core/utils/screen_spaces_extension.dart';
 import 'package:easy_localization/easy_localization.dart' as easy;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:dobzz_seller/core/themes/colors.dart';
-import 'package:dobzz_seller/core/themes/styles.dart';
-import 'package:dobzz_seller/core/utils/app_icons.dart';
-import 'package:dobzz_seller/core/utils/screen_spaces_extension.dart';
 
 class CustomTextFormField extends StatefulWidget {
   final TextEditingController controller;
@@ -132,7 +133,10 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
               obscureText: _obscureText,
               controller: widget.controller,
               keyboardType: widget.textInputType ?? TextInputType.text,
-              style: TextStyle(color: AppColors.primaryColor, fontSize: (widget.fontSizeHintText ?? 17).sp, fontWeight: FontWeight.w600),
+              style: TextStyle(
+                  color: AppColors.primaryColor,
+                  fontSize: Constants.tablet ? (widget.fontSizeHintText ?? 17) : (widget.fontSizeHintText ?? 17).sp,
+                  fontWeight: FontWeight.w600),
               onChanged: (value) {
                 if (widget.onChange != null) {
                   widget.onChange!.call(value);
@@ -162,14 +166,14 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
                 hintStyle: widget.hintStyle ??
                     TextStyle(
                       color: AppColors.grey.withOpacity(.5),
-                      fontSize: (widget.fontSizeHintText ?? 17).sp,
+                      fontSize: Constants.tablet ? (widget.fontSizeHintText ?? 17) : (widget.fontSizeHintText ?? 17).sp,
                       fontWeight: FontWeight.w500,
                     ),
                 prefixIcon: widget.prefixIcon,
                 labelText: widget.labelText?.tr(),
                 labelStyle: TextStyle(
                   color: AppColors.primaryColor.withOpacity(.5),
-                  fontSize: (widget.fontSizeHintText ?? 17).sp,
+                  fontSize: Constants.tablet ? (widget.fontSizeHintText ?? 17) : (widget.fontSizeHintText ?? 17).sp,
                   fontWeight: FontWeight.w600,
                 ),
                 fillColor: widget.fillColor ?? AppColors.transparent,

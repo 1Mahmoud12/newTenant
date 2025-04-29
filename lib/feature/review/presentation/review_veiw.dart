@@ -1,4 +1,5 @@
 import 'package:dobzz_seller/core/component/custom_app_bar.dart';
+import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -66,7 +67,7 @@ class RatingSummary extends StatelessWidget {
               '1034 Ratings',
               style: TextStyle(
                 color: Colors.grey[600],
-                fontSize: 16.sp,
+                fontSize: Constants.tablet ? 16 : 16.sp,
               ),
             ),
           ],
@@ -206,7 +207,7 @@ class ReviewsList extends StatelessWidget {
                   'Most Relevant',
                   style: TextStyle(
                     color: Colors.grey[600],
-                    fontSize: 16.sp,
+                    fontSize: Constants.tablet ? 16 : 16.sp,
                   ),
                 ),
                 const Icon(Icons.keyboard_arrow_down, size: 18),
@@ -249,7 +250,7 @@ class ReviewCard extends StatelessWidget {
             review['comment'],
             style: TextStyle(
               color: Colors.grey[800],
-              fontSize: 14.sp,
+              fontSize: Constants.tablet ? 14 : 14.sp,
             ),
           ),
           const SizedBox(height: 4),
@@ -259,7 +260,7 @@ class ReviewCard extends StatelessWidget {
                 review['name'],
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 16.sp,
+                  fontSize: Constants.tablet ? 16 : 16.sp,
                 ),
               ),
               Text(

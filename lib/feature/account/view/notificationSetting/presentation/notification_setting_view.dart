@@ -1,10 +1,11 @@
 import 'package:dobzz_seller/core/component/custom_app_bar.dart';
 import 'package:dobzz_seller/core/component/loadsErros/loading_widget.dart';
+import 'package:dobzz_seller/core/utils/constants.dart';
+import 'package:dobzz_seller/core/utils/constants_models.dart';
 import 'package:dobzz_seller/core/utils/utils.dart';
 import 'package:dobzz_seller/feature/account/view/notificationSetting/presentation/manager/notiSetting/cubit/notification_setting_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:dobzz_seller/core/utils/constants_models.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class NotificationsSettingsView extends StatefulWidget {
@@ -243,7 +244,7 @@ class _NotificationsSettingsViewState extends State<NotificationsSettingsView> {
       title: Text(
         language,
         style: TextStyle(
-          fontSize: 16.sp,
+          fontSize: Constants.tablet ? 16 : 16.sp,
           fontWeight: FontWeight.w500,
         ),
       ),
@@ -276,7 +277,7 @@ class _NotificationsSettingsViewState extends State<NotificationsSettingsView> {
                 padding: const EdgeInsets.all(16.0),
                 child: Text(
                   'Select Appearance',
-                  style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: Constants.tablet ? 16 : 16.sp, fontWeight: FontWeight.bold),
                 ),
               ),
               const Divider(),
@@ -295,7 +296,7 @@ class _NotificationsSettingsViewState extends State<NotificationsSettingsView> {
     return ListTile(
       title: Text(
         appearance,
-        style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500),
+        style: TextStyle(fontSize: Constants.tablet ? 16 : 16.sp, fontWeight: FontWeight.w500),
       ),
       trailing: isSelected ? const Icon(Icons.check, color: Colors.black) : null,
       onTap: () {
