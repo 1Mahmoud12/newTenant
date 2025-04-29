@@ -26,7 +26,7 @@ class CheckoutView extends StatefulWidget {
 }
 
 class _CheckoutViewState extends State<CheckoutView> {
-  String selectedPaymentMethod = 'Card'.tr();
+  String selectedPaymentMethod = 'Cash'.tr();
   final TextEditingController promoCodeController = TextEditingController();
   AddressCubit addressCubit = AddressCubit();
   ProcessToCheckoutCubit processToCheckoutCubit = ProcessToCheckoutCubit();
@@ -165,7 +165,9 @@ class _CheckoutViewState extends State<CheckoutView> {
                       padding: const EdgeInsets.symmetric(horizontal: 5),
                       child: CustomList(
                         borderOnlySelection: true,
-                        tabs: ['Card'.tr(), 'Cash'.tr(), 'Apple Pay'.tr()],
+                        tabs: [
+                          'Cash'.tr(),
+                        ],
                         prefixIcon: true,
                         icons: const [Icons.credit_card, Icons.monetization_on_outlined, Icons.apple],
                         onTabChanged: (index) {

@@ -3,10 +3,10 @@ import 'dart:developer';
 
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:flutter/material.dart';
 import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:dobzz_seller/core/utils/errorLoadingWidgets/stop_internet_widget.dart';
 import 'package:dobzz_seller/core/utils/notification/notification.dart';
+import 'package:flutter/material.dart';
 
 import 'main.dart';
 
@@ -60,6 +60,7 @@ class _DobzzSellerAppState extends State<DobzzSellerApp> {
     if (currentIndex == 0) {
       await initNotification();
       await selectTokens();
+
       currentIndex++;
     }
     super.didChangeDependencies();

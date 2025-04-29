@@ -14,7 +14,8 @@ class Constants {
   static AddressModel defaultAddress = AddressModel(-1, 'unknown address');
   static String fcmToken = '';
   static String deviceId = '';
-  static String subdomain = 'shine';
+  static String subdomain2 = 'shine';
+  static String subdomain = 'kadin';
   static String apiPassword = '123#Social_Codgoo#321';
 
   static FirebaseMessaging messaging = FirebaseMessaging.instance;
@@ -28,7 +29,7 @@ class Constants {
   static String? mapStyleString;
   static bool noInternet = false;
   static String versionApp = '';
-  static String packageName = 'com.unitedDiamond.chesselha';
+  static String packageName = 'com.mah852.dobbz_user';
   static String appleId = '6737690297';
 
   static String urlGoogleMapPlace = 'https://maps.googleapis.com/maps/api/place/autocomplete/json';
