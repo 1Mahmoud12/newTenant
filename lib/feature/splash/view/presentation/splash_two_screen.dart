@@ -1,4 +1,5 @@
 import 'package:dobzz_seller/core/component/buttons/custom_text_button.dart';
+import 'package:dobzz_seller/core/network/local/cache.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:dobzz_seller/core/utils/app_images.dart';
 import 'package:dobzz_seller/core/utils/constant_gaping.dart';
@@ -21,7 +22,10 @@ class _SplashTwoScreenState extends State<SplashTwoScreen> {
       persistentFooterButtons: [
         CustomTextButton(
           borderRadius: 8,
-          onPress: () {
+          onPress: () async {
+            onBoardingValue = false;
+            await userCache?.put(onBoardingKey, false);
+
             context.navigateToPage(const LoginScreen());
           },
           child: Row(

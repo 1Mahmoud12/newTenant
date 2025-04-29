@@ -4,9 +4,9 @@ import 'package:dobzz_seller/core/network/local/cache.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/feature/auth/login/view/presentation/login_screen.dart';
 import 'package:dobzz_seller/feature/navigation/view/presentation/navigation_view.dart';
+import 'package:dobzz_seller/feature/splash/view/presentation/splash_two_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:dobzz_seller/core/utils/app_images.dart';
 import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:dobzz_seller/core/utils/utils.dart';
@@ -33,7 +33,11 @@ class _SplashScreenState extends State<SplashScreen> {
       const Duration(seconds: 3),
       () {
         //   context.navigateToPage(const NavigationView());
-        context.navigateToPage(userCacheValue?.data != null ? const NavigationViewWithThemes() : const LoginScreen());
+        if (onBoardingValue) {
+          context.navigateToPage(const SplashTwoScreen());
+        } else {
+          context.navigateToPage(userCacheValue?.data != null ? const NavigationViewWithThemes() : const LoginScreen());
+        }
         // userCacheValue.data != null ? context.navigateToPage(const NavigationView()) : context.navigateToPage(const LoginScreen());
         // userCache?.put(onBoardingKey, false);
       },
