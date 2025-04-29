@@ -1,21 +1,22 @@
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
 import 'package:dobzz_seller/core/component/buttons/custom_text_button.dart';
+import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:dobzz_seller/core/utils/errorLoadingWidgets/empty_widget.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/core/utils/utils.dart';
 import 'package:dobzz_seller/core/utils/versionAndUpdateApp/check_app_update.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
 
 void checkVersion(BuildContext context) async {
   final _checker = AppVersionChecker();
 
   await _checker.checkUpdate().then((value) async {
     final AppCheckerResult result = value;
-    log('Current Version ${value.currentVersion} ==== New Version ${result.newVersion}', level: 10);
+    log('Current Version ${value.currentVersion} ==== New Version ${result.newVersion ?? 1.0}', level: 10);
     Constants.versionApp = value.currentVersion;
     if (result.canUpdate) {
       context.navigateToPage(
@@ -58,6 +59,19 @@ class NewUpdate extends StatelessWidget {
                 Utils.launchURLFunction(appUrl);
               },
               childText: 'update_now'.tr(),
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            CustomTextButton(
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              backgroundColor: AppColors.scaffoldBackGround,
+              colorText: AppColors.black,
+              borderColor: AppColors.primaryColor,
+              onPress: () {
+                Navigator.pop(context);
+              },
+              childText: 'later'.tr(),
             ),
           ],
         ),

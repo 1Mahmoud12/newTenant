@@ -8,6 +8,8 @@ import 'package:dobzz_seller/feature/navigation/view/presentation/navigation_bar
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../../../core/utils/versionAndUpdateApp/alert_dialog_for_update_app.dart';
+
 enum NavigationTheme {
   circular,
   regular,
@@ -69,6 +71,12 @@ class _NavigationViewWithThemesState extends State<NavigationViewWithThemes> {
 
     // Second press within 2 seconds, allow app to close
     return true;
+  }
+
+  @override
+  void didChangeDependencies() {
+    checkVersion(context);
+    super.didChangeDependencies();
   }
 
   @override
