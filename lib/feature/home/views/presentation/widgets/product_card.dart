@@ -74,9 +74,10 @@ class _ProductCardState extends State<ProductCard> {
       },
       child: Container(
         decoration: BoxDecoration(
-          border: Border.all(
-            color: Colors.grey.withOpacity(0.3),
-          ),
+          color: Colors.white,
+          // border: Border.all(
+          //   color: Colors.grey.withOpacity(0.3),
+          // ),
           borderRadius: BorderRadius.circular(10),
         ),
         child: Column(
@@ -91,7 +92,7 @@ class _ProductCardState extends State<ProductCard> {
                   errorColor: Colors.grey,
                   height: 150,
                   width: double.infinity,
-                  fit: BoxFit.cover,
+                  fit: BoxFit.contain,
                 ),
                 Positioned(
                   top: 12,
@@ -123,10 +124,10 @@ class _ProductCardState extends State<ProductCard> {
                     child: Text(
                       widget.title,
                       style: TextStyle(
-                        fontSize: Constants.tablet ? 16 : 16.sp,
+                        fontSize: Constants.tablet ? 14 : 14.sp,
                         fontWeight: FontWeight.bold,
                       ),
-                      maxLines: 1,
+                      maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
@@ -139,10 +140,10 @@ class _ProductCardState extends State<ProductCard> {
               child: Text(
                 widget.description,
                 style: TextStyle(
-                  fontSize: Constants.tablet ? 12 : 12.sp,
-                  color: Colors.grey.shade600,
+                  fontSize: Constants.tablet ? 10 : 10.sp,
+                  color: Colors.grey.shade400,
                 ),
-                maxLines: 1,
+                maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
             ),
@@ -173,6 +174,7 @@ class _ProductCardState extends State<ProductCard> {
                       ],
                     ),
                   ),
+                  w10,
                   AddToCartButton(
                     productId: widget.productId,
                   ),
@@ -249,48 +251,63 @@ class _AddToCartButtonState extends State<AddToCartButton> {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        CartItemsCubit.of(context).addCartItems();
-        addToCartCubit
-            .addToCart(
-          context: context,
-          productId: widget.productId,
-        )
-            .then((_) {
-          if (!mounted) return; // Check if still mounted before setState
-          setState(() {
-            _isAdded = true;
-          });
+    return Expanded(
+      child: InkWell(
+        onTap: () async {
+          await addToCartCubit
+              .addToCart(
+            context: context,
+            productId: widget.productId,
+          )
+              .then((_) {
+            CartItemsCubit.of(context).addCartItems();
 
-          // Cancel any existing timer
-          _resetTimer?.cancel();
+            if (!mounted) return; // Check if still mounted before setState
+            setState(() {
+              _isAdded = true;
+            });
 
-          // Create a new timer and store the reference
-          _resetTimer = Timer(const Duration(seconds: 2), () {
-            if (mounted) {
-              // Check if still mounted before setState
-              setState(() {
-                _isAdded = false;
-              });
-            }
+            // Cancel any existing timer
+            _resetTimer?.cancel();
+
+            // Create a new timer and store the reference
+            _resetTimer = Timer(const Duration(seconds: 2), () {
+              if (mounted) {
+                // Check if still mounted before setState
+                setState(() {
+                  _isAdded = false;
+                });
+              }
+            });
           });
-        });
-      },
-      child: Container(
-        padding: const EdgeInsets.all(5),
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: _isAdded
-              ? Colors.green // Change color when added if desired
-              : AppColors.primaryColor,
+        },
+        child: Container(
+          padding: const EdgeInsets.all(5),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            color: _isAdded
+                ? Colors.green // Change color when added if desired
+                : AppColors.primaryColor,
+          ),
+          child: _isAdded
+              ? const Icon(
+                  Icons.check,
+                  color: Colors.white,
+                ) // Replace with your check icon
+              : Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 5),
+                  child: FittedBox(
+                    child: Text(
+                      'add to cart',
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.white,
+                          ),
+                    ),
+                  ),
+                ),
         ),
-        child: _isAdded
-            ? const Icon(
-                Icons.check,
-                color: Colors.white,
-              ) // Replace with your check icon
-            : SvgPicture.asset(AppIcons.unSelectedCartC),
       ),
     );
   }
@@ -355,11 +372,12 @@ class _HorizontalProductCardState extends State<HorizontalProductCard> {
         );
       },
       child: Container(
-        height: 120, // Fixed height
+        height: 130, // Fixed height
         decoration: BoxDecoration(
-          border: Border.all(
-            color: Colors.grey.withOpacity(0.3),
-          ),
+          color: Colors.white,
+          // border: Border.all(
+          //   color: Colors.grey.withOpacity(0.3),
+          // ),
           borderRadius: BorderRadius.circular(10),
         ),
         child: Row(
@@ -416,7 +434,7 @@ class _HorizontalProductCardState extends State<HorizontalProductCard> {
                   children: [
                     // Title and rating - limited height
                     Expanded(
-                      flex: 3, // Title and rating take 3/10 of the space
+                      flex: 5, // Title and rating take 3/10 of the space
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -427,7 +445,7 @@ class _HorizontalProductCardState extends State<HorizontalProductCard> {
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,
                               ),
-                              maxLines: 1,
+                              maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
@@ -459,8 +477,8 @@ class _HorizontalProductCardState extends State<HorizontalProductCard> {
                       child: Text(
                         widget.description,
                         style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.grey.shade600,
+                          fontSize: 10,
+                          color: Colors.grey.shade400,
                         ),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
@@ -494,6 +512,7 @@ class _HorizontalProductCardState extends State<HorizontalProductCard> {
                               ],
                             ),
                           ),
+                          w10,
                           HorizontalAddToCartButton(
                             productId: widget.productId,
                           ),
@@ -536,47 +555,58 @@ class _HorizontalAddToCartButtonState extends State<HorizontalAddToCartButton> {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        CartItemsCubit.of(context).addCartItems();
-        addToCartCubit
-            .addToCart(
-          context: context,
-          productId: widget.productId,
-        )
-            .then((_) {
-          if (!mounted) return;
-          setState(() {
-            _isAdded = true;
-          });
+    return Expanded(
+      child: InkWell(
+        onTap: () async {
+          await addToCartCubit
+              .addToCart(
+            context: context,
+            productId: widget.productId,
+          )
+              .then((_) {
+            CartItemsCubit.of(context).addCartItems();
 
-          _resetTimer?.cancel();
-          _resetTimer = Timer(const Duration(seconds: 2), () {
-            if (mounted) {
-              setState(() {
-                _isAdded = false;
-              });
-            }
+            if (!mounted) return;
+            setState(() {
+              _isAdded = true;
+            });
+
+            _resetTimer?.cancel();
+            _resetTimer = Timer(const Duration(seconds: 2), () {
+              if (mounted) {
+                setState(() {
+                  _isAdded = false;
+                });
+              }
+            });
           });
-        });
-      },
-      child: Container(
-        padding: const EdgeInsets.all(5),
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: _isAdded ? Colors.green : AppColors.primaryColor,
+        },
+        child: Container(
+          padding: const EdgeInsets.all(5),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            color: _isAdded ? Colors.green : AppColors.primaryColor,
+          ),
+          child: _isAdded
+              ? const Icon(
+                  Icons.check,
+                  color: Colors.white,
+                  size: 20,
+                )
+              : Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 5),
+                  child: FittedBox(
+                    child: Text(
+                      'add to cart',
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.white,
+                          ),
+                    ),
+                  ),
+                ),
         ),
-        child: _isAdded
-            ? const Icon(
-                Icons.check,
-                color: Colors.white,
-                size: 20,
-              )
-            : SvgPicture.asset(
-                AppIcons.unSelectedCartC,
-                width: 20,
-                height: 20,
-              ),
       ),
     );
   }

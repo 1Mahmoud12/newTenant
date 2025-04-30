@@ -177,7 +177,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
                   fontSize: Constants.tablet ? (widget.fontSizeHintText ?? 17) : (widget.fontSizeHintText ?? 17).sp,
                   fontWeight: FontWeight.w600,
                 ),
-                fillColor: widget.fillColor ?? AppColors.transparent,
+                fillColor: widget.fillColor ?? AppColors.white,
                 hintTextDirection: context.locale.languageCode == 'ar' ? TextDirection.rtl : TextDirection.ltr,
                 filled: true,
                 helper: widget.helperText != null

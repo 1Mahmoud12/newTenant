@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:dobzz_seller/core/themes/styles.dart';
 import 'package:dobzz_seller/core/utils/constant_gaping.dart';
@@ -59,11 +61,12 @@ class CustomDropDownMenu extends StatefulWidget {
 }
 
 class _CustomDropDownMenuState extends State<CustomDropDownMenu> {
-  DropDownModel newSelected = DropDownModel(name: '', value: -1, showName: false, showImage: true);
+  DropDownModel newSelected = DropDownModel(name: '', value: -1, showImage: true, showName: false);
 
   @override
   void initState() {
     newSelected = widget.selectedItem!;
+    log('print selected item====>${newSelected.showName}');
     super.initState();
   }
 
@@ -91,7 +94,7 @@ class _CustomDropDownMenuState extends State<CustomDropDownMenu> {
           child: DropdownButton<DropDownModel>(
             underline: Container(),
             icon: const SizedBox(),
-            padding: const EdgeInsets.symmetric(horizontal: 4),
+            padding: EdgeInsets.symmetric(horizontal: newSelected.showImage ? 6 : 4),
             iconSize: 0,
             hint: Row(
               children: [
@@ -109,20 +112,17 @@ class _CustomDropDownMenuState extends State<CustomDropDownMenu> {
                   ),
                 if (newSelected.showImage)
                   Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 5, right: 5),
-                      child: newSelected.image!.contains('.svg')
-                          ? SvgPicture.asset(
-                              newSelected.image!,
-                              fit: BoxFit.cover,
-                              height: 16,
-                              width: 16,
-                            )
-                          : Image.asset(
-                              newSelected.image!,
-                              fit: BoxFit.cover,
-                            ),
-                    ),
+                    child: newSelected.image!.contains('.svg')
+                        ? SvgPicture.asset(
+                            newSelected.image!,
+                            fit: BoxFit.cover,
+                            height: 16,
+                            width: 16,
+                          )
+                        : Image.asset(
+                            newSelected.image!,
+                            fit: BoxFit.cover,
+                          ),
                   ),
                 if (widget.showDropDownIcon)
                   Align(

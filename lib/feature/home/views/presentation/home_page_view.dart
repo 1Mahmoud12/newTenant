@@ -59,6 +59,8 @@ class _HomePageViewState extends State<HomePageView> {
                     },
                     child: CustomTextFormField(
                       prefixIcon: const Icon(Icons.search),
+                      fillColor: Colors.white,
+                      
                       enable: false,
                       controller: TextEditingController(),
                       hintText: 'Search product..'.tr(),
@@ -170,7 +172,7 @@ class _FeaturedListState extends State<FeaturedList> {
   void initState() {
     super.initState();
     _categoriesCubit = CategoriesCubit();
-    
+
     // Always fetch categories when this widget is initialized
     _categoriesCubit.getCategories(context: context);
   }
@@ -199,13 +201,13 @@ class _FeaturedListState extends State<FeaturedList> {
             // Use the categories model from state or from constants if available
             final categoriesData = ConstantsModels.categoriesModel?.data ?? [];
             final int length = categoriesData.length >= 4 ? 4 : categoriesData.length;
-            
+
             if (length == 0) {
               return const SizedBox();
             }
-            
+
             log('Categories loaded successfully with $length items');
-            
+
             return Column(
               children: List.generate(length, (index) {
                 return FeaturedCategoriesItem(
@@ -214,7 +216,7 @@ class _FeaturedListState extends State<FeaturedList> {
               }),
             );
           }
-          
+
           // Return empty container for initial state
           return const SizedBox();
         },

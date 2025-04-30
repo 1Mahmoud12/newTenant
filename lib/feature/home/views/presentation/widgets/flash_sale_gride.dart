@@ -181,7 +181,7 @@ class FavoriteGrid extends StatelessWidget {
                 crossAxisCount: 2,
                 mainAxisSpacing: 16,
                 crossAxisSpacing: 16,
-                childAspectRatio: 0.6,
+                childAspectRatio: 0.56,
               ),
               itemBuilder: (context, index) {
                 final wishListItem = wishList[index];
@@ -189,6 +189,7 @@ class FavoriteGrid extends StatelessWidget {
                   //  rating: wishListItem.,
                   productId: wishListItem.productId?.toInt() ?? -1,
                   initialLiked: true,
+                  description: wishListItem.descriptionProduct!,
                   onLikeTap: (isNowLiked) {
                     // Add to wishlist
                     if (widget.isItWhishList!) {

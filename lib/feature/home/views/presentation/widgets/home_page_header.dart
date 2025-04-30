@@ -1,4 +1,5 @@
 import 'package:dobzz_seller/core/utils/app_icons.dart';
+import 'package:dobzz_seller/core/utils/constant_gaping.dart';
 import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/feature/cart/view/address/presentation/address_view.dart';
@@ -28,71 +29,71 @@ class _HomePageHeaderState extends State<HomePageHeader> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Row(
-        children: [
-          InkWell(
-            onTap: () {
-              context.navigateToPage(const AddressView());
-            },
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+      child: InkWell(
+        onTap: () {
+          context.navigateToPage(const AddressView());
+        },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
               children: [
                 Text(
-                  'Location', // corrected spelling from "Loaction"
+                  'Location',
                   style: TextStyle(
                     fontSize: Constants.tablet ? 18 : 18.sp,
                     color: Colors.grey,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                const SizedBox(height: 4),
-                BlocProvider.value(
-                  value: addressCubit,
-                  child: BlocBuilder<AddressCubit, AddressState>(
-                    builder: (context, state) {
-                      return Text(
-                        '${Constants.defaultAddress.name}', // added space after comma
-                        style: TextStyle(
-                          fontSize: 20.sp,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black87,
+                s,
+                InkWell(
+                  onTap: () {
+                    context.navigateToPage(const NotificationsView());
+                  },
+                  child: Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      SvgPicture.asset(
+                        AppIcons.notificationIc,
+                        width: 24,
+                        height: 24,
+                      ),
+                      Positioned(
+                        top: 2,
+                        right: 2,
+                        child: Container(
+                          width: 8,
+                          height: 8,
+                          decoration: const BoxDecoration(
+                            color: Colors.red,
+                            shape: BoxShape.circle,
+                          ),
                         ),
-                      );
-                    },
+                      ),
+                    ],
                   ),
                 ),
               ],
             ),
-          ),
-          const Spacer(),
-          InkWell(
-            onTap: () {
-              context.navigateToPage(const NotificationsView());
-            },
-            child: Stack(
-              clipBehavior: Clip.none,
-              children: [
-                SvgPicture.asset(
-                  AppIcons.notificationIc,
-                  width: 24,
-                  height: 24,
-                ),
-                Positioned(
-                  top: 2,
-                  right: 2,
-                  child: Container(
-                    width: 8,
-                    height: 8,
-                    decoration: const BoxDecoration(
-                      color: Colors.red,
-                      shape: BoxShape.circle,
+            const SizedBox(height: 4),
+            BlocProvider.value(
+              value: addressCubit,
+              child: BlocBuilder<AddressCubit, AddressState>(
+                builder: (context, state) {
+                  return Text(
+                    '${Constants.defaultAddress.name}', // added space after comma
+                    style: TextStyle(
+                      fontSize: 20.sp,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black87,
                     ),
-                  ),
-                ),
-              ],
+                  );
+                },
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

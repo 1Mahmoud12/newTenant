@@ -168,7 +168,6 @@ class CountryCodeDropdown extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomDropDownMenu(
-      
       fillColor: AppColors.transparent,
       borderColor: AppColors.transparent,
       onChanged: (value) {
@@ -190,6 +189,7 @@ class CountryCodeDropdown extends StatelessWidget {
               name: e.name,
               value: e.id,
               showImage: true,
+              showName: false,
               image: e.image,
             ),
           )

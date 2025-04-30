@@ -9,7 +9,7 @@ class Themes {
   Themes(this.family);
 
   ThemeData light() => ThemeData(
-        scaffoldBackgroundColor: AppColors.scaffoldBackGround,
+        scaffoldBackgroundColor: const Color.fromARGB(255, 247, 247, 247),
         cardColor: Colors.white,
         fontFamily: family,
         primaryColor: AppColors.primaryColor,

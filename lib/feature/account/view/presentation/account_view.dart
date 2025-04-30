@@ -384,26 +384,33 @@ class _AccountViewState extends State<AccountView> {
     if (isLogout) textColor = Colors.red;
     if (isDeleteAccount) textColor = Colors.red;
 
-    return ListTile(
-      leading: SvgPicture.asset(
-        icon,
-        width: 24,
-        height: 24,
-        colorFilter: ColorFilter.mode(
-          isLogout || isDeleteAccount ? Colors.red : Colors.black,
-          BlendMode.srcIn,
-        ),
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8),
       ),
-      title: Text(
-        title,
-        style: TextStyle(
-          color: textColor,
-          fontSize: 14,
+      margin: const EdgeInsets.only(bottom: 5, left: 16, right: 16),
+      child: ListTile(
+        leading: SvgPicture.asset(
+          icon,
+          width: 24,
+          height: 24,
+          colorFilter: ColorFilter.mode(
+            isLogout || isDeleteAccount ? Colors.red : Colors.black,
+            BlendMode.srcIn,
+          ),
         ),
+        title: Text(
+          title,
+          style: TextStyle(
+            color: textColor,
+            fontSize: 14,
+          ),
+        ),
+        trailing: (isLogout || isDeleteAccount) ? null : SvgPicture.asset(AppIcons.arrowRight),
+        onTap: onTap,
+        contentPadding: const EdgeInsets.symmetric(horizontal: 20),
       ),
-      trailing: (isLogout || isDeleteAccount) ? null : SvgPicture.asset(AppIcons.arrowRight),
-      onTap: onTap,
-      contentPadding: const EdgeInsets.symmetric(horizontal: 20),
     );
   }
 }

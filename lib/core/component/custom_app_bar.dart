@@ -36,16 +36,13 @@ PreferredSizeWidget customAppBar({
           ),
     leadingWidth: 50,
     centerTitle: centerTitle,
-    title: Padding(
-      padding: const EdgeInsets.only(top: 24),
-      child: Text(
-        (title ?? '').tr(),
-        style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: Constants.tablet ? 20 : 20.sp, fontWeight: FontWeight.bold),
-      ),
+    title: Text(
+      (title ?? '').tr(),
+      style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: Constants.tablet ? 20 : 20.sp, fontWeight: FontWeight.bold),
     ),
     actions: [
       Padding(
-        padding: const EdgeInsets.only(left: 16, right: 16, top: 24),
+        padding: const EdgeInsets.only(left: 16, right: 16),
         child: InkWell(
           onTap: () {
             context.navigateToPage(const NotificationsView());
@@ -77,6 +74,6 @@ PreferredSizeWidget customAppBar({
       ),
     ],
     bottom: bottom,
-    toolbarHeight: 75,
+    toolbarHeight: 65,
   );
 }

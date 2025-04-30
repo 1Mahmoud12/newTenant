@@ -150,7 +150,7 @@ class TopProductHorizontalList extends StatelessWidget {
                                 },
                                 imagePath: product.imagePath ?? '',
                                 title: product.name ?? 'Unknown Product'.tr(),
-                                price: '\$${product.price?.toString() ?? '0'}',
+                                price: product.price?.toString() ?? '0',
                               ),
                       );
                     },
@@ -205,7 +205,7 @@ class FavoriteHorizontalList extends StatelessWidget {
             }
 
             // Set a fixed height for the horizontal list items
-            const double itemHeight = 280; // Adjust as needed
+            const double itemHeight = 300; // Adjust as needed
             const double itemWidth = 180; // Adjust as needed
 
             return Container(

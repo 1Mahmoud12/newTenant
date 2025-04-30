@@ -3,6 +3,7 @@ import 'package:dobzz_seller/core/component/cache_image.dart';
 import 'package:dobzz_seller/core/component/custom_app_bar.dart';
 import 'package:dobzz_seller/core/component/loadsErros/loading_widget.dart';
 import 'package:dobzz_seller/core/network/local/cache.dart';
+import 'package:dobzz_seller/core/utils/app_icons.dart';
 import 'package:dobzz_seller/core/utils/constant_gaping.dart';
 import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:dobzz_seller/core/utils/constants_models.dart';
@@ -19,6 +20,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 
 class CartView extends StatefulWidget {
   const CartView({super.key});
@@ -325,6 +327,13 @@ class CheckOutItem extends StatelessWidget {
             value,
             style: TextStyle(fontSize: Constants.tablet ? 16 : 16.sp, color: Colors.black),
           ),
+          w5,
+          SvgPicture.asset(
+            AppIcons.currency,
+            colorFilter: const ColorFilter.mode(Colors.black, BlendMode.srcIn),
+            height: 14,
+            width: 14,
+          ),
         ],
       ),
     );
@@ -369,7 +378,8 @@ class CartItemWidget extends StatelessWidget {
       margin: EdgeInsets.symmetric(vertical: 8.h),
       padding: EdgeInsets.all(12.w),
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey.shade300),
+        color: Colors.white,
+        // border: Border.all(color: Colors.grey.shade300),
         borderRadius: BorderRadius.circular(12.r),
       ),
       child: IntrinsicHeight(
@@ -393,7 +403,7 @@ class CartItemWidget extends StatelessWidget {
                         child: Text(
                           cartItem.product?.name ?? '',
                           style: TextStyle(
-                            fontSize: Constants.tablet ? 16 : 16.sp,
+                            fontSize: Constants.tablet ? 12 : 12.sp,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
@@ -412,7 +422,7 @@ class CartItemWidget extends StatelessWidget {
                                 child: Icon(
                                   Icons.delete_outline,
                                   color: state is AddToCartLoading ? Colors.grey : Colors.red,
-                                  size: Constants.tablet ? 20 : 20.sp,
+                                  size: Constants.tablet ? 15 : 15.sp,
                                 ),
                               ),
                             );
@@ -433,11 +443,24 @@ class CartItemWidget extends StatelessWidget {
                   const SizedBox(height: 8),
                   Row(
                     children: [
-                      Text(
-                        cartItem.priceForProduct.toString(),
-                        style: TextStyle(
-                          fontSize: Constants.tablet ? 16 : 16.sp,
-                          fontWeight: FontWeight.w600,
+                      SizedBox(
+                        child: Row(
+                          children: [
+                            Text(
+                              cartItem.priceForProduct.toString(),
+                              style: TextStyle(
+                                fontSize: Constants.tablet ? 14 : 14.sp,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            w5,
+                            SvgPicture.asset(
+                              AppIcons.currency,
+                              colorFilter: const ColorFilter.mode(Colors.black, BlendMode.srcIn),
+                              height: 14,
+                              width: 14,
+                            ),
+                          ],
                         ),
                       ),
                       const Spacer(),
@@ -505,8 +528,8 @@ class _QuantityButton extends StatelessWidget {
     return GestureDetector(
       onTap: isLoading ? null : onTap,
       child: Container(
-        width: 30.w,
-        height: 30.w,
+        width: 20.w,
+        height: 20.h,
         decoration: BoxDecoration(
           border: Border.all(color: isLoading ? Colors.grey.shade200 : Colors.grey.shade400),
           borderRadius: BorderRadius.circular(6.r),

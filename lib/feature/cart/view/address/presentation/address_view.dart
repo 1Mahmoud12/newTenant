@@ -150,6 +150,7 @@ class _AddressViewState extends State<AddressView> {
                             padding: const EdgeInsets.only(bottom: 12.0),
                             child: Container(
                               decoration: BoxDecoration(
+                                color: Colors.white,
                                 border: Border.all(color: Colors.grey.shade300),
                                 borderRadius: BorderRadius.circular(10),
                               ),
