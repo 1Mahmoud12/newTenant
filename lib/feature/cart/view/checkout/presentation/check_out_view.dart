@@ -101,16 +101,6 @@ class _CheckoutViewState extends State<CheckoutView> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        InkWell(
-                          onTap: () {
-                            context.navigateToPage(
-                              AddAddressView(
-                                addressCubit: addressCubit,
-                              ),
-                            );
-                          },
-                          child: const Icon(Icons.add_location_alt),
-                        ),
                       ],
                     ),
                     const SizedBox(height: 8),
@@ -118,6 +108,7 @@ class _CheckoutViewState extends State<CheckoutView> {
                     Row(
                       children: [
                         Expanded(
+                          flex: 7,
                           child: BlocProvider.value(
                             value: addressCubit,
                             child: BlocBuilder<AddressCubit, AddressState>(
@@ -140,6 +131,31 @@ class _CheckoutViewState extends State<CheckoutView> {
                                   },
                                 );
                               },
+                            ),
+                          ),
+                        ),
+                        w5,
+                        Expanded(
+                          child: InkWell(
+                            onTap: () {
+                              context.navigateToPage(
+                                AddAddressView(
+                                  addressCubit: addressCubit,
+                                ),
+                              );
+                            },
+                            child: Container(
+                              margin: const EdgeInsets.only(top: 20),
+                              height: 45,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                color: AppColors.primaryColor,
+                              ),
+                              child: Icon(
+                                Icons.add,
+                                color: Colors.white,
+                                size: 16.sp,
+                              ),
                             ),
                           ),
                         ),

@@ -95,18 +95,18 @@ class _CustomDropDownMenuState extends State<CustomDropDownMenu> {
             iconSize: 0,
             hint: Row(
               children: [
-                // if (newSelected.showName)
-                //   Expanded(
-                //     child: Padding(
-                //       padding: const EdgeInsets.only(left: 5, right: 5),
-                //       child: Text(
-                //         newSelected.name.tr(),
-                //         style: Styles.style14400,
-                //         maxLines: 1,
-                //         overflow: TextOverflow.ellipsis,
-                //       ),
-                //     ),
-                //   ),
+                if (newSelected.showName)
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 5, right: 5),
+                      child: Text(
+                        newSelected.name.tr(),
+                        style: Styles.style14400,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ),
                 if (newSelected.showImage)
                   Expanded(
                     child: Padding(

@@ -6,7 +6,6 @@ import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:dobzz_seller/core/utils/constants_models.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/feature/Categories/presentation/categorized_product_veiw.dart';
-import 'package:dobzz_seller/feature/Categories/presentation/sub_category_view.dart';
 import 'package:dobzz_seller/feature/home/views/manager/categories/cubit/categories_cubit.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -77,19 +76,19 @@ class _CategoriesListState extends State<CategoriesList> {
                             right: context.locale.languageCode == 'ar' ? 0 : 8,
                             left: context.locale.languageCode == 'en' ? 0 : 8,
                           ),
-                          width: 60,
+                          width: 75,
                           child: Column(
                             children: [
                               CacheImage(
                                 urlImage: categories.isNotEmpty ? categories[index].imagePath ?? AppIcons.tShirtCate : AppIcons.tShirtCate,
-                                width: 60,
-                                height: 60,
+                                width: 75,
+                                height: 75,
                               ),
                               h5,
                               Text(
                                 name.tr(),
                                 style: TextStyle(
-                                  fontSize: Constants.tablet ? 16 : 16.sp,
+                                  fontSize: Constants.tablet ? 12 : 12.sp,
                                   fontWeight: FontWeight.w500,
                                 ),
                                 maxLines: 1,
