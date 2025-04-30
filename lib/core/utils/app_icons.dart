@@ -152,4 +152,9 @@ class AppIcons {
   static const Facebook = '$baseUrl/Facebook.svg';
   static const Twitter = '$baseUrl/Twitter.svg';
   static const Instagram = '$baseUrl/Instagram.svg';
+  // payment method
+  static const pay1 = '$baseUrl/Mastercard.svg';
+  static const pay2 = '$baseUrl/visa-logo.svg';
+  static const pay3 = '$baseUrl/ApplePay.svg';
+  static const pay4 = '$baseUrl/STCpay.svg';
 }

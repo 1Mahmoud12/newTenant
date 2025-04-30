@@ -4,6 +4,7 @@ import 'package:dobzz_seller/core/component/custom_drop_down_menu.dart';
 import 'package:dobzz_seller/core/component/custom_list.dart';
 import 'package:dobzz_seller/core/component/fields/custom_text_form_field.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
+import 'package:dobzz_seller/core/utils/app_icons.dart';
 import 'package:dobzz_seller/core/utils/constant_gaping.dart';
 import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:dobzz_seller/core/utils/constants_models.dart';
@@ -181,14 +182,13 @@ class _CheckoutViewState extends State<CheckoutView> {
                       padding: const EdgeInsets.symmetric(horizontal: 5),
                       child: CustomList(
                         borderOnlySelection: true,
-                        tabs: [
-                          'Cash'.tr(),
-                        ],
-                        prefixIcon: true,
-                        icons: const [Icons.credit_card, Icons.monetization_on_outlined, Icons.apple],
+                        tabs: const ['Pay 1', 'Pay 2', 'Pay 3', 'Pay 4'],
+                        showTabs: false, // This is fine if you don't want text labels
+                        prefixIcon: true, // You need to set this to true to show icons
+                        useSvgIcons: true,
+                        svgIcons: const [AppIcons.pay1, AppIcons.pay2, AppIcons.pay3, AppIcons.pay4],
                         onTabChanged: (index) {
-                          //  print('Selected Tab: $index');
-                          // Handle tab change logic here
+                          // Handle tab change
                         },
                       ),
                     ),

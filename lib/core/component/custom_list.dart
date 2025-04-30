@@ -2,13 +2,17 @@ import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart'; // Import for SVG support
 
 class CustomList extends StatefulWidget {
-  final List<String> tabs;
+  final List tabs;
   final void Function(int index)? onTabChanged;
   final bool? prefixIcon;
-  final List<IconData>? icons;
-  final bool borderOnlySelection; // New property for border-only selection
+  final List? icons;
+  final List<String>? svgIcons; // New property for SVG icons
+  final bool useSvgIcons; // Flag to determine if using SVG or Material icons
+  final bool borderOnlySelection; // Property for border-only selection
+  final bool showTabs; // New property to show or hide tabs
 
   const CustomList({
     Key? key,
@@ -16,11 +20,14 @@ class CustomList extends StatefulWidget {
     this.onTabChanged,
     this.prefixIcon = false,
     this.icons,
+    this.svgIcons, // New parameter for SVG paths
+    this.useSvgIcons = false, // Default to false to use Material icons
     this.borderOnlySelection = false, // Default to false to maintain original behavior
+    this.showTabs = true, // Default to true to show tabs
   }) : super(key: key);
 
   @override
-  State<CustomList> createState() => _CustomListState();
+  State createState() => _CustomListState();
 }
 
 class _CustomListState extends State<CustomList> {
@@ -76,23 +83,33 @@ class _CustomListState extends State<CustomList> {
                 ),
                 child: Row(
                   children: [
-                    if (widget.prefixIcon! && widget.icons != null && index < widget.icons!.length)
+                    if (widget.prefixIcon! &&
+                        ((widget.useSvgIcons && widget.svgIcons != null && index < widget.svgIcons!.length) ||
+                            (!widget.useSvgIcons && widget.icons != null && index < widget.icons!.length)))
                       Padding(
-                        padding: const EdgeInsets.only(right: 6.0),
-                        child: Icon(
-                          widget.icons![index],
-                          size: Constants.tablet ? 18 : 18.sp,
+                        padding: widget.showTabs ? const EdgeInsets.only(right: 6.0) : EdgeInsets.zero,
+                        child: widget.useSvgIcons
+                            ? SvgPicture.asset(
+                                widget.svgIcons![index],
+                                height: Constants.tablet ? 18 : 18.sp,
+                                width: Constants.tablet ? 18 : 18.sp,
+                                //  colorFilter: ColorFilter.mode(textColor, BlendMode.srcIn),
+                              )
+                            : Icon(
+                                widget.icons![index],
+                                size: Constants.tablet ? 18 : 18.sp,
+                                color: textColor,
+                              ),
+                      ),
+                    if (widget.showTabs)
+                      Text(
+                        widget.tabs[index],
+                        style: TextStyle(
                           color: textColor,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 16.sp,
                         ),
                       ),
-                    Text(
-                      widget.tabs[index],
-                      style: TextStyle(
-                        color: textColor,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 16.sp,
-                      ),
-                    ),
                   ],
                 ),
               ),
