@@ -2,10 +2,15 @@ import 'dart:developer';
 import 'package:dobzz_seller/core/component/fields/custom_text_form_field.dart';
 import 'package:dobzz_seller/core/component/loadsErros/loading_widget.dart';
 import 'package:dobzz_seller/core/component/see_all_widget.dart';
+import 'package:dobzz_seller/core/themes/colors.dart';
+import 'package:dobzz_seller/core/utils/app_icons.dart';
 import 'package:dobzz_seller/core/utils/constant_gaping.dart';
+import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:dobzz_seller/core/utils/constants_models.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/feature/Categories/presentation/Categories_veiw.dart';
+import 'package:dobzz_seller/feature/cart/view/manager/cartItems/cubit/cart_items_cubit.dart';
+import 'package:dobzz_seller/feature/cart/view/presentation/cart_view.dart';
 import 'package:dobzz_seller/feature/home/data/models/sales_model.dart';
 import 'package:dobzz_seller/feature/home/views/manager/categories/cubit/categories_cubit.dart';
 import 'package:dobzz_seller/feature/home/views/manager/salesBanner/cubit/sales_banner_cubit.dart';
@@ -20,6 +25,8 @@ import 'package:dobzz_seller/feature/product/views/presentation/product_view.dar
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 
 class HomePageView extends StatefulWidget {
   const HomePageView({super.key});
@@ -41,6 +48,51 @@ class _HomePageViewState extends State<HomePageView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: Container(
+        height: 60,
+        width: 60,
+        margin: const EdgeInsets.only(bottom: 80), // Adjust this value to sit above the nav bar
+        child: FloatingActionButton(
+          shape: const CircleBorder(), // Optional, but ensures circle shape
+          backgroundColor: AppColors.black,
+          child: Stack(
+            children: [
+              SvgPicture.asset(
+                AppIcons.unSelectedCartC,
+                colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
+              ),
+              BlocBuilder<CartItemsCubit, CartItemsState>(
+                builder: (context, state) {
+                  return Positioned(
+                    top: 10,
+                    right: 10,
+                    child: Constants.cartItems != 0
+                        ? Container(
+                            height: 13,
+                            width: 13,
+                            decoration: const BoxDecoration(color: Color(0xffF13658), shape: BoxShape.circle),
+                            child: FittedBox(
+                              child: Text(
+                                '${Constants.cartItems}',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleSmall
+                                    ?.copyWith(fontSize: 12.sp, color: Colors.white, fontWeight: FontWeight.w500),
+                              ),
+                            ),
+                          )
+                        : const SizedBox(),
+                  );
+                },
+              ),
+            ],
+          ),
+          onPressed: () {
+            context.navigateToPage(const CartView());
+          },
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -60,7 +112,6 @@ class _HomePageViewState extends State<HomePageView> {
                     child: CustomTextFormField(
                       prefixIcon: const Icon(Icons.search),
                       fillColor: Colors.white,
-                      
                       enable: false,
                       controller: TextEditingController(),
                       hintText: 'Search product..'.tr(),

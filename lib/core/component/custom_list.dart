@@ -13,6 +13,7 @@ class CustomList extends StatefulWidget {
   final bool useSvgIcons; // Flag to determine if using SVG or Material icons
   final bool borderOnlySelection; // Property for border-only selection
   final bool showTabs; // New property to show or hide tabs
+  final int? initialSelectedIndex; // New property for initial selection
 
   const CustomList({
     Key? key,
@@ -24,6 +25,7 @@ class CustomList extends StatefulWidget {
     this.useSvgIcons = false, // Default to false to use Material icons
     this.borderOnlySelection = false, // Default to false to maintain original behavior
     this.showTabs = true, // Default to true to show tabs
+    this.initialSelectedIndex, // Default is null, meaning no selection initially
   }) : super(key: key);
 
   @override
@@ -31,7 +33,14 @@ class CustomList extends StatefulWidget {
 }
 
 class _CustomListState extends State<CustomList> {
-  int selectedIndex = 0;
+  int? selectedIndex; // Changed to nullable
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize selectedIndex with the value provided through initialSelectedIndex
+    selectedIndex = widget.initialSelectedIndex;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +48,7 @@ class _CustomListState extends State<CustomList> {
       scrollDirection: Axis.horizontal,
       child: Row(
         children: List.generate(widget.tabs.length, (index) {
-          final isSelected = index == selectedIndex;
+          final isSelected = selectedIndex != null && index == selectedIndex;
 
           // Determine colors based on selection style
           Color backgroundColor = Colors.white;

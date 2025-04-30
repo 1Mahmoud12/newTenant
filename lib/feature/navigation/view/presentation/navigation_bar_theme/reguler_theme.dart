@@ -48,8 +48,8 @@ class RegularNavigationBar extends StatelessWidget {
           ),
           RegularNavItem(
             index: 1,
-            outlinedIcon: AppIcons.unSelectedCartC,
-            filledIcon: AppIcons.selectedCartC,
+            outlinedIcon: AppIcons.unSelectedProductC,
+            filledIcon: AppIcons.selectedProductC,
             isSelected: selectedIndex == 1,
             onTap: onItemTapped,
             isCart: true,
@@ -111,42 +111,13 @@ class RegularNavItem extends StatelessWidget {
                 shape: BoxShape.circle,
                 color: isSelected ? Colors.grey.shade200 : Colors.transparent,
               ),
-              child: Stack(
-                children: [
-                  Center(
-                    child: SvgPicture.asset(
-                      isSelected ? filledIcon : outlinedIcon,
-                      width: 24,
-                      height: 24,
-                      colorFilter: ColorFilter.mode(isSelected ? AppColors.primaryColor : Colors.black, BlendMode.srcIn),
-                    ),
-                  ),
-                  if (isCart!)
-                    BlocBuilder<CartItemsCubit, CartItemsState>(
-                      builder: (context, state) {
-                        return Positioned(
-                          top: 10,
-                          right: 10,
-                          child: Constants.cartItems != 0
-                              ? Container(
-                                  height: 13,
-                                  width: 13,
-                                  decoration: const BoxDecoration(color: Color(0xffF13658), shape: BoxShape.circle),
-                                  child: FittedBox(
-                                    child: Text(
-                                      '${Constants.cartItems}',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleSmall
-                                          ?.copyWith(fontSize: 12.sp, color: Colors.white, fontWeight: FontWeight.w500),
-                                    ),
-                                  ),
-                                )
-                              : const SizedBox(),
-                        );
-                      },
-                    ),
-                ],
+              child: Center(
+                child: SvgPicture.asset(
+                  isSelected ? filledIcon : outlinedIcon,
+                  width: 24,
+                  height: 24,
+                  colorFilter: ColorFilter.mode(isSelected ? AppColors.primaryColor : Colors.black, BlendMode.srcIn),
+                ),
               ),
             ),
           ],

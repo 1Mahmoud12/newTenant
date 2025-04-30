@@ -43,6 +43,8 @@ class AppIcons {
   // the Circled theme icons
   static const unSelectedHomeC = '$baseUrl/unselected-home-c.svg';
   static const unSelectedCartC = '$baseUrl/unselected-cart-c.svg';
+  static const unSelectedProductC = '$baseUrl/product-unselection.svg';
+  static const selectedProductC = '$baseUrl/product-selection.svg';
   static const unSelectedProfileC = '$baseUrl/unselected-profile-c.svg';
   static const unSelectedFavoriteC = '$baseUrl/unselected-favorite.svg';
   static const selectedHomeC = '$baseUrl/selected-home-c.svg';
