@@ -14,10 +14,12 @@ class ProcessToCheckoutCubit extends Cubit<ProcessToCheckoutState> {
   ProcessToCheckoutCubit() : super(ProcessToCheckoutInitial());
   String addressId = Constants.defaultAddress.addressId.toString();
   Future<void> processToCheckout({required BuildContext context}) async {
+    if (isClosed) return;
     emit(ProcessToCheckoutLoading());
     await ProcessToCheckoutDataSource.processToCheckout(addressId: addressId).then(
       (value) async {
         value.fold((l) {
+          if (isClosed) return;
           emit(ProcessToCheckoutError(e: l.errMessage));
           Utils.showToast(title: l.errMessage, state: UtilState.error);
         }, (r) async {
@@ -27,6 +29,7 @@ class ProcessToCheckoutCubit extends Cubit<ProcessToCheckoutState> {
             ),
           );
           context.navigateToPage(const MyOrderView());
+          if (isClosed) return;
           emit(ProcessToCheckoutSuccess());
         });
       },

@@ -12,17 +12,17 @@ part 'address_state.dart';
 class AddressCubit extends Cubit<AddressState> {
   AddressCubit() : super(AddressInitial());
 
-  Future<void> getAddress({required BuildContext context}) async {
+  Future<void> getAddress({required BuildContext context}) async {if (isClosed) return;
     emit(AddressLoading());
     await AddressDataSource.getAddress().then(
       (value) async {
-        value.fold((l) {
+        value.fold((l) {if (isClosed) return;
        //   Utils.showToast(title: l.errMessage, state: UtilState.error);
           emit(AddressError(e: l.errMessage));
         }, (r) async {
           ConstantsModels.addressModel = r;
           log('print address ====>${ConstantsModels.addressModel?.toJson()}');
-          log('default address ====>${Constants.defaultAddress.addressId}');
+          log('default address ====>${Constants.defaultAddress.addressId}');if (isClosed) return;
           emit(AddressSuccess());
         });
       },

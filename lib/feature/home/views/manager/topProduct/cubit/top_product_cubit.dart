@@ -12,10 +12,12 @@ class TopProductCubit extends Cubit<TopProductState> {
   TopProductCubit() : super(TopProductInitial());
 
   Future<void> getTopProduct({required BuildContext context, int? subCategoryId, String? searchProductByName}) async {
+    if (isClosed) return;
     emit(TopProductLoading());
     await GetTopProductDataSource.getTopProduct(subCategoryId: subCategoryId, searchProductByName: searchProductByName).then(
       (value) async {
         value.fold((l) {
+          if (isClosed) return;
           emit(TopProductError(e: l.errMessage));
         }, (r) async {
           if (subCategoryId != null) {
@@ -26,7 +28,7 @@ class TopProductCubit extends Cubit<TopProductState> {
             ConstantsModels.topProductModel = r;
           }
           log('Top Product: ${ConstantsModels.topProductModel?.data?.length}');
-
+          if (isClosed) return;
           emit(TopProductSuccess());
         });
       },

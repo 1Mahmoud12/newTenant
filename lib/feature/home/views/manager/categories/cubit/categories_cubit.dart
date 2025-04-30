@@ -9,8 +9,9 @@ part 'categories_state.dart';
 
 class CategoriesCubit extends Cubit<CategoriesState> {
   CategoriesCubit() : super(CategoriesInitial());
-static  CategoriesCubit of(BuildContext context) => BlocProvider.of<CategoriesCubit>(context);
+  static CategoriesCubit of(BuildContext context) => BlocProvider.of<CategoriesCubit>(context);
   Future<void> getCategories({required BuildContext context}) async {
+    if (isClosed) return;
     emit(CategoriesLoading());
     await CategoriesDataSource.getCategories().then(
       (value) async {
@@ -20,7 +21,7 @@ static  CategoriesCubit of(BuildContext context) => BlocProvider.of<CategoriesCu
           //   logger.i(r.toJson());
           ConstantsModels.categoriesModel = r;
           //log('Top Product: ${ConstantsModels.topProductModel?.data?.length}');
-
+          if (isClosed) return;
           emit(CategoriesSuccess());
         });
       },

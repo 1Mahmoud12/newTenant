@@ -21,8 +21,14 @@ class ProductCategoryView extends StatefulWidget {
 
 class _ProdcutCategoryViewState extends State<ProductCategoryView> {
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   void initState() {
     loadData();
+
     super.initState();
   }
 

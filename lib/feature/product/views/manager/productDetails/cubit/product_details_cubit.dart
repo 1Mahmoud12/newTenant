@@ -10,14 +10,17 @@ class ProductDetailsCubit extends Cubit<ProductDetailsState> {
   ProductDetailsCubit() : super(ProductDetailsInitial());
 
   Future<void> getProductDetailsData({required BuildContext context, required int productId}) async {
+    if (isClosed) return;
     emit(ProductDetailsLoading());
     await ProductDetailsDataSource.getProductDetails(productId: productId).then(
       (value) async {
         value.fold((l) {
+          if (isClosed) return;
           emit(ProductDetailsError(e: l.errMessage));
         }, (r) async {
           ConstantsModels.productDetailsModel = r;
-          // log('Cart items list: ${ConstantsModels.cartItemModel?.data?.length}');
+          if (isClosed) return;
+          // log('Cart items list: ${ConstantsModels.cartItemModel?.data?.length}');if (isClosed) return;
           emit(ProductDetailsSuccess());
         });
       },

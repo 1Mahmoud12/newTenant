@@ -10,14 +10,17 @@ part 'city_state.dart';
 class CityCubit extends Cubit<CityState> {
   CityCubit() : super(CityInitial());
   Future<void> getAddress({required BuildContext context, required int stateId}) async {
+    if (isClosed) return;
     emit(CityLoading());
     await CityDataSource.getCities(stateId: stateId).then(
       (value) async {
         value.fold((l) {
           Utils.showToast(title: l.errMessage, state: UtilState.error);
+          if (isClosed) return;
           emit(CityError(e: l.errMessage));
         }, (r) async {
           ConstantsModels.cityModel = r;
+          if (isClosed) return;
           emit(CitySuccess());
         });
       },

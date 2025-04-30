@@ -1,11 +1,6 @@
 import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:dobzz_seller/core/utils/app_icons.dart';
-import 'package:dobzz_seller/core/utils/constants.dart';
-import 'package:dobzz_seller/core/utils/constants_models.dart';
-import 'package:dobzz_seller/feature/cart/view/manager/cartItems/cubit/cart_items_cubit.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
 class RegularNavigationBar extends StatelessWidget {
@@ -41,15 +36,15 @@ class RegularNavigationBar extends StatelessWidget {
         children: [
           RegularNavItem(
             index: 0,
-            outlinedIcon: AppIcons.unSelectedHomeR,
-            filledIcon: AppIcons.selectedHomeR,
+            outlinedIcon: AppIcons.unSelectedProductC,
+            filledIcon: AppIcons.selectedProductC,
             isSelected: selectedIndex == 0,
             onTap: onItemTapped,
           ),
           RegularNavItem(
             index: 1,
-            outlinedIcon: AppIcons.unSelectedProductC,
-            filledIcon: AppIcons.selectedProductC,
+            outlinedIcon: AppIcons.unSelectedHomeR,
+            filledIcon: AppIcons.selectedHomeR,
             isSelected: selectedIndex == 1,
             onTap: onItemTapped,
             isCart: true,

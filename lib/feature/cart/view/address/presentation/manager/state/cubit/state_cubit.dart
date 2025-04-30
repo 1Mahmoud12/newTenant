@@ -11,14 +11,17 @@ class StateCubit extends Cubit<StateState> {
   StateCubit() : super(StateInitial());
 
   Future<void> getAddress({required BuildContext context}) async {
+    if (isClosed) return;
     emit(StateLoading());
     await StateDataSource.getState().then(
       (value) async {
         value.fold((l) {
           Utils.showToast(title: l.errMessage, state: UtilState.error);
+          if (isClosed) return;
           emit(StateError(e: l.errMessage));
         }, (r) async {
           ConstantsModels.stateModel = r;
+          if (isClosed) return;
           emit(StateSuccess());
         });
       },

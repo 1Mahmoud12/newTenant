@@ -9,14 +9,14 @@ part 'slider_state.dart';
 class SliderCubit extends Cubit<SliderState> {
   SliderCubit() : super(SliderInitial());
 
-  Future<void> getSlider({required BuildContext context}) async {
+  Future<void> getSlider({required BuildContext context}) async {if (isClosed) return;
     emit(SliderLoading());
     await SliderDataSource.getSlider().then(
       (value) async {
-        value.fold((l) {
+        value.fold((l) {if (isClosed) return;
           emit(SliderError(e: l.errMessage));
         }, (r) async {
-          ConstantsModels.sliderModel = r;
+          ConstantsModels.sliderModel = r;if (isClosed) return;
           emit(SliderSuccess());
         });
       },

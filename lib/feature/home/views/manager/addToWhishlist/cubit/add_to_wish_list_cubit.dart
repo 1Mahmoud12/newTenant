@@ -10,14 +10,16 @@ class AddToWishListCubit extends Cubit<AddToWishListState> {
   AddToWishListCubit() : super(AddToWishListInitial());
 
   Future<void> addToWishList({required BuildContext context, required int productId}) async {
+    if (isClosed) return;
     emit(AddToWishListLoading());
     await AddToWishListDataSource.addToWishList(productId: productId).then(
       (value) async {
         value.fold((l) {
+          if (isClosed) return;
           emit(AddToWishListError(e: l.errMessage));
           Utils.showToast(title: l.errMessage, state: UtilState.error);
         }, (r) async {
-          //  Utils.showToast(title: 'product add to wish list successfully', state: UtilState.success);
+          if (isClosed) return;
           emit(AddToWishListSuccess());
         });
       },

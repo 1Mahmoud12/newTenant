@@ -9,14 +9,14 @@ part 'remove_from_whish_list_state.dart';
 class RemoveFromWhishListCubit extends Cubit<RemoveFromWhishListState> {
   RemoveFromWhishListCubit() : super(RemoveFromWhishListInitial());
 
-  Future<void> removeFromWishList({required BuildContext context, required int productId}) async {
+  Future<void> removeFromWishList({required BuildContext context, required int productId}) async {if (isClosed) return;
     emit(RemoveFromWhishListLoading());
     await RemoveFromWhishListDataSource.removeFromWishList(productId: productId).then(
       (value) async {
-        value.fold((l) {
+        value.fold((l) {if (isClosed) return;
           emit(RemoveFromWhishListError(e: l.errMessage));
           Utils.showToast(title: l.errMessage, state: UtilState.error);
-        }, (r) async {
+        }, (r) async {if (isClosed) return;
           //  Utils.showToast(title: 'product remove form wish list successfully', state: UtilState.success);
           emit(RemoveFromWhishListSuccess());
         });

@@ -1,7 +1,6 @@
 import 'package:dobzz_seller/core/utils/utils.dart';
 import 'package:dobzz_seller/feature/account/view/presentation/account_view.dart';
 import 'package:dobzz_seller/feature/cart/view/manager/cartItems/cubit/cart_items_cubit.dart';
-import 'package:dobzz_seller/feature/cart/view/presentation/cart_view.dart';
 import 'package:dobzz_seller/feature/favorites/views/presentation/favorite_view.dart';
 import 'package:dobzz_seller/feature/home/views/presentation/home_page_view.dart';
 import 'package:dobzz_seller/feature/navigation/view/presentation/navigation_bar_theme/circled_border_Theme.dart';

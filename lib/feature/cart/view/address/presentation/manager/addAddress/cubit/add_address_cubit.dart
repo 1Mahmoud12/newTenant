@@ -14,7 +14,7 @@ class AddAddressCubit extends Cubit<AddAddressState> {
   int cityId = -1;
   int stateId = -1;
   bool isDefault = false;
-  Future<void> addAddress({required BuildContext context, required AddressCubit addressCubit}) async {
+  Future<void> addAddress({required BuildContext context, required AddressCubit addressCubit}) async {if (isClosed) return;
     emit(AddAddressLoading());
     await AddressDataSource.addAddress(
       data: {
@@ -27,7 +27,7 @@ class AddAddressCubit extends Cubit<AddAddressState> {
     ).then(
       (value) async {
         value.fold((l) {
-          Utils.showToast(title: l.errMessage, state: UtilState.error);
+          Utils.showToast(title: l.errMessage, state: UtilState.error);if (isClosed) return;
           emit(AddAddressError(e: l.errMessage));
         }, (r) async {
           Navigator.pop(context);
@@ -35,7 +35,7 @@ class AddAddressCubit extends Cubit<AddAddressState> {
             title: 'Address Add Successfully',
             state: UtilState.success,
           );
-          addressCubit.getAddress(context: context);
+          addressCubit.getAddress(context: context);if (isClosed) return;
           emit(AddAddressSuccess());
         });
       },

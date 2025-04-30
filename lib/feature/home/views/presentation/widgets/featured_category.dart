@@ -3,7 +3,6 @@ import 'package:dobzz_seller/core/component/loadsErros/loading_widget.dart';
 import 'package:dobzz_seller/core/utils/constants_models.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/feature/Categories/presentation/categorized_product_veiw.dart';
-import 'package:dobzz_seller/feature/Categories/presentation/sub_category_view.dart';
 import 'package:dobzz_seller/feature/home/data/models/categories_model.dart';
 import 'package:dobzz_seller/feature/home/views/manager/categories/cubit/categories_cubit.dart';
 import 'package:flutter/material.dart';

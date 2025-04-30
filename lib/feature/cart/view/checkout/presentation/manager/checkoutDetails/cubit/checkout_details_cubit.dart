@@ -12,15 +12,15 @@ part 'checkout_details_state.dart';
 class CheckoutDetailsCubit extends Cubit<CheckoutDetailsState> {
   CheckoutDetailsCubit() : super(CheckoutDetailsInitial());
 
-  Future<void> getCheckoutDetails({required BuildContext context}) async {
+  Future<void> getCheckoutDetails({required BuildContext context}) async {if (isClosed) return;
     emit(CheckoutDetailsLoading());
     await CheckoutDetailsDataSource.getCheckoutDetails().then(
       (value) async {
         value.fold((l) {
-          Utils.showToast(title: l.errMessage, state: UtilState.error);
+          Utils.showToast(title: l.errMessage, state: UtilState.error);if (isClosed) return;
           emit(CheckoutDetailsError(e: l.errMessage));
         }, (r) async {
-          ConstantsModels.checkoutDetailsModel = r;
+          ConstantsModels.checkoutDetailsModel = r;if (isClosed) return;
           emit(CheckoutDetailsSuccess());
         });
       },

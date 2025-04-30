@@ -13,17 +13,20 @@ class AddToCartCubit extends Cubit<AddToCartState> {
   int quantity = 1;
 
   Future<void> addToCart({required BuildContext context, required int productId, String? sizeCode}) async {
+    if (isClosed) return;
     emit(AddToCartLoading());
     await AddToCartDataSource.addToCart(productId: productId, quantity: quantity, sizeCode: sizeCode).then(
       (value) async {
         value.fold((l) {
+          if (isClosed) return;
           emit(AddToCartError(e: l.errMessage));
         }, (r) async {
+          if (isClosed) return;
           //  Utils.showToast(title: 'Product Add to cart successfully', state: UtilState.success);
           //
           // context.navigateToPage(
           //   const CartView(),
-          // );
+          // );if (isClosed) return;
           emit(AddToCartSuccess());
         });
       },
@@ -31,15 +34,18 @@ class AddToCartCubit extends Cubit<AddToCartState> {
   }
 
   Future<void> updateCartItem({required BuildContext context, required int cartItemId, required int quantity}) async {
+    if (isClosed) return;
     emit(AddToCartLoading());
     await AddToCartDataSource.updateCartItem(cartItemId: cartItemId, quantity: quantity).then(
       (value) async {
         value.fold(
           (l) {
             Utils.showToast(title: l.errMessage, state: UtilState.error);
+            if (isClosed) return;
             emit(AddToCartError(e: l.errMessage));
           },
           (r) async {
+            if (isClosed) return;
             emit(AddToCartSuccess());
           },
         );
