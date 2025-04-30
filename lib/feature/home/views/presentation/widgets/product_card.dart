@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:dobzz_seller/core/component/cache_image.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:dobzz_seller/core/utils/app_icons.dart';
+import 'package:dobzz_seller/core/utils/constant_gaping.dart';
 import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/feature/cart/view/manager/addToCart/cubit/add_to_cart_cubit.dart';
@@ -150,11 +151,25 @@ class _ProductCardState extends State<ProductCard> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    widget.price,
-                    style: TextStyle(
-                      fontSize: Constants.tablet ? 16 : 16.sp,
-                      color: Colors.grey.shade700,
+                  SizedBox(
+                    child: Row(
+                      children: [
+                        Text(
+                          widget.price,
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.grey.shade700,
+                          ),
+                        ),
+                        w5,
+                        SvgPicture.asset(
+                          AppIcons.currency,
+                          colorFilter: const ColorFilter.mode(Colors.black, BlendMode.srcIn),
+                          height: 14,
+                          width: 14,
+                        ),
+                      ],
                     ),
                   ),
                   AddToCartButton(
@@ -456,19 +471,26 @@ class _HorizontalProductCardState extends State<HorizontalProductCard> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            widget.price,
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.grey.shade700,
+                          SizedBox(
+                            child: Row(
+                              children: [
+                                Text(
+                                  widget.price,
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.grey.shade700,
+                                  ),
+                                ),
+                                w5,
+                                SvgPicture.asset(
+                                  AppIcons.currency,
+                                  colorFilter: const ColorFilter.mode(Colors.black, BlendMode.srcIn),
+                                  height: 14,
+                                  width: 14,
+                                ),
+                              ],
                             ),
-                          ),
-                          SvgPicture.asset(
-                            AppIcons.currency,
-                            colorFilter: const ColorFilter.mode(Colors.black, BlendMode.srcIn),
-                            height: 14,
-                            width: 14,
                           ),
                           HorizontalAddToCartButton(
                             productId: widget.productId,

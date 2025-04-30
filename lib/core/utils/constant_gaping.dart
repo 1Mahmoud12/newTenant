@@ -25,6 +25,9 @@ const h30 = SizedBox(
 const w5 = SizedBox(
   width: 5,
 );
+const w7 = SizedBox(
+  width: 7,
+);
 const w10 = SizedBox(
   width: 10,
 );

@@ -1,3 +1,4 @@
+import 'package:dobzz_seller/core/component/cache_image.dart';
 import 'package:dobzz_seller/core/component/loadsErros/loading_widget.dart';
 import 'package:dobzz_seller/core/utils/constants_models.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
@@ -257,8 +258,8 @@ class CategoryCard extends StatelessWidget {
           fit: StackFit.expand,
           children: [
             // Image background
-            Image.network(
-              category.imagePath ?? '',
+            CacheImage(
+              urlImage: category.imagePath,
               fit: BoxFit.cover,
             ),
             // Overlay for contrast with text

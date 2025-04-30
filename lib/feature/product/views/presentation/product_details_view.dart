@@ -530,33 +530,102 @@ class _PriceAndAddToCartWidgetState extends State<PriceAndAddToCartWidget> {
               value: widget.addToCartCubit,
               child: BlocBuilder<AddToCartCubit, AddToCartState>(
                 builder: (context, state) {
-                  return CustomTextButton(
-                    child: state is AddToCartLoading
-                        ? const Center(
-                            child: SizedBox(
-                              height: 20,
-                              width: 20,
-                              child: CircularProgressIndicator(
-                                color: Colors.white,
-                              ),
-                            ),
-                          )
-                        : Row(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              s,
-                              SvgPicture.asset(AppIcons.unSelectedCartC),
-                              w5,
-                              Text(
-                                'Add to Cart'.tr(),
-                                style: TextStyle(color: Colors.white, fontSize: Constants.tablet ? 16 : 16.sp, fontWeight: FontWeight.w500),
-                              ),
-                              s,
-                            ],
+                  // Show loading indicator when adding to cart
+                  if (state is AddToCartLoading) {
+                    return CustomTextButton(
+                      child: const Center(
+                        child: SizedBox(
+                          height: 20,
+                          width: 20,
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
                           ),
+                        ),
+                      ),
+                      onPress: () {}, // Disabled during loading
+                    );
+                  }
+
+                  // Show success message when item is added to cart
+                  if (state is AddToCartSuccess) {
+                    return Container(
+                      height: 50,
+                      decoration: BoxDecoration(
+                        color: Colors.green,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(Icons.check_circle, color: Colors.white),
+                          const SizedBox(width: 8),
+                          Text(
+                            'Added to Cart'.tr(),
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: Constants.tablet ? 16 : 16.sp,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+
+                  // Show error if adding to cart failed
+                  if (state is AddToCartError) {
+                    return CustomTextButton(
+                      backgroundColor: Colors.red.shade700,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(Icons.error_outline, color: Colors.white),
+                          const SizedBox(width: 8),
+                          Text(
+                            'Try Again'.tr(),
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: Constants.tablet ? 16 : 16.sp,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
+                      ),
+                      onPress: () async {
+                        await widget.addToCartCubit.addToCart(
+                          context: context,
+                          productId: widget.productId,
+                          sizeCode: widget.sizeCode,
+                        );
+                      },
+                    );
+                  }
+
+                  // Default state - show normal add to cart button
+                  return CustomTextButton(
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        s,
+                        SvgPicture.asset(AppIcons.unSelectedCartC),
+                        w5,
+                        Text(
+                          'Add to Cart'.tr(),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: Constants.tablet ? 16 : 16.sp,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        s,
+                      ],
+                    ),
                     onPress: () async {
-                      await widget.addToCartCubit.addToCart(context: context, productId: widget.productId, sizeCode: widget.sizeCode);
-                      Navigator.pop(context);
+                      await widget.addToCartCubit.addToCart(
+                        context: context,
+                        productId: widget.productId,
+                        sizeCode: widget.sizeCode,
+                      );
                     },
                   );
                 },

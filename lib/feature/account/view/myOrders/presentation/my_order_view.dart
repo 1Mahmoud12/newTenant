@@ -4,6 +4,7 @@ import 'package:dobzz_seller/core/component/fields/custom_text_form_field.dart';
 import 'package:dobzz_seller/core/component/loadsErros/loading_widget.dart';
 import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:dobzz_seller/core/utils/constants_models.dart';
+import 'package:dobzz_seller/core/utils/errorLoadingWidgets/empty_widget.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/feature/account/view/myOrders/data/models/order_model.dart';
 import 'package:dobzz_seller/feature/account/view/myOrders/presentation/manager/order/cubit/order_cubit.dart';
@@ -64,10 +65,11 @@ class _MyOrderViewState extends State<MyOrderView> {
                   children: [
                     Expanded(
                       child: ConstantsModels.orderModel?.data?.isEmpty ?? true
-                          ? Center(
-                              child: Text(
-                                'No orders available.',
-                                style: TextStyle(fontSize: Constants.tablet ? 16 : 16.sp, color: Colors.black),
+                          ? const Center(
+                              child: EmptyWidget(
+                                data: 'No Ongoing Orders!',
+                                subData: 'You don’t have any ongoing orders at this time.',
+                                emptyImage: EmptyImages.noOrders,
                               ),
                             )
                           : ListView.builder(

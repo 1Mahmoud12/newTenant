@@ -2,9 +2,11 @@ import 'package:dobzz_seller/core/component/buttons/custom_text_button.dart';
 import 'package:dobzz_seller/core/component/cache_image.dart';
 import 'package:dobzz_seller/core/component/custom_app_bar.dart';
 import 'package:dobzz_seller/core/component/loadsErros/loading_widget.dart';
+import 'package:dobzz_seller/core/network/local/cache.dart';
 import 'package:dobzz_seller/core/utils/constant_gaping.dart';
 import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:dobzz_seller/core/utils/constants_models.dart';
+import 'package:dobzz_seller/core/utils/errorLoadingWidgets/empty_widget.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/core/utils/utils.dart';
 import 'package:dobzz_seller/feature/cart/data/models/cart_item_model.dart';
@@ -203,8 +205,10 @@ class _CartViewState extends State<CartView> {
       final cartItems = ConstantsModels.cartItemModel?.data ?? [];
 
       if (cartItems.isEmpty) {
-        return Center(
-          child: Text('Your cart is empty'.tr()),
+        return const EmptyWidget(
+          data: 'Your Cart Is Empty!',
+          subData: 'When you add products, they’ll appear here.',
+          emptyImage: EmptyImages.noCartItems,
         );
       }
 
@@ -265,7 +269,11 @@ class GoToCheckOutButton extends StatelessWidget {
           CustomTextButton(
             borderRadius: 8,
             onPress: () {
-              context.navigateToPage(const CheckoutView());
+              if (userCacheValue?.data?.phone == '+201124980094') {
+                Utils.showToast(title: 'This is demo account you can not create order ', state: UtilState.error);
+              } else {
+                context.navigateToPage(const CheckoutView());
+              }
             },
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -390,14 +398,23 @@ class CartItemWidget extends StatelessWidget {
                           ),
                         ),
                       ),
+                      w7,
                       BlocProvider.value(
                         value: addToCartCubit,
                         child: BlocBuilder<AddToCartCubit, AddToCartState>(
                           builder: (context, state) {
-                            return GestureDetector(
+                            return InkWell(
                               onTap: state is AddToCartLoading ? null : onDelete,
-                              child: Icon(Icons.delete_outline,
-                                  color: state is AddToCartLoading ? Colors.grey : Colors.red, size: Constants.tablet ? 20 : 20.sp),
+                              child: Container(
+                                padding: const EdgeInsets.all(5),
+                                decoration:
+                                    BoxDecoration(borderRadius: BorderRadius.circular(8), border: Border.all(color: Colors.red.withOpacity(0.2))),
+                                child: Icon(
+                                  Icons.delete_outline,
+                                  color: state is AddToCartLoading ? Colors.grey : Colors.red,
+                                  size: Constants.tablet ? 20 : 20.sp,
+                                ),
+                              ),
                             );
                           },
                         ),

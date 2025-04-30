@@ -4,6 +4,7 @@ import 'package:dobzz_seller/core/component/fields/custom_text_form_field.dart';
 import 'package:dobzz_seller/core/component/loadsErros/loading_widget.dart';
 import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:dobzz_seller/core/utils/constants_models.dart';
+import 'package:dobzz_seller/core/utils/errorLoadingWidgets/empty_widget.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/feature/home/data/models/product_mdoel.dart';
 import 'package:dobzz_seller/feature/home/views/manager/topProduct/cubit/top_product_cubit.dart';
@@ -72,15 +73,19 @@ class _SearchProductHomeViewState extends State<SearchProductHomeView> {
       return Center(child: Text('${'Error:'.tr()}${state.e}'));
     }
     if (ConstantsModels.searchProductsModel?.data?.isEmpty ?? true) {
-      return Center(
-        child: Text('No products found'.tr()),
+      return const EmptyWidget(
+        data: 'No Results Found!',
+        subData: 'Try a similar word or something more general.',
+        emptyImage: EmptyImages.noSearchResult,
       );
     }
     if (state is TopProductSuccess) {
       final products = ConstantsModels.searchProductsModel?.data ?? [];
       if (products.isEmpty) {
-        return Center(
-          child: Text('No products available'.tr()),
+        return const EmptyWidget(
+          data: 'No Results Found!',
+          subData: 'Try a similar word or something more general.',
+          emptyImage: EmptyImages.noSearchResult,
         );
       }
       return ListView.builder(

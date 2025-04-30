@@ -13,7 +13,11 @@ enum EmptyImages {
   newUpdates,
   anErrorOccurred,
   noMessagesInbox,
-  noNotificationYet
+  noNotificationYet,
+  noCartItems,
+  noSearchResult,
+  noSavedItem,
+  
 }
 
 class EmptyWidget extends StatelessWidget {
@@ -46,7 +50,10 @@ class EmptyWidget extends StatelessWidget {
                   EmptyImages.newUpdates => Image.asset(AppImages.newUpdates),
                   EmptyImages.anErrorOccurred => Image.asset(AppImages.anErrorOccurred),
                   EmptyImages.noMessagesInbox => Image.asset(AppImages.noMessagesInbox),
-                  EmptyImages.noNotificationYet => Image.asset(AppImages.noNotificationYet),
+                  EmptyImages.noNotificationYet => Image.asset(AppImages.emptyNotification),
+                  EmptyImages.noCartItems => Image.asset(AppImages.noCartItem),
+                  EmptyImages.noSearchResult => Image.asset(AppImages.noSearchResult),
+                  EmptyImages.noSavedItem => Image.asset(AppImages.noSavedItem),
                 },
                 const SizedBox(height: 20),
                 Text(

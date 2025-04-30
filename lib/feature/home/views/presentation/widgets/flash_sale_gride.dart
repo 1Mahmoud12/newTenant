@@ -1,4 +1,5 @@
 import 'package:dobzz_seller/core/component/loadsErros/loading_widget.dart';
+import 'package:dobzz_seller/core/utils/errorLoadingWidgets/empty_widget.dart';
 import 'package:dobzz_seller/feature/favorites/views/manager/wishList/cubit/wish_list_cubit.dart';
 import 'package:dobzz_seller/feature/home/views/manager/addToWhishlist/cubit/add_to_wish_list_cubit.dart';
 import 'package:dobzz_seller/feature/home/views/manager/removeFromWhislist/cubit/remove_from_whish_list_cubit.dart';
@@ -164,8 +165,10 @@ class FavoriteGrid extends StatelessWidget {
             final wishList = ConstantsModels.wishListModel?.data;
 
             if (wishList == null || wishList.isEmpty) {
-              return Center(
-                child: Text('No favorites products available'.tr()),
+              return const EmptyWidget(
+                data: 'No Saved Items!',
+                subData: 'You don’t have any saved items. Go to home and add some.',
+                emptyImage: EmptyImages.noSavedItem,
               );
             }
             return GridView.builder(
@@ -183,7 +186,7 @@ class FavoriteGrid extends StatelessWidget {
               itemBuilder: (context, index) {
                 final wishListItem = wishList[index];
                 return ProductCard(
-                //  rating: wishListItem.,
+                  //  rating: wishListItem.,
                   productId: wishListItem.productId?.toInt() ?? -1,
                   initialLiked: true,
                   onLikeTap: (isNowLiked) {

@@ -7,6 +7,10 @@ class AppImages {
   static const splashLogo = '$baseUrl/splash-app-logo.png';
   static const backgroundSplashTwo = '$baseUrl/backgroundSplashTwo.png';
   static const backGroundSuccessToast = '$baseUrl/backGroundSuccessToast.png';
+  static const emptyNotification = '$baseUrl/empty-notification.png';
+  static const noCartItem = '$baseUrl/no-cart-item.png';
+  static const noSearchResult = '$baseUrl/Search-duotone.png';
+  static const noSavedItem = '$baseUrl/Heart-duotone.png';
 
   // splash shap
   static const splashShape = '$baseUrl/splash-shap.png';
@@ -42,7 +46,7 @@ class AppImages {
   static const addressMarker = '$baseUrl/addressMarker.png';
 
   // Empty Pages
-  static const noOrdersIc = '$baseUrl/noOrdersIc.png';
+  static const noOrdersIc = '$baseUrl/Box-duotone.png';
   static const actionBlocked = '$baseUrl/actionBlocked.png';
   static const appClosed = '$baseUrl/appClosed.png';
   static const emptyWallet = '$baseUrl/emptyWallet.png';
