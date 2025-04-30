@@ -7,6 +7,7 @@ import 'package:dobzz_seller/core/utils/constant_gaping.dart';
 import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/feature/cart/view/manager/addToCart/cubit/add_to_cart_cubit.dart';
+import 'package:dobzz_seller/feature/cart/view/manager/cartItems/cubit/cart_items_cubit.dart';
 import 'package:dobzz_seller/feature/home/views/manager/addToWhishlist/cubit/add_to_wish_list_cubit.dart';
 import 'package:dobzz_seller/feature/product/views/presentation/product_details_view.dart';
 import 'package:flutter/material.dart';
@@ -250,6 +251,7 @@ class _AddToCartButtonState extends State<AddToCartButton> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
+        CartItemsCubit.of(context).addCartItems();
         addToCartCubit
             .addToCart(
           context: context,
@@ -536,6 +538,7 @@ class _HorizontalAddToCartButtonState extends State<HorizontalAddToCartButton> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
+        CartItemsCubit.of(context).addCartItems();
         addToCartCubit
             .addToCart(
           context: context,

@@ -1,4 +1,5 @@
 import 'package:dobzz_seller/feature/cart/view/address/presentation/manager/address/cubit/address_cubit.dart';
+import 'package:dobzz_seller/feature/cart/view/manager/cartItems/cubit/cart_items_cubit.dart';
 import 'package:dobzz_seller/feature/home/views/manager/categories/cubit/categories_cubit.dart';
 import 'package:dobzz_seller/mainCubit/cubit/main_cubit_cubit.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -49,9 +50,9 @@ class _MyAppState extends State<MyApp> {
             create: (context) => MainCubitCubit(),
           ),
 
-          // BlocProvider(
-          //   create: (context) => OrderCubit(),
-          // ),
+          BlocProvider(
+            create: (context) => CartItemsCubit(),
+          ),
           // BlocProvider(
           //   create: (context) => ManageAddressesCubit(),
           // ),

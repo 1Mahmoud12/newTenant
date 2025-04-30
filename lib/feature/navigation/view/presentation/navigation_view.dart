@@ -1,5 +1,6 @@
 import 'package:dobzz_seller/core/utils/utils.dart';
 import 'package:dobzz_seller/feature/account/view/presentation/account_view.dart';
+import 'package:dobzz_seller/feature/cart/view/manager/cartItems/cubit/cart_items_cubit.dart';
 import 'package:dobzz_seller/feature/cart/view/presentation/cart_view.dart';
 import 'package:dobzz_seller/feature/favorites/views/presentation/favorite_view.dart';
 import 'package:dobzz_seller/feature/home/views/presentation/home_page_view.dart';
@@ -38,6 +39,8 @@ class _NavigationViewWithThemesState extends State<NavigationViewWithThemes> {
 
   @override
   void initState() {
+    CartItemsCubit.of(context).getCartItems(context: context);
+
     _selectedIndex = widget.initialIndex!;
     _theme = widget.theme;
     super.initState();

@@ -8,6 +8,7 @@ import 'package:dobzz_seller/core/utils/constant_gaping.dart';
 import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:dobzz_seller/core/utils/constants_models.dart';
 import 'package:dobzz_seller/feature/cart/view/manager/addToCart/cubit/add_to_cart_cubit.dart';
+import 'package:dobzz_seller/feature/cart/view/manager/cartItems/cubit/cart_items_cubit.dart';
 import 'package:dobzz_seller/feature/home/views/manager/addToWhishlist/cubit/add_to_wish_list_cubit.dart';
 import 'package:dobzz_seller/feature/home/views/manager/removeFromWhislist/cubit/remove_from_whish_list_cubit.dart';
 import 'package:dobzz_seller/feature/product/data/model/product_details_model.dart';
@@ -621,6 +622,7 @@ class _PriceAndAddToCartWidgetState extends State<PriceAndAddToCartWidget> {
                       ],
                     ),
                     onPress: () async {
+                      CartItemsCubit.of(context).addCartItems();
                       await widget.addToCartCubit.addToCart(
                         context: context,
                         productId: widget.productId,

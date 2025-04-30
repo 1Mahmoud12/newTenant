@@ -28,7 +28,6 @@ class CartView extends StatefulWidget {
 }
 
 class _CartViewState extends State<CartView> {
-  final CartItemsCubit cartCubit = CartItemsCubit();
   final AddToCartCubit addToCartCubit = AddToCartCubit();
   final DeleteFromCartCubit deleteFromCartCubit = DeleteFromCartCubit();
   final CheckoutDetailsCubit checkoutDetailsCubit = CheckoutDetailsCubit();
@@ -43,7 +42,7 @@ class _CartViewState extends State<CartView> {
   }
 
   void _loadCartItems() {
-    cartCubit.getCartItems(context: context);
+    CartItemsCubit.of(context).getCartItems(context: context);
     checkoutDetailsCubit.getCheckoutDetails(context: context);
   }
 
@@ -133,6 +132,7 @@ class _CartViewState extends State<CartView> {
       setState(() {
         if (ConstantsModels.cartItemModel?.data != null) {
           ConstantsModels.cartItemModel!.data!.removeWhere((element) => element.id == itemId);
+          CartItemsCubit.of(context).removeCartItems();
         }
       });
 
@@ -160,7 +160,6 @@ class _CartViewState extends State<CartView> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider.value(value: cartCubit),
         BlocProvider.value(value: checkoutDetailsCubit),
         BlocProvider.value(value: addToCartCubit),
         BlocProvider.value(value: deleteFromCartCubit),

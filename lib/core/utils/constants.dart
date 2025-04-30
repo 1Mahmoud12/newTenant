@@ -17,6 +17,7 @@ class Constants {
   static String subdomain2 = 'shine';
   static String subdomain = 'kadin';
   static String apiPassword = '123#Social_Codgoo#321';
+  static int cartItems = 0;
 
   static FirebaseMessaging messaging = FirebaseMessaging.instance;
   static Map jsonServerKey = {};
