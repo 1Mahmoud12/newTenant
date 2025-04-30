@@ -134,9 +134,10 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
               controller: widget.controller,
               keyboardType: widget.textInputType ?? TextInputType.text,
               style: TextStyle(
-                  color: AppColors.primaryColor,
-                  fontSize: Constants.tablet ? (widget.fontSizeHintText ?? 17) : (widget.fontSizeHintText ?? 17).sp,
-                  fontWeight: FontWeight.w600),
+                color: AppColors.black,
+                fontSize: Constants.tablet ? (widget.fontSizeHintText ?? 17) : (widget.fontSizeHintText ?? 17).sp,
+                fontWeight: FontWeight.w600,
+              ),
               onChanged: (value) {
                 if (widget.onChange != null) {
                   widget.onChange!.call(value);

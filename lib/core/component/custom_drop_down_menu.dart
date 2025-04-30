@@ -59,7 +59,7 @@ class CustomDropDownMenu extends StatefulWidget {
 }
 
 class _CustomDropDownMenuState extends State<CustomDropDownMenu> {
-  DropDownModel newSelected = DropDownModel(name: '', value: -1);
+  DropDownModel newSelected = DropDownModel(name: '', value: -1, showName: false, showImage: true);
 
   @override
   void initState() {
@@ -95,18 +95,18 @@ class _CustomDropDownMenuState extends State<CustomDropDownMenu> {
             iconSize: 0,
             hint: Row(
               children: [
-                if (newSelected.showName)
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 5, right: 5),
-                      child: Text(
-                        newSelected.name.tr(),
-                        style: Styles.style14400,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ),
+                // if (newSelected.showName)
+                //   Expanded(
+                //     child: Padding(
+                //       padding: const EdgeInsets.only(left: 5, right: 5),
+                //       child: Text(
+                //         newSelected.name.tr(),
+                //         style: Styles.style14400,
+                //         maxLines: 1,
+                //         overflow: TextOverflow.ellipsis,
+                //       ),
+                //     ),
+                //   ),
                 if (newSelected.showImage)
                   Expanded(
                     child: Padding(
@@ -115,7 +115,8 @@ class _CustomDropDownMenuState extends State<CustomDropDownMenu> {
                           ? SvgPicture.asset(
                               newSelected.image!,
                               fit: BoxFit.cover,
-                              height: 16.h,
+                              height: 16,
+                              width: 16,
                             )
                           : Image.asset(
                               newSelected.image!,
@@ -161,13 +162,28 @@ class _CustomDropDownMenuState extends State<CustomDropDownMenu> {
                   decoration: BoxDecoration(borderRadius: BorderRadius.circular(10.r)),
                   child: Padding(
                     padding: const EdgeInsets.only(left: 10.0).w,
-                    child: Text(
-                      item.name,
-                      style: Styles.style12400,
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: context.locale.languageCode == 'ar' ? TextAlign.right : TextAlign.left,
-                      maxLines: 1,
-                    ),
+                    child: item.showImage
+                        ? Padding(
+                            padding: const EdgeInsets.only(left: 5, right: 5),
+                            child: item.image!.contains('.svg')
+                                ? SvgPicture.asset(
+                                    item.image!,
+                                    fit: BoxFit.cover,
+                                    height: 16,
+                                    width: 16,
+                                  )
+                                : Image.asset(
+                                    item.image!,
+                                    fit: BoxFit.cover,
+                                  ),
+                          )
+                        : Text(
+                            item.name,
+                            style: Styles.style12400,
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: context.locale.languageCode == 'ar' ? TextAlign.right : TextAlign.left,
+                            maxLines: 1,
+                          ),
                   ),
                 ),
                 onTap: () {
