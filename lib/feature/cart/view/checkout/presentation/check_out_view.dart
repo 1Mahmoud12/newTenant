@@ -115,6 +115,7 @@ class _CheckoutViewState extends State<CheckoutView> {
                             child: BlocBuilder<AddressCubit, AddressState>(
                               builder: (context, state) {
                                 return CustomDropDownMenu(
+                                  menuItemPadding: const EdgeInsets.symmetric(horizontal: 16),
                                   hasError: ConstantsModels.addressModel?.data?.isEmpty ?? true,
                                   errorText: 'you should create address first',
                                   nameField: 'Address'.tr(),

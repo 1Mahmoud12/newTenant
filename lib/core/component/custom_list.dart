@@ -53,7 +53,7 @@ class _CustomListState extends State<CustomList> {
           // Determine colors based on selection style
           Color backgroundColor = Colors.white;
           Color textColor = Colors.black;
-          Color borderColor = Colors.grey.withOpacity(0.3);
+          Color borderColor = Colors.transparent;
 
           if (isSelected) {
             if (widget.borderOnlySelection) {

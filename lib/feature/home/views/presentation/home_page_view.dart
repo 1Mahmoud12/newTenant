@@ -49,12 +49,12 @@ class _HomePageViewState extends State<HomePageView> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: Container(
-        height: 60,
-        width: 60,
+        height: 55,
+        width: 55,
         margin: const EdgeInsets.only(bottom: 80), // Adjust this value to sit above the nav bar
         child: FloatingActionButton(
           shape: const CircleBorder(), // Optional, but ensures circle shape
-          backgroundColor: AppColors.black,
+          backgroundColor: AppColors.primaryColor,
           child: Stack(
             children: [
               SvgPicture.asset(

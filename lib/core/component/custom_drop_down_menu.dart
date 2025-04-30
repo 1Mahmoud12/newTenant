@@ -38,6 +38,9 @@ class CustomDropDownMenu extends StatefulWidget {
   final String? nameField;
   final bool hasError;
   final String? errorText;
+  final EdgeInsetsGeometry? menuItemPadding; // New property for menu item padding
+  final EdgeInsetsGeometry? buttonPadding; // New property for dropdown button padding
+  final double? menuMaxHeight; // Control max height of dropdown menu
 
   const CustomDropDownMenu({
     super.key,
@@ -54,6 +57,9 @@ class CustomDropDownMenu extends StatefulWidget {
     this.nameField,
     this.hasError = false,
     this.errorText,
+    this.menuItemPadding, // For controlling padding of menu items
+    this.buttonPadding, // For controlling padding of the dropdown button
+    this.menuMaxHeight, // For controlling max height of dropdown menu
   });
 
   @override
@@ -94,8 +100,9 @@ class _CustomDropDownMenuState extends State<CustomDropDownMenu> {
           child: DropdownButton<DropDownModel>(
             underline: Container(),
             icon: const SizedBox(),
-            padding: EdgeInsets.symmetric(horizontal: newSelected.showImage ? 6 : 4),
+            padding: widget.buttonPadding ?? EdgeInsets.symmetric(horizontal: newSelected.showImage ? 6 : 4),
             iconSize: 0,
+            menuMaxHeight: widget.menuMaxHeight,
             hint: Row(
               children: [
                 if (newSelected.showName)
@@ -150,6 +157,7 @@ class _CustomDropDownMenuState extends State<CustomDropDownMenu> {
             dropdownColor: AppColors.white,
             alignment: context.locale.languageCode == 'ar' ? Alignment.centerRight : Alignment.centerLeft,
             style: widget.textStyleSelected ?? Styles.style14400,
+            itemHeight: null, // Allow items to determine their own height
 
             items: widget.items.map((DropDownModel item) {
               return DropdownMenuItem<DropDownModel>(
@@ -158,10 +166,9 @@ class _CustomDropDownMenuState extends State<CustomDropDownMenu> {
                   // constraints: BoxConstraints(maxWidth: 120.w),
                   // width: 120.w,
                   alignment: context.locale.languageCode == 'ar' ? Alignment.centerRight : Alignment.centerLeft,
-
                   decoration: BoxDecoration(borderRadius: BorderRadius.circular(10.r)),
                   child: Padding(
-                    padding: const EdgeInsets.only(left: 10.0).w,
+                    padding: widget.menuItemPadding ?? const EdgeInsets.only(left: 10.0).w,
                     child: item.showImage
                         ? Padding(
                             padding: const EdgeInsets.only(left: 5, right: 5),
