@@ -178,7 +178,7 @@ class _CartViewState extends State<CartView> {
                     ),
                   ]
                 : null,
-            appBar: customAppBar(context: context, title: 'Cart'.tr(), stopLeading: true),
+            appBar: customAppBar(context: context, title: 'Cart'.tr()),
             body: _buildCartBody(state),
           );
         },
