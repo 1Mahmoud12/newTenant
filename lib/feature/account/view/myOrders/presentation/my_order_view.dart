@@ -43,7 +43,7 @@ class _MyOrderViewState extends State<MyOrderView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: customAppBar(context: context, title: 'My Orders'),
+      appBar: customAppBar(context: context, title: 'My Orders'.tr()),
       body: SafeArea(
         child: BlocProvider.value(
           value: orderCubit,
@@ -65,10 +65,10 @@ class _MyOrderViewState extends State<MyOrderView> {
                   children: [
                     Expanded(
                       child: ConstantsModels.orderModel?.data?.isEmpty ?? true
-                          ? const Center(
+                          ?  Center(
                               child: EmptyWidget(
-                                data: 'No Ongoing Orders!',
-                                subData: 'You don’t have any ongoing orders at this time.',
+                                data: 'No Ongoing Orders!'.tr(),
+                                subData: 'You don’t have any ongoing orders at this time.'.tr(),
                                 emptyImage: EmptyImages.noOrders,
                               ),
                             )
@@ -115,10 +115,10 @@ class OrderCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final items = order.items ?? [];
-    final status = order.status ?? 'unknown';
+    final status = order.status ?? 'unknown'.tr();
     final statusColor = _getStatusColor(status);
-    final paymentStatus = order.paymentStatus ?? 'unknown';
-    final paymentMethod = order.paymentMethod ?? 'unknown';
+    final paymentStatus = order.paymentStatus ?? 'unknown'.tr();
+    final paymentMethod = order.paymentMethod ?? 'unknown'.tr();
 
     DateTime? createdAt;
     try {
@@ -209,7 +209,7 @@ class OrderCard extends StatelessWidget {
               const Icon(Icons.receipt_long, size: 18),
               const SizedBox(width: 6),
               Text(
-                'Order #${order.id}',
+                '${'Order'.tr()} #${order.id}',
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
@@ -243,10 +243,10 @@ class OrderCard extends StatelessWidget {
   // Stacked product images
   Widget _buildProductImages(List<Items> items) {
     if (items.isEmpty) {
-      return const SizedBox(
+      return  SizedBox(
         height: 120,
         child: Center(
-          child: Text('No items available'),
+          child: Text('No items available'.tr()),
         ),
       );
     }
@@ -347,7 +347,7 @@ class OrderCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              '${items.length} ${items.length > 1 ? 'Items' : 'Item'}',
+              '${items.length} ${items.length > 1 ? 'Items'.tr() : 'Item'.tr()}',
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 15,
@@ -358,7 +358,7 @@ class OrderCard extends StatelessWidget {
               (item) => Padding(
                 padding: const EdgeInsets.only(bottom: 2),
                 child: Text(
-                  '• ${item.product ?? 'Unknown'} (${item.quantity ?? 1}x)',
+                  '• ${item.product ?? 'Unknown'.tr()} (${item.quantity ?? 1}x)',
                   style: TextStyle(
                     color: Colors.grey.shade700,
                     fontSize: 14,
@@ -368,7 +368,7 @@ class OrderCard extends StatelessWidget {
             ),
             if (remainingCount > 0)
               Text(
-                '• +$remainingCount more...',
+                '• +$remainingCount ${'more...'.tr()}',
                 style: TextStyle(
                   color: Colors.grey.shade500,
                   fontStyle: FontStyle.italic,
@@ -453,7 +453,7 @@ class OrderCard extends StatelessWidget {
             const SizedBox(width: 4),
             Expanded(
               child: Text(
-                'Shipping to: ${address.name ?? 'N/A'}, ${address.city ?? ''}, ${address.state ?? ''}, ${address.country ?? ''}',
+                '${'Shipping to:'.tr()} ${address.name ?? 'N/A'}, ${address.city ?? ''}, ${address.state ?? ''}, ${address.country ?? ''}',
                 style: TextStyle(
                   color: Colors.grey.shade700,
                   fontSize: 13,
@@ -489,7 +489,7 @@ class OrderCard extends StatelessWidget {
               child: FittedBox(
                 fit: BoxFit.scaleDown,
                 child: Text(
-                  'Details',
+                  'Details'.tr(),
                   style: TextStyle(
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w500,

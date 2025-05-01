@@ -229,7 +229,7 @@ class _AddressViewState extends State<AddressView> {
                                           InkWell(
                                             onTap: () {},
                                             child: Text(
-                                              'Edit',
+                                              'Edit'.tr(),
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .bodySmall
@@ -241,7 +241,7 @@ class _AddressViewState extends State<AddressView> {
                                           InkWell(
                                             onTap: () {},
                                             child: Text(
-                                              'Delete',
+                                              'Delete'.tr(),
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .bodySmall

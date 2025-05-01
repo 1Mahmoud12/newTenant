@@ -520,7 +520,7 @@ class _PriceAndAddToCartWidgetState extends State<PriceAndAddToCartWidget> {
                 style: TextStyle(fontSize: Constants.tablet ? 16 : 16.sp, color: Colors.grey, fontWeight: FontWeight.w500),
               ),
               Text(
-                '${widget.price} ${"EGP".tr()}',
+                '${widget.price}',
                 style: TextStyle(fontSize: Constants.tablet ? 20 : 20.sp, fontWeight: FontWeight.bold),
               ),
             ],
@@ -611,7 +611,7 @@ class _PriceAndAddToCartWidgetState extends State<PriceAndAddToCartWidget> {
                         SvgPicture.asset(AppIcons.unSelectedCartC),
                         w5,
                         Text(
-                          'Add to Cart'.tr(),
+                          'Add to cart'.tr(),
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: Constants.tablet ? 16 : 16.sp,

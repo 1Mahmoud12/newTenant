@@ -165,9 +165,9 @@ class FavoriteGrid extends StatelessWidget {
             final wishList = ConstantsModels.wishListModel?.data;
 
             if (wishList == null || wishList.isEmpty) {
-              return const EmptyWidget(
-                data: 'No Saved Items!',
-                subData: 'You don’t have any saved items. Go to home and add some.',
+              return  EmptyWidget(
+                data: 'No Saved Items!'.tr(),
+                subData: 'You don’t have any saved items. Go to home and add some.'.tr(),
                 emptyImage: EmptyImages.noSavedItem,
               );
             }

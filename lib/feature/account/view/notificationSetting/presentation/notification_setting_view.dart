@@ -1,12 +1,11 @@
 import 'package:dobzz_seller/core/component/custom_app_bar.dart';
 import 'package:dobzz_seller/core/component/loadsErros/loading_widget.dart';
-import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:dobzz_seller/core/utils/constants_models.dart';
 import 'package:dobzz_seller/core/utils/utils.dart';
 import 'package:dobzz_seller/feature/account/view/notificationSetting/presentation/manager/notiSetting/cubit/notification_setting_cubit.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class NotificationsSettingsView extends StatefulWidget {
   const NotificationsSettingsView({Key? key}) : super(key: key);
@@ -27,7 +26,7 @@ class _NotificationsSettingsViewState extends State<NotificationsSettingsView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: customAppBar(context: context, title: 'Notification'),
+      appBar: customAppBar(context: context, title: 'Notification'.tr()),
       body: BlocProvider(
         create: (context) => _cubit,
         child: BlocConsumer<NotificationSettingCubit, NotificationSettingState>(
@@ -56,31 +55,31 @@ class _NotificationsSettingsViewState extends State<NotificationsSettingsView> {
     final data = ConstantsModels.generalNotificationModel?.data;
 
     if (data == null) {
-      return const Center(child: Text('No notification settings available'));
+      return  Center(child: Text('No notification settings available'.tr()));
     }
 
     return ListView(
       children: [
         _buildSwitchTile(
-          title: 'Two Factor Authentication',
+          title: 'Two Factor Authentication'.tr(),
           value: data.twoFactorAuth ?? false,
           onChanged: (value) => _updateSetting('two_factor_auth', value),
         ),
         const Divider(),
         _buildSwitchTile(
-          title: 'Push Notifications',
+          title: 'Push Notifications'.tr(),
           value: data.pushNotifications ?? false,
           onChanged: (value) => _updateSetting('push_notifications', value),
         ),
         const Divider(),
         _buildSwitchTile(
-          title: 'Desktop Notifications',
+          title: 'Desktop Notifications'.tr(),
           value: data.desktopNotifications ?? false,
           onChanged: (value) => _updateSetting('desktop_notifications', value),
         ),
         const Divider(),
         _buildSwitchTile(
-          title: 'Email Notifications',
+          title: 'Email Notifications'.tr(),
           value: data.emailNotifications ?? false,
           onChanged: (value) => _updateSetting('email_notifications', value),
         ),
@@ -123,60 +122,6 @@ class _NotificationsSettingsViewState extends State<NotificationsSettingsView> {
     );
   }
 
-  Widget _buildLanguageSection() {
-    final data = ConstantsModels.generalNotificationModel?.data;
-    final currentLanguage = data?.language ?? 'English';
-
-    return Container(
-      color: Colors.white,
-      child: ListTile(
-        title: const Text(
-          'Language',
-          style: TextStyle(
-            fontSize: 16,
-            color: Colors.black87,
-          ),
-        ),
-        subtitle: Text(
-          currentLanguage,
-          style: TextStyle(
-            color: Colors.grey.shade600,
-          ),
-        ),
-        trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-        onTap: () => _showLanguageSelector(currentLanguage),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-      ),
-    );
-  }
-
-  Widget _buildAppearanceSection() {
-    final data = ConstantsModels.generalNotificationModel?.data;
-    final currentAppearance = data?.appearance ?? 'Light';
-
-    return Container(
-      color: Colors.white,
-      child: ListTile(
-        title: const Text(
-          'Appearance',
-          style: TextStyle(
-            fontSize: 16,
-            color: Colors.black87,
-          ),
-        ),
-        subtitle: Text(
-          currentAppearance,
-          style: TextStyle(
-            color: Colors.grey.shade600,
-          ),
-        ),
-        trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-        onTap: () => _showAppearanceSelector(currentAppearance),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-      ),
-    );
-  }
-
   void _updateSetting(String key, bool value) {
     // Update the local model
     final data = ConstantsModels.generalNotificationModel?.data;
@@ -209,106 +154,5 @@ class _NotificationsSettingsViewState extends State<NotificationsSettingsView> {
 
     // Here you would typically call an API to save the settings
     // For example: _cubit.updateNotificationSetting(key: key, value: value);
-  }
-
-  void _showLanguageSelector(String currentLanguage) {
-    showModalBottomSheet(
-      context: context,
-      builder: (context) {
-        return Container(
-          decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(12)),
-          child: ListView(
-            shrinkWrap: true,
-            children: [
-              const Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Text(
-                  'Select Language',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-              ),
-              const Divider(),
-              _buildLanguageOption('English', currentLanguage),
-              _buildLanguageOption('Arabic', currentLanguage),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  Widget _buildLanguageOption(String language, String currentLanguage) {
-    final isSelected = language == currentLanguage;
-
-    return ListTile(
-      title: Text(
-        language,
-        style: TextStyle(
-          fontSize: Constants.tablet ? 16 : 16.sp,
-          fontWeight: FontWeight.w500,
-        ),
-      ),
-      trailing: isSelected ? const Icon(Icons.check, color: Colors.black) : null,
-      onTap: () {
-        if (ConstantsModels.generalNotificationModel?.data != null) {
-          ConstantsModels.generalNotificationModel!.data!.language = language;
-          _cubit.updateNotificationSetting(context: context, language: 'language');
-
-          setState(() {});
-        }
-        Navigator.pop(context);
-
-        // Here you would typically call an API to save the language setting
-        // For example: _cubit.updateLanguageSetting(language: language);
-      },
-    );
-  }
-
-  void _showAppearanceSelector(String currentAppearance) {
-    showModalBottomSheet(
-      context: context,
-      builder: (context) {
-        return Container(
-          decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(12)),
-          child: ListView(
-            shrinkWrap: true,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Text(
-                  'Select Appearance',
-                  style: TextStyle(fontSize: Constants.tablet ? 16 : 16.sp, fontWeight: FontWeight.bold),
-                ),
-              ),
-              const Divider(),
-              _buildAppearanceOption('Light', currentAppearance),
-              _buildAppearanceOption('Dark', currentAppearance),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  Widget _buildAppearanceOption(String appearance, String currentAppearance) {
-    final isSelected = appearance == currentAppearance;
-
-    return ListTile(
-      title: Text(
-        appearance,
-        style: TextStyle(fontSize: Constants.tablet ? 16 : 16.sp, fontWeight: FontWeight.w500),
-      ),
-      trailing: isSelected ? const Icon(Icons.check, color: Colors.black) : null,
-      onTap: () {
-        if (ConstantsModels.generalNotificationModel?.data != null) {
-          ConstantsModels.generalNotificationModel!.data!.appearance = appearance;
-          setState(() {});
-        }
-        Navigator.pop(context);
-
-        // Here you would typically call an API to save the appearance setting
-        // For example: _cubit.updateAppearanceSetting(appearance: appearance);
-      },
-    );
   }
 }

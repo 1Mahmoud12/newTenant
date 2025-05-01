@@ -6,6 +6,7 @@ import 'package:dobzz_seller/feature/home/views/presentation/home_page_view.dart
 import 'package:dobzz_seller/feature/navigation/view/presentation/navigation_bar_theme/circled_border_Theme.dart';
 import 'package:dobzz_seller/feature/navigation/view/presentation/navigation_bar_theme/reguler_theme.dart';
 import 'package:dobzz_seller/feature/product/views/presentation/product_category_view.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -67,7 +68,7 @@ class _NavigationViewWithThemesState extends State<NavigationViewWithThemes> {
       _lastBackPressTime = now;
 
       // Show "press again to exit" toast
-      Utils.showToast(title: 'Press again', state: UtilState.error);
+      Utils.showToast(title: 'Press again'.tr(), state: UtilState.error);
 
       return false; // Prevent app from closing
     }

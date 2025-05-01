@@ -11,9 +11,11 @@ class AddressDataSource {
   static Future<Either<Failure, AddressModel>> getAddress() async {
     try {
       final response = await DioHelper.getData(url: EndPoints.address);
-      log('Response: ${response.data['data']}');
+      log('Response address: ${response.data['data']}');
       return Right(AddressModel.fromJson(response.data));
     } catch (error) {
+      log('Dio error message: $error');
+
       if (error is DioException) {
         return Left(ServerFailure.fromDioException(error));
       }

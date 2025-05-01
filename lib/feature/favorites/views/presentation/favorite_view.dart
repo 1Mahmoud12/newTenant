@@ -1,5 +1,6 @@
 import 'package:dobzz_seller/core/component/custom_app_bar.dart';
 import 'package:dobzz_seller/feature/home/views/presentation/widgets/flash_sale_gride.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class FavoriteView extends StatelessWidget {
@@ -8,7 +9,7 @@ class FavoriteView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: customAppBar(context: context, title: 'Saved items', stopLeading: true),
+      appBar: customAppBar(context: context, title: 'Saved items'.tr(), stopLeading: true),
       body: const Padding(
         padding: EdgeInsets.symmetric(horizontal: 16),
         child: Column(

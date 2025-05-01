@@ -214,8 +214,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 AuthRichTextLink(
                   isCentered: true,
-                  text: "Don't have an account? ",
-                  linkText: 'Create account',
+                  text: "Don't have an account? ".tr(),
+                  linkText: 'Create account'.tr(),
                   onTap: () {
                     context.navigateToPageWithClearStack(const SignUpView());
                   },

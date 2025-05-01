@@ -1,5 +1,6 @@
 import 'package:dobzz_seller/core/component/custom_app_bar.dart';
 import 'package:dobzz_seller/core/utils/app_icons.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -11,33 +12,33 @@ class HelpCenterView extends StatelessWidget {
     // List of help options with their icons
     final List<Map<String, dynamic>> helpOptions = [
       {
-        'title': 'Customer Service',
+        'title': 'Customer Service'.tr(),
         'icon': AppIcons.customerSerivce,
       },
       {
-        'title': 'Whatsapp',
+        'title': 'Whatsapp'.tr(),
         'icon': AppIcons.Whatsapp,
       },
       {
-        'title': 'Website',
+        'title': 'Website'.tr(),
         'icon': AppIcons.Web,
       },
       {
-        'title': 'Facebook',
+        'title': 'Facebook'.tr(),
         'icon': AppIcons.Facebook,
       },
       {
-        'title': 'Twitter',
+        'title': 'Twitter'.tr(),
         'icon': AppIcons.Twitter,
       },
       {
-        'title': 'Instagram',
+        'title': 'Instagram'.tr(),
         'icon': AppIcons.Instagram,
       },
     ];
 
     return Scaffold(
-      appBar: customAppBar(context: context, title: 'Help Center'),
+      appBar: customAppBar(context: context, title: 'Help Center'.tr()),
       body: ListView.separated(
         itemCount: helpOptions.length,
         padding: const EdgeInsets.symmetric(vertical: 8),

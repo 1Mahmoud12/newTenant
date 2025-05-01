@@ -10,6 +10,7 @@ import 'package:dobzz_seller/feature/cart/view/manager/addToCart/cubit/add_to_ca
 import 'package:dobzz_seller/feature/cart/view/manager/cartItems/cubit/cart_items_cubit.dart';
 import 'package:dobzz_seller/feature/home/views/manager/addToWhishlist/cubit/add_to_wish_list_cubit.dart';
 import 'package:dobzz_seller/feature/product/views/presentation/product_details_view.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -298,7 +299,7 @@ class _AddToCartButtonState extends State<AddToCartButton> {
                   padding: const EdgeInsets.symmetric(horizontal: 5),
                   child: FittedBox(
                     child: Text(
-                      'add to cart',
+                      'Add to cart'.tr(),
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                             fontSize: 12.sp,
                             fontWeight: FontWeight.w500,
@@ -597,7 +598,7 @@ class _HorizontalAddToCartButtonState extends State<HorizontalAddToCartButton> {
                   padding: const EdgeInsets.symmetric(horizontal: 5),
                   child: FittedBox(
                     child: Text(
-                      'add to cart',
+                      'Add to cart'.tr(),
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                             fontSize: 12.sp,
                             fontWeight: FontWeight.w500,

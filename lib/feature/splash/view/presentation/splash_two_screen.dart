@@ -6,6 +6,7 @@ import 'package:dobzz_seller/core/utils/constant_gaping.dart';
 import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/feature/auth/login/view/presentation/login_screen.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -33,7 +34,7 @@ class _SplashTwoScreenState extends State<SplashTwoScreen> {
             children: [
               s,
               Text(
-                'Get Start',
+                'Get Start'.tr(),
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: Constants.tablet ? 16 : 16.sp,
@@ -60,14 +61,21 @@ class _SplashTwoScreenState extends State<SplashTwoScreen> {
               ),
             ),
             Positioned(
-              top: 10,
-              left: 10,
+              top: context.locale.languageCode == 'ar' ? 30 : 10,
+              left: context.locale.languageCode == 'ar' ? 0 : 10,
+              right: context.locale.languageCode == 'ar' ? 10 : 0,
               child: SizedBox(
                 width: MediaQuery.sizeOf(context).width,
                 child: Text(
-                  'Define\nyourself in\nyour unique\nway.',
+                  'Define\nyourself in\nyour unique\nway.'.tr(),
                   style: TextStyle(
-                    fontSize: Constants.tablet ? 50 : 50.sp,
+                    fontSize: Constants.tablet
+                        ? context.locale.languageCode == 'ar'
+                            ? 40
+                            : 50
+                        : context.locale.languageCode == 'ar'
+                            ? 40.sp
+                            : 50.sp,
                     height: 0.9,
                     color: AppColors.primaryColor,
                   ),

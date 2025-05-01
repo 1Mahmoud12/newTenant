@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:dobzz_seller/core/component/phone_number_field.dart';
 import 'package:dobzz_seller/core/network/local/cache.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -94,7 +95,7 @@ class _MyDetailsViewState extends State<MyDetailsView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: customAppBar(context: context, title: 'My Details'),
+      appBar: customAppBar(context: context, title: 'My Details'.tr()),
       body: BlocProvider.value(
         value: widget.editProfileCubit,
         child: DetailViewBody(
@@ -251,15 +252,15 @@ class _UserDetailsFormState extends State<UserDetailsForm> {
     return Column(
       children: [
         CustomTextFormField(
-          nameField: 'Name',
+          nameField: 'Name'.tr(),
           controller: widget.firstNameController,
-          hintText: 'Enter your first name',
+          hintText: 'Enter your first name'.tr(),
         ),
         h10,
         CustomTextFormField(
-          nameField: 'Email Address',
+          nameField: 'Email Address'.tr(),
           controller: widget.emailController,
-          hintText: 'Enter your email address',
+          hintText: 'Enter your email address'.tr(),
           textInputType: TextInputType.emailAddress,
         ),
         h10,

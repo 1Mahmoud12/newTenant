@@ -5,6 +5,7 @@ import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/feature/cart/view/address/presentation/address_view.dart';
 import 'package:dobzz_seller/feature/cart/view/address/presentation/manager/address/cubit/address_cubit.dart';
 import 'package:dobzz_seller/feature/notification/presentation/notification_view.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -39,7 +40,7 @@ class _HomePageHeaderState extends State<HomePageHeader> {
             Row(
               children: [
                 Text(
-                  'Location',
+                  'Location'.tr(),
                   style: TextStyle(
                     fontSize: Constants.tablet ? 18 : 18.sp,
                     color: Colors.grey,

@@ -206,9 +206,9 @@ class _CartViewState extends State<CartView> {
       final cartItems = ConstantsModels.cartItemModel?.data ?? [];
 
       if (cartItems.isEmpty) {
-        return const EmptyWidget(
-          data: 'Your Cart Is Empty!',
-          subData: 'When you add products, they’ll appear here.',
+        return  EmptyWidget(
+          data: 'Your Cart Is Empty!'.tr(),
+          subData: 'When you add products, they’ll appear here.'.tr(),
           emptyImage: EmptyImages.noCartItems,
         );
       }

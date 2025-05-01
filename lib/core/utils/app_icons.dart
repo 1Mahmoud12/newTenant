@@ -15,6 +15,7 @@ class AppIcons {
   static const EGIc = '$baseUrl/egyptFlag.svg';
   static const PSIc = '$baseUrl/PSIc.svg';
   static const SAIc = '$baseUrl/saudiArabiaFlag.svg';
+  static const EN = '$baseUrl/englishIc.svg';
 
   // Auth
   static const upDownIc = '$baseUrl/upDownIc.svg';

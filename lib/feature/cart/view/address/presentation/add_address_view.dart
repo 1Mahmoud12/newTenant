@@ -48,7 +48,7 @@ class _AddAddressViewState extends State<AddAddressView> {
               CustomTextFormField(
                 outPadding: EdgeInsets.zero,
                 controller: addAddressCubit.addressNicknameController,
-                hintText: 'Enter your address Details',
+                hintText: 'Enter your address Details'.tr(),
                 maxLines: 5,
                 nameField: 'Address Details'.tr(),
                 hintStyle: const TextStyle(
@@ -87,7 +87,7 @@ class _AddAddressViewState extends State<AddAddressView> {
                   builder: (context, state) {
                     return CustomDropDownMenu(
                       hasError: ConstantsModels.stateModel?.data?.isEmpty ?? true,
-                      errorText: 'there is no state available',
+                      errorText: 'there is no state available'.tr(),
                       nameField: 'State'.tr(),
                       borderColor: Colors.grey.withOpacity(0.2),
                       selectedItem: DropDownModel(name: 'Choose your state'.tr(), value: 0),
@@ -112,7 +112,7 @@ class _AddAddressViewState extends State<AddAddressView> {
                     builder: (context, state) {
                       return CustomDropDownMenu(
                         hasError: ConstantsModels.cityModel?.data?.isEmpty ?? true,
-                        errorText: 'there is no cites available',
+                        errorText: 'there is no cites available'.tr(),
                         nameField: 'City',
                         borderColor: Colors.grey.withOpacity(0.2),
                         selectedItem: DropDownModel(name: 'Choose your city'.tr(), value: 0),
@@ -320,7 +320,7 @@ class _LabeledCheckButtonState extends State<LabeledCheckButton> {
         const SizedBox(width: 8),
         // Label
         Text(
-          widget.label,
+          widget.label.tr(),
           style: TextStyle(
             color: Colors.grey.shade600,
             fontSize: 16,

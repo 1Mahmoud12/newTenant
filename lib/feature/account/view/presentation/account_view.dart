@@ -1,10 +1,11 @@
+import 'dart:math';
+
 import 'package:dobzz_seller/core/component/cache_image.dart';
 import 'package:dobzz_seller/core/component/custom_app_bar.dart';
 import 'package:dobzz_seller/core/network/local/cache.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:dobzz_seller/core/utils/app_icons.dart';
 import 'package:dobzz_seller/core/utils/constants.dart';
-import 'package:dobzz_seller/core/utils/constants_models.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/feature/account/view/helpCenter/presentation/help_center_view.dart';
 import 'package:dobzz_seller/feature/account/view/manager/deleteAccount/cubit/delete_account_cubit.dart';
@@ -12,9 +13,11 @@ import 'package:dobzz_seller/feature/account/view/myDetalis/presentation/manager
 import 'package:dobzz_seller/feature/account/view/myDetalis/presentation/my_details_veiw.dart';
 import 'package:dobzz_seller/feature/account/view/myOrders/presentation/my_order_view.dart';
 import 'package:dobzz_seller/feature/account/view/notificationSetting/presentation/notification_setting_view.dart';
+import 'package:dobzz_seller/feature/account/view/presentation/language_view.dart';
 import 'package:dobzz_seller/feature/auth/forgetPassword/view/presentation/reset_password_view.dart';
 import 'package:dobzz_seller/feature/auth/login/view/presentation/login_screen.dart';
 import 'package:dobzz_seller/feature/cart/view/address/presentation/address_view.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -39,7 +42,7 @@ class _AccountViewState extends State<AccountView> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              customAppBar(context: context, title: 'Account', stopLeading: true),
+              customAppBar(context: context, title: 'Account'.tr(), stopLeading: true),
               // Profile header
               Container(
                 padding: const EdgeInsets.symmetric(vertical: 20),
@@ -64,7 +67,7 @@ class _AccountViewState extends State<AccountView> {
                               const SizedBox(height: 10),
                               // Name
                               Text(
-                                userCacheValue?.data?.name ?? 'Unknown',
+                                userCacheValue?.data?.name ?? 'Unknown'.tr(),
                                 style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 16,
@@ -145,7 +148,7 @@ class _AccountViewState extends State<AccountView> {
                 icon: AppIcons.faq,
                 title: 'Language',
                 onTap: () {
-                  _showLanguageSelector(currentLanguage, context);
+                  context.navigateToPage(const LanguageView());
                 },
               ),
               _buildMenuItem(
@@ -185,83 +188,6 @@ class _AccountViewState extends State<AccountView> {
     );
   }
 
-  Widget _buildLanguageSection(BuildContext context) {
-    final data = ConstantsModels.generalNotificationModel?.data;
-    final currentLanguage = data?.language ?? 'English';
-
-    return Container(
-      color: Colors.white,
-      child: ListTile(
-        title: const Text(
-          'Language',
-          style: TextStyle(
-            fontSize: 16,
-            color: Colors.black87,
-          ),
-        ),
-        subtitle: Text(
-          currentLanguage,
-          style: TextStyle(
-            color: Colors.grey.shade600,
-          ),
-        ),
-        trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-        onTap: () => _showLanguageSelector(currentLanguage, context),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-      ),
-    );
-  }
-
-  void _showLanguageSelector(String currentLanguage, BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      builder: (context) {
-        return Container(
-          decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(12)),
-          child: ListView(
-            shrinkWrap: true,
-            children: [
-              const Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Text(
-                  'Select Language',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-              ),
-              const Divider(),
-              _buildLanguageOption('English', currentLanguage, context),
-              _buildLanguageOption('Arabic', currentLanguage, context),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  Widget _buildLanguageOption(String language, String currentLanguage, BuildContext context) {
-    final isSelected = language == currentLanguage;
-
-    return ListTile(
-      title: Text(
-        language,
-        style: TextStyle(
-          fontSize: Constants.tablet ? 16 : 16.sp,
-          fontWeight: FontWeight.w500,
-        ),
-      ),
-      trailing: isSelected ? const Icon(Icons.check, color: Colors.black) : null,
-      onTap: () {
-        if (ConstantsModels.generalNotificationModel?.data != null) {
-          ConstantsModels.generalNotificationModel!.data!.language = language;
-        }
-        setState(() {});
-        Navigator.pop(context);
-        // Here you would typically call an API to save the language setting
-        // For example: _cubit.updateLanguageSetting(language: language);
-      },
-    );
-  }
-
   /// Shows a confirmation dialog for logging out
   void showLogoutDialog(BuildContext context, VoidCallback onConfirm) {
     _showConfirmationDialog(
@@ -271,9 +197,9 @@ class _AccountViewState extends State<AccountView> {
         color: AppColors.primaryColor,
         size: 48,
       ),
-      title: 'Logout?',
-      message: 'Are you sure you want to logout?',
-      confirmButtonText: 'Yes, Logout',
+      title: 'Logout?'.tr(),
+      message: 'Are you sure you want to logout?'.tr(),
+      confirmButtonText: 'Yes, Logout'.tr(),
       onConfirm: onConfirm,
     );
   }
@@ -287,9 +213,9 @@ class _AccountViewState extends State<AccountView> {
         color: AppColors.primaryColor,
         size: 48,
       ),
-      title: 'Delete Account?',
-      message: 'Are you sure you want to delete your account? This action cannot be undone.',
-      confirmButtonText: 'Yes, Delete Account',
+      title: 'Delete Account?'.tr(),
+      message: 'Are you sure you want to delete your account? This action cannot be undone.'.tr(),
+      confirmButtonText: 'Yes, Delete Account'.tr(),
       onConfirm: onConfirm,
     );
   }
@@ -401,13 +327,17 @@ class _AccountViewState extends State<AccountView> {
           ),
         ),
         title: Text(
-          title,
+          title.tr(),
           style: TextStyle(
             color: textColor,
             fontSize: 14,
           ),
         ),
-        trailing: (isLogout || isDeleteAccount) ? null : SvgPicture.asset(AppIcons.arrowRight),
+        trailing: (isLogout || isDeleteAccount)
+            ? null
+            : context.locale.languageCode == 'ar'
+                ? Transform.rotate(angle: pi, child: SvgPicture.asset(AppIcons.arrowRight))
+                : SvgPicture.asset(AppIcons.arrowRight),
         onTap: onTap,
         contentPadding: const EdgeInsets.symmetric(horizontal: 20),
       ),

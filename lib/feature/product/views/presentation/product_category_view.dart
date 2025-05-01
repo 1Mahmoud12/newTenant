@@ -49,7 +49,7 @@ class _ProdcutCategoryViewState extends State<ProductCategoryView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: customAppBar(context: context, title: 'Product', stopLeading: true),
+      appBar: customAppBar(context: context, title: 'Product'.tr(), stopLeading: true),
       body: Column(
         children: [
           // SubCategory List - Fixed Height Part
