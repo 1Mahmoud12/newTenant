@@ -179,5 +179,7 @@
   "You don’t have any saved items. Go to home and add some.": "لا توجد لديك أي عناصر محفوظة. اذهب إلى الصفحة الرئيسية وأضف بعضها.",
   "noSavedItem": "لا توجد عناصر محفوظة",
   "confirm": "تأكيد",
-  "language": "اللغات"
+  "language": "اللغات",
+  "No Results Found!": "لم يتم العثور على نتائج!",
+  "Try a similar word or something more general.": "جرّب كلمة مشابهة أو شيئًا أكثر عمومية."
 }

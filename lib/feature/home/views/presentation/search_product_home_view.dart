@@ -73,18 +73,18 @@ class _SearchProductHomeViewState extends State<SearchProductHomeView> {
       return Center(child: Text('${'Error:'.tr()}${state.e}'));
     }
     if (ConstantsModels.searchProductsModel?.data?.isEmpty ?? true) {
-      return const EmptyWidget(
-        data: 'No Results Found!',
-        subData: 'Try a similar word or something more general.',
+      return  EmptyWidget(
+        data: 'No Results Found!'.tr(),
+        subData: 'Try a similar word or something more general.'.tr(),
         emptyImage: EmptyImages.noSearchResult,
       );
     }
     if (state is TopProductSuccess) {
       final products = ConstantsModels.searchProductsModel?.data ?? [];
       if (products.isEmpty) {
-        return const EmptyWidget(
-          data: 'No Results Found!',
-          subData: 'Try a similar word or something more general.',
+        return  EmptyWidget(
+          data: 'No Results Found!'.tr(),
+          subData: 'Try a similar word or something more general.'.tr(),
           emptyImage: EmptyImages.noSearchResult,
         );
       }
