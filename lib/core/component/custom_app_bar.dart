@@ -27,12 +27,9 @@ PreferredSizeWidget customAppBar({
     // ),
     leading: stopLeading
         ? const SizedBox.shrink()
-        : Padding(
-            padding: const EdgeInsets.only(left: 10, right: 10, top: 24),
-            child: IconButton(
-              onPressed: onPressLeading ?? () => Navigator.pop(context),
-              icon: Platform.isAndroid ? const Icon(Icons.arrow_back) : const Icon(Icons.arrow_back_ios),
-            ),
+        : IconButton(
+            onPressed: onPressLeading ?? () => Navigator.pop(context),
+            icon: Platform.isAndroid ? const Icon(Icons.arrow_back) : const Icon(Icons.arrow_back_ios),
           ),
     leadingWidth: 50,
     centerTitle: centerTitle,
