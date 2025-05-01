@@ -47,11 +47,12 @@ class _HomePageViewState extends State<HomePageView> {
   SalesBannerCubit salesBannerCubit = SalesBannerCubit();
   @override
   Widget build(BuildContext context) {
+    log('dfdfds${MediaQuery.sizeOf(context).height}');
     return Scaffold(
       floatingActionButton: Container(
         height: 55,
         width: 55,
-        margin: const EdgeInsets.only(bottom: 80), // Adjust this value to sit above the nav bar
+        margin: EdgeInsets.only(bottom: MediaQuery.sizeOf(context).height >= 800.0 ? 40 : 70), // Adjust this value to sit above the nav bar
         child: FloatingActionButton(
           shape: const CircleBorder(), // Optional, but ensures circle shape
           backgroundColor: AppColors.primaryColor,
