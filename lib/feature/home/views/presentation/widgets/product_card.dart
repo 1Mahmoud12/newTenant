@@ -283,7 +283,8 @@ class _AddToCartButtonState extends State<AddToCartButton> {
           });
         },
         child: Container(
-          padding: const EdgeInsets.all(5),
+          height: 30,
+          padding: const EdgeInsets.all(1),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
             color: _isAdded
@@ -583,6 +584,7 @@ class _HorizontalAddToCartButtonState extends State<HorizontalAddToCartButton> {
           });
         },
         child: Container(
+          height: 30,
           padding: const EdgeInsets.all(5),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),

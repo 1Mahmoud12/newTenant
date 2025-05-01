@@ -206,7 +206,7 @@ class _CartViewState extends State<CartView> {
       final cartItems = ConstantsModels.cartItemModel?.data ?? [];
 
       if (cartItems.isEmpty) {
-        return  EmptyWidget(
+        return EmptyWidget(
           data: 'Your Cart Is Empty!'.tr(),
           subData: 'When you add products, they’ll appear here.'.tr(),
           emptyImage: EmptyImages.noCartItems,
@@ -270,12 +270,12 @@ class GoToCheckOutButton extends StatelessWidget {
           CustomTextButton(
             borderRadius: 8,
             onPress: () {
-              context.navigateToPage(const CheckoutView());
-              // if (userCacheValue?.data?.phone == '+201124980094') {
-              //   Utils.showToast(title: 'This is demo account you can not create order ', state: UtilState.error);
-              // } else {
-              //   context.navigateToPage(const CheckoutView());
-              // }
+              // context.navigateToPage(const CheckoutView());
+              if (userCacheValue?.data?.phone == '+201124980094') {
+                Utils.showToast(title: 'This is demo account you can not create order ', state: UtilState.error);
+              } else {
+                context.navigateToPage(const CheckoutView());
+              }
             },
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
