@@ -23,6 +23,21 @@ class AddressDataSource {
     }
   }
 
+  static Future<Either<Failure, String>> deleteAddress({required int addressId}) async {
+    try {
+      final response = await DioHelper.deleteData(endPoint: '${EndPoints.address}/$addressId', data: {});
+      log('Response address: ${response.data['data']}');
+      return const Right('address delete successfully');
+    } catch (error) {
+      log('Dio error message: $error');
+
+      if (error is DioException) {
+        return Left(ServerFailure.fromDioException(error));
+      }
+      return Left(ServerFailure(error.toString()));
+    }
+  }
+
   static Future<Either<Failure, void>> addAddress({required Map<String, dynamic> data}) async {
     try {
       final response = await DioHelper.postData(endPoint: EndPoints.address, data: data);

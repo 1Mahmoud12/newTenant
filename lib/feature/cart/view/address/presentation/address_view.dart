@@ -1,3 +1,4 @@
+import 'package:dobzz_seller/core/component/confirmation_delete_dailog.dart';
 import 'package:dobzz_seller/core/component/custom_app_bar.dart';
 import 'package:dobzz_seller/core/component/loadsErros/loading_widget.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
@@ -104,6 +105,7 @@ class _AddressViewState extends State<AddressView> {
       body: BlocProvider.value(
         value: addressCubit,
         child: BlocBuilder<AddressCubit, AddressState>(
+          buildWhen: (previous, current) => current is AddressLoading || current is AddressError || current is AddressSuccess,
           builder: (context, state) {
             if (state is AddressLoading) {
               return const Center(child: LoadingWidget());
@@ -255,7 +257,18 @@ class _AddressViewState extends State<AddressView> {
                                           ),
                                           w10,
                                           InkWell(
-                                            onTap: () {},
+                                            onTap: () {
+                                              ConfirmationDeleteDialog.show(
+                                                stateStream: addressCubit.stream,
+                                                loadingStateCheck: (state) => state is DeleteAddressLoading,
+                                                context: context,
+                                                onConfirm: () async {
+                                                  await addressCubit.deleteAddress(context: context, addressId: address?.id ?? -1);
+                                                  Navigator.pop(context);
+                                                  await addressCubit.getAddress(context: context);
+                                                },
+                                              );
+                                            },
                                             child: SizedBox(
                                               height: 30,
                                               width: 60,

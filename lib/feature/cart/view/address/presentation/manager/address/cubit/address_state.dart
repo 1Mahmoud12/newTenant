@@ -14,3 +14,13 @@ final class AddressError extends AddressState {
 
   AddressError({required this.e});
 }
+
+final class DeleteAddressLoading extends AddressState {}
+
+final class DeleteAddressSuccess extends AddressState {}
+
+final class DeleteAddressError extends AddressState {
+  final String e;
+
+  DeleteAddressError({required this.e});
+}
