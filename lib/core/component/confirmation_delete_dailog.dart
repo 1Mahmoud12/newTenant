@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:dobzz_seller/core/themes/colors.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class ConfirmationDeleteDialog extends StatefulWidget {
@@ -44,10 +45,10 @@ class ConfirmationDeleteDialog extends StatefulWidget {
       context: context,
       barrierDismissible: !isLoading,
       builder: (BuildContext context) => ConfirmationDeleteDialog(
-        title: title,
-        message: message,
-        cancelText: cancelText,
-        confirmText: confirmText,
+        title: title.tr(),
+        message: message.tr(),
+        cancelText: cancelText.tr(),
+        confirmText: confirmText.tr(),
         onConfirm: onConfirm,
         onCancel: onCancel ?? () => Navigator.of(context).pop(false),
         initialLoadingState: isLoading,

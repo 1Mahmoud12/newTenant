@@ -181,5 +181,8 @@
   "confirm": "تأكيد",
   "language": "اللغات",
   "No Results Found!": "لم يتم العثور على نتائج!",
-  "Try a similar word or something more general.": "جرّب كلمة مشابهة أو شيئًا أكثر عمومية."
+  "Try a similar word or something more general.": "جرّب كلمة مشابهة أو شيئًا أكثر عمومية.",
+  "Confirm Deletion":"تأكيد الحذف",
+  "Are you sure you want to delete this item?":"هل أنت متأكد من حذف هذا العنصر",
+  "Cancel":"الغاء"
 }

@@ -1,4 +1,6 @@
 import 'package:dobzz_seller/core/component/custom_app_bar.dart';
+import 'package:dobzz_seller/core/network/local/cache.dart';
+import 'package:dobzz_seller/core/utils/utils.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -91,7 +93,11 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
                   childText: 'create_new_password'.tr(),
                   padding: const EdgeInsets.symmetric(vertical: 14.5),
                   onPress: () {
-                    AuthCubit.of(context).resetPassword(context);
+                    if (userCacheValue?.data?.phone != '+201124980094') {
+                      AuthCubit.of(context).resetPassword(context);
+                    } else {
+                      Utils.showToast(title: 'This is demo account you can not reset password', state: UtilState.error);
+                    }
                   },
                 ),
               ),

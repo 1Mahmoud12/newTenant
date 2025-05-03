@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:dobzz_seller/core/utils/app_icons.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +18,7 @@ class RegularNavigationBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: EdgeInsets.only(bottom: Platform.isAndroid ? 0 : 30),
       height: 70,
       decoration: BoxDecoration(
         color: Colors.white,
@@ -36,8 +39,8 @@ class RegularNavigationBar extends StatelessWidget {
         children: [
           RegularNavItem(
             index: 0,
-            outlinedIcon: AppIcons.unSelectedProductC,
-            filledIcon: AppIcons.selectedProductC,
+            outlinedIcon: AppIcons.unSelectedHomeC,
+            filledIcon: AppIcons.selectedHomeC,
             isSelected: selectedIndex == 0,
             onTap: onItemTapped,
           ),

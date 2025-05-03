@@ -11,12 +11,13 @@ class PhoneNumberField extends StatefulWidget {
   final TextEditingController controller;
   final EdgeInsets? outPadding;
   final String? initialCountryCode; // New parameter for initial country code
-
+  final bool? enabled;
   const PhoneNumberField({
     super.key,
     required this.controller,
     this.outPadding,
-    this.initialCountryCode, // Add this parameter
+    this.initialCountryCode,
+    this.enabled = true, // Add this parameter
   });
 
   @override
@@ -81,12 +82,13 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
     final authCubit = AuthCubit.of(context);
 
     return CustomTextFormField(
+      enable: widget.enabled,
       textInputType: TextInputType.phone,
       contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 7),
       outPadding: widget.outPadding ?? const EdgeInsets.symmetric(horizontal: 20),
       controller: widget.controller,
       hintText: 'Phone'.tr(),
-    //  labelText: _phoneHint.tr(),
+      //  labelText: _phoneHint.tr(),
       validator: (value) => _validatePhoneNumber(value, _countryCode),
       prefixIcon: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),

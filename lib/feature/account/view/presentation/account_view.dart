@@ -7,6 +7,7 @@ import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:dobzz_seller/core/utils/app_icons.dart';
 import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
+import 'package:dobzz_seller/core/utils/utils.dart';
 import 'package:dobzz_seller/feature/account/view/helpCenter/presentation/help_center_view.dart';
 import 'package:dobzz_seller/feature/account/view/manager/deleteAccount/cubit/delete_account_cubit.dart';
 import 'package:dobzz_seller/feature/account/view/myDetalis/presentation/manager/editProfile/cubit/edit_profile_cubit.dart';
@@ -145,7 +146,7 @@ class _AccountViewState extends State<AccountView> {
               //   },
               // ),
               _buildMenuItem(
-                icon: AppIcons.faq,
+                icon: AppIcons.translation,
                 title: 'Language',
                 onTap: () {
                   context.navigateToPage(const LanguageView());
@@ -174,9 +175,13 @@ class _AccountViewState extends State<AccountView> {
                 icon: AppIcons.deleteIcon,
                 title: 'Delete Account',
                 onTap: () {
-                  showDeleteAccountDialog(context, () async {
-                    await deleteAccountCubit.deleteAccount(context: context);
-                  });
+                  if (userCacheValue?.data?.phone != '+201124980094') {
+                    showDeleteAccountDialog(context, () async {
+                      await deleteAccountCubit.deleteAccount(context: context);
+                    });
+                  } else {
+                    Utils.showToast(title: 'This is demo account you can not delete account', state: UtilState.error);
+                  }
                 },
                 isDeleteAccount: true,
               ),

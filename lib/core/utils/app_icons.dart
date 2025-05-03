@@ -36,7 +36,7 @@ class AppIcons {
   static const unSelectedHomeR = '$baseUrl/unselected-home.svg';
   static const unSelectedCartR = '$baseUrl/unselected-cartsvg.svg';
   static const unSelectedProfileR = '$baseUrl/unselected-profile.svg';
-  static const unSelectedFavoriteR = '$baseUrl/unselected-favorite.svg';
+  static const unSelectedFavoriteR = '$baseUrl/favourite-diff-lib.svg';
   static const selectedHomeR = '$baseUrl/selected-home.svg';
   static const selectedCartR = '$baseUrl/selected-cart.svg';
   static const selectedProfileR = '$baseUrl/selected-profile.svg';
@@ -145,6 +145,7 @@ class AppIcons {
   static const notificationIcon = '$baseUrl/notification-01.svg';
   static const notificationIc = '$baseUrl/notification-icon.svg';
   static const faq = '$baseUrl/faq.svg';
+  static const translation = '$baseUrl/translation.svg';
   static const helpCenter = '$baseUrl/help-center.svgg';
   static const logout = '$baseUrl/logout-05.svg';
   static const deleteIcon = '$baseUrl/delete-icon.svg';

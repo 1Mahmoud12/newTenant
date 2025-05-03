@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:dobzz_seller/core/component/phone_number_field.dart';
 import 'package:dobzz_seller/core/network/local/cache.dart';
+import 'package:dobzz_seller/core/utils/utils.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -82,14 +83,18 @@ class _MyDetailsViewState extends State<MyDetailsView> {
   }
 
   void _handleSubmit() async {
-    await widget.editProfileCubit.updateUserData(
-      context: context,
-      name: _firstNameController.text,
-      email: _emailController.text,
-      phone: _phoneController.text,
-      image: _profileImage,
-    );
-    await widget.editProfileCubit.getUserData(context: context);
+    if (userCacheValue?.data?.phone != '+201124980094') {
+      await widget.editProfileCubit.updateUserData(
+        context: context,
+        name: _firstNameController.text,
+        email: _emailController.text,
+        phone: _phoneController.text,
+        image: _profileImage,
+      );
+      await widget.editProfileCubit.getUserData(context: context);
+    } else {
+      Utils.showToast(title: 'This is demo account you can not change user data', state: UtilState.error);
+    }
   }
 
   @override
@@ -266,6 +271,7 @@ class _UserDetailsFormState extends State<UserDetailsForm> {
         h10,
         // The controller already has the full number with country code (e.g. "+201124980094")
         PhoneNumberField(
+          enabled: false,
           initialCountryCode: userCacheValue?.data?.phone == '+201124980094' ? '+966' : initialCountryCode,
           controller: formatPhone(
             number: userCacheValue?.data?.phone ?? ' ',
