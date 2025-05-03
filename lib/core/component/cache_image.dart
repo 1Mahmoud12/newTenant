@@ -166,9 +166,23 @@ class CacheImage extends StatelessWidget {
     }
     // Default fallback
     else {
-      return Image.asset(
-        AppImages.noImage,
-        fit: fit ?? BoxFit.cover,
+      return Container(
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: AlignmentDirectional.centerStart,
+            end: AlignmentDirectional.centerEnd,
+            colors: [
+              AppColors.black,
+              AppColors.black.withOpacity(.1),
+            ],
+          ),
+          borderRadius: BorderRadius.circular(borderRadius ?? 8),
+        ),
+        child: Image.asset(
+          AppImages.appLogo,
+          fit: BoxFit.fill,
+        ),
       );
     }
   }

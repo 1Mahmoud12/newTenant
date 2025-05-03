@@ -1,4 +1,6 @@
 import 'dart:async';
+
+import 'package:dobzz_seller/core/component/cache_image.dart';
 import 'package:dobzz_seller/core/utils/constants_models.dart';
 import 'package:dobzz_seller/feature/home/data/models/sales_model.dart';
 import 'package:dobzz_seller/feature/home/views/manager/salesBanner/cubit/sales_banner_cubit.dart';
@@ -175,96 +177,89 @@ class _SaleCountdownBannerState extends State<SaleCountdownBanner> with SingleTi
           child: child,
         );
       },
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 16),
-        decoration: BoxDecoration(
-          color: Colors.black54,
-          borderRadius: BorderRadius.circular(8.0),
-          image: widget.bannerData.pannerImagePath != null
-              ? DecorationImage(
-                  image: NetworkImage(widget.bannerData.pannerImagePath!),
-                  fit: BoxFit.cover,
-                  colorFilter: const ColorFilter.mode(
-                    Colors.transparent,
-                    BlendMode.darken,
-                  ),
-                )
-              : null,
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Sale title text
-
-              const SizedBox(
-                height: 40,
-              ),
-
-              // Text(
-              //   widget.bannerData.pannerHeading ?? 'Sale',
-              //   style: const TextStyle(
-              //     color: Colors.white,
-              //     fontSize: 24,
-              //     fontWeight: FontWeight.bold,
-              //   ),
-              // ),
-
-              // // Discount text
-              // Text(
-              //   'Up To ${widget.bannerData.pannerDiscount}%' ?? 'Up To 50%',
-              //   style: const TextStyle(
-              //     color: Colors.white,
-              //     fontSize: 18,
-              //     fontWeight: FontWeight.w500,
-              //   ),
-              // ),
-
-              // const SizedBox(height: 10),
-
-              // Timer and action button row
-              Row(
-                children: [
-                  TimerBox(
-                    value: _remainingTime.inDays,
-                    label: 'Days',
-                    boxColor: Colors.black87,
-                    textColor: Colors.white,
-                  ),
-                  const SizedBox(width: 8),
-                  TimerBox(
-                    value: _remainingTime.inHours % 24,
-                    label: 'Hours',
-                    boxColor: Colors.black87,
-                    textColor: Colors.white,
-                  ),
-                  const SizedBox(width: 8),
-                  TimerBox(
-                    value: _remainingTime.inMinutes % 60,
-                    label: 'Mins',
-                    boxColor: Colors.black87,
-                    textColor: Colors.white,
-                  ),
-                  const SizedBox(width: 8),
-                  TimerBox(
-                    value: _remainingTime.inSeconds % 60,
-                    label: 'Secs',
-                    boxColor: Colors.black87,
-                    textColor: Colors.white,
-                  ),
-                ],
-              ),
-              const SizedBox(height: 16),
-              ActionButton(
-                actionText: widget.bannerData.pannerTitle ?? 'View',
-                onPressed: widget.onActionPressed,
-                buttonColor: Colors.black87,
-                textColor: Colors.white,
-              ),
-            ],
+      child: Stack(
+        children: [
+          CacheImage(
+            urlImage: widget.bannerData.pannerImagePath ?? '',
+            width: double.infinity,
+            height: 180,
+            fit: BoxFit.cover,
           ),
-        ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Sale title text
+
+                const SizedBox(
+                  height: 40,
+                ),
+
+                // Text(
+                //   widget.bannerData.pannerHeading ?? 'Sale',
+                //   style: const TextStyle(
+                //     color: Colors.white,
+                //     fontSize: 24,
+                //     fontWeight: FontWeight.bold,
+                //   ),
+                // ),
+
+                // // Discount text
+                // Text(
+                //   'Up To ${widget.bannerData.pannerDiscount}%' ?? 'Up To 50%',
+                //   style: const TextStyle(
+                //     color: Colors.white,
+                //     fontSize: 18,
+                //     fontWeight: FontWeight.w500,
+                //   ),
+                // ),
+
+                // const SizedBox(height: 10),
+
+                // Timer and action button row
+                Row(
+                  children: [
+                    TimerBox(
+                      value: _remainingTime.inDays,
+                      label: 'Days',
+                      boxColor: Colors.black87,
+                      textColor: Colors.white,
+                    ),
+                    const SizedBox(width: 8),
+                    TimerBox(
+                      value: _remainingTime.inHours % 24,
+                      label: 'Hours',
+                      boxColor: Colors.black87,
+                      textColor: Colors.white,
+                    ),
+                    const SizedBox(width: 8),
+                    TimerBox(
+                      value: _remainingTime.inMinutes % 60,
+                      label: 'Mins',
+                      boxColor: Colors.black87,
+                      textColor: Colors.white,
+                    ),
+                    const SizedBox(width: 8),
+                    TimerBox(
+                      value: _remainingTime.inSeconds % 60,
+                      label: 'Secs',
+                      boxColor: Colors.black87,
+                      textColor: Colors.white,
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                ActionButton(
+                  actionText: widget.bannerData.pannerTitle ?? 'View',
+                  onPressed: widget.onActionPressed,
+                  buttonColor: Colors.black87,
+                  textColor: Colors.white,
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
