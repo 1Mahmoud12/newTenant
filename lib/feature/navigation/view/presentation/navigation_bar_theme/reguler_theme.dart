@@ -18,7 +18,7 @@ class RegularNavigationBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: Platform.isAndroid ? 0 : 30),
+     // margin: EdgeInsets.only(bottom: Platform.isAndroid ? 0 : 30),
       height: 70,
       decoration: BoxDecoration(
         color: Colors.white,
