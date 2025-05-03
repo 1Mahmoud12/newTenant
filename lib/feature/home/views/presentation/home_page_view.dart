@@ -1,4 +1,6 @@
 import 'dart:developer';
+import 'dart:io';
+
 import 'package:dobzz_seller/core/component/fields/custom_text_form_field.dart';
 import 'package:dobzz_seller/core/component/loadsErros/loading_widget.dart';
 import 'package:dobzz_seller/core/component/see_all_widget.dart';
@@ -45,14 +47,16 @@ class _HomePageViewState extends State<HomePageView> {
   }
 
   SalesBannerCubit salesBannerCubit = SalesBannerCubit();
+
   @override
   Widget build(BuildContext context) {
-    log('dfdfds${MediaQuery.sizeOf(context).height}');
     return Scaffold(
       floatingActionButton: Container(
         height: 55,
         width: 55,
-        margin: EdgeInsets.only(bottom: MediaQuery.sizeOf(context).height >= 800.0 ? 40 : 70), // Adjust this value to sit above the nav bar
+        margin: EdgeInsets.only(
+          bottom: Platform.isIOS ? 55 : 70,
+        ), // Adjust this value to sit above the nav bar
         child: FloatingActionButton(
           shape: const CircleBorder(), // Optional, but ensures circle shape
           backgroundColor: AppColors.primaryColor,
@@ -279,7 +283,9 @@ class _FeaturedListState extends State<FeaturedList> {
 
 class FeaturedCategoriesItem extends StatelessWidget {
   const FeaturedCategoriesItem({super.key, required this.featuredName});
+
   final String featuredName;
+
   @override
   Widget build(BuildContext context) {
     return Column(

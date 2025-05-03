@@ -97,7 +97,7 @@ void main() async {
         startLocale: const Locale('en', 'US'),
         child: DevicePreview(
           // ignore: avoid_redundant_argument_values
-         // enabled: false,
+          enabled: false,
           //enabled: !kReleaseMode,
           builder: (context) => const MyApp(), // Wrap your app
         ),

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dobzz_seller/core/utils/utils.dart';
 import 'package:dobzz_seller/feature/account/view/presentation/account_view.dart';
 import 'package:dobzz_seller/feature/cart/view/manager/cartItems/cubit/cart_items_cubit.dart';
@@ -101,7 +103,7 @@ class _NavigationViewWithThemesState extends State<NavigationViewWithThemes> {
           children: [
             _screens[_selectedIndex],
             Positioned(
-              bottom: 0,
+              bottom: Platform.isIOS ? 15 : 0,
               left: 0,
               right: 0,
               child: NavigationThemeSwitcher(
