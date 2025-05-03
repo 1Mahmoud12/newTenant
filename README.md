@@ -35,4 +35,6 @@ rm -rf .symlinks
 pod install
 open .
 cd ..
+flutter build appbundle
+open build/app/outputs/
 ```

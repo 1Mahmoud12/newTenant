@@ -10,7 +10,6 @@ import 'package:dobzz_seller/feature/splash/view/presentation/splash_screen.dart
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -98,8 +97,8 @@ void main() async {
         startLocale: const Locale('en', 'US'),
         child: DevicePreview(
           // ignore: avoid_redundant_argument_values
-          // enabled: false,
-          enabled: !kReleaseMode,
+          enabled: false,
+          //enabled: !kReleaseMode,
           builder: (context) => const MyApp(), // Wrap your app
         ),
       ),
