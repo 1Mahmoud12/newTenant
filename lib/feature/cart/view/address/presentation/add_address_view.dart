@@ -5,6 +5,7 @@ import 'package:dobzz_seller/core/component/fields/custom_text_form_field.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:dobzz_seller/core/utils/constant_gaping.dart';
 import 'package:dobzz_seller/core/utils/constants_models.dart';
+import 'package:dobzz_seller/feature/cart/view/address/data/models/address_model.dart';
 import 'package:dobzz_seller/feature/cart/view/address/presentation/manager/addAddress/cubit/add_address_cubit.dart';
 import 'package:dobzz_seller/feature/cart/view/address/presentation/manager/address/cubit/address_cubit.dart';
 import 'package:dobzz_seller/feature/cart/view/address/presentation/manager/city/cubit/city_cubit.dart';
@@ -14,8 +15,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AddAddressView extends StatefulWidget {
-  const AddAddressView({super.key, required this.addressCubit});
+  const AddAddressView({super.key, required this.addressCubit, this.isUpdate = false, this.addressDataModel});
   final AddressCubit addressCubit;
+  final bool? isUpdate;
+  final AddressDataModel? addressDataModel;
   @override
   State<AddAddressView> createState() => _AddAddressViewState();
 }
@@ -25,14 +28,32 @@ class _AddAddressViewState extends State<AddAddressView> {
     DropDownModel(name: 'Asyut', value: 0),
     DropDownModel(name: 'California', value: 1),
   ];
+  final AddAddressCubit addAddressCubit = AddAddressCubit();
+
+  @override
+  void dispose() {
+    addAddressCubit.close();
+    super.dispose();
+  }
+
+  String stateName = '';
+  String cityName = '';
   @override
   void initState() {
+    if (widget.isUpdate!) {
+      addAddressCubit.addressNicknameController.text = widget.addressDataModel?.name ?? 'unKnow address';
+      addAddressCubit.phoneController.text = widget.addressDataModel?.phone ?? 'unKnow phone number';
+      addAddressCubit.stateId = widget.addressDataModel?.stateId ?? -1;
+      addAddressCubit.cityId = widget.addressDataModel?.cityId ?? -1;
+      addAddressCubit.isDefault = widget.addressDataModel?.isDefault ?? false;
+      stateName = widget.addressDataModel?.state ?? 'unKnown state';
+      cityName = widget.addressDataModel?.city ?? 'unKnown city';
+    }
     super.initState();
-    stateCubit.getAddress(context: context);
+    stateCubit.getState(context: context);
   }
 
   StateCubit stateCubit = StateCubit();
-  AddAddressCubit addAddressCubit = AddAddressCubit();
   CityCubit cityCubit = CityCubit();
   @override
   Widget build(BuildContext context) {
@@ -90,7 +111,10 @@ class _AddAddressViewState extends State<AddAddressView> {
                       errorText: 'there is no state available'.tr(),
                       nameField: 'State'.tr(),
                       borderColor: Colors.grey.withOpacity(0.2),
-                      selectedItem: DropDownModel(name: 'Choose your state'.tr(), value: 0),
+                      selectedItem: DropDownModel(
+                        name: widget.isUpdate! ? stateName : 'Choose your state'.tr(),
+                        value: widget.isUpdate! ? addAddressCubit.stateId : 0,
+                      ),
                       items: ConstantsModels.stateModel?.data?.map((e) {
                             return DropDownModel(name: e.name ?? '', value: e.id ?? -1);
                           }).toList() ??
@@ -111,11 +135,14 @@ class _AddAddressViewState extends State<AddAddressView> {
                   child: BlocBuilder<CityCubit, CityState>(
                     builder: (context, state) {
                       return CustomDropDownMenu(
-                        hasError: ConstantsModels.cityModel?.data?.isEmpty ?? true,
+                        hasError: widget.isUpdate! ? false : ConstantsModels.cityModel?.data?.isEmpty ?? true,
                         errorText: 'there is no cites available'.tr(),
                         nameField: 'City',
                         borderColor: Colors.grey.withOpacity(0.2),
-                        selectedItem: DropDownModel(name: 'Choose your city'.tr(), value: 0),
+                        selectedItem: DropDownModel(
+                          name: widget.isUpdate! ? cityName : 'Choose your city'.tr(),
+                          value: widget.isUpdate! ? addAddressCubit.cityId : 0,
+                        ),
                         items: ConstantsModels.cityModel?.data?.map((e) {
                               return DropDownModel(name: e.name ?? '', value: e.id ?? -1);
                             }).toList() ??
@@ -129,6 +156,7 @@ class _AddAddressViewState extends State<AddAddressView> {
                 ),
               h15,
               LabeledCheckButton(
+                initialValue: addAddressCubit.isDefault,
                 onChanged: (value) {
                   addAddressCubit.isDefault = value;
                 },
@@ -139,8 +167,18 @@ class _AddAddressViewState extends State<AddAddressView> {
                 child: BlocBuilder<AddAddressCubit, AddAddressState>(
                   builder: (context, state) {
                     return CustomTextButton(
+                      state: state is UpdateAddressLoading,
+                      loadingColor: Colors.white,
                       onPress: () {
-                        addAddressCubit.addAddress(context: context, addressCubit: widget.addressCubit);
+                        if (widget.isUpdate!) {
+                          addAddressCubit.updateAddress(
+                            context: context,
+                            addressCubit: widget.addressCubit,
+                            addressId: widget.addressDataModel?.id ?? -1,
+                          );
+                        } else {
+                          addAddressCubit.addAddress(context: context, addressCubit: widget.addressCubit);
+                        }
                       },
                       borderRadius: 8,
                       child: state is AddAddressLoading

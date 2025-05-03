@@ -19,7 +19,7 @@ class CustomTextButton extends StatefulWidget {
   final bool isExpanded;
   final bool state;
   final BorderRadiusGeometry? allBorderRadius;
-
+  final Color? loadingColor;
   const CustomTextButton({
     super.key,
     this.child,
@@ -36,6 +36,7 @@ class CustomTextButton extends StatefulWidget {
     this.allBorderRadius,
     this.gradient,
     this.state = false,
+    this.loadingColor,
   });
 
   @override
@@ -65,7 +66,11 @@ class _CustomTextButtonState extends State<CustomTextButton> {
                 child: Padding(
                   padding: widget.padding ?? const EdgeInsets.all(12),
                   child: widget.state
-                      ? const LoadingWidget()
+                      ? Center(
+                          child: LoadingWidget(
+                            loadingColor: widget.loadingColor,
+                          ),
+                        )
                       : (widget.child ??
                           Text(
                             widget.childText ?? '',

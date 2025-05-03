@@ -35,4 +35,17 @@ class AddressDataSource {
       return Left(ServerFailure(error.toString()));
     }
   }
+
+  static Future<Either<Failure, void>> updateAddress({required Map<String, dynamic> data, required int addressId}) async {
+    try {
+      final response = await DioHelper.postData(endPoint: '${EndPoints.address}/$addressId', data: data);
+      log('Response: ${response.data['data']}');
+      return const Right(null);
+    } catch (error) {
+      if (error is DioException) {
+        return Left(ServerFailure.fromDioException(error));
+      }
+      return Left(ServerFailure(error.toString()));
+    }
+  }
 }

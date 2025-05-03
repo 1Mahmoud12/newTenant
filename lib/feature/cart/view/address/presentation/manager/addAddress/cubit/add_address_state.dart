@@ -14,3 +14,13 @@ final class AddAddressError extends AddAddressState {
 
   AddAddressError({required this.e});
 }
+
+final class UpdateAddressLoading extends AddAddressState {}
+
+final class UpdateAddressSuccess extends AddAddressState {}
+
+final class UpdateAddressError extends AddAddressState {
+  final String e;
+
+  UpdateAddressError({required this.e});
+}

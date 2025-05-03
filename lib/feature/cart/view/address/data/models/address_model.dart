@@ -3,7 +3,7 @@ import 'package:dobzz_seller/core/utils/constants.dart';
 class AddressModel {
   bool? status;
   String? message;
-  List<Data>? data;
+  List<AddressDataModel>? data;
   Meta? meta;
 
   AddressModel({this.status, this.message, this.data, this.meta});
@@ -12,9 +12,9 @@ class AddressModel {
     status = json['status'];
     message = json['message'];
     if (json['data'] != null) {
-      data = <Data>[];
+      data = <AddressDataModel>[];
       json['data'].forEach((v) {
-        data!.add(Data.fromJson(v));
+        data!.add(AddressDataModel.fromJson(v));
       });
     }
     meta = json['meta'] != null ? Meta.fromJson(json['meta']) : null;
@@ -34,7 +34,7 @@ class AddressModel {
   }
 }
 
-class Data {
+class AddressDataModel {
   int? id;
   String? name;
   String? phone;
@@ -50,7 +50,7 @@ class Data {
   String? createdAt;
   String? updateAt;
 
-  Data({
+  AddressDataModel({
     this.id,
     this.name,
     this.phone,
@@ -67,7 +67,7 @@ class Data {
     this.updateAt,
   });
 
-  Data.fromJson(Map<String, dynamic> json) {
+  AddressDataModel.fromJson(Map<String, dynamic> json) {
     id = json['id'] ?? -1;
     name = json['name'];
     phone = json['phone'];

@@ -14,7 +14,8 @@ class AddAddressCubit extends Cubit<AddAddressState> {
   int cityId = -1;
   int stateId = -1;
   bool isDefault = false;
-  Future<void> addAddress({required BuildContext context, required AddressCubit addressCubit}) async {if (isClosed) return;
+  Future<void> addAddress({required BuildContext context, required AddressCubit addressCubit}) async {
+    if (isClosed) return;
     emit(AddAddressLoading());
     await AddressDataSource.addAddress(
       data: {
@@ -27,7 +28,8 @@ class AddAddressCubit extends Cubit<AddAddressState> {
     ).then(
       (value) async {
         value.fold((l) {
-          Utils.showToast(title: l.errMessage, state: UtilState.error);if (isClosed) return;
+          Utils.showToast(title: l.errMessage, state: UtilState.error);
+          if (isClosed) return;
           emit(AddAddressError(e: l.errMessage));
         }, (r) async {
           Navigator.pop(context);
@@ -35,8 +37,42 @@ class AddAddressCubit extends Cubit<AddAddressState> {
             title: 'Address Add Successfully',
             state: UtilState.success,
           );
-          addressCubit.getAddress(context: context);if (isClosed) return;
+          addressCubit.getAddress(context: context);
+          if (isClosed) return;
           emit(AddAddressSuccess());
+        });
+      },
+    );
+  }
+
+  Future<void> updateAddress({required BuildContext context, required AddressCubit addressCubit, required int addressId}) async {
+    if (isClosed) return;
+    emit(UpdateAddressLoading());
+    await AddressDataSource.updateAddress(
+      addressId: addressId,
+      data: {
+        'name': addressNicknameController.text,
+        'phone': phoneController.text,
+        'city_id': cityId,
+        'state_id': stateId,
+        'is_default': isDefault,
+        '_method': 'put',
+      },
+    ).then(
+      (value) async {
+        value.fold((l) {
+          Utils.showToast(title: l.errMessage, state: UtilState.error);
+          if (isClosed) return;
+          emit(UpdateAddressError(e: l.errMessage));
+        }, (r) async {
+          Navigator.pop(context);
+          Utils.showToast(
+            title: 'Address updated Successfully',
+            state: UtilState.success,
+          );
+          addressCubit.getAddress(context: context);
+          if (isClosed) return;
+          emit(UpdateAddressSuccess());
         });
       },
     );

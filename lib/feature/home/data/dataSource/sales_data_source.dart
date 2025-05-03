@@ -11,7 +11,7 @@ class SalesDataSource {
   static Future<Either<Failure, SalesBannerModel>> getSalesBanner() async {
     try {
       final response = await DioHelper.getData(url: EndPoints.banner);
-      log('respons=======>${response.data}');
+      log('sales banner=======>${response.data}');
 
       return Right(SalesBannerModel.fromJson(response.data));
     } catch (error) {

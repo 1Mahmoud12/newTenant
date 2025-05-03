@@ -227,28 +227,52 @@ class _AddressViewState extends State<AddressView> {
                                         children: [
                                           s,
                                           InkWell(
-                                            onTap: () {},
-                                            child: Text(
-                                              'Edit'.tr(),
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .bodySmall
-                                                  ?.copyWith(fontWeight: FontWeight.w500, fontSize: 14.sp, color: const Color(0xff808080)),
+                                            onTap: () {
+                                              context.navigateToPage(
+                                                AddAddressView(
+                                                  addressCubit: addressCubit,
+                                                  addressDataModel: address,
+                                                  isUpdate: true,
+                                                ),
+                                              );
+                                            },
+                                            child: SizedBox(
+                                              height: 30,
+                                              width: 60,
+                                              child: Row(
+                                                children: [
+                                                  Text(
+                                                    'Edit'.tr(),
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .bodySmall
+                                                        ?.copyWith(fontWeight: FontWeight.w500, fontSize: 14.sp, color: const Color(0xff808080)),
+                                                  ),
+                                                  SvgPicture.asset(AppIcons.edit),
+                                                ],
+                                              ),
                                             ),
                                           ),
-                                          SvgPicture.asset(AppIcons.edit),
                                           w10,
                                           InkWell(
                                             onTap: () {},
-                                            child: Text(
-                                              'Delete'.tr(),
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .bodySmall
-                                                  ?.copyWith(fontWeight: FontWeight.w500, fontSize: 14.sp, color: const Color(0xffDD5A5D)),
+                                            child: SizedBox(
+                                              height: 30,
+                                              width: 60,
+                                              child: Row(
+                                                children: [
+                                                  Text(
+                                                    'Delete'.tr(),
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .bodySmall
+                                                        ?.copyWith(fontWeight: FontWeight.w500, fontSize: 14.sp, color: const Color(0xffDD5A5D)),
+                                                  ),
+                                                  SvgPicture.asset(AppIcons.deleteIc),
+                                                ],
+                                              ),
                                             ),
                                           ),
-                                          SvgPicture.asset(AppIcons.deleteIc),
                                         ],
                                       ),
                                     ],

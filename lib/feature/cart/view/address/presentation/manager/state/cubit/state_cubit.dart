@@ -10,7 +10,7 @@ part 'state_state.dart';
 class StateCubit extends Cubit<StateState> {
   StateCubit() : super(StateInitial());
 
-  Future<void> getAddress({required BuildContext context}) async {
+  Future<void> getState({required BuildContext context}) async {
     if (isClosed) return;
     emit(StateLoading());
     await StateDataSource.getState().then(

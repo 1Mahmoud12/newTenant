@@ -4,16 +4,17 @@ import 'package:dobzz_seller/core/themes/colors.dart';
 class LoadingWidget extends StatelessWidget {
   const LoadingWidget({
     super.key,
+    this.loadingColor,
   });
-
+  final Color? loadingColor;
   @override
   Widget build(BuildContext context) {
-    return const SizedBox(
+    return SizedBox(
       width: 20,
       height: 20,
       child: Center(
         child: CircularProgressIndicator(
-          color: AppColors.primaryColor,
+          color: loadingColor ?? AppColors.primaryColor,
           strokeWidth: 2,
         ),
       ),
