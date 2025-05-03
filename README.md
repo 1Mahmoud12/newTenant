@@ -36,5 +36,5 @@ pod install
 open .
 cd ..
 flutter build appbundle
-open build/app/outputs/
+open build/app/outputs/bundle/release/
 ```
