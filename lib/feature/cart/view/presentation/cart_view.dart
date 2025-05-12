@@ -270,8 +270,9 @@ class GoToCheckOutButton extends StatelessWidget {
           CustomTextButton(
             borderRadius: 8,
             onPress: () {
-              context.navigateToPage(const CheckoutView());
-              //Todo: check if user is demo account ===== stop now =====
+              //context.navigateToPage(const CheckoutView());
+              // check if user is demo account ===== stop now =====
+
               if (userCacheValue?.data?.phone == Constants.demoAccount) {
                 Utils.showToast(title: 'This is demo account you can not create order ', state: UtilState.error);
               } else {
