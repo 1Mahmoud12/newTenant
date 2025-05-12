@@ -42,7 +42,7 @@ Future<void> showSaudiPhoneBottomSheet({
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Enter Phone Number'.tr(),
+                    'Enter Saudi Phone Number To Stc Payment'.tr(),
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
                   IconButton(
@@ -165,7 +165,6 @@ class _SaudiPhoneNumberFieldState extends State<SaudiPhoneNumberField> {
   }
 
   String? _validateSaudiPhoneNumber(String? value) {
-    print(value);
     if (value == null || value.isEmpty) {
       return 'Phone number is required'.tr();
     }

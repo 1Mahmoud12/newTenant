@@ -11,6 +11,7 @@ import 'package:dobzz_seller/feature/cart/view/checkout/presentation/view/widget
 import 'package:dobzz_seller/feature/cart/view/checkout/presentation/view/widgets/show_otp.dart';
 import 'package:dobzz_seller/feature/navigation/view/presentation/navigation_view.dart';
 import 'package:dobzz_seller/main.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 part 'process_to_checkout_state.dart';
@@ -116,12 +117,10 @@ class ProcessToCheckoutCubit extends Cubit<ProcessToCheckoutState> {
             context: context,
             onSubmit: (otpCode) async {
               // Handle the 6-digit OTP code
-              print('Received OTP: $otpCode');
               await createSTCSecond(context: context, transactionUrl: r.transactionUrl ?? '', otp: otpCode);
             },
             onResendCode: () {
               // Handle resend code logic
-              print('Resending OTP code');
             },
             phoneNumber: '+966 $mobile',
             // Display phone number
@@ -150,9 +149,9 @@ class ProcessToCheckoutCubit extends Cubit<ProcessToCheckoutState> {
         }, (r) async {
           logger.w(r);
           if (r == 'paid') {
-            Utils.showToast(title: 'تم الدفع بنجاح', state: UtilState.success);
+            Utils.showToast(title: 'Payment successful'.tr(), state: UtilState.success);
           } else {
-            Utils.showToast(title: 'لم يتم الدفع بنجاح', state: UtilState.error);
+            Utils.showToast(title: 'Payment failed'.tr(), state: UtilState.error);
           }
           context.navigateToPageWithReplacement(
             const NavigationViewWithThemes(

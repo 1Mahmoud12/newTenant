@@ -182,7 +182,14 @@
   "language": "اللغات",
   "No Results Found!": "لم يتم العثور على نتائج!",
   "Try a similar word or something more general.": "جرّب كلمة مشابهة أو شيئًا أكثر عمومية.",
-  "Confirm Deletion":"تأكيد الحذف",
-  "Are you sure you want to delete this item?":"هل أنت متأكد من حذف هذا العنصر",
-  "Cancel":"الغاء"
+  "Confirm Deletion": "تأكيد الحذف",
+  "Are you sure you want to delete this item?": "هل أنت متأكد من حذف هذا العنصر",
+  "Cancel": "الغاء",
+  "Enter Saudi Phone Number To Stc Payment": "ادخل رقم الهاتف السعودي لدفع STC",
+  "Phone number is required": "رقم الهاتف مطلوب",
+  "Verify": "تحقق",
+  "Enter the 6-digit code sent to": "ادخل كود المكون من 6 ارقام المرسل ل",
+  "Payment successful": "تم الدفع بنجاح",
+  "Payment failed": "لم يتم الدفع بنجاح",
+  "": ""
 }
