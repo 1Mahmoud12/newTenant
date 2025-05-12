@@ -11,8 +11,8 @@ import 'package:dobzz_seller/core/utils/errorLoadingWidgets/empty_widget.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/core/utils/utils.dart';
 import 'package:dobzz_seller/feature/cart/data/models/cart_item_model.dart';
-import 'package:dobzz_seller/feature/cart/view/checkout/presentation/check_out_view.dart';
 import 'package:dobzz_seller/feature/cart/view/checkout/presentation/manager/checkoutDetails/cubit/checkout_details_cubit.dart';
+import 'package:dobzz_seller/feature/cart/view/checkout/presentation/view/check_out_view.dart';
 import 'package:dobzz_seller/feature/cart/view/manager/addToCart/cubit/add_to_cart_cubit.dart';
 import 'package:dobzz_seller/feature/cart/view/manager/cartItems/cubit/cart_items_cubit.dart';
 import 'package:dobzz_seller/feature/cart/view/manager/deleteFromCart/cubit/delete_from_cart_cubit.dart';
@@ -270,8 +270,9 @@ class GoToCheckOutButton extends StatelessWidget {
           CustomTextButton(
             borderRadius: 8,
             onPress: () {
-              // context.navigateToPage(const CheckoutView());
-              if (userCacheValue?.data?.phone == '+201124980094') {
+              context.navigateToPage(const CheckoutView());
+              //Todo: check if user is demo account ===== stop now =====
+              if (userCacheValue?.data?.phone == Constants.demoAccount) {
                 Utils.showToast(title: 'This is demo account you can not create order ', state: UtilState.error);
               } else {
                 context.navigateToPage(const CheckoutView());

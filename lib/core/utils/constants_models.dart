@@ -1,5 +1,4 @@
 import 'package:dobzz_seller/feature/Categories/data/models/sub_categories_models.dart';
-import 'package:dobzz_seller/feature/account/view/myDetalis/data/models/edit_profile_model.dart';
 import 'package:dobzz_seller/feature/account/view/myOrders/data/models/order_model.dart';
 import 'package:dobzz_seller/feature/account/view/notificationSetting/data/models/general_notification_setting_model.dart';
 import 'package:dobzz_seller/feature/auth/data/models/country_code_model.dart';
@@ -9,6 +8,7 @@ import 'package:dobzz_seller/feature/cart/view/address/data/models/address_model
 import 'package:dobzz_seller/feature/cart/view/address/data/models/city_model.dart';
 import 'package:dobzz_seller/feature/cart/view/address/data/models/state_model.dart';
 import 'package:dobzz_seller/feature/cart/view/checkout/data/models/checkout_details_model.dart';
+import 'package:dobzz_seller/feature/cart/view/checkout/data/models/payment_method_model.dart';
 import 'package:dobzz_seller/feature/favorites/data/model/wish_list_model.dart';
 import 'package:dobzz_seller/feature/home/data/models/categories_model.dart';
 import 'package:dobzz_seller/feature/home/data/models/product_mdoel.dart';
@@ -34,7 +34,10 @@ class ConstantsModels {
   static SubCategoryModel? subCategoryModel;
   static ProductModel? productsModel;
   static ProductModel? searchProductsModel;
-  static GeneralNotificationModel ? generalNotificationModel ;
-  static SliderModel  ? sliderModel  ;
-  static SalesBannerModel   ? salesBannerModel   ;
+  static GeneralNotificationModel? generalNotificationModel;
+  static SliderModel? sliderModel;
+  static SalesBannerModel? salesBannerModel;
+
+  // Payments
+  static PaymentMethodModel? paymentMethodModel;
 }

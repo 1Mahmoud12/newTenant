@@ -1,5 +1,6 @@
 class EndPoints {
   static const domain = 'https://backend.dobzz.com';
+
   // static const domain = 'https://kadin.dobzz.com';
   static const baseUrl = '$domain/api/v1/';
 
@@ -84,6 +85,12 @@ class EndPoints {
   static const checkoutDetails = 'shop/checkout';
   static const processToCheckout = 'shop/checkout/proceed';
   static const subCategories = 'shop/sub-categories?filter[parent_id]=';
+
+  // Payment Setting
+  static const getAllPaymentGetaways = 'shop/payment-gateway';
+  static const creditCard = 'shop/payment-moyasar-initiate';
+  static const stcPayFirst = 'shop/payment-moyasar-initiate';
+  static const stcPaySecond = 'shop/user/stc-payment-confirm';
 
   //Claims
   static const addClaimMessage = 'ClaimMessage/AddClaimMessage';

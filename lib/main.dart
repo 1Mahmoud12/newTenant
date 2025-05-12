@@ -15,6 +15,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:logger/logger.dart';
 
 import 'core/network/dio_helper.dart';
 import 'core/network/local/cache.dart';
@@ -27,6 +28,7 @@ import 'my_app.dart';
 
 Widget appStartScreen = const SplashScreen();
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+Logger logger = Logger();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

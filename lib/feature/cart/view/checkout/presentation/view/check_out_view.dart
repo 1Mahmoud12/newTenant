@@ -4,7 +4,6 @@ import 'package:dobzz_seller/core/component/custom_drop_down_menu.dart';
 import 'package:dobzz_seller/core/component/custom_list.dart';
 import 'package:dobzz_seller/core/component/fields/custom_text_form_field.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
-import 'package:dobzz_seller/core/utils/app_icons.dart';
 import 'package:dobzz_seller/core/utils/constant_gaping.dart';
 import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:dobzz_seller/core/utils/constants_models.dart';
@@ -27,7 +26,6 @@ class CheckoutView extends StatefulWidget {
 }
 
 class _CheckoutViewState extends State<CheckoutView> {
-  String selectedPaymentMethod = 'Cash'.tr();
   final TextEditingController promoCodeController = TextEditingController();
   AddressCubit addressCubit = AddressCubit();
   ProcessToCheckoutCubit processToCheckoutCubit = ProcessToCheckoutCubit();
@@ -36,6 +34,7 @@ class _CheckoutViewState extends State<CheckoutView> {
   @override
   void initState() {
     addressCubit.getAddress(context: context);
+    processToCheckoutCubit.getAllPaymentMethod();
     super.initState();
   }
 
@@ -80,11 +79,15 @@ class _CheckoutViewState extends State<CheckoutView> {
         ),
       ],
       appBar: customAppBar(context: context, title: 'Checkout'.tr()),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
-          child: BlocProvider.value(
-            value: discountCubit,
+      body: MultiBlocProvider(
+        providers: [
+          BlocProvider.value(value: addressCubit),
+          BlocProvider.value(value: processToCheckoutCubit),
+          BlocProvider.value(value: discountCubit),
+        ],
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: SingleChildScrollView(
             child: BlocBuilder<DiscountCubit, DiscountState>(
               builder: (context, state) {
                 return Column(
@@ -110,30 +113,27 @@ class _CheckoutViewState extends State<CheckoutView> {
                       children: [
                         Expanded(
                           flex: 7,
-                          child: BlocProvider.value(
-                            value: addressCubit,
-                            child: BlocBuilder<AddressCubit, AddressState>(
-                              builder: (context, state) {
-                                return CustomDropDownMenu(
-                                  menuItemPadding: const EdgeInsets.symmetric(horizontal: 16),
-                                  hasError: ConstantsModels.addressModel?.data?.isEmpty ?? true,
-                                  errorText: 'you should create address first',
-                                  nameField: 'Address'.tr(),
-                                  borderColor: Colors.grey.withOpacity(0.2),
-                                  selectedItem: DropDownModel(name: Constants.defaultAddress.name!, value: 0),
-                                  items: ConstantsModels.addressModel?.data?.map((e) {
-                                        return DropDownModel(name: e.name ?? '', value: e.id ?? -1);
-                                      }).toList() ??
-                                      [],
-                                  onChanged: (value) {
-                                    // setState(() {});
-                                    processToCheckoutCubit.addressId = value?.value.toString() ?? '-1';
-                                    // cityCubit.getAddress(context: context, stateId: addAddressCubit.stateId);
-                                    // addAddressCubit.stateId = value?.value ?? -1;
-                                  },
-                                );
-                              },
-                            ),
+                          child: BlocBuilder<AddressCubit, AddressState>(
+                            builder: (context, state) {
+                              return CustomDropDownMenu(
+                                menuItemPadding: const EdgeInsets.symmetric(horizontal: 16),
+                                hasError: ConstantsModels.addressModel?.data?.isEmpty ?? true,
+                                errorText: 'you should create address first',
+                                nameField: 'Address'.tr(),
+                                borderColor: Colors.grey.withOpacity(0.2),
+                                selectedItem: DropDownModel(name: Constants.defaultAddress.name!, value: 0),
+                                items: ConstantsModels.addressModel?.data?.map((e) {
+                                      return DropDownModel(name: e.name ?? '', value: e.id ?? -1);
+                                    }).toList() ??
+                                    [],
+                                onChanged: (value) {
+                                  // setState(() {});
+                                  processToCheckoutCubit.addressId = value?.value.toString() ?? '-1';
+                                  // cityCubit.getAddress(context: context, stateId: addAddressCubit.stateId);
+                                  // addAddressCubit.stateId = value?.value ?? -1;
+                                },
+                              );
+                            },
                           ),
                         ),
                         w5,
@@ -181,16 +181,19 @@ class _CheckoutViewState extends State<CheckoutView> {
 
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 5),
-                      child: CustomList(
-                        borderOnlySelection: true,
-                        tabs: const ['Cash'],
-                        // showTabs: false, // This is fine if you don't want text labels
-                        // prefixIcon: true, // You need to set this to true to show icons
-                        // useSvgIcons: true,
-                        // svgIcons: const [AppIcons.pay1, AppIcons.pay2, AppIcons.pay3, AppIcons.pay4],
-                        onTabChanged: (index) {
-                          // Handle tab change
-                        },
+                      child: BlocBuilder<ProcessToCheckoutCubit, ProcessToCheckoutState>(
+                        buildWhen: (previous, current) => current is GetAllPaymentsSuccess,
+                        builder: (context, state) => CustomList(
+                          borderOnlySelection: true,
+                          tabs: processToCheckoutCubit.paymentMethod,
+                          // showTabs: false, // This is fine if you don't want text labels
+                          // prefixIcon: true, // You need to set this to true to show icons
+                          // useSvgIcons: true,
+                          // svgIcons: const [AppIcons.pay1, AppIcons.pay2, AppIcons.pay3, AppIcons.pay4],
+                          onTabChanged: (index) {
+                            processToCheckoutCubit.changePaymentMethod(processToCheckoutCubit.paymentMethod[index]);
+                          },
+                        ),
                       ),
                     ),
                     const SizedBox(height: 8),
