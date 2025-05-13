@@ -166,4 +166,5 @@ class AppIcons {
   static const cashIc = '$baseUrl/cashIc.svg';
   static const stcPay = '$baseUrl/STCpay.svg';
   static const mada = '$baseUrl/madaIc.svg';
+  static const retryPayIc = '$baseUrl/retryPayIc.svg';
 }

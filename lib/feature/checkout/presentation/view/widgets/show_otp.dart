@@ -156,6 +156,7 @@ class _OtpVerificationContentState extends State<OtpVerificationContent> {
                 setState(() {
                   _isOtpComplete = true;
                 });
+                widget.onSubmit(value);
               },
               textStyle: Theme.of(context).textTheme.titleMedium,
               pinTheme: PinTheme(

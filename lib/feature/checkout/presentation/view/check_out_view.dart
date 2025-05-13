@@ -48,20 +48,10 @@ class _CheckoutViewState extends State<CheckoutView> {
               return CustomTextButton(
                 borderRadius: 8,
                 onPress: () {
-                  if (ConstantsModels.addressModel?.data?.isEmpty ?? true) {
-                    context.navigateToPage(
-                      AddAddressView(
-                        addressCubit: addressCubit,
-                      ),
-                    );
-                    //   Utils.showToast(title: 'you should create address first'.tr(), state: UtilState.error);
-                  } else {
-                    selectPaymentMethodDialog(
-                      context,
-                      createOrder: true,
-                      onPress: (paymentMethodId) {},
-                    );
-                  }
+                  selectPaymentMethodDialog(
+                    context,
+                    onPress: (paymentMethodId) {},
+                  );
                 },
                 child: state is ProcessToCheckoutLoading
                     ? const Center(

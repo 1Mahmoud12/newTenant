@@ -1,6 +1,8 @@
 import 'package:dobzz_seller/core/component/cache_image.dart';
 import 'package:dobzz_seller/core/component/custom_app_bar.dart';
+import 'package:dobzz_seller/core/services/payment/select_payment_method_dialog.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
+import 'package:dobzz_seller/core/utils/app_icons.dart';
 import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/feature/account/view/myOrders/data/models/order_model.dart';
@@ -8,7 +10,13 @@ import 'package:dobzz_seller/feature/account/view/myOrders/presentation/expandab
 import 'package:dobzz_seller/feature/product/views/presentation/product_details_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
+
+enum EnumPaymentStatus {
+  paid,
+  unpaid,
+}
 
 class OrderDetailsScreen extends StatelessWidget {
   final OrderData order;
@@ -449,21 +457,39 @@ class OrderItem extends StatelessWidget {
         );
       },
       child: Container(
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.symmetric(vertical: 12),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
           border: Border.all(color: Colors.grey[200]!),
         ),
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
         child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Product Image
-            CacheImage(
-              urlImage: item.productThumbnailPath ?? '',
-              width: 70,
-              height: 70,
-              fit: BoxFit.cover,
+            Stack(
+              alignment: AlignmentDirectional.topEnd,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: CacheImage(
+                    urlImage: item.productThumbnailPath ?? '',
+                    width: 70,
+                    height: 70,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.all(4),
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: AppColors.cTextDate,
+                  ),
+                  child: Text(
+                    '${item.quantity ?? 1}',
+                    style: Theme.of(context).textTheme.labelMedium?.copyWith(fontWeight: FontWeight.w700, color: AppColors.white),
+                  ),
+                ),
+              ],
             ),
             const SizedBox(width: 12),
 
@@ -472,33 +498,36 @@ class OrderItem extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    item.product ?? 'Unknown Product',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 15,
-                    ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(height: 6),
+                  //  const SizedBox(height: 6),
                   Row(
                     children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                        decoration: BoxDecoration(
-                          color: Colors.grey[100],
-                          borderRadius: BorderRadius.circular(4),
-                        ),
+                      Expanded(
                         child: Text(
-                          'x${item.quantity ?? 1}',
-                          style: TextStyle(
-                            fontSize: 13,
-                            color: Colors.grey[700],
+                          item.product ?? 'Unknown Product',
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 15,
                           ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                      const Spacer(),
+                      const SizedBox(width: 6),
+                      // Container(
+                      //   padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                      //   decoration: BoxDecoration(
+                      //     color: Colors.grey[100],
+                      //     borderRadius: BorderRadius.circular(4),
+                      //   ),
+                      //   child: Text(
+                      //     'x${item.quantity ?? 1}',
+                      //     style: TextStyle(
+                      //       fontSize: 13,
+                      //       color: Colors.grey[700],
+                      //     ),
+                      //   ),
+                      // ),
+                      // const Spacer(),
                       Text(
                         '${_formatPrice(item.price)} EGP',
                         style: const TextStyle(
@@ -712,6 +741,16 @@ class OrderInformation extends StatelessWidget {
           _buildInfoRow(
             label: 'Payment Status:',
             value: order.paymentStatus?.capitalize() ?? 'Unknown',
+            action: EnumPaymentStatus.unpaid.name == (order.paymentStatus ?? '').toLowerCase()
+                ? InkWell(
+                    onTap: () => selectPaymentMethodDialog(
+                      context,
+                      orderId: order.id,
+                      onPress: (paymentMethodName) {},
+                    ),
+                    child: SvgPicture.asset(AppIcons.retryPayIc),
+                  )
+                : const SizedBox(),
           ),
 
           const SizedBox(height: 12),
