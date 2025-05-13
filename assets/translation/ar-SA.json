@@ -191,5 +191,7 @@
   "Enter the 6-digit code sent to": "ادخل كود المكون من 6 ارقام المرسل ل",
   "Payment successful": "تم الدفع بنجاح",
   "Payment failed": "لم يتم الدفع بنجاح",
+  "select_payment_method": "حدد طريقة الدفع",
+  "you_must_select_payment": "يجب عليك اختيار طريقة الدفع",
   "": ""
 }

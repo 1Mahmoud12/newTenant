@@ -41,6 +41,7 @@ class AppIcons {
   static const selectedCartR = '$baseUrl/selected-cart.svg';
   static const selectedProfileR = '$baseUrl/selected-profile.svg';
   static const selectedFavoriteR = '$baseUrl/selected-favorite.svg';
+
   // the Circled theme icons
   static const unSelectedHomeC = '$baseUrl/unselected-home-c.svg';
   static const unSelectedCartC = '$baseUrl/unselected-cart-c.svg';
@@ -53,6 +54,7 @@ class AppIcons {
   static const selectedProfileC = '$baseUrl/selected-profile-c.svg';
   static const selectedFavoriteC = '$baseUrl/selected-favorite-c.svg';
   static const currency = '$baseUrl/currency.svg';
+
 //////////////////////////////
   // Home
   static const location = '$baseUrl/location.svg';
@@ -149,6 +151,7 @@ class AppIcons {
   static const helpCenter = '$baseUrl/help-center.svgg';
   static const logout = '$baseUrl/logout-05.svg';
   static const deleteIcon = '$baseUrl/delete-icon.svg';
+
   // help center
   static const customerSerivce = '$baseUrl/customer-service.svg';
   static const Whatsapp = '$baseUrl/Whatsapp.svg';
@@ -156,9 +159,11 @@ class AppIcons {
   static const Facebook = '$baseUrl/Facebook.svg';
   static const Twitter = '$baseUrl/Twitter.svg';
   static const Instagram = '$baseUrl/Instagram.svg';
+
   // payment method
-  static const pay1 = '$baseUrl/Mastercard.svg';
-  static const pay2 = '$baseUrl/visa-logo.svg';
-  static const pay3 = '$baseUrl/ApplePay.svg';
-  static const pay4 = '$baseUrl/STCpay.svg';
+  static const creditCard = '$baseUrl/Mastercard.svg';
+  static const visa = '$baseUrl/visa-logo.svg';
+  static const cashIc = '$baseUrl/cashIc.svg';
+  static const stcPay = '$baseUrl/STCpay.svg';
+  static const mada = '$baseUrl/madaIc.svg';
 }

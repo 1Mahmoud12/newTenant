@@ -1,7 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:dobzz_seller/core/services/payment/select_payment_method_dialog.dart';
 import 'package:dobzz_seller/core/utils/constants.dart';
-import 'package:dobzz_seller/core/utils/utils.dart';
 import 'package:dobzz_seller/feature/cart/view/checkout/data/dataSource/process_to_checkout_data_source.dart';
 import 'package:flutter/material.dart';
 
@@ -17,23 +15,19 @@ class ProcessToCheckoutCubit extends Cubit<ProcessToCheckoutState> {
     if (isClosed) return;
     emit(ProcessToCheckoutLoading());
 
-    await processToCheckoutDataSource.processToCheckout(addressId: addressId).then(
-      (value) async {
-        value.fold((l) {
-          if (isClosed) return;
-          emit(ProcessToCheckoutError(e: l.errMessage));
-          Utils.showToast(title: l.errMessage, state: UtilState.error);
-        }, (r) async {
-          orderId = r;
-          selectPaymentMethodDialog(
-            context,
-            orderId: orderId,
-            onPress: (paymentMethodId) {},
-          );
-          if (isClosed) return;
-          emit(ProcessToCheckoutSuccess());
-        });
-      },
-    );
+    // await processToCheckoutDataSource.processToCheckout(addressId: addressId).then(
+    //   (value) async {
+    //     value.fold((l) {
+    //       if (isClosed) return;
+    //       emit(ProcessToCheckoutError(e: l.errMessage));
+    //       Utils.showToast(title: l.errMessage, state: UtilState.error);
+    //     }, (r) async {
+    //       orderId = r;
+    //
+    //       if (isClosed) return;
+    //       emit(ProcessToCheckoutSuccess());
+    //     });
+    //   },
+    // );
   }
 }

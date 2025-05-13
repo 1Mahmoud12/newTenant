@@ -5,12 +5,14 @@ import 'package:dobzz_seller/core/services/payment/data/dataSource/payment_data_
 import 'package:dobzz_seller/core/services/payment/data/model/payment_credit_params.dart';
 import 'package:dobzz_seller/core/services/payment/data/model/payment_stc_first_params.dart';
 import 'package:dobzz_seller/core/services/payment/in_app_webView.dart';
+import 'package:dobzz_seller/core/services/payment/select_payment_method_dialog.dart';
 import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:dobzz_seller/core/utils/constants_models.dart';
 import 'package:dobzz_seller/core/utils/errorLoadingWidgets/dialog_loading_animation.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/core/utils/utils.dart';
 import 'package:dobzz_seller/feature/account/view/myOrders/presentation/my_order_view.dart';
+import 'package:dobzz_seller/feature/cart/view/checkout/data/dataSource/process_to_checkout_data_source.dart';
 import 'package:dobzz_seller/feature/cart/view/checkout/presentation/view/widgets/add_phone_payment.dart';
 import 'package:dobzz_seller/feature/cart/view/checkout/presentation/view/widgets/show_otp.dart';
 import 'package:dobzz_seller/feature/navigation/view/presentation/navigation_view.dart';
@@ -21,21 +23,47 @@ import 'package:flutter/material.dart';
 part 'payment_state.dart';
 
 class PaymentCubit extends Cubit<PaymentState> {
-  final int orderId;
-
-  PaymentCubit(this.orderId) : super(PaymentInitial());
+  PaymentCubit() : super(PaymentInitial());
   String addressId = Constants.defaultAddress.addressId.toString();
-  PaymentDataSource processToCheckoutDataSource = PaymentDataSourceImpl();
+  PaymentDataSource paymentDataSource = PaymentDataSourceImpl();
 
-  Future<void> processToCheckout({required BuildContext context, required String selectedPaymentMethod}) async {
-    if (selectedPaymentMethod == 'stc' && orderId != -1) {
+  ProcessToCheckoutDataSource processToCheckoutDataSource = ProcessToCheckoutDataSourceImpl();
+  int orderId = -1;
+
+  Future<void> createOrder({required BuildContext context, required String paymentMethod}) async {
+    if (isClosed) return;
+    emit(CreateOrderLoading());
+    animationDialogLoading(context);
+    await processToCheckoutDataSource.processToCheckout(addressId: addressId, paymentMethod: paymentMethod).then(
+      (value) async {
+        closeDialog(context);
+        value.fold((l) {
+          if (isClosed) return;
+          emit(CreateOrderError(e: l.errMessage));
+          Utils.showToast(title: l.errMessage, state: UtilState.error);
+        }, (r) async {
+          orderId = r;
+          logger.w('orderId ==>$orderId');
+          afterSuccessCreateOrder(
+            context: context,
+            selectedPaymentMethod: paymentMethod,
+          );
+          if (isClosed) return;
+          emit(CreateOrderSuccess());
+        });
+      },
+    );
+  }
+
+  Future<void> afterSuccessCreateOrder({required BuildContext context, required String selectedPaymentMethod}) async {
+    if (selectedPaymentMethod == EnumPaymentMethod.stc.name && orderId != -1) {
       await startStcPayment(context: context);
-    } else if (selectedPaymentMethod == 'credit' && orderId != -1) {
+    } else if (selectedPaymentMethod == EnumPaymentMethod.credit.name && orderId != -1) {
       await startCreditPayment(context: context, amount: '${ConstantsModels.checkoutDetailsModel?.subTotalPrice}', orderId: '$orderId');
     } else if (selectedPaymentMethod == 'invoice' && orderId != -1) {
       await startCreditPayment(context: context, amount: '${ConstantsModels.checkoutDetailsModel?.subTotalPrice}', orderId: '$orderId');
     } else {
-      finish(context);
+      finish(context, duration: false);
     }
   }
 
@@ -48,12 +76,13 @@ class PaymentCubit extends Cubit<PaymentState> {
   Future<void> getAllPaymentMethod() async {
     emit(GetAllPaymentsLoading());
     ConstantsModels.paymentMethodModel = null;
-    await processToCheckoutDataSource.getPaymentMethod().then(
+    await paymentDataSource.getPaymentMethod().then(
       (value) async {
         value.fold((l) {
           Utils.showToast(title: l.errMessage, state: UtilState.error);
           emit(GetAllPaymentsError(e: l.errMessage));
         }, (r) async {
+          ConstantsModels.paymentMethodModel = null;
           ConstantsModels.paymentMethodModel = r;
           r.data?.forEach((element) {
             element.allowedPaymentMethods?.forEach((element) {
@@ -94,7 +123,7 @@ class PaymentCubit extends Cubit<PaymentState> {
   Future<void> createSTCFirst({required BuildContext context, required String orderId, required String mobile}) async {
     emit(CreateSTCFirstLoading());
     animationDialogLoading(context);
-    await processToCheckoutDataSource
+    await paymentDataSource
         .paymentStcFirstMethod(
       params: PaymentStcFirstParams(
         amount: '${ConstantsModels.checkoutDetailsModel?.subTotalPrice}',
@@ -131,7 +160,7 @@ class PaymentCubit extends Cubit<PaymentState> {
   Future<void> createSTCSecond({required BuildContext context, required String transactionUrl, required String otp}) async {
     emit(CreateSTCSecondLoading());
     animationDialogLoading(context);
-    await processToCheckoutDataSource
+    await paymentDataSource
         .paymentStcSecondMethod(
       transactionUrl: transactionUrl,
       otp: otp,
@@ -160,7 +189,7 @@ class PaymentCubit extends Cubit<PaymentState> {
   Future<void> startCreditPayment({required BuildContext context, required String amount, required String orderId}) async {
     emit(CreateCreditLoading());
     animationDialogLoading(context);
-    await processToCheckoutDataSource
+    await paymentDataSource
         .paymentCreditMethod(
       params: PaymentCreditParams(
         amount: '${ConstantsModels.checkoutDetailsModel?.subTotalPrice}',
@@ -210,8 +239,8 @@ class PaymentCubit extends Cubit<PaymentState> {
     );
   }
 
-  void finish(BuildContext context) {
-    Future.delayed(const Duration(seconds: 2), () {
+  void finish(BuildContext context, {bool duration = true}) {
+    Future.delayed(Duration(seconds: duration ? 2 : 0), () {
       context.navigateToPageWithReplacement(
         const NavigationViewWithThemes(
           initialIndex: 1,

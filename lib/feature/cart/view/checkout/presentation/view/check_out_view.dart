@@ -50,12 +50,9 @@ class _CheckoutViewState extends State<CheckoutView> {
                 onPress: () {
                   selectPaymentMethodDialog(
                     context,
-                    orderId: 200,
+                    createOrder: true,
                     onPress: (paymentMethodId) {},
                   );
-                  // processToCheckoutCubit.processToCheckout(
-                  //   context: context,
-                  // );
                 },
                 child: state is ProcessToCheckoutLoading
                     ? const Center(

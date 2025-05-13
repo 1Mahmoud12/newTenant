@@ -57,4 +57,6 @@ class AppImages {
   static const noMessagesInbox = '$baseUrl/noMessagesInbox.png';
   static const noNotificationYet = '$baseUrl/noNotificationYet.png';
   static const cashOnDeliveryIc = '$baseUrl/cashOnDeliveryIc.png';
+
+  static const moyassar = '$baseUrl/moyasar.png';
 }

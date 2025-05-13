@@ -8,6 +8,7 @@ import 'package:dobzz_seller/main.dart';
 abstract class ProcessToCheckoutDataSource {
   Future<Either<Failure, int>> processToCheckout({
     required String addressId,
+    required String paymentMethod,
   });
 }
 
@@ -15,6 +16,7 @@ class ProcessToCheckoutDataSourceImpl implements ProcessToCheckoutDataSource {
   @override
   Future<Either<Failure, int>> processToCheckout({
     required String addressId,
+    required String paymentMethod,
   }) async {
     try {
       final response = await DioHelper.postData(

@@ -3,6 +3,16 @@ part of 'payment_cubit.dart';
 @immutable
 sealed class PaymentState {}
 
+final class CreateOrderLoading extends PaymentState {}
+
+final class CreateOrderSuccess extends PaymentState {}
+
+final class CreateOrderError extends PaymentState {
+  final String e;
+
+  CreateOrderError({required this.e});
+}
+
 final class PaymentInitial extends PaymentState {}
 
 final class PaymentLoading extends PaymentState {}
