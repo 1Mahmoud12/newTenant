@@ -48,11 +48,20 @@ class _CheckoutViewState extends State<CheckoutView> {
               return CustomTextButton(
                 borderRadius: 8,
                 onPress: () {
-                  selectPaymentMethodDialog(
-                    context,
-                    createOrder: true,
-                    onPress: (paymentMethodId) {},
-                  );
+                  if (ConstantsModels.addressModel?.data?.isEmpty ?? true) {
+                    context.navigateToPage(
+                      AddAddressView(
+                        addressCubit: addressCubit,
+                      ),
+                    );
+                    //   Utils.showToast(title: 'you should create address first'.tr(), state: UtilState.error);
+                  } else {
+                    selectPaymentMethodDialog(
+                      context,
+                      createOrder: true,
+                      onPress: (paymentMethodId) {},
+                    );
+                  }
                 },
                 child: state is ProcessToCheckoutLoading
                     ? const Center(
@@ -120,7 +129,7 @@ class _CheckoutViewState extends State<CheckoutView> {
                               return CustomDropDownMenu(
                                 menuItemPadding: const EdgeInsets.symmetric(horizontal: 16),
                                 hasError: ConstantsModels.addressModel?.data?.isEmpty ?? true,
-                                errorText: 'you should create address first',
+                                errorText: 'you should create address first'.tr(),
                                 nameField: 'Address'.tr(),
                                 borderColor: Colors.grey.withOpacity(0.2),
                                 selectedItem: DropDownModel(name: Constants.defaultAddress.name!, value: 0),

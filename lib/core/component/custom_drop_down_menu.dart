@@ -204,7 +204,7 @@ class _CustomDropDownMenuState extends State<CustomDropDownMenu> {
           Padding(
             padding: const EdgeInsets.only(top: 5, left: 5),
             child: Text(
-              widget.errorText!,
+              widget.errorText!.tr(),
               style: TextStyle(
                 color: Colors.red,
                 fontSize: Constants.tablet ? 12 : 12.sp,

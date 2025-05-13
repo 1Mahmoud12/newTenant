@@ -260,7 +260,7 @@ class AuthCubit extends Cubit<AuthState> {
         }, (r) async {
           ConstantsModels.registerModel = r;
           userCacheValue = r;
-          log('userCacheValue.data ==>${userCacheValue?.data}');
+          log('userCacheValue.data ==>${userCacheValue?.data?.token}');
           Constants.token = r.data?.token ?? '';
           await userCache?.put(userCacheKey, jsonEncode(r.toJson()));
           context.navigateToPageWithClearStack(const NavigationViewWithThemes());

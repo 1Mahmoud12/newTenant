@@ -73,7 +73,7 @@ class _VerifyCodeViewState extends State<VerifyCodeView> {
                 children: [
                   Expanded(
                     child: Text(
-                      'enter the verification code sent to your phone to proceed with setting a new password '.tr(),
+                      'enter the verification code sent to your phone to proceed with setting a new password'.tr(),
                       style: Theme.of(context).textTheme.displaySmall?.copyWith(color: AppColors.cB900),
                       textAlign: TextAlign.center,
                     ),

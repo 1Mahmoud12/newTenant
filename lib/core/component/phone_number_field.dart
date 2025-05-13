@@ -88,6 +88,7 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
       outPadding: widget.outPadding ?? const EdgeInsets.symmetric(horizontal: 20),
       controller: widget.controller,
       hintText: 'Phone'.tr(),
+      hintStyle: TextStyle(color: AppColors.primaryColor.withOpacity(0.5)),
       //  labelText: _phoneHint.tr(),
       validator: (value) => _validatePhoneNumber(value, _countryCode),
       prefixIcon: Padding(

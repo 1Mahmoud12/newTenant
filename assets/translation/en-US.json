@@ -185,5 +185,9 @@
   "Cancel": "Cancel",
   "select_payment_method": "Select Payment Method",
   "you_must_select_payment": "You Must Select Payment",
-  "Phone":"Phone"
+  "Phone":"Phone",
+  "verify phone number":"verify phone number",
+  "enter the verification code sent to your phone to proceed with setting a new password":"enter the verification code sent to your phone to proceed with setting a new password",
+  "resend code":"resend code",
+  "verify":"verify"
 }
