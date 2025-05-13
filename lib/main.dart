@@ -96,7 +96,7 @@ void main() async {
           Locale('ar', 'SA'),
         ],
         path: 'assets/translation',
-        startLocale: const Locale('en', 'US'),
+        startLocale: const Locale('ar', 'SA'),
         child: DevicePreview(
           // ignore: avoid_redundant_argument_values
           enabled: false,
