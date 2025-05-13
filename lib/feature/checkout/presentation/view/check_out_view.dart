@@ -50,7 +50,6 @@ class _CheckoutViewState extends State<CheckoutView> {
                 onPress: () {
                   selectPaymentMethodDialog(
                     context,
-                    createOrder: true,
                     onPress: (paymentMethodId) {},
                   );
                 },

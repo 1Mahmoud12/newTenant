@@ -43,9 +43,9 @@ class PaymentCubit extends Cubit<PaymentState> {
           Utils.showToast(title: l.errMessage, state: UtilState.error);
         }, (r) async {
           orderId = r;
-          logger.w('orderId ==>$orderId');
           afterSuccessCreateOrder(
             context: context,
+            orderId: orderId,
             selectedPaymentMethod: paymentMethod,
           );
           if (isClosed) return;
@@ -55,7 +55,8 @@ class PaymentCubit extends Cubit<PaymentState> {
     );
   }
 
-  Future<void> afterSuccessCreateOrder({required BuildContext context, required String selectedPaymentMethod}) async {
+  Future<void> afterSuccessCreateOrder({required BuildContext context, required int orderId, required String selectedPaymentMethod}) async {
+    this.orderId = orderId;
     if (selectedPaymentMethod == EnumPaymentMethod.stc.name && orderId != -1) {
       await startStcPayment(context: context);
     } else if (selectedPaymentMethod == EnumPaymentMethod.invoice.name && orderId != -1) {
@@ -75,7 +76,6 @@ class PaymentCubit extends Cubit<PaymentState> {
   // get Payment Method
   Future<void> getAllPaymentMethod() async {
     emit(GetAllPaymentsLoading());
-    ConstantsModels.paymentMethodModel = null;
     await paymentDataSource.getPaymentMethod().then(
       (value) async {
         value.fold((l) {
@@ -140,6 +140,7 @@ class PaymentCubit extends Cubit<PaymentState> {
         }, (r) async {
           await showOtpVerificationBottomSheet(
             context: context,
+
             onSubmit: (otpCode) async {
               // Handle the 6-digit OTP code
               await createSTCSecond(context: context, transactionUrl: r.transactionUrl ?? '', otp: otpCode);
@@ -178,7 +179,7 @@ class PaymentCubit extends Cubit<PaymentState> {
           } else {
             Utils.showToast(title: 'Payment failed'.tr(), state: UtilState.error);
           }
-          finish(context);
+          finish(context, duration: false);
           emit(CreateSTCSecondSuccess());
         });
       },
@@ -229,7 +230,7 @@ class PaymentCubit extends Cubit<PaymentState> {
                 }
               },
               onPopInvokedWithResult: (success, result) async {
-                finish(context);
+                finish(context, duration: false);
               },
             ),
           );

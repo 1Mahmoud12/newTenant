@@ -11,11 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-enum EnumPaymentMethod {
-  cash,
-  invoice,
-  stc,
-}
+enum EnumPaymentMethod { cash, invoice, stc, credit }
 
 class PaymentModel {
   final String title;
@@ -28,7 +24,7 @@ class PaymentModel {
 Future<PaymentModel> selectPaymentMethodDialog(
   BuildContext context, {
   required Function(String paymentMethodName) onPress,
-  required bool createOrder,
+  int? orderId,
 }) async {
   final PaymentCubit cubit = PaymentCubit();
   cubit.getAllPaymentMethod();
@@ -39,11 +35,12 @@ Future<PaymentModel> selectPaymentMethodDialog(
   );
   // final cubit = PaymentCubit();
   List<PaymentModel> payments = [
-    PaymentModel(
-      title: EnumPaymentMethod.cash.name,
-      image: AppIcons.cashIc,
-      id: 1,
-    ),
+    if (orderId == null)
+      PaymentModel(
+        title: EnumPaymentMethod.cash.name,
+        image: AppIcons.cashIc,
+        id: 1,
+      ),
   ];
   if (ConstantsModels.paymentMethodModel?.data?.isNotEmpty ?? false) {
     ConstantsModels.paymentMethodModel?.data?[0].allowedPaymentMethods?.forEach((element) {
@@ -115,11 +112,12 @@ Future<PaymentModel> selectPaymentMethodDialog(
                   child: BlocBuilder<PaymentCubit, PaymentState>(
                     builder: (context, state) {
                       payments = [
-                        PaymentModel(
-                          title: EnumPaymentMethod.cash.name,
-                          image: AppIcons.cashIc,
-                          id: 1,
-                        ),
+                        if (orderId == null)
+                          PaymentModel(
+                            title: EnumPaymentMethod.cash.name,
+                            image: AppIcons.cashIc,
+                            id: 1,
+                          ),
                       ];
                       if (ConstantsModels.paymentMethodModel?.data?.isNotEmpty ?? false) {
                         ConstantsModels.paymentMethodModel?.data?[0].allowedPaymentMethods?.forEach((element) {
@@ -233,7 +231,11 @@ Future<PaymentModel> selectPaymentMethodDialog(
                       return;
                     }
                     //  Navigator.pop(context);
-                    if (createOrder) cubit.createOrder(context: context, paymentMethod: paymentModel.title);
+                    if (orderId == null) {
+                      cubit.createOrder(context: context, paymentMethod: paymentModel.title);
+                    } else {
+                      cubit.afterSuccessCreateOrder(context: context, selectedPaymentMethod: paymentModel.title, orderId: orderId!);
+                    }
                   },
                 ),
                 const SizedBox(
