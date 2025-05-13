@@ -23,7 +23,7 @@ class ProcessToCheckoutDataSourceImpl implements ProcessToCheckoutDataSource {
         endPoint: EndPoints.processToCheckout,
         data: {
           'address_id': addressId,
-          'payment_method': 'cash',
+          'payment_method': paymentMethod,
         },
       );
       final int idOrder = response.data['data']['order']['id'];
