@@ -39,6 +39,7 @@ class CustomTextFormField extends StatefulWidget {
   final Function? validator;
   final FocusNode? focusNode;
   final TextStyle? nameFieldStyle;
+  final TextDirection? textDirection;
 
   const CustomTextFormField({
     super.key,
@@ -71,6 +72,7 @@ class CustomTextFormField extends StatefulWidget {
     this.focusNode,
     this.arabicLanguage,
     this.nameFieldStyle,
+    this.textDirection,
   });
 
   @override
@@ -158,7 +160,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
               maxLines: widget.maxLines ?? 1,
               cursorColor: AppColors.textColorTextFormField,
               focusNode: widget.focusNode,
-              textDirection: context.locale.languageCode == 'ar' ? TextDirection.rtl : TextDirection.ltr,
+              textDirection: widget.textDirection ?? (context.locale.languageCode == 'ar' ? TextDirection.rtl : TextDirection.ltr),
               decoration: InputDecoration(
                 alignLabelWithHint: true,
                 errorStyle: TextStyle(color: AppColors.red, fontSize: 14, fontWeight: FontWeight.w500),

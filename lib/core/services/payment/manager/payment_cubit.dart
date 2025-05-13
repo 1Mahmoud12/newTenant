@@ -58,7 +58,7 @@ class PaymentCubit extends Cubit<PaymentState> {
   Future<void> afterSuccessCreateOrder({required BuildContext context, required String selectedPaymentMethod}) async {
     if (selectedPaymentMethod == EnumPaymentMethod.stc.name && orderId != -1) {
       await startStcPayment(context: context);
-    } else if (selectedPaymentMethod == EnumPaymentMethod.credit.name && orderId != -1) {
+    } else if (selectedPaymentMethod == EnumPaymentMethod.invoice.name && orderId != -1) {
       await startCreditPayment(context: context, amount: '${ConstantsModels.checkoutDetailsModel?.subTotalPrice}', orderId: '$orderId');
     } else if (selectedPaymentMethod == 'invoice' && orderId != -1) {
       await startCreditPayment(context: context, amount: '${ConstantsModels.checkoutDetailsModel?.subTotalPrice}', orderId: '$orderId');

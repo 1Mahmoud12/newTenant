@@ -2,7 +2,7 @@ import 'package:dobzz_seller/core/component/fields/custom_text_form_field.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:dobzz_seller/core/utils/app_icons.dart';
 import 'package:dobzz_seller/feature/auth/manager/authBloc/auth_cubit.dart';
-import 'package:easy_localization/easy_localization.dart';
+import 'package:easy_localization/easy_localization.dart' as easy;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -123,6 +123,8 @@ class _SaudiPhoneNumberFieldState extends State<SaudiPhoneNumberField> {
       controller: widget.controller,
       hintText: _phoneHint,
       validator: _validateSaudiPhoneNumber,
+      arabicLanguage: false,
+      textDirection: TextDirection.ltr,
       inputFormatters: [
         FilteringTextInputFormatter.digitsOnly,
         LengthLimitingTextInputFormatter(10),

@@ -13,7 +13,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 enum EnumPaymentMethod {
   cash,
-  credit,
+  invoice,
   stc,
 }
 
@@ -50,7 +50,7 @@ Future<PaymentModel> selectPaymentMethodDialog(
       payments.add(
         PaymentModel(
           title: element,
-          image: element == EnumPaymentMethod.credit.name ? AppImages.moyassar : AppIcons.stcPay,
+          image: element == EnumPaymentMethod.invoice.name ? AppImages.moyassar : AppIcons.stcPay,
           id: element.hashCode,
         ),
       );
@@ -126,7 +126,7 @@ Future<PaymentModel> selectPaymentMethodDialog(
                           payments.add(
                             PaymentModel(
                               title: element,
-                              image: element == EnumPaymentMethod.credit.name ? AppImages.moyassar : AppIcons.stcPay,
+                              image: element == EnumPaymentMethod.invoice.name ? AppImages.moyassar : AppIcons.stcPay,
                               id: element.hashCode,
                             ),
                           );
@@ -179,7 +179,7 @@ Future<PaymentModel> selectPaymentMethodDialog(
                                           ?.copyWith(color: AppColors.cSecondaryBlack, fontWeight: FontWeight.w400),
                                     ),
                                     const Spacer(),
-                                    if (payments[index].title == EnumPaymentMethod.credit.name) ...[
+                                    if (payments[index].title == EnumPaymentMethod.invoice.name) ...[
                                       SvgPicture.asset(
                                         AppIcons.visa,
                                         width: 10,
