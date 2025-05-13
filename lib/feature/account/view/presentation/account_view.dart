@@ -15,9 +15,9 @@ import 'package:dobzz_seller/feature/account/view/myDetalis/presentation/my_deta
 import 'package:dobzz_seller/feature/account/view/myOrders/presentation/my_order_view.dart';
 import 'package:dobzz_seller/feature/account/view/notificationSetting/presentation/notification_setting_view.dart';
 import 'package:dobzz_seller/feature/account/view/presentation/language_view.dart';
+import 'package:dobzz_seller/feature/address/presentation/address_view.dart';
 import 'package:dobzz_seller/feature/auth/forgetPassword/view/presentation/reset_password_view.dart';
 import 'package:dobzz_seller/feature/auth/login/view/presentation/login_screen.dart';
-import 'package:dobzz_seller/feature/cart/view/address/presentation/address_view.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
