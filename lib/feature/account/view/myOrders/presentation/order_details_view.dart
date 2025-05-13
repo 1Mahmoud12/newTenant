@@ -703,7 +703,7 @@ class OrderInformation extends StatelessWidget {
           // Payment Method
           _buildInfoRow(
             label: 'Payment method:',
-            value: order.paymentMethod == 'cash' ? 'Cash on delivery' : order.paymentMethod?.capitalize() ?? 'Unknown',
+            value: order.paymentMethod?.capitalize() ?? '',
           ),
 
           const SizedBox(height: 12),
@@ -741,6 +741,7 @@ class OrderInformation extends StatelessWidget {
     required String value,
     Color? valueColor,
     FontWeight? valueFontWeight,
+    Widget? action,
   }) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -766,6 +767,7 @@ class OrderInformation extends StatelessWidget {
             ),
           ),
         ),
+        action ?? const SizedBox(),
       ],
     );
   }

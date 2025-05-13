@@ -1,3 +1,4 @@
+import 'package:dobzz_seller/core/services/payment/data/model/payment_method_model.dart';
 import 'package:dobzz_seller/feature/Categories/data/models/sub_categories_models.dart';
 import 'package:dobzz_seller/feature/account/view/myOrders/data/models/order_model.dart';
 import 'package:dobzz_seller/feature/account/view/notificationSetting/data/models/general_notification_setting_model.dart';
@@ -8,7 +9,6 @@ import 'package:dobzz_seller/feature/cart/view/address/data/models/address_model
 import 'package:dobzz_seller/feature/cart/view/address/data/models/city_model.dart';
 import 'package:dobzz_seller/feature/cart/view/address/data/models/state_model.dart';
 import 'package:dobzz_seller/feature/cart/view/checkout/data/models/checkout_details_model.dart';
-import 'package:dobzz_seller/feature/cart/view/checkout/data/models/payment_method_model.dart';
 import 'package:dobzz_seller/feature/favorites/data/model/wish_list_model.dart';
 import 'package:dobzz_seller/feature/home/data/models/categories_model.dart';
 import 'package:dobzz_seller/feature/home/data/models/product_mdoel.dart';
