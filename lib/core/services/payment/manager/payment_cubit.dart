@@ -12,9 +12,9 @@ import 'package:dobzz_seller/core/utils/errorLoadingWidgets/dialog_loading_anima
 import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/core/utils/utils.dart';
 import 'package:dobzz_seller/feature/account/view/myOrders/presentation/my_order_view.dart';
-import 'package:dobzz_seller/feature/cart/view/checkout/data/dataSource/process_to_checkout_data_source.dart';
-import 'package:dobzz_seller/feature/cart/view/checkout/presentation/view/widgets/add_phone_payment.dart';
-import 'package:dobzz_seller/feature/cart/view/checkout/presentation/view/widgets/show_otp.dart';
+import 'package:dobzz_seller/feature/checkout/data/dataSource/process_to_checkout_data_source.dart';
+import 'package:dobzz_seller/feature/checkout/presentation/view/widgets/add_phone_payment.dart';
+import 'package:dobzz_seller/feature/checkout/presentation/view/widgets/show_otp.dart';
 import 'package:dobzz_seller/feature/navigation/view/presentation/navigation_view.dart';
 import 'package:dobzz_seller/main.dart';
 import 'package:easy_localization/easy_localization.dart';
