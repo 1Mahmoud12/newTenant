@@ -44,3 +44,13 @@ final class CreateSTCSecondError extends ProcessToCheckoutState {
 
   CreateSTCSecondError({required this.e});
 }
+
+final class CreateCreditLoading extends ProcessToCheckoutState {}
+
+final class CreateCreditSuccess extends ProcessToCheckoutState {}
+
+final class CreateCreditError extends ProcessToCheckoutState {
+  final String e;
+
+  CreateCreditError({required this.e});
+}

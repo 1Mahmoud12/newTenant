@@ -1,19 +1,15 @@
 class PaymentCreditParams {
-  final String paymentType;
-  final String description;
-  final int amount;
-  final int orderId;
+  final String amount;
+  final String orderId;
 
   PaymentCreditParams({
-    required this.paymentType,
-    required this.description,
     required this.amount,
     required this.orderId,
   });
 
   Map<String, dynamic> toJson() => {
-        'payment_type': paymentType,
-        'description': description,
+        'payment_type': 'invoice',
+        'description': 'Payment for order #$orderId',
         'amount': amount,
         'order_id': orderId,
       };

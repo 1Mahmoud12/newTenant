@@ -17,7 +17,6 @@ class PaymentMethodModel {
       });
     }
   }
-
   String? message;
   bool? status;
   num? code;
@@ -56,16 +55,9 @@ class Data {
     merchantId = json['merchant_id'];
     secretKey = json['secret_key'];
     allowedPaymentMethods = json['allowed_payment_methods'] != null ? json['allowed_payment_methods'].cast<String>() : [];
-    if (json['allowed_payment_methods'] != null) {
-      allowedPaymentMethods = [];
-      json['allowed_payment_methods'].forEach((v) {
-        allowedPaymentMethods?.add(v);
-      });
-    }
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
   }
-
   num? id;
   num? shopId;
   String? gateway;

@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
+import 'package:dobzz_seller/core/services/my_in_app_webView.dart';
 import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:dobzz_seller/core/utils/constants_models.dart';
 import 'package:dobzz_seller/core/utils/errorLoadingWidgets/dialog_loading_animation.dart';
@@ -6,6 +9,7 @@ import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/core/utils/utils.dart';
 import 'package:dobzz_seller/feature/account/view/myOrders/presentation/my_order_view.dart';
 import 'package:dobzz_seller/feature/cart/view/checkout/data/dataSource/process_to_checkout_data_source.dart';
+import 'package:dobzz_seller/feature/cart/view/checkout/data/models/payment_credit_params.dart';
 import 'package:dobzz_seller/feature/cart/view/checkout/data/models/payment_stc_first_params.dart';
 import 'package:dobzz_seller/feature/cart/view/checkout/presentation/view/widgets/add_phone_payment.dart';
 import 'package:dobzz_seller/feature/cart/view/checkout/presentation/view/widgets/show_otp.dart';
@@ -36,6 +40,8 @@ class ProcessToCheckoutCubit extends Cubit<ProcessToCheckoutState> {
           orderId = r;
           if (selectedPaymentMethod == 'stc' && orderId != -1) {
             await startStcPayment(context: context);
+          } else if (selectedPaymentMethod == 'credit' && orderId != -1) {
+            await startCreditPayment(context: context, amount: '${ConstantsModels.checkoutDetailsModel?.subTotalPrice}', orderId: '$orderId');
           } else {
             context.navigateToPageWithReplacement(
               const NavigationViewWithThemes(
@@ -163,5 +169,70 @@ class ProcessToCheckoutCubit extends Cubit<ProcessToCheckoutState> {
         });
       },
     );
+  }
+
+  // ====== credit payment ======
+  Future<void> startCreditPayment({required BuildContext context, required String amount, required String orderId}) async {
+    emit(CreateCreditLoading());
+    animationDialogLoading(context);
+    await processToCheckoutDataSource
+        .paymentCreditMethod(
+      params: PaymentCreditParams(
+        amount: '${ConstantsModels.checkoutDetailsModel?.subTotalPrice}',
+        orderId: orderId,
+      ),
+    )
+        .then(
+      (value) async {
+        closeDialog(context);
+        value.fold((l) {
+          emit(CreateCreditError(e: l.errMessage));
+          Utils.showToast(title: l.errMessage, state: UtilState.error);
+        }, (r) async {
+          logger.w(r);
+          context.navigateToPage(
+            MyInAppWebView(
+              authorizationUrl: r.url ?? 'https://checkout.moyasar.com/invoices/80283fa9-167f-4121-b43e-dec01eccd656?lang=en',
+              scaffoldContext: context,
+              onPageStarted: (String url) async {
+                log('url payment $url');
+                if (url.contains('paid')) {
+                  Utils.showToast(title: 'Payment successful'.tr(), state: UtilState.success);
+                  finish(context);
+                } else if (url.contains('fail')) {
+                  Utils.showToast(title: 'Payment failed'.tr(), state: UtilState.error);
+                  finish(context);
+                }
+              },
+              onPageFinished: (String url) async {
+                log('url payment $url');
+                if (url.contains('paid')) {
+                  Utils.showToast(title: 'Payment successful'.tr(), state: UtilState.success);
+                  finish(context);
+                } else if (url.contains('fail')) {
+                  Utils.showToast(title: 'Payment failed'.tr(), state: UtilState.error);
+                  finish(context);
+                }
+              },
+              onPopInvokedWithResult: (success, result) async {
+                finish(context);
+              },
+            ),
+          );
+          emit(CreateCreditSuccess());
+        });
+      },
+    );
+  }
+
+  void finish(BuildContext context) {
+    Future.delayed(const Duration(seconds: 2), () {
+      context.navigateToPageWithReplacement(
+        const NavigationViewWithThemes(
+          initialIndex: 1,
+        ),
+      );
+      context.navigateToPage(const MyOrderView());
+    });
   }
 }

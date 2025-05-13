@@ -3,6 +3,8 @@ import 'package:dio/dio.dart';
 import 'package:dobzz_seller/core/network/dio_helper.dart';
 import 'package:dobzz_seller/core/network/end_points.dart';
 import 'package:dobzz_seller/core/network/errors/failures.dart';
+import 'package:dobzz_seller/feature/cart/view/checkout/data/models/payment_credit_model.dart';
+import 'package:dobzz_seller/feature/cart/view/checkout/data/models/payment_credit_params.dart';
 import 'package:dobzz_seller/feature/cart/view/checkout/data/models/payment_method_model.dart';
 import 'package:dobzz_seller/feature/cart/view/checkout/data/models/payment_stc_first_params.dart';
 import 'package:dobzz_seller/feature/cart/view/checkout/data/models/stc_first_model.dart';
@@ -13,7 +15,7 @@ abstract class ProcessToCheckoutDataSource {
 
   Future<Either<Failure, PaymentMethodModel>> getPaymentMethod();
 
-  //Future<Either<Failure, PaymentMethodModel>> paymentCreditMethod();
+  Future<Either<Failure, PaymentCreditModel>> paymentCreditMethod({required PaymentCreditParams params});
 
   Future<Either<Failure, StcFirstModel>> paymentStcFirstMethod({required PaymentStcFirstParams params});
 
@@ -49,6 +51,23 @@ class ProcessToCheckoutDataSourceImpl implements ProcessToCheckoutDataSource {
         url: EndPoints.getAllPaymentGetaways,
       );
       return Right(PaymentMethodModel.fromJson(response.data));
+    } catch (error) {
+      if (error is DioException) {
+        return Left(ServerFailure.fromDioException(error));
+      }
+      return Left(ServerFailure(error.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, PaymentCreditModel>> paymentCreditMethod({required PaymentCreditParams params}) async {
+    try {
+      final response = await DioHelper.postData(
+        endPoint: EndPoints.creditCard,
+        data: params.toJson(),
+      );
+      final result = PaymentCreditModel.fromJson(response.data);
+      return Right(result);
     } catch (error) {
       if (error is DioException) {
         return Left(ServerFailure.fromDioException(error));
