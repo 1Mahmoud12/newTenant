@@ -25,6 +25,7 @@ class AuthRichTextLink extends StatelessWidget {
       text: TextSpan(
         text: text,
         style: TextStyle(
+          fontFamily: 'Cairo',
           color: Colors.black.withOpacity(0.6),
           fontSize: Constants.tablet ? 16 : 16.sp,
         ),
@@ -32,6 +33,7 @@ class AuthRichTextLink extends StatelessWidget {
           TextSpan(
             text: linkText,
             style: const TextStyle(
+              fontFamily: 'Cairo',
               color: AppColors.primaryColor,
               fontWeight: FontWeight.bold,
               decoration: TextDecoration.underline,
