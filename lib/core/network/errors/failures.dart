@@ -35,8 +35,11 @@ class ServerFailure extends Failure {
 
           if (responseData is Map<String, dynamic>) {
             final apiError = ApiError.fromJson(responseData, statusCode: statusCode);
+            logger.e(apiError.getUserFriendlyMessage());
             return ServerFailure(apiError: apiError, apiError.getUserFriendlyMessage());
           } else if (responseData is String) {
+            logger.e(responseData);
+
             return ServerFailure(responseData);
           }
           return ServerFailure('Bad response: ${statusCode ?? "Unknown"}');

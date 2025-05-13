@@ -30,7 +30,7 @@ class ProcessToCheckoutCubit extends Cubit<ProcessToCheckoutState> {
     if (isClosed) return;
     emit(ProcessToCheckoutLoading());
 
-    await processToCheckoutDataSource.processToCheckout(addressId: addressId).then(
+    await processToCheckoutDataSource.processToCheckout(addressId: addressId, paymentMethod: selectedPaymentMethod).then(
       (value) async {
         value.fold((l) {
           if (isClosed) return;
@@ -42,13 +42,10 @@ class ProcessToCheckoutCubit extends Cubit<ProcessToCheckoutState> {
             await startStcPayment(context: context);
           } else if (selectedPaymentMethod == 'credit' && orderId != -1) {
             await startCreditPayment(context: context, amount: '${ConstantsModels.checkoutDetailsModel?.subTotalPrice}', orderId: '$orderId');
+          } else if (selectedPaymentMethod == 'invoice' && orderId != -1) {
+            await startCreditPayment(context: context, amount: '${ConstantsModels.checkoutDetailsModel?.subTotalPrice}', orderId: '$orderId');
           } else {
-            context.navigateToPageWithReplacement(
-              const NavigationViewWithThemes(
-                initialIndex: 1,
-              ),
-            );
-            context.navigateToPage(const MyOrderView());
+            finish(context);
           }
           if (isClosed) return;
           emit(ProcessToCheckoutSuccess());
@@ -97,8 +94,16 @@ class ProcessToCheckoutCubit extends Cubit<ProcessToCheckoutState> {
         logger.d('phone number is $phoneNumber');
         await createSTCFirst(context: context, orderId: '$orderId', mobile: phoneNumber);
       },
-      // initialPhoneNumber: ConstantsModels.registerModel?.data?.phone,
+      initialPhoneNumber: myPhoneForStc(ConstantsModels.registerModel?.data?.phone ?? ''),
     );
+  }
+
+  String? myPhoneForStc(String phone) {
+    String? newPhone;
+    if (phone.isNotEmpty && phone.contains('+966')) {
+      newPhone = phone.replaceAll('+966', '0');
+    }
+    return newPhone;
   }
 
   Future<void> createSTCFirst({required BuildContext context, required String orderId, required String mobile}) async {
@@ -159,12 +164,7 @@ class ProcessToCheckoutCubit extends Cubit<ProcessToCheckoutState> {
           } else {
             Utils.showToast(title: 'Payment failed'.tr(), state: UtilState.error);
           }
-          context.navigateToPageWithReplacement(
-            const NavigationViewWithThemes(
-              initialIndex: 1,
-            ),
-          );
-          context.navigateToPage(const MyOrderView());
+          finish(context);
           emit(CreateSTCSecondSuccess());
         });
       },

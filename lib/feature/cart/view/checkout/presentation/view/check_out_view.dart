@@ -110,6 +110,7 @@ class _CheckoutViewState extends State<CheckoutView> {
                     const SizedBox(height: 8),
 
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Expanded(
                           flex: 7,
@@ -147,8 +148,8 @@ class _CheckoutViewState extends State<CheckoutView> {
                               );
                             },
                             child: Container(
-                              margin: const EdgeInsets.only(top: 20),
-                              height: 45,
+                              margin: const EdgeInsets.only(top: 25),
+                              height: 40.h,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(8),
                                 color: AppColors.primaryColor,

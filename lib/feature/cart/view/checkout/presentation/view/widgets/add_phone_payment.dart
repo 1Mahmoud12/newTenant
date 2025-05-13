@@ -41,9 +41,11 @@ Future<void> showSaudiPhoneBottomSheet({
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    'Enter Saudi Phone Number To Stc Payment'.tr(),
-                    style: Theme.of(context).textTheme.titleLarge,
+                  Expanded(
+                    child: Text(
+                      'Enter Saudi Phone Number To Stc Payment'.tr(),
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
                   ),
                   IconButton(
                     icon: const Icon(Icons.close),

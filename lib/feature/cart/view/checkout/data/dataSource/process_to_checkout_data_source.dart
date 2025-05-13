@@ -11,7 +11,7 @@ import 'package:dobzz_seller/feature/cart/view/checkout/data/models/stc_first_mo
 import 'package:dobzz_seller/main.dart';
 
 abstract class ProcessToCheckoutDataSource {
-  Future<Either<Failure, int>> processToCheckout({required String addressId});
+  Future<Either<Failure, int>> processToCheckout({required String addressId, required String paymentMethod});
 
   Future<Either<Failure, PaymentMethodModel>> getPaymentMethod();
 
@@ -24,13 +24,13 @@ abstract class ProcessToCheckoutDataSource {
 
 class ProcessToCheckoutDataSourceImpl implements ProcessToCheckoutDataSource {
   @override
-  Future<Either<Failure, int>> processToCheckout({required String addressId}) async {
+  Future<Either<Failure, int>> processToCheckout({required String addressId, required String paymentMethod}) async {
     try {
       final response = await DioHelper.postData(
         endPoint: EndPoints.processToCheckout,
         data: {
           'address_id': addressId,
-          'payment_method': 'cash',
+          'payment_method': paymentMethod,
         },
       );
       final int idOrder = response.data['data']['order']['id'];
