@@ -1,4 +1,5 @@
 import 'package:dobzz_seller/core/themes/colors.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class ExpandableSectionContainer extends StatefulWidget {
@@ -61,19 +62,19 @@ class _ExpandableSectionContainerState extends State<ExpandableSectionContainer>
                   bottomRight: Radius.circular(12),
                 ),
               ),
-              child: const Row(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'See More',
-                    style: TextStyle(
+                    'See More'.tr(),
+                    style: const TextStyle(
                       color: AppColors.primaryColor,
                       fontWeight: FontWeight.w500,
                       fontSize: 14,
                     ),
                   ),
-                  SizedBox(width: 8),
-                  Icon(
+                  const SizedBox(width: 8),
+                  const Icon(
                     Icons.keyboard_arrow_down,
                     size: 16,
                     color: AppColors.primaryColor,
@@ -109,19 +110,19 @@ class _ExpandableSectionContainerState extends State<ExpandableSectionContainer>
                   bottomRight: Radius.circular(12),
                 ),
               ),
-              child: const Row(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'See Less',
-                    style: TextStyle(
+                    'See Less'.tr(),
+                    style: const TextStyle(
                       color: AppColors.primaryColor,
                       fontWeight: FontWeight.w500,
                       fontSize: 14,
                     ),
                   ),
-                  SizedBox(width: 8),
-                  Icon(
+                  const SizedBox(width: 8),
+                  const Icon(
                     Icons.keyboard_arrow_up,
                     size: 16,
                     color: AppColors.primaryColor,
@@ -164,7 +165,7 @@ class _ExpandableSectionContainerState extends State<ExpandableSectionContainer>
                       });
                     },
                     child: Text(
-                      _isExpanded ? 'Show Less' : 'Show All',
+                      _isExpanded ? 'See Less'.tr() : 'Show All'.tr(),
                       style: const TextStyle(
                         color: AppColors.primaryColor,
                         fontSize: 14,

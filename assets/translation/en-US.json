@@ -142,7 +142,7 @@
   "delete_account_title": "Delete Account?",
   "delete_account_message": "Are you sure you want to delete your account? This action cannot be undone.",
   "delete_account_confirm": "Yes, Delete Account",
-  "cancel": "No, Cancel",
+  "No, Cancel": "No, Cancel",
   "My Orders": "My Orders",
   "No Ongoing Orders!": "No Ongoing Orders!",
   "You don’t have any ongoing orders at this time.": "You don’t have any ongoing orders at this time.",
@@ -206,5 +206,17 @@
   "Payment Status": "Payment Status",
   "Order Type": "Order Type",
   "Pre-order": "Pre-order",
-  "Saudi numbers start with 5": "Saudi numbers start with 5"
+  "Saudi numbers start with 5": "Saudi numbers start with 5",
+  "Show All": "Show All",
+  "See Less": "See Less",
+  "See More": "See More",
+  "Subtotal": "Subtotal",
+  "Payment Status:": "Payment Status:",
+  "Payment method:": "Payment method:",
+  "Shipping Address:": "Shipping Address:",
+  "Items:": "Items:",
+  "Number:": "Number:",
+  "Name:": "Name:",
+  "Order information": "Order information",
+  "Loading products...":"Loading products..."
 }

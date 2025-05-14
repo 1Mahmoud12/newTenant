@@ -291,9 +291,9 @@ class _AccountViewState extends State<AccountView> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  child: const Text(
-                    'No, Cancel',
-                    style: TextStyle(color: Colors.black),
+                  child: Text(
+                    'No, Cancel'.tr(),
+                    style: const TextStyle(color: Colors.black),
                   ),
                 ),
               ],

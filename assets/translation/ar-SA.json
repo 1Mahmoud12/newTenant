@@ -125,7 +125,7 @@
   "Quantity": "الكميه",
   "Price": "السعر",
   "Account": "الحساب",
-  "Saved items": "العناصر الحفوظه",
+  "Saved items": "العناصر المحفوظه",
   "Product": "المنتاجات",
   "My Orders": "طلباتي",
   "My Details": "تفاصيلي",
@@ -198,7 +198,7 @@
   "resend_code": "إعادة إرسال الرمز",
   "enter_verification_code": "أدخل رمز التحقق المرسل إلى هاتفك للمتابعة في تعيين كلمة مرور جديدة",
   "verify_phone_number": "تحقق من رقم الهاتف",
-    "Order Details": "تفاصيل الطلب",
+  "Order Details": "تفاصيل الطلب",
   "Order Items": "عناصر الطلب",
   "Order #": "رقم الطلب",
   "Unknown date": "تاريخ غير معروف",
@@ -214,8 +214,16 @@
   "Payment Status": "حالة الدفع",
   "Order Type": "نوع الطلب",
   "Pre-order": "طلب مسبق",
-  "Saudi numbers start with 5":"الأرقام السعودية تبدأ بـ ٥"
-
-
-
-}
+  "Saudi numbers start with 5": "الأرقام السعودية تبدأ بـ ٥",
+  "Show All": "عرض الكل",
+  "See Less": "عرض أقل",
+  "See More": "عرض المزيد",
+  "Subtotal": "المجموع الفرعي",
+  "Payment Status:": "حالة الدفع:",
+  "Payment method:": "طريقة الدفع:",
+  "Shipping Address:": "عنوان الشحن:",
+  "Items:": "العناصر:",
+  "Number:": "الرقم:",
+  "Name:": "الاسم:",
+  "Order information": "معلومات الطلب",
+  "Loading products...": "جاري تحميل المنتجات..."}

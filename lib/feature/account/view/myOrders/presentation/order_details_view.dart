@@ -759,7 +759,7 @@ class OrderInformation extends StatelessWidget {
           // Subtotal
           _buildInfoRow(
             label: 'Subtotal'.tr(),
-            value: '${_formatPrice(order.totalPrice)} EGP',
+            value: '${_formatPrice(order.totalPrice)} Rial',
           ),
 
           const SizedBox(height: 12),
@@ -767,7 +767,7 @@ class OrderInformation extends StatelessWidget {
           // Total
           _buildInfoRow(
             label: 'Total'.tr(),
-            value: '${_formatPrice(order.totalPrice)} EGP',
+            value: '${_formatPrice(order.totalPrice)} Rial',
             valueColor: Colors.red,
             valueFontWeight: FontWeight.bold,
           ),
