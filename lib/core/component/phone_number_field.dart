@@ -3,9 +3,11 @@ import 'package:dobzz_seller/core/component/custom_drop_down_menu.dart';
 import 'package:dobzz_seller/core/component/fields/custom_text_form_field.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:dobzz_seller/core/utils/app_icons.dart';
+import 'package:dobzz_seller/core/utils/utils.dart';
 import 'package:dobzz_seller/feature/auth/manager/authBloc/auth_cubit.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class PhoneNumberField extends StatefulWidget {
   final TextEditingController controller;
@@ -82,6 +84,43 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
     final authCubit = AuthCubit.of(context);
 
     return CustomTextFormField(
+      inputFormatters: [
+        TextInputFormatter.withFunction((oldValue, newValue) {
+          final text = newValue.text;
+
+          if (text.isEmpty) return newValue;
+
+          // Handle +9665XXXXXXXX
+          if (text.startsWith('+966') && text.length > 4 && text[4] == '5') {
+            final trimmed = text.substring(4);
+            final clampedLength = trimmed.length > 9 ? 9 : trimmed.length;
+            final trimmedText = trimmed.substring(0, clampedLength);
+
+            return TextEditingValue(
+              text: trimmedText,
+              selection: TextSelection.collapsed(offset: clampedLength),
+            );
+          }
+
+          if (!text.startsWith('5')) {
+            Utils.showToast(title: 'Saudi numbers start with 5'.tr(), state: UtilState.error);
+            return oldValue;
+          }
+
+          if (text.length > 9) {
+            final trimmedText = text.substring(0, 9);
+            return TextEditingValue(
+              text: trimmedText,
+              selection: const TextSelection.collapsed(offset: 9),
+            );
+          }
+
+          return newValue;
+        }),
+  
+  
+  
+      ],
       enable: widget.enabled,
       textInputType: TextInputType.phone,
       contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 7),

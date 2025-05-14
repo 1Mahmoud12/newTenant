@@ -1,4 +1,5 @@
 import 'package:dobzz_seller/core/component/loadsErros/loading_widget.dart';
+import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:dobzz_seller/core/utils/errorLoadingWidgets/empty_widget.dart';
 import 'package:dobzz_seller/feature/favorites/views/manager/wishList/cubit/wish_list_cubit.dart';
 import 'package:dobzz_seller/feature/home/views/manager/addToWhishlist/cubit/add_to_wish_list_cubit.dart';
@@ -165,7 +166,7 @@ class FavoriteGrid extends StatelessWidget {
             final wishList = ConstantsModels.wishListModel?.data;
 
             if (wishList == null || wishList.isEmpty) {
-              return  EmptyWidget(
+              return EmptyWidget(
                 data: 'No Saved Items!'.tr(),
                 subData: 'You don’t have any saved items. Go to home and add some.'.tr(),
                 emptyImage: EmptyImages.noSavedItem,
@@ -189,7 +190,7 @@ class FavoriteGrid extends StatelessWidget {
                   //  rating: wishListItem.,
                   productId: wishListItem.productId?.toInt() ?? -1,
                   initialLiked: true,
-                  description: wishListItem.descriptionProduct!,
+                  description: wishListItem.descriptionProduct ?? unknownValue,
                   onLikeTap: (isNowLiked) {
                     // Add to wishlist
                     if (widget.isItWhishList!) {

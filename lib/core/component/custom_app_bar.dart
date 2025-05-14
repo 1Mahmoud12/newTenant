@@ -53,18 +53,18 @@ PreferredSizeWidget customAppBar({
                     width: 24,
                     height: 24,
                   ),
-                  Positioned(
-                    top: 1,
-                    right: 1,
-                    child: Container(
-                      width: 8,
-                      height: 8,
-                      decoration: const BoxDecoration(
-                        color: Colors.red,
-                        shape: BoxShape.circle,
-                      ),
-                    ),
-                  ),
+                  // Positioned(
+                  //   top: 1,
+                  //   right: 1,
+                  //   child: Container(
+                  //     width: 8,
+                  //     height: 8,
+                  //     decoration: const BoxDecoration(
+                  //       color: Colors.red,
+                  //       shape: BoxShape.circle,
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
         ),

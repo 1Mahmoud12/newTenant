@@ -60,18 +60,18 @@ class _HomePageHeaderState extends State<HomePageHeader> {
                         width: 24,
                         height: 24,
                       ),
-                      Positioned(
-                        top: 2,
-                        right: 2,
-                        child: Container(
-                          width: 8,
-                          height: 8,
-                          decoration: const BoxDecoration(
-                            color: Colors.red,
-                            shape: BoxShape.circle,
-                          ),
-                        ),
-                      ),
+                      // Positioned(
+                      //   top: 2,
+                      //   right: 2,
+                      //   child: Container(
+                      //     width: 8,
+                      //     height: 8,
+                      //     decoration: const BoxDecoration(
+                      //       color: Colors.red,
+                      //       shape: BoxShape.circle,
+                      //     ),
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),

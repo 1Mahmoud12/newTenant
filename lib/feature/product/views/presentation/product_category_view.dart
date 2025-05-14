@@ -7,6 +7,7 @@ import 'package:dobzz_seller/feature/home/views/manager/addToWhishlist/cubit/add
 import 'package:dobzz_seller/feature/home/views/manager/categories/cubit/categories_cubit.dart';
 import 'package:dobzz_seller/feature/home/views/manager/removeFromWhislist/cubit/remove_from_whish_list_cubit.dart';
 import 'package:dobzz_seller/feature/home/views/manager/topProduct/cubit/top_product_cubit.dart';
+import 'package:dobzz_seller/feature/home/views/presentation/widgets/cart_floating_action_button.dart';
 import 'package:dobzz_seller/feature/home/views/presentation/widgets/product_card.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -49,6 +50,7 @@ class _ProdcutCategoryViewState extends State<ProductCategoryView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: const CartFloatingAB(),
       appBar: customAppBar(context: context, title: 'Product'.tr(), stopLeading: true),
       body: Column(
         children: [

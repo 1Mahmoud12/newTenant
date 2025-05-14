@@ -110,6 +110,7 @@ class Utils {
       backgroundColor: _toastColor(state),
       textColor: textColor,
       fontSize: 16.0,
+      fontAsset: 'assets/fonts/Cairo-VariableFont_slnt,wght.ttf',
     );
   }
 

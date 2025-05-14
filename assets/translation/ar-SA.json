@@ -197,5 +197,25 @@
   "verify": "تحقق",
   "resend_code": "إعادة إرسال الرمز",
   "enter_verification_code": "أدخل رمز التحقق المرسل إلى هاتفك للمتابعة في تعيين كلمة مرور جديدة",
-  "verify_phone_number": "تحقق من رقم الهاتف"
+  "verify_phone_number": "تحقق من رقم الهاتف",
+    "Order Details": "تفاصيل الطلب",
+  "Order Items": "عناصر الطلب",
+  "Order #": "رقم الطلب",
+  "Unknown date": "تاريخ غير معروف",
+  "Your order is being processed": "طلبك قيد المعالجة",
+  "Thank you for your order!": "شكرًا لطلبك!",
+  "No address information available": "لا توجد معلومات عنوان متاحة",
+  "No phone number": "لا يوجد رقم هاتف",
+  "Credit/Debit Card": "بطاقة ائتمان/خصم",
+  "Cash on Delivery": "الدفع عند الاستلام",
+  "Paid": "مدفوع",
+  "Unpaid": "غير مدفوع",
+  "Refunded": "تم الاسترداد",
+  "Payment Status": "حالة الدفع",
+  "Order Type": "نوع الطلب",
+  "Pre-order": "طلب مسبق",
+  "Saudi numbers start with 5":"الأرقام السعودية تبدأ بـ ٥"
+
+
+
 }

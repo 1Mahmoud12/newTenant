@@ -175,7 +175,7 @@ class _AccountViewState extends State<AccountView> {
                 icon: AppIcons.deleteIcon,
                 title: 'Delete Account',
                 onTap: () {
-                  if (userCacheValue?.data?.phone != '+201124980094') {
+                  if (userCacheValue?.data?.phone != Constants.demoAccount) {
                     showDeleteAccountDialog(context, () async {
                       await deleteAccountCubit.deleteAccount(context: context);
                     });

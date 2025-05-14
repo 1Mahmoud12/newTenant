@@ -9,6 +9,7 @@ import 'package:dobzz_seller/core/component/phone_number_field.dart';
 import 'package:dobzz_seller/core/network/local/cache.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:dobzz_seller/core/utils/constant_gaping.dart';
+import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:dobzz_seller/core/utils/constants_models.dart';
 import 'package:dobzz_seller/core/utils/file.dart';
 import 'package:dobzz_seller/core/utils/utils.dart';
@@ -86,7 +87,7 @@ class _MyDetailsViewState extends State<MyDetailsView> {
   }
 
   void _handleSubmit() async {
-    if (userCacheValue?.data?.phone != '+201124980094') {
+    if (userCacheValue?.data?.phone != Constants.demoAccount) {
       await widget.editProfileCubit.updateUserData(
         context: context,
         name: _firstNameController.text,
@@ -273,7 +274,7 @@ class _UserDetailsFormState extends State<UserDetailsForm> {
           textInputType: TextInputType.emailAddress,
         ),
         h10,
-        // The controller already has the full number with country code (e.g. "+201124980094")
+        // The controller already has the full number with country code (e.g. "Constants.demoAccount)
         PhoneNumberField(
           enabled: false,
           initialCountryCode: initialCountryCode,

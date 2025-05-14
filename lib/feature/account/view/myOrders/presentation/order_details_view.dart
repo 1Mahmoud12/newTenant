@@ -8,6 +8,7 @@ import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/feature/account/view/myOrders/data/models/order_model.dart';
 import 'package:dobzz_seller/feature/account/view/myOrders/presentation/expandable_section_container.dart';
 import 'package:dobzz_seller/feature/product/views/presentation/product_details_view.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -27,7 +28,7 @@ class OrderDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       // backgroundColor: Colors.grey[50],
-      appBar: customAppBar(context: context, title: 'Order Details'),
+      appBar: customAppBar(context: context, title: 'Order Details'.tr()),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -38,7 +39,7 @@ class OrderDetailsScreen extends StatelessWidget {
 
               const SizedBox(height: 12),
               SectionContainer(
-                title: 'Order Items',
+                title: 'Order Items'.tr(),
                 isExpandable: true,
                 child: Column(
                   children: order.items?.map((item) => OrderItem(item: item)).toList() ?? [],
@@ -147,7 +148,7 @@ class StatusTimeline extends StatelessWidget {
           Row(
             children: [
               Text(
-                'Order #${order.id}',
+                '${'Order #'.tr()}${order.id}',
                 style: TextStyle(
                   fontSize: Constants.tablet ? 20 : 20.sp,
                   fontWeight: FontWeight.bold,
@@ -156,7 +157,7 @@ class StatusTimeline extends StatelessWidget {
               ),
               const Spacer(),
               Text(
-                order.createdAt != null ? DateFormat('MMM dd, yyyy').format(DateTime.parse(order.createdAt!)) : 'Unknown date',
+                order.createdAt != null ? DateFormat('MMM dd, yyyy').format(DateTime.parse(order.createdAt!)) : 'Unknown date'.tr(),
                 style: TextStyle(
                   fontSize: 16.sp,
                   color: Colors.grey[500],
@@ -168,9 +169,9 @@ class StatusTimeline extends StatelessWidget {
           const SizedBox(height: 8),
           Row(
             children: [
-              const Text(
-                'Your order is being processed',
-                style: TextStyle(
+              Text(
+                'Your order is being processed'.tr(),
+                style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w500,
                   color: Color(0xFF333333),
@@ -184,7 +185,7 @@ class StatusTimeline extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
-                  order.status ?? 'Unknown',
+                  order.status ?? 'Unknown'.tr(),
                   style: TextStyle(
                     color: statusColor,
                     fontWeight: FontWeight.w600,
@@ -196,7 +197,7 @@ class StatusTimeline extends StatelessWidget {
           ),
           const SizedBox(height: 6),
           Text(
-            'Thank you for your order!',
+            'Thank you for your order!'.tr(),
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w500,
@@ -217,9 +218,9 @@ class AddressInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (address == null) {
-      return const Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Text('No address information available'),
+      return Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Text('No address information available'.tr()),
       );
     }
 
@@ -244,7 +245,7 @@ class AddressInfo extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      address!.name ?? 'Unknown',
+                      address!.name ?? 'Unknown'.tr(),
                       style: const TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.w500,
@@ -252,7 +253,7 @@ class AddressInfo extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      address!.phone ?? 'No phone number',
+                      address!.phone ?? 'No phone number'.tr(),
                       style: TextStyle(
                         fontSize: 14,
                         color: Colors.grey[600],
@@ -280,9 +281,9 @@ class AddressInfo extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'Delivery Address',
-                      style: TextStyle(
+                    Text(
+                      'Delivery Address'.tr(),
+                      style: const TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.w500,
                       ),
@@ -375,9 +376,9 @@ class PaymentInfo extends StatelessWidget {
   String _formatPaymentMethod(String method) {
     switch (method.toLowerCase()) {
       case 'card':
-        return 'Credit/Debit Card';
+        return 'Credit/Debit Card'.tr();
       case 'cash':
-        return 'Cash on Delivery';
+        return 'Cash on Delivery'.tr();
       default:
         return method;
     }
@@ -386,11 +387,11 @@ class PaymentInfo extends StatelessWidget {
   String _formatPaymentStatus(String status) {
     switch (status.toLowerCase()) {
       case 'paid':
-        return 'Paid';
+        return 'Paid'.tr();
       case 'unpaid':
-        return 'Unpaid';
+        return 'Unpaid'.tr();
       case 'refunded':
-        return 'Refunded';
+        return 'Refunded'.tr();
       default:
         return status;
     }
@@ -405,23 +406,23 @@ class PaymentInfo extends StatelessWidget {
           InfoRow(
             icon: Icons.payment_outlined,
             iconColor: Colors.purple,
-            label: 'Payment Method',
-            value: _formatPaymentMethod(order.paymentMethod ?? 'Unknown'),
+            label: 'Payment Method'.tr(),
+            value: _formatPaymentMethod(order.paymentMethod ?? 'Unknown'.tr()),
           ),
           const SizedBox(height: 16),
           InfoRow(
             icon: Icons.account_balance_wallet_outlined,
             iconColor: Colors.orange,
-            label: 'Payment Status',
-            value: _formatPaymentStatus(order.paymentStatus ?? 'Unknown'),
+            label: 'Payment Status'.tr(),
+            value: _formatPaymentStatus(order.paymentStatus ?? 'Unknown'.tr()),
           ),
           if (order.isPreorder == true) ...[
             const SizedBox(height: 16),
-            const InfoRow(
+            InfoRow(
               icon: Icons.calendar_today_outlined,
               iconColor: Colors.blue,
-              label: 'Order Type',
-              value: 'Pre-order',
+              label: 'Order Type'.tr(),
+              value: 'Pre-order'.tr(),
             ),
           ],
         ],
@@ -503,7 +504,7 @@ class OrderItem extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          item.product ?? 'Unknown Product',
+                          item.product ?? 'Unknown Product'.tr(),
                           style: const TextStyle(
                             fontWeight: FontWeight.w500,
                             fontSize: 15,
@@ -588,7 +589,7 @@ class TotalSummary extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Subtotal',
+                'Subtotal'.tr(),
                 style: TextStyle(
                   fontSize: 14,
                   color: Colors.grey[600],
@@ -608,7 +609,7 @@ class TotalSummary extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Items',
+                  'Items'.tr(),
                   style: TextStyle(
                     fontSize: 14,
                     color: Colors.grey[600],
@@ -630,9 +631,9 @@ class TotalSummary extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
-                'Total',
-                style: TextStyle(
+              Text(
+                'Total'.tr(),
+                style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
                 ),
@@ -679,9 +680,9 @@ class OrderInformation extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Order information',
-            style: TextStyle(
+          Text(
+            'Order information'.tr(),
+            style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
               color: Color(0xFF333333),
@@ -691,7 +692,7 @@ class OrderInformation extends StatelessWidget {
 
           // Name
           _buildInfoRow(
-            label: 'Name:',
+            label: 'Name:'.tr(),
             value: address?.name ?? 'Unknown',
           ),
 
@@ -699,7 +700,7 @@ class OrderInformation extends StatelessWidget {
 
           // Number (Order ID or Phone)
           _buildInfoRow(
-            label: 'Number:',
+            label: 'Number:'.tr(),
             value: address?.phone ?? order.id?.toString() ?? 'Unknown',
           ),
 
@@ -707,7 +708,7 @@ class OrderInformation extends StatelessWidget {
 
           // Items Count
           _buildInfoRow(
-            label: 'Items:',
+            label: 'Items:'.tr(),
             value: itemsCount.toString(),
           ),
 
@@ -715,7 +716,7 @@ class OrderInformation extends StatelessWidget {
 
           // Shipping Address
           _buildInfoRow(
-            label: 'Shipping Address:',
+            label: 'Shipping Address:'.tr(),
             value: address != null
                 ? [
                     address.address,
@@ -731,7 +732,7 @@ class OrderInformation extends StatelessWidget {
 
           // Payment Method
           _buildInfoRow(
-            label: 'Payment method:',
+            label: 'Payment method:'.tr(),
             value: order.paymentMethod?.capitalize() ?? '',
           ),
 
@@ -739,7 +740,7 @@ class OrderInformation extends StatelessWidget {
 
           // Payment Status
           _buildInfoRow(
-            label: 'Payment Status:',
+            label: 'Payment Status:'.tr(),
             value: order.paymentStatus?.capitalize() ?? 'Unknown',
             action: EnumPaymentStatus.unpaid.name == (order.paymentStatus ?? '').toLowerCase()
                 ? InkWell(
@@ -757,7 +758,7 @@ class OrderInformation extends StatelessWidget {
 
           // Subtotal
           _buildInfoRow(
-            label: 'Subtotal',
+            label: 'Subtotal'.tr(),
             value: '${_formatPrice(order.totalPrice)} EGP',
           ),
 
@@ -765,7 +766,7 @@ class OrderInformation extends StatelessWidget {
 
           // Total
           _buildInfoRow(
-            label: 'Total',
+            label: 'Total'.tr(),
             value: '${_formatPrice(order.totalPrice)} EGP',
             valueColor: Colors.red,
             valueFontWeight: FontWeight.bold,
