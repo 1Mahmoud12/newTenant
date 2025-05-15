@@ -34,6 +34,7 @@ class ProductDetailsView extends StatefulWidget {
 }
 
 class _ProductDetailsViewState extends State<ProductDetailsView> {
+  
   String selectedSize = ConstantsModels.productDetailsModel?.data?.sizes?[0].code ?? '';
   final PageController controller = PageController();
   final AddToCartCubit addToCartCubit = AddToCartCubit();

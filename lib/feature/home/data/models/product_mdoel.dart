@@ -43,7 +43,7 @@ class Product {
   dynamic brand;
   dynamic brandId;
   String? label;
-  int? labelId;
+  num? labelId;
   List<Category>? categories;
   List<Category>? mainCategories;
   List<Category>? subCategories;
@@ -51,15 +51,15 @@ class Product {
   List<Color>? colors;
   num? totalSold;
   String? tax;
-  int? taxId;
-  int? stock;
-  int? isStock;
+  num? taxId;
+  num? stock;
+  num? isStock;
   String? imagePath;
   String? thumbnailPath;
   bool? visible;
   List<dynamic>? reviews;
-  int? reviewsCount;
-  int? averageRating;
+  num? reviewsCount;
+  num? averageRating;
   String? createdAt;
   String? updatedAt;
 

@@ -84,43 +84,42 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
     final authCubit = AuthCubit.of(context);
 
     return CustomTextFormField(
-      inputFormatters: [
-        TextInputFormatter.withFunction((oldValue, newValue) {
-          final text = newValue.text;
+      inputFormatters: AuthCubit.of(context).countryCode == '+966'
+          ? [
+              TextInputFormatter.withFunction((oldValue, newValue) {
+                final text = newValue.text;
 
-          if (text.isEmpty) return newValue;
+                if (text.isEmpty) return newValue;
 
-          // Handle +9665XXXXXXXX
-          if (text.startsWith('+966') && text.length > 4 && text[4] == '5') {
-            final trimmed = text.substring(4);
-            final clampedLength = trimmed.length > 9 ? 9 : trimmed.length;
-            final trimmedText = trimmed.substring(0, clampedLength);
+                // Handle +9665XXXXXXXX
+                if (text.startsWith('+966') && text.length > 4 && text[4] == '5') {
+                  final trimmed = text.substring(4);
+                  final clampedLength = trimmed.length > 9 ? 9 : trimmed.length;
+                  final trimmedText = trimmed.substring(0, clampedLength);
 
-            return TextEditingValue(
-              text: trimmedText,
-              selection: TextSelection.collapsed(offset: clampedLength),
-            );
-          }
+                  return TextEditingValue(
+                    text: trimmedText,
+                    selection: TextSelection.collapsed(offset: clampedLength),
+                  );
+                }
 
-          if (!text.startsWith('5')) {
-            Utils.showToast(title: 'Saudi numbers start with 5'.tr(), state: UtilState.error);
-            return oldValue;
-          }
+                if (!text.startsWith('5')) {
+                  Utils.showToast(title: 'Saudi numbers start with 5'.tr(), state: UtilState.error);
+                  return oldValue;
+                }
 
-          if (text.length > 9) {
-            final trimmedText = text.substring(0, 9);
-            return TextEditingValue(
-              text: trimmedText,
-              selection: const TextSelection.collapsed(offset: 9),
-            );
-          }
+                if (text.length > 9) {
+                  final trimmedText = text.substring(0, 9);
+                  return TextEditingValue(
+                    text: trimmedText,
+                    selection: const TextSelection.collapsed(offset: 9),
+                  );
+                }
 
-          return newValue;
-        }),
-  
-  
-  
-      ],
+                return newValue;
+              }),
+            ]
+          : null,
       enable: widget.enabled,
       textInputType: TextInputType.phone,
       contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 7),
@@ -142,6 +141,7 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
                   onCountryChanged: (countryCode) {
                     _updatePhoneHint(countryCode);
                     authCubit.countryCode = countryCode;
+                    authCubit.loginPhoneController.clear();
                   },
                 ),
               ),

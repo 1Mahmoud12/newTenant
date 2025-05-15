@@ -199,9 +199,9 @@ class _LoginScreenState extends State<LoginScreen> {
                             ],
                           ),
                           onPress: () {
-                            AuthCubit.of(context).countryCode = '+20';
-                            AuthCubit.of(context).loginPhoneController.text = '1124980094';
-                            AuthCubit.of(context).loginPasswordController.text = '123456789';
+                            AuthCubit.of(context).countryCode = '+966';
+                            AuthCubit.of(context).loginPhoneController.text = '500975853';
+                            AuthCubit.of(context).loginPasswordController.text = '+966500975853';
                             AuthCubit.of(context).login(context);
                           },
                         ),

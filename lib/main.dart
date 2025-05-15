@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:developer';
-
 import 'package:device_preview/device_preview.dart';
 import 'package:dobzz_seller/core/utils/bloc_observe.dart';
 import 'package:dobzz_seller/core/utils/constants.dart';
@@ -16,7 +15,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:logger/logger.dart';
-
 import 'core/network/dio_helper.dart';
 import 'core/network/local/cache.dart';
 import 'core/network/local/hive_data_base.dart';
@@ -40,6 +38,7 @@ void main() async {
   await Hive.initFlutter();
   //await selectTokens();
   // Dio
+
   await DioHelper.init();
 
   userCache = await openHiveBox(userCacheBoxKey);

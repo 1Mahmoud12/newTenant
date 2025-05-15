@@ -155,14 +155,14 @@ class Product {
   dynamic totalSold;
   dynamic tax;
   num? taxId;
-  int? stock;
-  int? isStock;
+  num? stock;
+  num? isStock;
   String? imagePath;
   String? thumbnailPath;
   bool? visible;
   List<Reviews>? reviews;
-  int? reviewsCount;
-  int? averageRating;
+  num? reviewsCount;
+  num? averageRating;
   String? createdAt;
   String? updatedAt;
 
@@ -323,9 +323,9 @@ class Categories {
   String? name;
   String? image;
   String? icon;
-  int? visible;
+  num? visible;
   num? parentId;
-  int? shopId;
+  num? shopId;
   String? deletedAt;
   String? createdAt;
   String? updatedAt;
@@ -379,8 +379,8 @@ class Categories {
 }
 
 class Pivot {
-  int? productId;
-  int? categoryId;
+  num? productId;
+  num? categoryId;
 
   Pivot({this.productId, this.categoryId});
 

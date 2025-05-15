@@ -125,7 +125,7 @@ class _ProductCardState extends State<ProductCard> {
                     child: Text(
                       widget.title,
                       style: TextStyle(
-                        fontSize: Constants.tablet ? 14 : 14.sp,
+                        fontSize: Constants.tablet ? 12 : 12.sp,
                         fontWeight: FontWeight.bold,
                       ),
                       maxLines: 2,
@@ -443,8 +443,8 @@ class _HorizontalProductCardState extends State<HorizontalProductCard> {
                           Expanded(
                             child: Text(
                               widget.title,
-                              style: const TextStyle(
-                                fontSize: 14,
+                              style:  TextStyle(
+                                fontSize: 12.sp,
                                 fontWeight: FontWeight.bold,
                               ),
                               maxLines: 2,

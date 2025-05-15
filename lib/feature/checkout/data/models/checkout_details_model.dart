@@ -127,14 +127,14 @@ class Product {
   num? totalSold;
   //  tax;
   // void taxId;
-  int? stock;
-  int? isStock;
+  num? stock;
+  num? isStock;
   String? imagePath;
   String? thumbnailPath;
   bool? visible;
   List<void>? reviews;
-  int? reviewsCount;
-  int? averageRating;
+  num? reviewsCount;
+  num? averageRating;
   String? createdAt;
   String? updatedAt;
 
@@ -294,9 +294,9 @@ class Categories {
   String? name;
   String? image;
   String? icon;
-  int? visible;
-  int? parentId;
-  int? shopId;
+  num? visible;
+  num? parentId;
+  num? shopId;
   void deletedAt;
   String? createdAt;
   String? updatedAt;
