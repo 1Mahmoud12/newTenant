@@ -218,5 +218,16 @@
   "Number:": "Number:",
   "Name:": "Name:",
   "Order information": "Order information",
-  "Loading products...":"Loading products..."
+  "Loading products...": "Loading products...",
+  "no_internet_connection": "No internet connection",
+  "seems_like_your_internet_connection_is_lost,_please_check_on_your_connection_and_try_again": "Seems like your internet connection is lost, please check on your connection and try again",
+  "check_internet": "Check Internet",
+  "No internet connection, please check your connection and try again": "No internet connection, please check your connection and try again",
+  "Please enter a valid email address": "Please enter a valid email address",
+  "Please enter a valid phone number": "Please enter a valid phone number",
+  "Please enter a valid name": "Please enter a valid name",
+  "Please enter a valid address": "Please enter a valid address",
+  "Please select a state": "Please select a state",
+  "Please select a city": "Please select a city",
+  "Please select a payment method": "Please select a payment method"
 }

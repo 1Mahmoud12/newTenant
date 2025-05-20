@@ -226,4 +226,9 @@
   "Number:": "الرقم:",
   "Name:": "الاسم:",
   "Order information": "معلومات الطلب",
-  "Loading products...": "جاري تحميل المنتجات..."}
+  "Loading products...": "جاري تحميل المنتجات...",
+  "no_internet_connection": "لا يوجد اتصال بالإنترنت",
+  "seems_like_your_internet_connection_is_lost,_please_check_on_your_connection_and_try_again": "يبدو أن اتصالك بالإنترنت مفقود، يرجى التحقق من اتصالك والمحاولة مرة أخرى",
+  "check_internet": "تحقق من الاتصال بالإنترنت",
+  "No items found": "لم يتم العثور على عناصر"
+}
