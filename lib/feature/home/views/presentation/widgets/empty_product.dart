@@ -37,13 +37,13 @@ class NoProductsAvailable extends StatelessWidget {
               style: Theme.of(context).textTheme.titleMedium,
               textAlign: TextAlign.center,
             ),
-            if (buttonText != null && onButtonPressed != null) ...[
-              const SizedBox(height: 24),
-              ElevatedButton(
-                onPressed: onButtonPressed,
-                child: Text(buttonText!),
-              ),
-            ],
+            // if (buttonText != null && onButtonPressed != null) ...[
+            //   const SizedBox(height: 24),
+            //   ElevatedButton(
+            //     onPressed: onButtonPressed,
+            //     child: Text(buttonText!),
+            //   ),
+            // ],
           ],
         ),
       ),
@@ -89,13 +89,13 @@ class NoCategoriesAvailable extends StatelessWidget {
               style: Theme.of(context).textTheme.titleMedium,
               textAlign: TextAlign.center,
             ),
-            if (buttonText != null && onButtonPressed != null) ...[
-              const SizedBox(height: 24),
-              ElevatedButton(
-                onPressed: onButtonPressed,
-                child: Text(buttonText!),
-              ),
-            ],
+            // if (buttonText != null && onButtonPressed != null) ...[
+            //   //  const SizedBox(height: 24),
+            //   // ElevatedButton(
+            //   //   onPressed: onButtonPressed,
+            //   //   child: Text(buttonText!),
+            //   // ),
+            // ],
           ],
         ),
       ),
