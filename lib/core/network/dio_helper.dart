@@ -81,7 +81,7 @@ class DioHelper {
     dio!.options.headers = {
       if (token != '') 'Authorization': 'Bearer $token',
       'Accept': 'application/json',
-      'subdomain': Constants.subdomain,
+      'domain': Constants.subdomain,
       'Apipassword': Constants.apiPassword,
       'lang': Constants.currentLanguage,
       'uuid': Constants.deviceId,
@@ -140,7 +140,7 @@ class DioHelper {
       'Accept': 'application/json',
       'Content-Type': 'application/x-www-form-urlencoded',
       'Apipassword': Constants.apiPassword,
-      'subdomain': Constants.subdomain,
+      'domain': Constants.subdomain,
       'uuid': Constants.deviceId,
       // 'uuid': userCache?.get(deviceIdKey, defaultValue: ''),
     };
@@ -181,7 +181,7 @@ class DioHelper {
     dio!.options.headers = {
       if (token != '') 'Authorization': 'Bearer $token',
       'Accept': 'application/json',
-      'subdomain': Constants.subdomain,
+      'domain': Constants.subdomain,
       'Apipassword': Constants.apiPassword,
       'lang': Constants.currentLanguage,
       'uuid': Constants.deviceId,
