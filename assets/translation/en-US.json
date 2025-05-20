@@ -229,5 +229,7 @@
   "Please enter a valid address": "Please enter a valid address",
   "Please select a state": "Please select a state",
   "Please select a city": "Please select a city",
-  "Please select a payment method": "Please select a payment method"
+  "Please select a payment method": "Please select a payment method",
+  "seems_like_your_internet_connection_is_lost,_please_check_on_your_connection": "Seems like your internet connection is lost, please check on your connection",
+  "Products": "Products"
 }

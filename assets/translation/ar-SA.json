@@ -230,5 +230,14 @@
   "no_internet_connection": "لا يوجد اتصال بالإنترنت",
   "seems_like_your_internet_connection_is_lost,_please_check_on_your_connection_and_try_again": "يبدو أن اتصالك بالإنترنت مفقود، يرجى التحقق من اتصالك والمحاولة مرة أخرى",
   "check_internet": "تحقق من الاتصال بالإنترنت",
-  "No items found": "لم يتم العثور على عناصر"
+  "No items found": "لم يتم العثور على عناصر",
+  "seems_like_your_internet_connection_is_lost,_please_check_on_your_connection": "يبدو أن اتصالك بالإنترنت مفقود، يرجى التحقق من اتصالك",
+  "Products": "المنتجات",
+  "No products available in this category": "لا توجد منتجات متاحة في هذه الفئة",
+  "No products available in this location": "لا توجد منتجات متاحة في هذا الموقع",
+  "No products available in this store": "لا توجد منتجات متاحة في هذا المتجر",
+  "No products available in this brand": "لا توجد منتجات متاحة في هذه العلامة التجارية",
+  "No products available in this color": "لا توجد منتجات متاحة في هذا اللون",
+  "No products available in this size": "لا توجد منتجات متاحة في هذا الحجم",
+  "No products available in this price range": "لا توجد منتجات متاحة في هذه الفئة السعرية"
 }
