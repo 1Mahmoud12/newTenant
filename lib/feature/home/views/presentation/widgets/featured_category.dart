@@ -5,6 +5,7 @@ import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/feature/Categories/presentation/categorized_product_veiw.dart';
 import 'package:dobzz_seller/feature/home/data/models/categories_model.dart';
 import 'package:dobzz_seller/feature/home/views/manager/categories/cubit/categories_cubit.dart';
+import 'package:dobzz_seller/feature/home/views/presentation/widgets/empty_product.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -77,8 +78,14 @@ class _FeaturedCategoryState extends State<FeaturedCategory> {
 
           // Choose layout based on number of categories
           if (validCategories?.isEmpty ?? true) {
-            return const Center(
-              child: Text('No categories available'),
+            return Center(
+              child: NoCategoriesAvailable(
+                message: 'No categories available at the moment',
+                buttonText: 'Refresh',
+                onButtonPressed: () {
+                  // Refresh categories or perform other actions
+                },
+              ),
             );
           }
 

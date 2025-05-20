@@ -34,7 +34,7 @@ class DioHelper {
     dio!.options.headers = {
       if (token != '') 'Authorization': 'Bearer $token',
       'Accept': 'application/json',
-      'subdomain': Constants.subdomain,
+      'domain': Constants.subdomain,
       'Apipassword': Constants.apiPassword,
       'lang': Constants.currentLanguage,
       'uuid': Constants.deviceId,

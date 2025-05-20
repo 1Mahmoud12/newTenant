@@ -112,15 +112,16 @@ class _HomeSliderState extends State<HomeSlider> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                SmoothPageIndicator(
-                  controller: controller,
-                  count: sliderCount,
-                  effect: const WormEffect(
-                    dotHeight: 8,
-                    dotWidth: 8,
-                    activeDotColor: AppColors.primaryColor,
+                if (controller.hasClients && sliderCount > 0)
+                  SmoothPageIndicator(
+                    controller: controller,
+                    count: sliderCount,
+                    effect: const WormEffect(
+                      dotHeight: 8,
+                      dotWidth: 8,
+                      activeDotColor: AppColors.primaryColor,
+                    ),
                   ),
-                ),
               ],
             ),
           );

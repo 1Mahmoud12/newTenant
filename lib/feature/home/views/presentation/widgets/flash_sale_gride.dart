@@ -5,6 +5,7 @@ import 'package:dobzz_seller/feature/favorites/views/manager/wishList/cubit/wish
 import 'package:dobzz_seller/feature/home/views/manager/addToWhishlist/cubit/add_to_wish_list_cubit.dart';
 import 'package:dobzz_seller/feature/home/views/manager/removeFromWhislist/cubit/remove_from_whish_list_cubit.dart';
 import 'package:dobzz_seller/feature/home/views/manager/topProduct/cubit/top_product_cubit.dart';
+import 'package:dobzz_seller/feature/home/views/presentation/widgets/empty_product.dart';
 import 'package:dobzz_seller/feature/home/views/presentation/widgets/product_card.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -87,7 +88,13 @@ class TopProductGrid extends StatelessWidget {
 
             if (topProducts == null || topProducts.isEmpty) {
               return Center(
-                child: Text('No products available'.tr()),
+                child: NoProductsAvailable(
+                  message: 'No products found in this category',
+                  buttonText: 'Browse other categories',
+                  onButtonPressed: () {
+             
+                  },
+                ),
               );
             }
             return GridView.builder(
