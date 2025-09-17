@@ -7,12 +7,12 @@ import 'package:dobzz_seller/core/network/end_points.dart';
 import 'package:dobzz_seller/core/network/errors/failures.dart';
 
 class AddToCartDataSource {
-  static Future<Either<Failure, void>> addToCart({required int productId, required int quantity, String? sizeCode}) async {
+  static Future<Either<Failure, void>> addToCart({required String sku, required int quantity, String? sizeCode}) async {
     try {
       final response = await DioHelper.postData(
         endPoint: EndPoints.cartItems,
         data: {
-          'product_id': productId,
+          'sku_code': sku,
           'quantity': quantity,
           if (sizeCode != null) 'size': sizeCode,
         },

@@ -1,12 +1,12 @@
 import 'package:dobzz_seller/core/themes/colors.dart';
-import 'package:dobzz_seller/core/utils/app_icons.dart';
 import 'package:dobzz_seller/core/utils/constant_gaping.dart';
+import 'package:dobzz_seller/feature/cart/view/manager/addToCart/cubit/add_to_cart_cubit.dart';
+import 'package:dobzz_seller/feature/cart/view/manager/cartItems/cubit/cart_items_cubit.dart';
 import 'package:dobzz_seller/feature/product/views/presentation/widgets/like_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 
-class ProductCardThemeTwo extends StatelessWidget {
+class ProductCardThemeTwo extends StatefulWidget {
   final String imagePath;
   final String title;
   final String price;
@@ -16,6 +16,7 @@ class ProductCardThemeTwo extends StatelessWidget {
   final bool initialLiked;
   final Function(bool) onLikeTap;
   final bool useStaggered;
+  final String sku;
 
   const ProductCardThemeTwo({
     Key? key,
@@ -28,8 +29,16 @@ class ProductCardThemeTwo extends StatelessWidget {
     required this.initialLiked,
     required this.onLikeTap,
     this.useStaggered = false,
+    required this.sku,
   }) : super(key: key);
 
+  @override
+  State<ProductCardThemeTwo> createState() => _ProductCardThemeTwoState();
+}
+
+class _ProductCardThemeTwoState extends State<ProductCardThemeTwo> {
+  AddToCartCubit addToCartCubit = AddToCartCubit();
+  bool isAddedToCart = false;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -46,9 +55,9 @@ class ProductCardThemeTwo extends StatelessWidget {
             Stack(
               children: [
                 AspectRatio(
-                  aspectRatio: useStaggered ? 1 : 1.2,
+                  aspectRatio: widget.useStaggered ? 1 : 1.2,
                   child: Image.network(
-                    imagePath,
+                    widget.imagePath,
                     fit: BoxFit.cover,
                     errorBuilder: (context, error, stackTrace) {
                       return Container(
@@ -83,8 +92,8 @@ class ProductCardThemeTwo extends StatelessWidget {
                     ),
                     child: Center(
                       child: LikeButton(
-                        initialLiked: initialLiked,
-                        onTap: onLikeTap,
+                        initialLiked: widget.initialLiked,
+                        onTap: widget.onLikeTap,
                       ),
                     ),
                   ),
@@ -107,7 +116,7 @@ class ProductCardThemeTwo extends StatelessWidget {
                         ),
                         const SizedBox(width: 4),
                         Text(
-                          rating.toString(),
+                          widget.rating.toString(),
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 12,
@@ -128,7 +137,7 @@ class ProductCardThemeTwo extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    title,
+                    widget.title,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
@@ -138,7 +147,7 @@ class ProductCardThemeTwo extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    description,
+                    widget.description,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
@@ -147,41 +156,54 @@ class ProductCardThemeTwo extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  Container(
-                    padding: const EdgeInsets.all(4),
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade200,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Row(
-                      //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        w10,
-                        Text(
-                          price,
-                          style: TextStyle(
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.primaryColor,
-                          ),
-                        ),
-                        s,
-                        Container(
-                          padding: const EdgeInsets.all(5),
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: AppColors.primaryColor,
-                            // borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Center(
-                            child: Icon(
-                              Icons.add,
-                              color: Colors.white,
-                              size: 16.sp,
+                  InkWell(
+                    onTap: () async {
+                      CartItemsCubit.of(context).addCartItems();
+                      await addToCartCubit.addToCart(
+                        context: context,
+                        sku: widget.sku,
+                        //  sizeCode: '',
+                      );
+                      setState(() {
+                        isAddedToCart = true;
+                      });
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(4),
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade200,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Row(
+                        //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          w10,
+                          Text(
+                            widget.price,
+                            style: TextStyle(
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.primaryColor,
                             ),
                           ),
-                        ),
-                      ],
+                          s,
+                          Container(
+                            padding: const EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: isAddedToCart ? Colors.green : AppColors.primaryColor,
+                              // borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Center(
+                              child: Icon(
+                                isAddedToCart ? Icons.done : Icons.add,
+                                color: Colors.white,
+                                size: 16.sp,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],

@@ -22,11 +22,13 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class ProductDetailsView extends StatefulWidget {
   final int productId;
+  final String sku;
   final bool? initialLiked;
   const ProductDetailsView({
     Key? key,
     required this.productId,
     this.initialLiked = false,
+    required this.sku,
   }) : super(key: key);
 
   @override
@@ -34,7 +36,6 @@ class ProductDetailsView extends StatefulWidget {
 }
 
 class _ProductDetailsViewState extends State<ProductDetailsView> {
-  
   String selectedSize = ConstantsModels.productDetailsModel?.data?.sizes?[0].code ?? '';
   final PageController controller = PageController();
   final AddToCartCubit addToCartCubit = AddToCartCubit();
@@ -82,7 +83,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                   sizeCode: selectedSize,
                   price: ConstantsModels.productDetailsModel?.data?.price ?? 0,
                   addToCartCubit: addToCartCubit,
-                  productId: widget.productId,
+                  sku: ConstantsModels.productDetailsModel?.data?.sku ?? '',
                 )
               else
                 const SizedBox(height: 56),
@@ -493,12 +494,12 @@ class PriceAndAddToCartWidget extends StatefulWidget {
     super.key,
     required this.addToCartCubit,
     required this.price,
-    required this.productId,
+    required this.sku,
     required this.sizeCode,
   });
   final AddToCartCubit addToCartCubit;
   final num price;
-  final int productId;
+  final String sku;
   final String sizeCode;
   @override
   State<PriceAndAddToCartWidget> createState() => _PriceAndAddToCartWidgetState();
@@ -596,7 +597,7 @@ class _PriceAndAddToCartWidgetState extends State<PriceAndAddToCartWidget> {
                       onPress: () async {
                         await widget.addToCartCubit.addToCart(
                           context: context,
-                          productId: widget.productId,
+                          sku: widget.sku,
                           sizeCode: widget.sizeCode,
                         );
                       },
@@ -626,7 +627,7 @@ class _PriceAndAddToCartWidgetState extends State<PriceAndAddToCartWidget> {
                       CartItemsCubit.of(context).addCartItems();
                       await widget.addToCartCubit.addToCart(
                         context: context,
-                        productId: widget.productId,
+                        sku: widget.sku,
                         sizeCode: widget.sizeCode,
                       );
                     },

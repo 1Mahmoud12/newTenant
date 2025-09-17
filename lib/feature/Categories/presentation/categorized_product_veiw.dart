@@ -163,6 +163,7 @@ class _CategorizedProductViewState extends State<CategorizedProductView> {
                         itemBuilder: (context, index) {
                           final product = ConstantsModels.productsModel?.data![index];
                           return ProductCard(
+                            sku: product?.sku ?? '',
                             description: product?.description ?? 'No description available'.tr(),
                             rating: product?.reviewsCount?.toDouble() ?? 0.0,
                             productId: product?.id ?? -1,

@@ -30,6 +30,7 @@ class _MyAppState extends State<MyApp> {
     addressCubit.getAddress(context: context);
     super.initState();
   }
+
   AddressCubit addressCubit = AddressCubit();
   @override
   Widget build(BuildContext context) {
@@ -84,7 +85,20 @@ class _MyAppState extends State<MyApp> {
               theme: Themes(Constants.fontFamily).light(),
               darkTheme: Themes(Constants.fontFamily).dark(),
               themeMode: darkModeValue ? ThemeMode.dark : ThemeMode.light,
-              builder: (context, child) => child!,
+              builder: (context, child) => MediaQuery(
+                data: MediaQuery.of(context).copyWith(),
+                child: AnnotatedRegion<SystemUiOverlayStyle>(
+                  value: const SystemUiOverlayStyle(
+                    statusBarColor: AppColors.scaffoldBackGround,
+                    statusBarIconBrightness: Brightness.dark,
+                    statusBarBrightness: Brightness.light,
+                  ),
+                  child: SafeArea(
+                    top: false,
+                    child: child ?? const SizedBox(),
+                  ),
+                ),
+              ),
               navigatorObservers: [
                 HeroController(
                   createRectTween: (begin, end) {

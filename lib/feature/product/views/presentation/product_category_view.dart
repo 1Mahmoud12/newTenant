@@ -1,22 +1,17 @@
 import 'package:dobzz_seller/core/component/loadsErros/loading_widget.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
-import 'package:dobzz_seller/core/utils/app_icons.dart';
-import 'package:dobzz_seller/core/utils/constant_gaping.dart';
 import 'package:dobzz_seller/core/utils/constants_models.dart';
 import 'package:dobzz_seller/feature/Categories/presentation/manager/subCategroy/cubit/sub_category_cubit.dart';
 import 'package:dobzz_seller/feature/home/views/manager/addToWhishlist/cubit/add_to_wish_list_cubit.dart';
 import 'package:dobzz_seller/feature/home/views/manager/categories/cubit/categories_cubit.dart';
 import 'package:dobzz_seller/feature/home/views/manager/removeFromWhislist/cubit/remove_from_whish_list_cubit.dart';
 import 'package:dobzz_seller/feature/home/views/manager/topProduct/cubit/top_product_cubit.dart';
-import 'package:dobzz_seller/feature/home/views/presentation/widgets/cart_floating_action_button.dart';
-import 'package:dobzz_seller/feature/product/views/presentation/widgets/like_button.dart';
-import 'package:dobzz_seller/feature/product/views/presentation/widgets/product_card_theme_two.dart';
+import 'package:dobzz_seller/feature/home/views/presentation/widgets/cart_floating_action_button.dart';import 'package:dobzz_seller/feature/product/views/presentation/widgets/product_card_theme_two.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:flutter_svg/svg.dart';
 
 class ProductCategoryView extends StatefulWidget {
   const ProductCategoryView({super.key});
@@ -259,6 +254,7 @@ class _ProductCategoryViewState extends State<ProductCategoryView> {
                         itemBuilder: (context, index) {
                           final product = ConstantsModels.topProductModel?.data![index];
                           return ProductCardThemeTwo(
+                            sku: product?.sku??'',
                             description: product?.description ?? 'No description available'.tr(),
                             rating: product?.reviewsCount?.toDouble() ?? 0.0,
                             productId: product?.id ?? -1,

@@ -20,7 +20,7 @@ class ProductCard extends StatefulWidget {
   final String title;
   final String price;
   final String? discountPercentage;
-
+  final String sku;
   final String description; // Added description parameter
   final double rating; // Added rating parameter
   final Function(bool isNowLiked)? onLikeTap;
@@ -38,6 +38,7 @@ class ProductCard extends StatefulWidget {
     this.onLikeTap,
     required this.initialLiked,
     required this.productId,
+    required this.sku,
   }) : super(key: key);
 
   @override
@@ -68,6 +69,7 @@ class _ProductCardState extends State<ProductCard> {
       onTap: () {
         context.navigateToPage(
           ProductDetailsView(
+            sku: widget.sku,
             initialLiked: widget.initialLiked,
             productId: widget.productId,
           ),
@@ -178,6 +180,7 @@ class _ProductCardState extends State<ProductCard> {
                   w10,
                   AddToCartButton(
                     productId: widget.productId,
+                    sku: widget.sku,
                   ),
                 ],
               ),
@@ -229,10 +232,11 @@ class Review extends StatelessWidget {
 class AddToCartButton extends StatefulWidget {
   const AddToCartButton({
     super.key,
-    required this.productId,
+    required this.productId, required this.sku,
   });
 
   final int productId;
+  final String sku;
 
   @override
   State<AddToCartButton> createState() => _AddToCartButtonState();
@@ -257,8 +261,8 @@ class _AddToCartButtonState extends State<AddToCartButton> {
         onTap: () async {
           await addToCartCubit
               .addToCart(
+            sku: widget.sku,
             context: context,
-            productId: widget.productId,
           )
               .then((_) {
             CartItemsCubit.of(context).addCartItems();
@@ -325,7 +329,7 @@ class HorizontalProductCard extends StatefulWidget {
   final Function(bool isNowLiked)? onLikeTap;
   final int productId;
   final bool initialLiked;
-
+  final String sku;
   const HorizontalProductCard({
     Key? key,
     required this.imagePath,
@@ -337,6 +341,7 @@ class HorizontalProductCard extends StatefulWidget {
     this.onLikeTap,
     required this.initialLiked,
     required this.productId,
+    required this.sku,
   }) : super(key: key);
 
   @override
@@ -368,6 +373,7 @@ class _HorizontalProductCardState extends State<HorizontalProductCard> {
       onTap: () {
         context.navigateToPage(
           ProductDetailsView(
+            sku: widget.sku,
             initialLiked: widget.initialLiked,
             productId: widget.productId,
           ),
@@ -443,7 +449,7 @@ class _HorizontalProductCardState extends State<HorizontalProductCard> {
                           Expanded(
                             child: Text(
                               widget.title,
-                              style:  TextStyle(
+                              style: TextStyle(
                                 fontSize: 12.sp,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -516,6 +522,7 @@ class _HorizontalProductCardState extends State<HorizontalProductCard> {
                           ),
                           w10,
                           HorizontalAddToCartButton(
+                            sku: widget.sku,
                             productId: widget.productId,
                           ),
                         ],
@@ -536,10 +543,11 @@ class HorizontalAddToCartButton extends StatefulWidget {
   const HorizontalAddToCartButton({
     super.key,
     required this.productId,
+    required this.sku,
   });
 
   final int productId;
-
+  final String sku;
   @override
   State<HorizontalAddToCartButton> createState() => _HorizontalAddToCartButtonState();
 }
@@ -562,8 +570,8 @@ class _HorizontalAddToCartButtonState extends State<HorizontalAddToCartButton> {
         onTap: () async {
           await addToCartCubit
               .addToCart(
+            sku: widget.sku,
             context: context,
-            productId: widget.productId,
           )
               .then((_) {
             CartItemsCubit.of(context).addCartItems();

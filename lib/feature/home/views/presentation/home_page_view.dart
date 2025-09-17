@@ -1,18 +1,11 @@
 import 'dart:developer';
-import 'dart:io';
-
 import 'package:dobzz_seller/core/component/fields/custom_text_form_field.dart';
 import 'package:dobzz_seller/core/component/loadsErros/loading_widget.dart';
 import 'package:dobzz_seller/core/component/see_all_widget.dart';
-import 'package:dobzz_seller/core/themes/colors.dart';
-import 'package:dobzz_seller/core/utils/app_icons.dart';
 import 'package:dobzz_seller/core/utils/constant_gaping.dart';
-import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:dobzz_seller/core/utils/constants_models.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/feature/Categories/presentation/Categories_veiw.dart';
-import 'package:dobzz_seller/feature/cart/view/manager/cartItems/cubit/cart_items_cubit.dart';
-import 'package:dobzz_seller/feature/cart/view/presentation/cart_view.dart';
 import 'package:dobzz_seller/feature/home/data/models/sales_model.dart';
 import 'package:dobzz_seller/feature/home/views/manager/categories/cubit/categories_cubit.dart';
 import 'package:dobzz_seller/feature/home/views/manager/salesBanner/cubit/sales_banner_cubit.dart';
@@ -28,8 +21,6 @@ import 'package:dobzz_seller/feature/product/views/presentation/product_view.dar
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 
 class HomePageView extends StatefulWidget {
   const HomePageView({super.key});

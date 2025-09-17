@@ -111,6 +111,7 @@ class TopProductGrid extends StatelessWidget {
               itemBuilder: (context, index) {
                 final product = topProducts[index];
                 return ProductCard(
+                  sku: product.sku ?? '',
                   description: product.description ?? 'No description available'.tr(),
                   rating: product.reviewsCount?.toDouble() ?? 0.0,
                   productId: product.id ?? -1,
@@ -193,7 +194,10 @@ class FavoriteGrid extends StatelessWidget {
               ),
               itemBuilder: (context, index) {
                 final wishListItem = wishList[index];
+
+                ///TODO: add sku
                 return ProductCard(
+                  sku:  '',
                   //  rating: wishListItem.,
                   productId: wishListItem.productId?.toInt() ?? -1,
                   initialLiked: true,

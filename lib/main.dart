@@ -69,6 +69,13 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await NotificationUtility.initializeAwesomeNotification();
+  // Apply immersive navigation bar flags on Android via MethodChannel
+  try {
+    const platform = MethodChannel('com.mah852.dobzz_seller/ui');
+    await platform.invokeMethod('setImmersiveMode');
+  } catch (e) {
+    // ignore errors silently
+  }
   try {
     Constants.messageGlobal = await FirebaseMessaging.instance.getInitialMessage();
     if (Constants.messageGlobal?.data != null) {

@@ -26,7 +26,7 @@ class Themes {
             systemNavigationBarDividerColor: AppColors.scaffoldBackGround,
           ),
         ),
-        cardTheme: CardTheme(
+        cardTheme: CardThemeData(
           shape: ContinuousRectangleBorder(
             borderRadius: BorderRadius.circular(15),
           ),
@@ -47,7 +47,7 @@ class Themes {
               displaySmall: Styles.style18500.copyWith(color: AppColors.black, fontFamily: family),
               headlineLarge: Styles.style17600.copyWith(color: AppColors.black, fontFamily: family),
             ),
-        dialogTheme: const DialogTheme(
+        dialogTheme: const DialogThemeData(
           backgroundColor: AppColors.scaffoldBackGround,
         ),
         bottomSheetTheme: BottomSheetThemeData(
@@ -69,7 +69,7 @@ class Themes {
           elevation: 0,
           systemOverlayStyle: const SystemUiOverlayStyle(statusBarColor: AppColors.primaryColor, statusBarIconBrightness: Brightness.light),
         ),
-        cardTheme: CardTheme(
+        cardTheme: CardThemeData(
           shape: ContinuousRectangleBorder(
             borderRadius: BorderRadius.circular(15),
           ),
@@ -88,7 +88,7 @@ class Themes {
           displayLarge: Styles.style14400.copyWith(color: AppColors.lightTextColor, fontFamily: family),
           displayMedium: Styles.style14400.copyWith(color: AppColors.white, fontFamily: family),
         ),
-        dialogTheme: DialogTheme(
+        dialogTheme: DialogThemeData(
           backgroundColor: AppColors.black,
         ),
       );

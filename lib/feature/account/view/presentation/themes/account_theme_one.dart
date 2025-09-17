@@ -15,6 +15,7 @@ import 'package:dobzz_seller/feature/account/view/presentation/language_view.dar
 import 'package:dobzz_seller/feature/address/presentation/address_view.dart';
 import 'package:dobzz_seller/feature/auth/forgetPassword/view/presentation/reset_password_view.dart';
 import 'package:dobzz_seller/feature/auth/login/view/presentation/login_screen.dart';
+import 'package:dobzz_seller/mainCubit/cubit/main_cubit_cubit.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -37,35 +38,161 @@ class _ProfileViewThemeOneState extends State<ProfileViewThemeOne> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF8F9FA),
-      body: SafeArea(
-        child: CustomScrollView(
-          slivers: [
-            // Custom App Bar with curved background
-            SliverToBoxAdapter(
-              child: Container(
-                decoration: const BoxDecoration(
-                  color: AppColors.primaryColor,
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(30),
-                    bottomRight: Radius.circular(30),
-                  ),
-                ),
-                padding: const EdgeInsets.only(top: 20, bottom: 30, left: 24, right: 24),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      body: BlocBuilder<MainCubitCubit, MainCubitState>(
+        builder: (context, state) {
+          return SafeArea(
+            child: CustomScrollView(
+              slivers: [
+                // Custom App Bar with curved background
+                SliverToBoxAdapter(
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      color: AppColors.primaryColor,
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(30),
+                        bottomRight: Radius.circular(30),
+                      ),
+                    ),
+                    padding: const EdgeInsets.only(top: 20, bottom: 30, left: 24, right: 24),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          'Account'.tr(),
-                          style: const TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Account'.tr(),
+                              style: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                context.navigateToPage(
+                                  MyDetailsView(
+                                    editProfileCubit: editProfileCubit,
+                                  ),
+                                );
+                              },
+                              child: Row(
+                                children: [
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white.withOpacity(0.2),
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        const Icon(Icons.edit_outlined, color: Colors.white, size: 16),
+                                        const SizedBox(width: 4),
+                                        Text(
+                                          'Edit Profile'.tr(),
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 20),
+                        // Profile info with horizontal layout
+                        BlocProvider.value(
+                          value: editProfileCubit,
+                          child: BlocBuilder<EditProfileCubit, EditProfileState>(
+                            builder: (context, state) {
+                              return Row(
+                                children: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.white, width: 2),
+                                      borderRadius: BorderRadius.circular(30),
+                                    ),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(28),
+                                      child: CacheImage(
+                                        errorColor: Colors.white70,
+                                        height: 72,
+                                        width: 72,
+                                        // circle: true,
+                                        urlImage: userCacheValue?.data?.avatarPath ?? '',
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 16),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          userCacheValue?.data?.name ?? 'Unknown'.tr(),
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 22,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 6),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
                           ),
                         ),
-                        InkWell(
+                      ],
+                    ),
+                  ),
+                ),
+
+                // Menu Categories
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 24, right: 24, top: 30, bottom: 10),
+                    child: Text(
+                      'My Account'.tr(),
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87,
+                      ),
+                    ),
+                  ),
+                ),
+
+                // Account Menu Items
+                SliverToBoxAdapter(
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 16),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Column(
+                      children: [
+                        _buildMenuItemNew(
+                          icon: AppIcons.myOrders,
+                          title: 'My Orders',
+                          subtitle: 'View your order history',
+                          onTap: () {
+                            context.navigateToPage(const MyOrderView());
+                          },
+                        ),
+                        _buildDivider(),
+                        _buildMenuItemNew(
+                          icon: AppIcons.myDetails,
+                          title: 'My Details',
+                          subtitle: 'Manage your personal information',
                           onTap: () {
                             context.navigateToPage(
                               MyDetailsView(
@@ -73,294 +200,172 @@ class _ProfileViewThemeOneState extends State<ProfileViewThemeOne> {
                               ),
                             );
                           },
-                          child: Row(
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                                decoration: BoxDecoration(
-                                  color: Colors.white.withOpacity(0.2),
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                child: Row(
-                                  children: [
-                                    const Icon(Icons.edit_outlined, color: Colors.white, size: 16),
-                                    const SizedBox(width: 4),
-                                    Text(
-                                      'Edit Profile'.tr(),
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
+                        ),
+                        _buildDivider(),
+                        _buildMenuItemNew(
+                          icon: AppIcons.addressBook,
+                          title: 'Address Book',
+                          subtitle: 'Manage your shipping addresses',
+                          onTap: () {
+                            context.navigateToPage(const AddressView());
+                          },
                         ),
                       ],
                     ),
-                    const SizedBox(height: 20),
-                    // Profile info with horizontal layout
-                    BlocProvider.value(
-                      value: editProfileCubit,
-                      child: BlocBuilder<EditProfileCubit, EditProfileState>(
-                        builder: (context, state) {
-                          return Row(
-                            children: [
-                              Container(
-                                decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.white, width: 2),
-                                  borderRadius: BorderRadius.circular(30),
-                                ),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(28),
-                                  child: CacheImage(
-                                    errorColor: Colors.white70,
-                                    height: 72,
-                                    width: 72,
-                                    // circle: true,
-                                    urlImage: userCacheValue?.data?.avatarPath ?? '',
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 16),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      userCacheValue?.data?.name ?? 'Unknown'.tr(),
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 22,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 6),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          );
-                        },
+                  ),
+                ),
+
+                // Security Section
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 24, right: 24, top: 30, bottom: 10),
+                    child: Text(
+                      'Security & Preferences'.tr(),
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87,
                       ),
                     ),
-                  ],
-                ),
-              ),
-            ),
-
-            // Menu Categories
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 24, right: 24, top: 30, bottom: 10),
-                child: Text(
-                  'My Account'.tr(),
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black87,
                   ),
                 ),
-              ),
-            ),
 
-            // Account Menu Items
-            SliverToBoxAdapter(
-              child: Container(
-                margin: const EdgeInsets.symmetric(horizontal: 16),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Column(
-                  children: [
-                    _buildMenuItemNew(
-                      icon: AppIcons.myOrders,
-                      title: 'My Orders',
-                      subtitle: 'View your order history',
-                      onTap: () {
-                        context.navigateToPage(const MyOrderView());
-                      },
+                // Security Menu Items
+                SliverToBoxAdapter(
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 16),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(16),
                     ),
-                    _buildDivider(),
-                    _buildMenuItemNew(
-                      icon: AppIcons.myDetails,
-                      title: 'My Details',
-                      subtitle: 'Manage your personal information',
-                      onTap: () {
-                        context.navigateToPage(
-                          MyDetailsView(
-                            editProfileCubit: editProfileCubit,
-                          ),
-                        );
-                      },
+                    child: Column(
+                      children: [
+                        _buildMenuItemNew(
+                          icon: AppIcons.changePassword,
+                          title: 'Change Password',
+                          subtitle: 'Update your account password',
+                          onTap: () {
+                            context.navigateToPage(const ResetPasswordView());
+                          },
+                        ),
+                        _buildDivider(),
+                        _buildMenuItemNew(
+                          icon: AppIcons.notificationIcon,
+                          title: 'Notifications',
+                          subtitle: 'Manage alert preferences',
+                          onTap: () {
+                            context.navigateToPage(const NotificationsSettingsView());
+                          },
+                        ),
+                        _buildDivider(),
+                        _buildMenuItemNew(
+                          icon: AppIcons.translation,
+                          title: 'Language',
+                          subtitle: 'Select your preferred language',
+                          onTap: () {
+                            context.navigateToPage(const LanguageView());
+                          },
+                        ),
+                      ],
                     ),
-                    _buildDivider(),
-                    _buildMenuItemNew(
-                      icon: AppIcons.addressBook,
-                      title: 'Address Book',
-                      subtitle: 'Manage your shipping addresses',
-                      onTap: () {
-                        context.navigateToPage(const AddressView());
-                      },
-                    ),
-                  ],
-                ),
-              ),
-            ),
-
-            // Security Section
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 24, right: 24, top: 30, bottom: 10),
-                child: Text(
-                  'Security & Preferences'.tr(),
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black87,
                   ),
                 ),
-              ),
-            ),
 
-            // Security Menu Items
-            SliverToBoxAdapter(
-              child: Container(
-                margin: const EdgeInsets.symmetric(horizontal: 16),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Column(
-                  children: [
-                    _buildMenuItemNew(
-                      icon: AppIcons.changePassword,
-                      title: 'Change Password',
-                      subtitle: 'Update your account password',
-                      onTap: () {
-                        context.navigateToPage(const ResetPasswordView());
-                      },
+                // Support Section
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 24, right: 24, top: 30, bottom: 10),
+                    child: Text(
+                      'Support'.tr(),
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87,
+                      ),
                     ),
-                    _buildDivider(),
-                    _buildMenuItemNew(
-                      icon: AppIcons.notificationIcon,
-                      title: 'Notifications',
-                      subtitle: 'Manage alert preferences',
-                      onTap: () {
-                        context.navigateToPage(const NotificationsSettingsView());
-                      },
-                    ),
-                    _buildDivider(),
-                    _buildMenuItemNew(
-                      icon: AppIcons.translation,
-                      title: 'Language',
-                      subtitle: 'Select your preferred language',
-                      onTap: () {
-                        context.navigateToPage(const LanguageView());
-                      },
-                    ),
-                  ],
-                ),
-              ),
-            ),
-
-            // Support Section
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 24, right: 24, top: 30, bottom: 10),
-                child: Text(
-                  'Support'.tr(),
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black87,
                   ),
                 ),
-              ),
-            ),
 
-            // Support Menu Item
-            SliverToBoxAdapter(
-              child: Container(
-                margin: const EdgeInsets.symmetric(horizontal: 16),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: _buildMenuItemNew(
-                  icon: AppIcons.customerSerivce,
-                  title: 'Help Center',
-                  subtitle: 'Get help with your account',
-                  onTap: () {
-                    context.navigateToPage(const HelpCenterView());
-                  },
-                ),
-              ),
-            ),
-
-            // Account Actions Section
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 24, right: 24, top: 30, bottom: 10),
-                child: Text(
-                  'Account Actions'.tr(),
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black87,
+                // Support Menu Item
+                SliverToBoxAdapter(
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 16),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: _buildMenuItemNew(
+                      icon: AppIcons.customerSerivce,
+                      title: 'Help Center',
+                      subtitle: 'Get help with your account',
+                      onTap: () {
+                        context.navigateToPage(const HelpCenterView());
+                      },
+                    ),
                   ),
                 ),
-              ),
-            ),
 
-            // Action Buttons
-            SliverToBoxAdapter(
-              child: Container(
-                margin: const EdgeInsets.symmetric(horizontal: 16),
-                child: Column(
-                  children: [
-                    _buildActionButton(
-                      icon: Icons.logout_rounded,
-                      title: 'Logout',
-                      color: const Color(0xFFF44336),
-                      onTap: () {
-                        showLogoutDialog(context, () async {
-                          userCacheValue = null;
-                          await userCache?.clear();
-                          context.navigateToPageWithClearStack(const LoginScreen());
-                        });
-                      },
+                // Account Actions Section
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 24, right: 24, top: 30, bottom: 10),
+                    child: Text(
+                      'Account Actions'.tr(),
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87,
+                      ),
                     ),
-                    const SizedBox(height: 12),
-                    _buildActionButton(
-                      icon: Icons.delete_outline_rounded,
-                      title: 'Delete Account',
-                      color: const Color(0xFF9E9E9E),
-                      onTap: () {
-                        if (userCacheValue?.data?.phone != Constants.demoAccount) {
-                          showDeleteAccountDialog(context, () async {
-                            await deleteAccountCubit.deleteAccount(context: context);
-                          });
-                        } else {
-                          Utils.showToast(title: 'This is demo account you can not delete account', state: UtilState.error);
-                        }
-                      },
-                    ),
-                  ],
+                  ),
                 ),
-              ),
-            ),
 
-            // Bottom spacing
-            const SliverToBoxAdapter(
-              child: SizedBox(height: 100),
+                // Action Buttons
+                SliverToBoxAdapter(
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Column(
+                      children: [
+                        _buildActionButton(
+                          icon: Icons.logout_rounded,
+                          title: 'Logout',
+                          color: const Color(0xFFF44336),
+                          onTap: () {
+                            showLogoutDialog(context, () async {
+                              userCacheValue = null;
+                              await userCache?.clear();
+                              context.navigateToPageWithClearStack(const LoginScreen());
+                            });
+                          },
+                        ),
+                        const SizedBox(height: 12),
+                        _buildActionButton(
+                          icon: Icons.delete_outline_rounded,
+                          title: 'Delete Account',
+                          color: const Color(0xFF9E9E9E),
+                          onTap: () {
+                            if (userCacheValue?.data?.phone != Constants.demoAccount) {
+                              showDeleteAccountDialog(context, () async {
+                                await deleteAccountCubit.deleteAccount(context: context);
+                              });
+                            } else {
+                              Utils.showToast(title: 'This is demo account you can not delete account', state: UtilState.error);
+                            }
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+
+                // Bottom spacing
+                const SliverToBoxAdapter(
+                  child: SizedBox(height: 100),
+                ),
+              ],
             ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }

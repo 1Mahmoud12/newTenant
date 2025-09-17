@@ -134,6 +134,7 @@ class SearchedProductCard extends StatelessWidget {
         context.navigateToPage(
           ProductDetailsView(
             productId: product.id ?? -1,
+            sku: product.sku ?? '',
           ),
         );
       },

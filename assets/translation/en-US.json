@@ -231,5 +231,17 @@
   "Please select a city": "Please select a city",
   "Please select a payment method": "Please select a payment method",
   "seems_like_your_internet_connection_is_lost,_please_check_on_your_connection": "Seems like your internet connection is lost, please check on your connection",
-  "Products": "Products"
+  "Products": "Products",
+  "View your order history": "View your order history",
+  "Manage your personal information": "Manage your personal information",
+  "Manage your shipping addresses": "Manage your shipping addresses",
+  "Update your account password": "Update your account password",
+  "Manage alert preferences": "Manage alert preferences",
+  "Select your preferred language": "Select your preferred language",
+  "Get help with your account": "Get help with your account",
+  "Edit Profile":"Edit Profile",
+  "Account Actions":"Account Actions",
+  "Support":"Support",
+  "Security & Preferences":"Security & Preferences",
+  "My Account":"My Account"
 }

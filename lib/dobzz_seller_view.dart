@@ -8,8 +8,6 @@ import 'package:dobzz_seller/core/utils/errorLoadingWidgets/stop_internet_widget
 import 'package:dobzz_seller/core/utils/notification/notification.dart';
 import 'package:flutter/material.dart';
 
-
-
 import 'main.dart';
 
 class DobzzSellerApp extends StatefulWidget {

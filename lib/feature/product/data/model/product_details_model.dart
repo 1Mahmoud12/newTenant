@@ -86,7 +86,7 @@ class ProductData {
   factory ProductData.fromJson(Map<String, dynamic> json) => ProductData(
         id: json['id'],
         name: json['name'],
-        sku: json['sku'],
+        sku: json['sku_code'],
         description: json['description'],
         price: json['price'],
         priceOld: json['price_old'],

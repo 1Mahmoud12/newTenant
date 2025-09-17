@@ -403,7 +403,7 @@ class CartItemWidget extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          cartItem.product?.name ?? '',
+                          cartItem.product ?? '',
                           style: TextStyle(
                             fontSize: Constants.tablet ? 12 : 12.sp,
                             fontWeight: FontWeight.w600,
@@ -433,9 +433,9 @@ class CartItemWidget extends StatelessWidget {
                       ),
                     ],
                   ),
-                  if (cartItem.selectedSize != null)
+                  if (cartItem.size != null)
                     Text(
-                      '${'Size'.tr()} ${cartItem.selectedSize}',
+                      '${'Size'.tr()} ${cartItem.size}',
                       style: TextStyle(fontWeight: FontWeight.w500, fontSize: Constants.tablet ? 14 : 14.sp, color: Colors.grey),
                     )
                   else

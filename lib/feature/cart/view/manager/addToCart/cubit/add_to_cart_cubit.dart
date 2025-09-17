@@ -12,13 +12,15 @@ class AddToCartCubit extends Cubit<AddToCartState> {
   AddToCartCubit() : super(AddToCartInitial());
   int quantity = 1;
 
-  Future<void> addToCart({required BuildContext context, required int productId, String? sizeCode}) async {
+  Future<void> addToCart({required BuildContext context, required String sku, String? sizeCode}) async {
     if (isClosed) return;
     emit(AddToCartLoading());
-    await AddToCartDataSource.addToCart(productId: productId, quantity: quantity, sizeCode: sizeCode).then(
+    await AddToCartDataSource.addToCart(sku: sku, quantity: quantity, sizeCode: sizeCode).then(
       (value) async {
         value.fold((l) {
           if (isClosed) return;
+
+          log('add to cart errors===> ${l.errMessage}');
           emit(AddToCartError(e: l.errMessage));
         }, (r) async {
           if (isClosed) return;

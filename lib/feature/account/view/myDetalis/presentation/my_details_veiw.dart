@@ -349,7 +349,7 @@ class SubmitButtonWidget extends StatelessWidget {
                   )
                 : Center(
                     child: Text(
-                      'Submit',
+                      'Submit'.tr(),
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.white),
                     ),
                   ),

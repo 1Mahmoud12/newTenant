@@ -72,6 +72,7 @@ class _ProductViewState extends State<ProductView> {
                   itemBuilder: (context, index) {
                     final product = products[index];
                     return ProductCard(
+                      sku: product.sku ?? '',
                       productId: product.id ?? -1,
                       initialLiked: false,
                       onLikeTap: (isNowLiked) {

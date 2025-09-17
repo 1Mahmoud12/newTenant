@@ -121,6 +121,7 @@ class TopProductHorizontalList extends StatelessWidget {
                         margin: const EdgeInsets.only(right: 16),
                         child: isHorizontal
                             ? HorizontalProductCard(
+                                sku: product.sku ?? '',
                                 description: product.description ?? 'No description available'.tr(),
                                 rating: product.reviewsCount?.toDouble() ?? 0.0,
                                 productId: product.id ?? -1,
@@ -141,6 +142,7 @@ class TopProductHorizontalList extends StatelessWidget {
                                 price: product.price?.toString() ?? '0',
                               )
                             : ProductCard(
+                                sku: product.sku ?? '',
                                 description: product.description ?? 'No description available'.tr(),
                                 rating: product.reviewsCount?.toDouble() ?? 0.0,
                                 productId: product.id ?? -1,
@@ -228,7 +230,10 @@ class FavoriteHorizontalList extends StatelessWidget {
                   return Container(
                     width: itemWidth,
                     margin: const EdgeInsets.only(right: 16),
-                    child: ProductCard(
+
+                    ///TODO: add sku
+                    child: ProductCard( 
+                      sku:  '',
                       productId: wishListItem.productId?.toInt() ?? -1,
                       initialLiked: true,
                       onLikeTap: (isNowLiked) {

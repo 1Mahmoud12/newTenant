@@ -11,16 +11,16 @@ if (keystorePropertiesFile.exists()) {
 }
 android {
     namespace = "com.mah852.dobzz_seller"
-    compileSdk = 35
+    compileSdkVersion 36
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8
+        jvmTarget = '11'
     }
 
     defaultConfig {
