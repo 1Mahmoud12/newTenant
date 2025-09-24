@@ -1,21 +1,22 @@
+import 'package:dobzz_seller/core/network/local/cache.dart';
+import 'package:dobzz_seller/core/themes/colors.dart';
+import 'package:dobzz_seller/core/themes/light.dart';
+import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:dobzz_seller/feature/address/presentation/manager/address/cubit/address_cubit.dart';
 import 'package:dobzz_seller/feature/cart/view/manager/cartItems/cubit/cart_items_cubit.dart';
+import 'package:dobzz_seller/feature/favorites/views/manager/wishList/cubit/wish_list_cubit.dart';
+import 'package:dobzz_seller/feature/navigation/view/manager/homeBloc/state.dart';
 import 'package:dobzz_seller/mainCubit/cubit/main_cubit_cubit.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:dobzz_seller/core/network/local/cache.dart';
-import 'package:dobzz_seller/core/themes/colors.dart';
-import 'package:dobzz_seller/core/themes/light.dart';
-import 'package:dobzz_seller/core/utils/constants.dart';
-import 'package:dobzz_seller/feature/navigation/view/manager/homeBloc/state.dart';
 
+import 'dobzz_seller_view.dart';
 import 'feature/auth/manager/authBloc/auth_cubit.dart';
 import 'feature/navigation/view/manager/homeBloc/cubit.dart';
 import 'main.dart';
-import 'dobzz_seller_view.dart';
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
@@ -53,6 +54,9 @@ class _MyAppState extends State<MyApp> {
           BlocProvider(
             create: (context) => CartItemsCubit(),
           ),
+          BlocProvider(
+            create: (context) => WishListCubit()..getWishList(context: context),
+          ),
           // BlocProvider(
           //   create: (context) => ManageAddressesCubit(),
           // ),
@@ -63,52 +67,55 @@ class _MyAppState extends State<MyApp> {
           //   create: (context) => CartCubit(),
           // ),
         ],
-        child: BlocBuilder<HomeCubit, HomeState>(
-          builder: (context, state) {
-            SystemChrome.setSystemUIOverlayStyle(
-              const SystemUiOverlayStyle(
-                statusBarColor: AppColors.scaffoldBackGround,
-                statusBarIconBrightness: Brightness.dark,
-                statusBarBrightness: Brightness.light,
-                systemNavigationBarColor: AppColors.scaffoldBackGround,
-                systemNavigationBarDividerColor: AppColors.scaffoldBackGround,
-              ),
-            );
-            return MaterialApp(
-              debugShowCheckedModeBanner: false,
-              localizationsDelegates: context.localizationDelegates,
-              supportedLocales: context.supportedLocales,
-              locale: context.locale,
-              //locale: DevicePreview.locale(context),
-              //builder: DevicePreview.appBuilder,
-              navigatorKey: navigatorKey,
-              theme: Themes(Constants.fontFamily).light(),
-              darkTheme: Themes(Constants.fontFamily).dark(),
-              themeMode: darkModeValue ? ThemeMode.dark : ThemeMode.light,
-              builder: (context, child) => MediaQuery(
-                data: MediaQuery.of(context).copyWith(),
-                child: AnnotatedRegion<SystemUiOverlayStyle>(
-                  value: const SystemUiOverlayStyle(
-                    statusBarColor: AppColors.scaffoldBackGround,
-                    statusBarIconBrightness: Brightness.dark,
-                    statusBarBrightness: Brightness.light,
-                  ),
-                  child: SafeArea(
-                    top: false,
-                    child: child ?? const SizedBox(),
+        child: BlocBuilder<WishListCubit, WishListState>(
+          buildWhen: (previous, current) => current is WishListSuccess,
+          builder: (context, state) => BlocBuilder<HomeCubit, HomeState>(
+            builder: (context, state) {
+              SystemChrome.setSystemUIOverlayStyle(
+                const SystemUiOverlayStyle(
+                  statusBarColor: AppColors.scaffoldBackGround,
+                  statusBarIconBrightness: Brightness.dark,
+                  statusBarBrightness: Brightness.light,
+                  systemNavigationBarColor: AppColors.scaffoldBackGround,
+                  systemNavigationBarDividerColor: AppColors.scaffoldBackGround,
+                ),
+              );
+              return MaterialApp(
+                debugShowCheckedModeBanner: false,
+                localizationsDelegates: context.localizationDelegates,
+                supportedLocales: context.supportedLocales,
+                locale: context.locale,
+                //locale: DevicePreview.locale(context),
+                //builder: DevicePreview.appBuilder,
+                navigatorKey: navigatorKey,
+                theme: Themes(Constants.fontFamily).light(),
+                darkTheme: Themes(Constants.fontFamily).dark(),
+                themeMode: darkModeValue ? ThemeMode.dark : ThemeMode.light,
+                builder: (context, child) => MediaQuery(
+                  data: MediaQuery.of(context).copyWith(),
+                  child: AnnotatedRegion<SystemUiOverlayStyle>(
+                    value: const SystemUiOverlayStyle(
+                      statusBarColor: AppColors.scaffoldBackGround,
+                      statusBarIconBrightness: Brightness.dark,
+                      statusBarBrightness: Brightness.light,
+                    ),
+                    child: SafeArea(
+                      top: false,
+                      child: child ?? const SizedBox(),
+                    ),
                   ),
                 ),
-              ),
-              navigatorObservers: [
-                HeroController(
-                  createRectTween: (begin, end) {
-                    return SlowRectTween(begin: begin, end: end);
-                  },
-                ),
-              ],
-              home: const DobzzSellerApp(),
-            );
-          },
+                navigatorObservers: [
+                  HeroController(
+                    createRectTween: (begin, end) {
+                      return SlowRectTween(begin: begin, end: end);
+                    },
+                  ),
+                ],
+                home: const DobzzSellerApp(),
+              );
+            },
+          ),
         ),
       ),
     );

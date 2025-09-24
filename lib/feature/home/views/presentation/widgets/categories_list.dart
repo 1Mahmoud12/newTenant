@@ -68,6 +68,7 @@ class _CategoriesListState extends State<CategoriesList> {
                           context.navigateToPage(
                             CategorizedProductView(
                               categoryId: categories[index].id ?? 0,
+                              categoryName: categories[index].name ?? 'Category',
                             ),
                           );
                         },

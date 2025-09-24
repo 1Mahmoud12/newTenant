@@ -255,6 +255,7 @@ class CategoryCard extends StatelessWidget {
         context.navigateToPage(
           CategorizedProductView(
             categoryId: category.id ?? 0,
+            categoryName: category.name ?? '',
           ),
         );
       },

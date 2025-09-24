@@ -8,10 +8,13 @@ import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/feature/cart/view/manager/addToCart/cubit/add_to_cart_cubit.dart';
 import 'package:dobzz_seller/feature/cart/view/manager/cartItems/cubit/cart_items_cubit.dart';
+import 'package:dobzz_seller/feature/favorites/views/manager/wishList/cubit/wish_list_cubit.dart';
+import 'package:dobzz_seller/feature/home/data/models/product_mdoel.dart';
 import 'package:dobzz_seller/feature/home/views/manager/addToWhishlist/cubit/add_to_wish_list_cubit.dart';
 import 'package:dobzz_seller/feature/product/views/presentation/product_details_view.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -20,7 +23,7 @@ class ProductCard extends StatefulWidget {
   final String title;
   final String price;
   final String? discountPercentage;
-  final String sku;
+  final List<Variants> variants;
   final String description; // Added description parameter
   final double rating; // Added rating parameter
   final Function(bool isNowLiked)? onLikeTap;
@@ -38,7 +41,7 @@ class ProductCard extends StatefulWidget {
     this.onLikeTap,
     required this.initialLiked,
     required this.productId,
-    required this.sku,
+    required this.variants,
   }) : super(key: key);
 
   @override
@@ -52,6 +55,12 @@ class _ProductCardState extends State<ProductCard> {
     isLiked = widget.initialLiked;
   }
 
+  @override
+  void didUpdateWidget(covariant ProductCard oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    isLiked = widget.initialLiked;
+  }
+
   bool isLiked = false;
   AddToWishListCubit addToWishListCubit = AddToWishListCubit();
 
@@ -59,136 +68,143 @@ class _ProductCardState extends State<ProductCard> {
     setState(() {
       isLiked = !isLiked;
     });
-    widget.onLikeTap?.call(isLiked);
+    widget.onLikeTap?.call(isWishListed());
     debugPrint('Liked: $isLiked for ${widget.title}');
+  }
+
+  bool isWishListed() {
+    return WishListCubit.get(context).wishList.any((element) => element.productId == widget.productId);
   }
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        context.navigateToPage(
-          ProductDetailsView(
-            sku: widget.sku,
-            initialLiked: widget.initialLiked,
-            productId: widget.productId,
+    return BlocBuilder<WishListCubit, WishListState>(
+      buildWhen: (previous, current) => current is WishListSuccess,
+      builder: (context, state) => InkWell(
+        onTap: () {
+          context.navigateToPage(
+            ProductDetailsView(
+              variants: widget.variants ?? [],
+              initialLiked: widget.initialLiked,
+              productId: widget.productId,
+            ),
+          );
+        },
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            // border: Border.all(
+            //   color: Colors.grey.withOpacity(0.3),
+            // ),
+            borderRadius: BorderRadius.circular(10),
           ),
-        );
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          // border: Border.all(
-          //   color: Colors.grey.withOpacity(0.3),
-          // ),
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween, // important
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween, // important
 
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Stack(
-              children: [
-                CacheImage(
-                  urlImage: widget.imagePath,
-                  errorColor: Colors.grey,
-                  height: 150,
-                  width: double.infinity,
-                  fit: BoxFit.contain,
-                ),
-                Positioned(
-                  top: 12,
-                  right: 12,
-                  child: GestureDetector(
-                    onTap: toggleLike,
-                    child: Container(
-                      padding: const EdgeInsets.all(6),
-                      decoration: const BoxDecoration(
-                        color: Colors.black87,
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(
-                        isLiked ? Icons.favorite : Icons.favorite_border,
-                        color: Colors.white,
-                        size: 18,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 8),
-            Row(
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: Text(
-                      widget.title,
-                      style: TextStyle(
-                        fontSize: Constants.tablet ? 12 : 12.sp,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ),
-                Review(widget: widget),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Text(
-                widget.description,
-                style: TextStyle(
-                  fontSize: Constants.tablet ? 10 : 10.sp,
-                  color: Colors.grey.shade400,
-                ),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-            const SizedBox(height: 4),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Stack(
                 children: [
-                  SizedBox(
-                    child: Row(
-                      children: [
-                        Text(
-                          widget.price,
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.grey.shade700,
-                          ),
-                        ),
-                        w5,
-                        SvgPicture.asset(
-                          AppIcons.currency,
-                          colorFilter: const ColorFilter.mode(Colors.black, BlendMode.srcIn),
-                          height: 14,
-                          width: 14,
-                        ),
-                      ],
-                    ),
+                  CacheImage(
+                    urlImage: widget.imagePath,
+                    errorColor: Colors.grey,
+                    height: 150,
+                    width: double.infinity,
+                    fit: BoxFit.contain,
                   ),
-                  w10,
-                  AddToCartButton(
-                    productId: widget.productId,
-                    sku: widget.sku,
+                  Positioned(
+                    top: 12,
+                    right: 12,
+                    child: GestureDetector(
+                      onTap: toggleLike,
+                      child: Container(
+                        padding: const EdgeInsets.all(6),
+                        decoration: const BoxDecoration(
+                          color: Colors.black87,
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          isWishListed() ? Icons.favorite : Icons.favorite_border,
+                          color: Colors.white,
+                          size: 18,
+                        ),
+                      ),
+                    ),
                   ),
                 ],
               ),
-            ),
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Text(
+                        widget.title,
+                        style: TextStyle(
+                          fontSize: Constants.tablet ? 12 : 12.sp,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ),
+                  Review(widget: widget),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Text(
+                  widget.description,
+                  style: TextStyle(
+                    fontSize: Constants.tablet ? 10 : 10.sp,
+                    color: Colors.grey.shade400,
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              const SizedBox(height: 4),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SizedBox(
+                      child: Row(
+                        children: [
+                          Text(
+                            widget.price,
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey.shade700,
+                            ),
+                          ),
+                          w5,
+                          SvgPicture.asset(
+                            AppIcons.currency,
+                            colorFilter: const ColorFilter.mode(Colors.black, BlendMode.srcIn),
+                            height: 14,
+                            width: 14,
+                          ),
+                        ],
+                      ),
+                    ),
+                    w10,
+                    AddToCartButton(
+                      productId: widget.productId,
+                      sku: '', // widget.variants,
+                    ),
+                  ],
+                ),
+              ),
 
-            // Removed the separate row for AddToCartButton
-            // Added bottom padding for better spacing
-          ],
+              // Removed the separate row for AddToCartButton
+              // Added bottom padding for better spacing
+            ],
+          ),
         ),
       ),
     );
@@ -232,7 +248,8 @@ class Review extends StatelessWidget {
 class AddToCartButton extends StatefulWidget {
   const AddToCartButton({
     super.key,
-    required this.productId, required this.sku,
+    required this.productId,
+    required this.sku,
   });
 
   final int productId;
@@ -329,7 +346,7 @@ class HorizontalProductCard extends StatefulWidget {
   final Function(bool isNowLiked)? onLikeTap;
   final int productId;
   final bool initialLiked;
-  final String sku;
+  final List<Variants> variants;
   const HorizontalProductCard({
     Key? key,
     required this.imagePath,
@@ -341,7 +358,7 @@ class HorizontalProductCard extends StatefulWidget {
     this.onLikeTap,
     required this.initialLiked,
     required this.productId,
-    required this.sku,
+    required this.variants,
   }) : super(key: key);
 
   @override
@@ -362,177 +379,184 @@ class _HorizontalProductCardState extends State<HorizontalProductCard> {
     setState(() {
       isLiked = !isLiked;
     });
-    widget.onLikeTap?.call(isLiked);
+    widget.onLikeTap?.call(isWishListed());
     debugPrint('Liked: $isLiked for ${widget.title}');
+  }
+
+  bool isWishListed() {
+    return WishListCubit.get(context).wishList.any((element) => element.productId == widget.productId);
   }
 
   @override
   Widget build(BuildContext context) {
     // Fixed height to prevent overflow
-    return InkWell(
-      onTap: () {
-        context.navigateToPage(
-          ProductDetailsView(
-            sku: widget.sku,
-            initialLiked: widget.initialLiked,
-            productId: widget.productId,
-          ),
-        );
-      },
-      child: Container(
-        height: 130, // Fixed height
-        decoration: BoxDecoration(
-          color: Colors.white,
-          // border: Border.all(
-          //   color: Colors.grey.withOpacity(0.3),
-          // ),
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.stretch, // Stretch to fill height
-          children: [
-            // Left side - Product image with like button
-            AspectRatio(
-              aspectRatio: 1, // Square image
-              child: Stack(
-                children: [
-                  ClipRRect(
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(9),
-                      bottomLeft: Radius.circular(9),
-                    ),
-                    child: CacheImage(
-                      urlImage: widget.imagePath,
-                      errorColor: Colors.grey,
-                      height: double.infinity,
-                      width: double.infinity,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  Positioned(
-                    top: 8,
-                    right: 8,
-                    child: GestureDetector(
-                      onTap: toggleLike,
-                      child: Container(
-                        padding: const EdgeInsets.all(6),
-                        decoration: const BoxDecoration(
-                          color: Colors.black87,
-                          shape: BoxShape.circle,
-                        ),
-                        child: Icon(
-                          isLiked ? Icons.favorite : Icons.favorite_border,
-                          color: Colors.white,
-                          size: 14,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+    return BlocBuilder<WishListCubit, WishListState>(
+      buildWhen: (previous, current) => current is WishListSuccess,
+      builder: (context, state) => InkWell(
+        onTap: () {
+          context.navigateToPage(
+            ProductDetailsView(
+              variants: widget.variants,
+              initialLiked: widget.initialLiked,
+              productId: widget.productId,
             ),
-
-            // Right side - Product information
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          );
+        },
+        child: Container(
+          height: 130, // Fixed height
+          decoration: BoxDecoration(
+            color: Colors.white,
+            // border: Border.all(
+            //   color: Colors.grey.withOpacity(0.3),
+            // ),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch, // Stretch to fill height
+            children: [
+              // Left side - Product image with like button
+              AspectRatio(
+                aspectRatio: 1, // Square image
+                child: Stack(
                   children: [
-                    // Title and rating - limited height
-                    Expanded(
-                      flex: 5, // Title and rating take 3/10 of the space
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            child: Text(
-                              widget.title,
-                              style: TextStyle(
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.bold,
-                              ),
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                          const SizedBox(width: 4),
-                          Row(
-                            children: [
-                              const Icon(
-                                Icons.star,
-                                color: Colors.amber,
-                                size: 14,
-                              ),
-                              const SizedBox(width: 2),
-                              Text(
-                                widget.rating.toStringAsFixed(1),
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.grey.shade700,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
+                    ClipRRect(
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(9),
+                        bottomLeft: Radius.circular(9),
+                      ),
+                      child: CacheImage(
+                        urlImage: widget.imagePath,
+                        errorColor: Colors.grey,
+                        height: double.infinity,
+                        width: double.infinity,
+                        fit: BoxFit.cover,
                       ),
                     ),
-
-                    // Description - limited height
-                    Expanded(
-                      flex: 4, // Description takes 4/10 of the space
-                      child: Text(
-                        widget.description,
-                        style: TextStyle(
-                          fontSize: 10,
-                          color: Colors.grey.shade400,
+                    Positioned(
+                      top: 8,
+                      right: 8,
+                      child: GestureDetector(
+                        onTap: toggleLike,
+                        child: Container(
+                          padding: const EdgeInsets.all(6),
+                          decoration: const BoxDecoration(
+                            color: Colors.black87,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(
+                            isWishListed() ? Icons.favorite : Icons.favorite_border,
+                            color: Colors.white,
+                            size: 14,
+                          ),
                         ),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-
-                    // Price and add to cart button - limited height
-                    Expanded(
-                      flex: 3, // Price and button take 3/10 of the space
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SizedBox(
-                            child: Row(
-                              children: [
-                                Text(
-                                  widget.price,
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.grey.shade700,
-                                  ),
-                                ),
-                                w5,
-                                SvgPicture.asset(
-                                  AppIcons.currency,
-                                  colorFilter: const ColorFilter.mode(Colors.black, BlendMode.srcIn),
-                                  height: 14,
-                                  width: 14,
-                                ),
-                              ],
-                            ),
-                          ),
-                          w10,
-                          HorizontalAddToCartButton(
-                            sku: widget.sku,
-                            productId: widget.productId,
-                          ),
-                        ],
                       ),
                     ),
                   ],
                 ),
               ),
-            ),
-          ],
+
+              // Right side - Product information
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // Title and rating - limited height
+                      Expanded(
+                        flex: 5, // Title and rating take 3/10 of the space
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                widget.title,
+                                style: TextStyle(
+                                  fontSize: 12.sp,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            const SizedBox(width: 4),
+                            Row(
+                              children: [
+                                const Icon(
+                                  Icons.star,
+                                  color: Colors.amber,
+                                  size: 14,
+                                ),
+                                const SizedBox(width: 2),
+                                Text(
+                                  widget.rating.toStringAsFixed(1),
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.grey.shade700,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      // Description - limited height
+                      Expanded(
+                        flex: 4, // Description takes 4/10 of the space
+                        child: Text(
+                          widget.description,
+                          style: TextStyle(
+                            fontSize: 10,
+                            color: Colors.grey.shade400,
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+
+                      // Price and add to cart button - limited height
+                      Expanded(
+                        flex: 3, // Price and button take 3/10 of the space
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            SizedBox(
+                              child: Row(
+                                children: [
+                                  Text(
+                                    widget.price,
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.grey.shade700,
+                                    ),
+                                  ),
+                                  w5,
+                                  SvgPicture.asset(
+                                    AppIcons.currency,
+                                    colorFilter: const ColorFilter.mode(Colors.black, BlendMode.srcIn),
+                                    height: 14,
+                                    width: 14,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            w10,
+                            HorizontalAddToCartButton(
+                              sku: '', // widget.variants,
+                              productId: widget.productId,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

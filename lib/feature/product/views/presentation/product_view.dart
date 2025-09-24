@@ -54,7 +54,6 @@ class _ProductViewState extends State<ProductView> {
                       buttonText: 'Browse other categories',
                       onButtonPressed: () {
                         // Navigate to categories or perform other actions
-              
                       },
                     ),
                   );
@@ -72,7 +71,7 @@ class _ProductViewState extends State<ProductView> {
                   itemBuilder: (context, index) {
                     final product = products[index];
                     return ProductCard(
-                      sku: product.sku ?? '',
+                      variants: product.variants ?? [],
                       productId: product.id ?? -1,
                       initialLiked: false,
                       onLikeTap: (isNowLiked) {

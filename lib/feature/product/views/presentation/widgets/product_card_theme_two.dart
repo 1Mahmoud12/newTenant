@@ -1,7 +1,9 @@
 import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:dobzz_seller/core/utils/constant_gaping.dart';
+import 'package:dobzz_seller/core/utils/custom_show_toast.dart';
 import 'package:dobzz_seller/feature/cart/view/manager/addToCart/cubit/add_to_cart_cubit.dart';
 import 'package:dobzz_seller/feature/cart/view/manager/cartItems/cubit/cart_items_cubit.dart';
+import 'package:dobzz_seller/feature/home/data/models/product_mdoel.dart';
 import 'package:dobzz_seller/feature/product/views/presentation/widgets/like_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -16,7 +18,7 @@ class ProductCardThemeTwo extends StatefulWidget {
   final bool initialLiked;
   final Function(bool) onLikeTap;
   final bool useStaggered;
-  final String sku;
+  final List<Variants> sku;
 
   const ProductCardThemeTwo({
     Key? key,
@@ -158,12 +160,11 @@ class _ProductCardThemeTwoState extends State<ProductCardThemeTwo> {
                   const SizedBox(height: 8),
                   InkWell(
                     onTap: () async {
+                      customShowToast(context, 'need_edit');
                       CartItemsCubit.of(context).addCartItems();
-                      await addToCartCubit.addToCart(
-                        context: context,
-                        sku: widget.sku,
-                        //  sizeCode: '',
-                      );
+                      await addToCartCubit.addToCart(context: context, sku: '' // widget.sku,
+                          //  sizeCode: '',
+                          );
                       setState(() {
                         isAddedToCart = true;
                       });

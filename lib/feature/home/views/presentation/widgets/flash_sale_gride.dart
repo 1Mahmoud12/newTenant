@@ -1,5 +1,6 @@
 import 'package:dobzz_seller/core/component/loadsErros/loading_widget.dart';
 import 'package:dobzz_seller/core/utils/constants.dart';
+import 'package:dobzz_seller/core/utils/constants_models.dart';
 import 'package:dobzz_seller/core/utils/errorLoadingWidgets/empty_widget.dart';
 import 'package:dobzz_seller/feature/favorites/views/manager/wishList/cubit/wish_list_cubit.dart';
 import 'package:dobzz_seller/feature/home/views/manager/addToWhishlist/cubit/add_to_wish_list_cubit.dart';
@@ -10,7 +11,6 @@ import 'package:dobzz_seller/feature/home/views/presentation/widgets/product_car
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:dobzz_seller/core/utils/constants_models.dart';
 
 class FlashSaleGrid extends StatefulWidget {
   const FlashSaleGrid({super.key, this.isItWhishList = false});
@@ -25,7 +25,7 @@ class _FlashSaleGridState extends State<FlashSaleGrid> {
     super.initState();
     // Fetch top products when widget initializes
     if (widget.isItWhishList!) {
-      wishListCubit.getWishList(context: context);
+      WishListCubit.get(context).getWishList(context: context);
     } else {
       if (ConstantsModels.topProductModel == null) {
         topProductCubit.getTopProduct(context: context);
@@ -35,13 +35,11 @@ class _FlashSaleGridState extends State<FlashSaleGrid> {
 
   TopProductCubit topProductCubit = TopProductCubit();
   AddToWishListCubit addToWishListCubit = AddToWishListCubit();
-  RemoveFromWhishListCubit removeFromWhishListCubit = RemoveFromWhishListCubit();
-  WishListCubit wishListCubit = WishListCubit();
+  RemoveFrommWishListCubit removeFromWhishListCubit = RemoveFrommWishListCubit();
   @override
   Widget build(BuildContext context) {
     return widget.isItWhishList!
         ? FavoriteGrid(
-            wishListCubit: wishListCubit,
             widget: widget,
             removeFromWhishListCubit: removeFromWhishListCubit,
           )
@@ -65,7 +63,7 @@ class TopProductGrid extends StatelessWidget {
 
   final TopProductCubit topProductCubit;
   final FlashSaleGrid widget;
-  final RemoveFromWhishListCubit removeFromWhishListCubit;
+  final RemoveFrommWishListCubit removeFromWhishListCubit;
   final AddToWishListCubit addToWishListCubit;
 
   @override
@@ -91,9 +89,7 @@ class TopProductGrid extends StatelessWidget {
                 child: NoProductsAvailable(
                   message: 'No products found in this category',
                   buttonText: 'Browse other categories',
-                  onButtonPressed: () {
-             
-                  },
+                  onButtonPressed: () {},
                 ),
               );
             }
@@ -111,7 +107,7 @@ class TopProductGrid extends StatelessWidget {
               itemBuilder: (context, index) {
                 final product = topProducts[index];
                 return ProductCard(
-                  sku: product.sku ?? '',
+                  variants: product.variants ?? [],
                   description: product.description ?? 'No description available'.tr(),
                   rating: product.reviewsCount?.toDouble() ?? 0.0,
                   productId: product.id ?? -1,
@@ -146,22 +142,20 @@ class TopProductGrid extends StatelessWidget {
 class FavoriteGrid extends StatelessWidget {
   const FavoriteGrid({
     super.key,
-    required this.wishListCubit,
     required this.widget,
     required this.removeFromWhishListCubit,
   });
 
-  final WishListCubit wishListCubit;
   final FlashSaleGrid widget;
-  final RemoveFromWhishListCubit removeFromWhishListCubit;
+  final RemoveFrommWishListCubit removeFromWhishListCubit;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider.value(
-      value: wishListCubit,
+      value: WishListCubit.get(context),
       child: BlocBuilder<WishListCubit, WishListState>(
         builder: (context, state) {
-          if (state is WishListLoading) {
+          if (state is WishListLoading && WishListCubit.get(context).wishList.isEmpty) {
             return const Center(
               child: LoadingWidget(),
             );
@@ -169,51 +163,61 @@ class FavoriteGrid extends StatelessWidget {
             return Center(
               child: Text('${'Error:'.tr()}${state.e}'),
             );
-          } else if (state is WishListSuccess) {
+          } else if (WishListCubit.get(context).wishList.isNotEmpty) {
             // Access the loaded top products
-            final wishList = ConstantsModels.wishListModel?.data;
+            final wishList = WishListCubit.get(context).wishList;
 
-            if (wishList == null || wishList.isEmpty) {
+            if (wishList.isEmpty) {
               return EmptyWidget(
                 data: 'No Saved Items!'.tr(),
                 subData: 'You don’t have any saved items. Go to home and add some.'.tr(),
                 emptyImage: EmptyImages.noSavedItem,
               );
             }
-            return GridView.builder(
-              itemCount: wishList.length,
-              shrinkWrap: true,
+            return Stack(
+              children: [
+                GridView.builder(
+                  itemCount: wishList.length,
+                  shrinkWrap: true,
 
-              ///    physics: const NeverScrollableScrollPhysics(),
-              padding: EdgeInsets.zero,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                mainAxisSpacing: 16,
-                crossAxisSpacing: 16,
-                childAspectRatio: 0.56,
-              ),
-              itemBuilder: (context, index) {
-                final wishListItem = wishList[index];
+                  ///    physics: const NeverScrollableScrollPhysics(),
+                  padding: EdgeInsets.zero,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 16,
+                    crossAxisSpacing: 16,
+                    childAspectRatio: 0.56,
+                  ),
+                  itemBuilder: (context, index) {
+                    final wishListItem = wishList[index];
 
-                ///TODO: add sku
-                return ProductCard(
-                  sku:  '',
-                  //  rating: wishListItem.,
-                  productId: wishListItem.productId?.toInt() ?? -1,
-                  initialLiked: true,
-                  description: wishListItem.descriptionProduct ?? unknownValue,
-                  onLikeTap: (isNowLiked) {
-                    // Add to wishlist
-                    if (widget.isItWhishList!) {
-                      // Remove from wishlist
-                      removeFromWhishListCubit.removeFromWishList(context: context, productId: wishListItem.id?.toInt() ?? -1);
-                    }
+                    ///TODO: add sku
+                    return ProductCard(
+                      variants: const [],
+                      //  rating: wishListItem.,
+                      productId: wishListItem.productId?.toInt() ?? -1,
+                      initialLiked: true,
+                      description: wishListItem.descriptionProduct ?? unknownValue,
+                      onLikeTap: (isNowLiked) {
+                        // Add to wishlist
+                        final bool inWishList = wishList.any((element) => element.productId == wishListItem.productId);
+                        if (inWishList) {
+                          // Remove from wishlist
+                          removeFromWhishListCubit.removeFromWishList(context: context, productId: wishListItem.productId?.toInt() ?? -1);
+                        }
+                      },
+                      imagePath: wishListItem.productImagePath ?? '',
+                      title: wishListItem.product ?? 'Unknown Product'.tr(),
+                      price: '\$${wishListItem.priceForProduct?.toString() ?? '0'}',
+                    );
                   },
-                  imagePath: wishListItem.productImagePath ?? '',
-                  title: wishListItem.product ?? 'Unknown Product'.tr(),
-                  price: '\$${wishListItem.priceForProduct?.toString() ?? '0'}',
-                );
-              },
+                ),
+                if (state is WishListLoading && WishListCubit.get(context).wishList.isNotEmpty) ...[
+                  const Center(
+                    child: LoadingWidget(),
+                  ),
+                ],
+              ],
             );
           }
 

@@ -454,7 +454,7 @@ class OrderItem extends StatelessWidget {
         context.navigateToPage(
           ProductDetailsView(
             productId: item.productId ?? -1,
-            sku:  '',
+            variants: const [],
           ),
         );
       },

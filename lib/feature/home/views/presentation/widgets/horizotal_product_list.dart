@@ -6,16 +6,17 @@ import 'package:dobzz_seller/feature/home/views/manager/removeFromWhislist/cubit
 import 'package:dobzz_seller/feature/home/views/manager/topProduct/cubit/top_product_cubit.dart';
 import 'package:dobzz_seller/feature/home/views/presentation/widgets/empty_product.dart';
 import 'package:dobzz_seller/feature/home/views/presentation/widgets/product_card.dart';
+import 'package:dobzz_seller/main.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class FlashSaleHorizontalList extends StatefulWidget {
-  const FlashSaleHorizontalList({super.key, this.isItWhishList = false, required this.isHorizontal});
+  const FlashSaleHorizontalList({super.key, this.isItWhishList = false, required this.isHorizontal, this.categoryId});
 
   final bool? isItWhishList;
   final bool isHorizontal;
-
+  final int? categoryId;
   @override
   State<FlashSaleHorizontalList> createState() => _FlashSaleHorizontalListState();
 }
@@ -26,24 +27,20 @@ class _FlashSaleHorizontalListState extends State<FlashSaleHorizontalList> {
     super.initState();
     // Fetch top products when widget initializes
     if (widget.isItWhishList!) {
-      wishListCubit.getWishList(context: context);
+      WishListCubit.get(context).getWishList(context: context);
     } else {
-      if (ConstantsModels.topProductModel == null) {
-        topProductCubit.getTopProduct(context: context);
-      }
+      topProductCubit.getTopProduct(context: context, subCategoryId: widget.categoryId);
     }
   }
 
   TopProductCubit topProductCubit = TopProductCubit();
   AddToWishListCubit addToWishListCubit = AddToWishListCubit();
-  RemoveFromWhishListCubit removeFromWhishListCubit = RemoveFromWhishListCubit();
-  WishListCubit wishListCubit = WishListCubit();
+  RemoveFrommWishListCubit removeFromWhishListCubit = RemoveFrommWishListCubit();
 
   @override
   Widget build(BuildContext context) {
     return widget.isItWhishList!
         ? FavoriteHorizontalList(
-            wishListCubit: wishListCubit,
             widget: widget,
             removeFromWhishListCubit: removeFromWhishListCubit,
           )
@@ -69,7 +66,7 @@ class TopProductHorizontalList extends StatelessWidget {
 
   final TopProductCubit topProductCubit;
   final FlashSaleHorizontalList widget;
-  final RemoveFromWhishListCubit removeFromWhishListCubit;
+  final RemoveFrommWishListCubit removeFromWhishListCubit;
   final AddToWishListCubit addToWishListCubit;
   final bool isHorizontal;
 
@@ -87,24 +84,22 @@ class TopProductHorizontalList extends StatelessWidget {
             return Center(
               child: Text('${'Error:'.tr()}${state.e}'),
             );
-          } else if (ConstantsModels.topProductModel != null) {
+          } else if (topProductCubit.products.isNotEmpty) {
             // Access the loaded top products
-            final topProducts = ConstantsModels.topProductModel?.data;
+            final topProducts = topProductCubit.products;
 
-            if (topProducts == null || topProducts.isEmpty) {
+            if (topProducts.isEmpty) {
               return Center(
                 child: NoProductsAvailable(
                   message: 'No products found in this category',
                   buttonText: 'Browse other categories',
                   onButtonPressed: () {
                     // Navigate to categories or perform other actions
-           
                   },
                 ),
               );
             }
             // Set a fixed height for the horizontal list items
-            const double itemHeight = 280; // Adjust as needed
             final double itemWidth = isHorizontal ? 300 : 180; // Adjust as needed
 
             //return SizedBox();
@@ -121,20 +116,19 @@ class TopProductHorizontalList extends StatelessWidget {
                         margin: const EdgeInsets.only(right: 16),
                         child: isHorizontal
                             ? HorizontalProductCard(
-                                sku: product.sku ?? '',
+                                variants: product.variants ?? [],
                                 description: product.description ?? 'No description available'.tr(),
                                 rating: product.reviewsCount?.toDouble() ?? 0.0,
                                 productId: product.id ?? -1,
                                 initialLiked: widget.isItWhishList!,
                                 onLikeTap: (isNowLiked) {
+                                  logger.i('isWishListed $isNowLiked');
+                                  // Add to wishlist
                                   if (isNowLiked) {
-                                    // Add to wishlist
-                                    if (widget.isItWhishList!) {
-                                      // Remove from wishlist
-                                      removeFromWhishListCubit.removeFromWishList(context: context, productId: product.id ?? -1);
-                                    } else {
-                                      addToWishListCubit.addToWishList(context: context, productId: product.id ?? -1);
-                                    }
+                                    // Remove from wishlist
+                                    removeFromWhishListCubit.removeFromWishList(context: context, productId: product.id ?? -1);
+                                  } else {
+                                    addToWishListCubit.addToWishList(context: context, productId: product.id ?? -1);
                                   }
                                 },
                                 imagePath: product.imagePath ?? '',
@@ -142,20 +136,18 @@ class TopProductHorizontalList extends StatelessWidget {
                                 price: product.price?.toString() ?? '0',
                               )
                             : ProductCard(
-                                sku: product.sku ?? '',
+                                variants: product.variants ?? [],
                                 description: product.description ?? 'No description available'.tr(),
                                 rating: product.reviewsCount?.toDouble() ?? 0.0,
                                 productId: product.id ?? -1,
                                 initialLiked: widget.isItWhishList!,
                                 onLikeTap: (isNowLiked) {
-                                  if (isNowLiked) {
-                                    // Add to wishlist
-                                    if (widget.isItWhishList!) {
-                                      // Remove from wishlist
-                                      removeFromWhishListCubit.removeFromWishList(context: context, productId: product.id ?? -1);
-                                    } else {
-                                      addToWishListCubit.addToWishList(context: context, productId: product.id ?? -1);
-                                    }
+                                  // Add to wishlist
+                                  if (widget.isItWhishList!) {
+                                    // Remove from wishlist
+                                    removeFromWhishListCubit.removeFromWishList(context: context, productId: product.id ?? -1);
+                                  } else {
+                                    addToWishListCubit.addToWishList(context: context, productId: product.id ?? -1);
                                   }
                                 },
                                 imagePath: product.imagePath ?? '',
@@ -181,85 +173,80 @@ class TopProductHorizontalList extends StatelessWidget {
 class FavoriteHorizontalList extends StatelessWidget {
   const FavoriteHorizontalList({
     super.key,
-    required this.wishListCubit,
     required this.widget,
     required this.removeFromWhishListCubit,
   });
 
-  final WishListCubit wishListCubit;
   final FlashSaleHorizontalList widget;
-  final RemoveFromWhishListCubit removeFromWhishListCubit;
+  final RemoveFrommWishListCubit removeFromWhishListCubit;
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider.value(
-      value: wishListCubit,
-      child: BlocBuilder<WishListCubit, WishListState>(
-        builder: (context, state) {
-          if (state is WishListLoading) {
-            return const Center(
-              child: LoadingWidget(),
-            );
-          } else if (state is WishListError) {
+    return BlocBuilder<WishListCubit, WishListState>(
+      builder: (context, state) {
+        if (state is WishListLoading) {
+          return const Center(
+            child: LoadingWidget(),
+          );
+        } else if (state is WishListError) {
+          return Center(
+            child: Text('${'Error:'.tr()}${state.e}'),
+          );
+        } else if (state is WishListSuccess) {
+          // Access the loaded wish list items
+          final wishList = ConstantsModels.wishListModel?.data;
+
+          if (wishList == null || wishList.isEmpty) {
             return Center(
-              child: Text('${'Error:'.tr()}${state.e}'),
-            );
-          } else if (state is WishListSuccess) {
-            // Access the loaded wish list items
-            final wishList = ConstantsModels.wishListModel?.data;
-
-            if (wishList == null || wishList.isEmpty) {
-              return Center(
-                child: Text('No favorites products available'.tr()),
-              );
-            }
-
-            // Set a fixed height for the horizontal list items
-            const double itemHeight = 300; // Adjust as needed
-            const double itemWidth = 180; // Adjust as needed
-
-            return Container(
-              margin: const EdgeInsets.symmetric(horizontal: 10),
-              height: itemHeight,
-              child: ListView.builder(
-                itemCount: wishList.length,
-                scrollDirection: Axis.horizontal,
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                itemBuilder: (context, index) {
-                  final wishListItem = wishList[index];
-                  return Container(
-                    width: itemWidth,
-                    margin: const EdgeInsets.only(right: 16),
-
-                    ///TODO: add sku
-                    child: ProductCard( 
-                      sku:  '',
-                      productId: wishListItem.productId?.toInt() ?? -1,
-                      initialLiked: true,
-                      onLikeTap: (isNowLiked) {
-                        // Add to wishlist
-                        if (widget.isItWhishList!) {
-                          // Remove from wishlist
-                          removeFromWhishListCubit.removeFromWishList(
-                            context: context,
-                            productId: wishListItem.id?.toInt() ?? -1,
-                          );
-                        }
-                      },
-                      imagePath: wishListItem.productImagePath ?? '',
-                      title: wishListItem.product ?? 'Unknown Product'.tr(),
-                      price: '\$${wishListItem.priceForProduct?.toString() ?? '0'}',
-                    ),
-                  );
-                },
-              ),
+              child: Text('No favorites products available'.tr()),
             );
           }
 
-          // Initial state or any other state
-          return const SizedBox();
-        },
-      ),
+          // Set a fixed height for the horizontal list items
+          const double itemHeight = 300; // Adjust as needed
+          const double itemWidth = 180; // Adjust as needed
+
+          return Container(
+            margin: const EdgeInsets.symmetric(horizontal: 10),
+            height: itemHeight,
+            child: ListView.builder(
+              itemCount: wishList.length,
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              itemBuilder: (context, index) {
+                final wishListItem = wishList[index];
+                return Container(
+                  width: itemWidth,
+                  margin: const EdgeInsets.only(right: 16),
+
+                  ///TODO: add sku
+                  child: ProductCard(
+                    variants: const [],
+                    productId: wishListItem.productId?.toInt() ?? -1,
+                    initialLiked: true,
+                    onLikeTap: (isNowLiked) {
+                      // Add to wishlist
+                      if (widget.isItWhishList!) {
+                        // Remove from wishlist
+                        removeFromWhishListCubit.removeFromWishList(
+                          context: context,
+                          productId: wishListItem.id?.toInt() ?? -1,
+                        );
+                      }
+                    },
+                    imagePath: wishListItem.productImagePath ?? '',
+                    title: wishListItem.product ?? 'Unknown Product'.tr(),
+                    price: '\$${wishListItem.priceForProduct?.toString() ?? '0'}',
+                  ),
+                );
+              },
+            ),
+          );
+        }
+
+        // Initial state or any other state
+        return const SizedBox();
+      },
     );
   }
 }

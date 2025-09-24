@@ -6,7 +6,8 @@ import 'package:dobzz_seller/feature/home/views/manager/addToWhishlist/cubit/add
 import 'package:dobzz_seller/feature/home/views/manager/categories/cubit/categories_cubit.dart';
 import 'package:dobzz_seller/feature/home/views/manager/removeFromWhislist/cubit/remove_from_whish_list_cubit.dart';
 import 'package:dobzz_seller/feature/home/views/manager/topProduct/cubit/top_product_cubit.dart';
-import 'package:dobzz_seller/feature/home/views/presentation/widgets/cart_floating_action_button.dart';import 'package:dobzz_seller/feature/product/views/presentation/widgets/product_card_theme_two.dart';
+import 'package:dobzz_seller/feature/home/views/presentation/widgets/cart_floating_action_button.dart';
+import 'package:dobzz_seller/feature/product/views/presentation/widgets/product_card_theme_two.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -46,7 +47,7 @@ class _ProductCategoryViewState extends State<ProductCategoryView> {
 
   TopProductCubit topProductCubit = TopProductCubit();
   SubCategoryCubit subCategoryCubit = SubCategoryCubit();
-  RemoveFromWhishListCubit removeFromWhishListCubit = RemoveFromWhishListCubit();
+  RemoveFrommWishListCubit removeFromWhishListCubit = RemoveFrommWishListCubit();
   AddToWishListCubit addToWishListCubit = AddToWishListCubit();
   CategoriesCubit categoriesCubit = CategoriesCubit();
 
@@ -254,7 +255,7 @@ class _ProductCategoryViewState extends State<ProductCategoryView> {
                         itemBuilder: (context, index) {
                           final product = ConstantsModels.topProductModel?.data![index];
                           return ProductCardThemeTwo(
-                            sku: product?.sku??'',
+                            sku: product?.variants ?? [],
                             description: product?.description ?? 'No description available'.tr(),
                             rating: product?.reviewsCount?.toDouble() ?? 0.0,
                             productId: product?.id ?? -1,

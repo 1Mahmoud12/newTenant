@@ -1,7 +1,7 @@
 class WishListModel {
   bool? status;
   String? message;
-  List<Data>? data;
+  List<ItemWishModel>? data;
   Meta? meta;
 
   WishListModel({this.status, this.message, this.data, this.meta});
@@ -10,9 +10,9 @@ class WishListModel {
     status = json['status'];
     message = json['message'];
     if (json['data'] != null) {
-      data = <Data>[];
+      data = <ItemWishModel>[];
       json['data'].forEach((v) {
-        data!.add(Data.fromJson(v));
+        data!.add(ItemWishModel.fromJson(v));
       });
     }
     meta = json['meta'] != null ? Meta.fromJson(json['meta']) : null;
@@ -32,7 +32,7 @@ class WishListModel {
   }
 }
 
-class Data {
+class ItemWishModel {
   num? id;
   String? product;
   num? productId;
@@ -44,7 +44,7 @@ class Data {
   String? createdAt;
   String? updatedAt;
 
-  Data({
+  ItemWishModel({
     this.id,
     this.product,
     this.productId,
@@ -57,7 +57,7 @@ class Data {
     this.updatedAt,
   });
 
-  Data.fromJson(Map<String, dynamic> json) {
+  ItemWishModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     product = json['product'];
     productId = json['product_id'];

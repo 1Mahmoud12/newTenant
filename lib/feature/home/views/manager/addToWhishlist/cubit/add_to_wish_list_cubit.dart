@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:dobzz_seller/core/utils/utils.dart';
+import 'package:dobzz_seller/feature/favorites/views/manager/wishList/cubit/wish_list_cubit.dart';
 import 'package:dobzz_seller/feature/home/data/dataSource/add_to_wish_list_data_source.dart';
 import 'package:flutter/material.dart';
-import 'package:meta/meta.dart';
 
 part 'add_to_wish_list_state.dart';
 
@@ -20,6 +20,8 @@ class AddToWishListCubit extends Cubit<AddToWishListState> {
           Utils.showToast(title: l.errMessage, state: UtilState.error);
         }, (r) async {
           if (isClosed) return;
+          WishListCubit.get(context).getWishList(context: context);
+
           emit(AddToWishListSuccess());
         });
       },

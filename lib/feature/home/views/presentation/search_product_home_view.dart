@@ -4,11 +4,10 @@ import 'package:dobzz_seller/core/component/fields/custom_text_form_field.dart';
 import 'package:dobzz_seller/core/component/loadsErros/loading_widget.dart';
 import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:dobzz_seller/core/utils/constants_models.dart';
+import 'package:dobzz_seller/core/utils/custom_show_toast.dart';
 import 'package:dobzz_seller/core/utils/errorLoadingWidgets/empty_widget.dart';
-import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/feature/home/data/models/product_mdoel.dart';
 import 'package:dobzz_seller/feature/home/views/manager/topProduct/cubit/top_product_cubit.dart';
-import 'package:dobzz_seller/feature/product/views/presentation/product_details_view.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -73,7 +72,7 @@ class _SearchProductHomeViewState extends State<SearchProductHomeView> {
       return Center(child: Text('${'Error:'.tr()}${state.e}'));
     }
     if (ConstantsModels.searchProductsModel?.data?.isEmpty ?? true) {
-      return  EmptyWidget(
+      return EmptyWidget(
         data: 'No Results Found!'.tr(),
         subData: 'Try a similar word or something more general.'.tr(),
         emptyImage: EmptyImages.noSearchResult,
@@ -82,7 +81,7 @@ class _SearchProductHomeViewState extends State<SearchProductHomeView> {
     if (state is TopProductSuccess) {
       final products = ConstantsModels.searchProductsModel?.data ?? [];
       if (products.isEmpty) {
-        return  EmptyWidget(
+        return EmptyWidget(
           data: 'No Results Found!'.tr(),
           subData: 'Try a similar word or something more general.'.tr(),
           emptyImage: EmptyImages.noSearchResult,
@@ -131,12 +130,14 @@ class SearchedProductCard extends StatelessWidget {
       ),
       trailing: const Icon(Icons.arrow_outward),
       onTap: () {
-        context.navigateToPage(
-          ProductDetailsView(
-            productId: product.id ?? -1,
-            sku: product.sku ?? '',
-          ),
-        );
+        // TODO: implement this
+        customShowToast(context, 'not_complete_yet');
+        // context.navigateToPage(
+        //   ProductDetailsView(
+        //     productId: product.id ?? -1,
+        //     sku: product.variants?.first.skuCode ?? '',
+        //   ),
+        // );
       },
     );
   }

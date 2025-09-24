@@ -12,7 +12,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CategorizedProductView extends StatefulWidget {
-  const CategorizedProductView({super.key, required this.categoryId});
+  const CategorizedProductView({super.key, required this.categoryId, required this.categoryName});
+  final String categoryName;
   final int categoryId;
 
   @override
@@ -36,13 +37,13 @@ class _CategorizedProductViewState extends State<CategorizedProductView> {
 
   TopProductCubit topProductCubit = TopProductCubit();
   SubCategoryCubit subCategoryCubit = SubCategoryCubit();
-  RemoveFromWhishListCubit removeFromWhishListCubit = RemoveFromWhishListCubit();
+  RemoveFrommWishListCubit removeFromWhishListCubit = RemoveFrommWishListCubit();
   AddToWishListCubit addToWishListCubit = AddToWishListCubit();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: customAppBar(context: context, title: 'Category'),
+      appBar: customAppBar(context: context, title: widget.categoryName),
       body: Column(
         children: [
           // SubCategory List - Fixed Height Part
@@ -161,19 +162,19 @@ class _CategorizedProductViewState extends State<CategorizedProductView> {
                           childAspectRatio: 0.6,
                         ),
                         itemBuilder: (context, index) {
-                          final product = ConstantsModels.productsModel?.data![index];
+                          final product = ConstantsModels.productsModel!.data![index];
                           return ProductCard(
-                            sku: product?.sku ?? '',
-                            description: product?.description ?? 'No description available'.tr(),
-                            rating: product?.reviewsCount?.toDouble() ?? 0.0,
-                            productId: product?.id ?? -1,
+                            variants: product.variants ?? [],
+                            description: product.description ?? 'No description available'.tr(),
+                            rating: product.reviewsCount?.toDouble() ?? 0.0,
+                            productId: product.id ?? -1,
                             initialLiked: false,
                             onLikeTap: (isNowLiked) {
-                              addToWishListCubit.addToWishList(context: context, productId: product?.id ?? -1);
+                              addToWishListCubit.addToWishList(context: context, productId: product.id ?? -1);
                             },
-                            imagePath: product?.imagePath ?? '',
-                            title: product?.name ?? 'Unknown Product'.tr(),
-                            price: '\$${product?.price?.toString() ?? '0'}',
+                            imagePath: product.imagePath ?? '',
+                            title: product.name ?? 'Unknown Product'.tr(),
+                            price: '\$${product.price?.toString() ?? '0'}',
                           );
                         },
                       ),

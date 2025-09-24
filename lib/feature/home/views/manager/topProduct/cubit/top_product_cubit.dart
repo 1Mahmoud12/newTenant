@@ -3,14 +3,15 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:dobzz_seller/core/utils/constants_models.dart';
 import 'package:dobzz_seller/feature/home/data/dataSource/get_top_product_data_source.dart';
+import 'package:dobzz_seller/feature/home/data/models/product_mdoel.dart';
 import 'package:flutter/material.dart';
-import 'package:meta/meta.dart';
 
 part 'top_product_state.dart';
 
 class TopProductCubit extends Cubit<TopProductState> {
   TopProductCubit() : super(TopProductInitial());
 
+  List<Product> products = [];
   Future<void> getTopProduct({required BuildContext context, int? subCategoryId, String? searchProductByName}) async {
     if (isClosed) return;
     emit(TopProductLoading());
@@ -20,6 +21,7 @@ class TopProductCubit extends Cubit<TopProductState> {
           if (isClosed) return;
           emit(TopProductError(e: l.errMessage));
         }, (r) async {
+          products.addAll(r.data ?? []);
           if (subCategoryId != null) {
             ConstantsModels.productsModel = r;
           } else if (searchProductByName != null) {

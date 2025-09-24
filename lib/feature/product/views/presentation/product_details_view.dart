@@ -9,6 +9,7 @@ import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:dobzz_seller/core/utils/constants_models.dart';
 import 'package:dobzz_seller/feature/cart/view/manager/addToCart/cubit/add_to_cart_cubit.dart';
 import 'package:dobzz_seller/feature/cart/view/manager/cartItems/cubit/cart_items_cubit.dart';
+import 'package:dobzz_seller/feature/home/data/models/product_mdoel.dart';
 import 'package:dobzz_seller/feature/home/views/manager/addToWhishlist/cubit/add_to_wish_list_cubit.dart';
 import 'package:dobzz_seller/feature/home/views/manager/removeFromWhislist/cubit/remove_from_whish_list_cubit.dart';
 import 'package:dobzz_seller/feature/product/data/model/product_details_model.dart';
@@ -22,13 +23,13 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class ProductDetailsView extends StatefulWidget {
   final int productId;
-  final String sku;
+  final List<Variants> variants;
   final bool? initialLiked;
   const ProductDetailsView({
     Key? key,
     required this.productId,
     this.initialLiked = false,
-    required this.sku,
+    required this.variants,
   }) : super(key: key);
 
   @override
@@ -41,7 +42,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
   final AddToCartCubit addToCartCubit = AddToCartCubit();
   final ProductDetailsCubit productDetailsCubit = ProductDetailsCubit();
   AddToWishListCubit addToWishListCubit = AddToWishListCubit();
-  RemoveFromWhishListCubit removeFromWhishListCubit = RemoveFromWhishListCubit();
+  RemoveFrommWishListCubit removeFromWhishListCubit = RemoveFrommWishListCubit();
 
   @override
   void initState() {

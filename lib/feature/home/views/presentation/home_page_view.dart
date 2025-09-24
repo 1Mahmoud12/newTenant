@@ -1,4 +1,5 @@
 import 'dart:developer';
+
 import 'package:dobzz_seller/core/component/fields/custom_text_form_field.dart';
 import 'package:dobzz_seller/core/component/loadsErros/loading_widget.dart';
 import 'package:dobzz_seller/core/component/see_all_widget.dart';
@@ -161,7 +162,6 @@ class _HomePageViewState extends State<HomePageView> {
   }
 }
 
-
 class FeaturedList extends StatefulWidget {
   const FeaturedList({super.key});
 
@@ -216,6 +216,7 @@ class _FeaturedListState extends State<FeaturedList> {
               children: List.generate(length, (index) {
                 return FeaturedCategoriesItem(
                   featuredName: categoriesData[index].name ?? 'Unknown',
+                  categoryId: categoriesData[index].id ?? 0,
                 );
               }),
             );
@@ -230,9 +231,10 @@ class _FeaturedListState extends State<FeaturedList> {
 }
 
 class FeaturedCategoriesItem extends StatelessWidget {
-  const FeaturedCategoriesItem({super.key, required this.featuredName});
+  const FeaturedCategoriesItem({super.key, required this.featuredName, required this.categoryId});
 
   final String featuredName;
+  final int categoryId;
 
   @override
   Widget build(BuildContext context) {
@@ -247,10 +249,11 @@ class FeaturedCategoriesItem extends StatelessWidget {
             },
           ),
         ),
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 7),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 7),
           child: FlashSaleHorizontalList(
             isHorizontal: false,
+            categoryId: categoryId,
           ),
         ),
       ],

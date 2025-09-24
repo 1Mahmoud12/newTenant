@@ -29,168 +29,14 @@ class ProductModel {
       };
 }
 
-class Product {
-  int? id;
-  String? name;
-  String? sku;
-  String? description;
-  double? price;
-  double? priceOld;
-  dynamic length;
-  dynamic width;
-  dynamic height;
-  dynamic weight;
-  dynamic brand;
-  dynamic brandId;
-  String? label;
-  num? labelId;
-  List<Category>? categories;
-  List<Category>? mainCategories;
-  List<Category>? subCategories;
-  List<Size>? sizes;
-  List<Color>? colors;
-  num? totalSold;
-  String? tax;
-  num? taxId;
-  num? stock;
-  num? isStock;
-  String? imagePath;
-  String? thumbnailPath;
-  bool? visible;
-  List<dynamic>? reviews;
-  num? reviewsCount;
-  num? averageRating;
-  String? createdAt;
-  String? updatedAt;
-
-  Product({
-    this.id,
-    this.name,
-    this.sku,
-    this.description,
-    this.price,
-    this.priceOld,
-    this.length,
-    this.width,
-    this.height,
-    this.weight,
-    this.brand,
-    this.brandId,
-    this.label,
-    this.labelId,
-    this.categories,
-    this.mainCategories,
-    this.subCategories,
-    this.sizes,
-    this.colors,
-    this.totalSold,
-    this.tax,
-    this.taxId,
-    this.stock,
-    this.isStock,
-    this.imagePath,
-    this.thumbnailPath,
-    this.visible,
-    this.reviews,
-    this.reviewsCount,
-    this.averageRating,
-    this.createdAt,
-    this.updatedAt,
-  });
-
-  factory Product.fromJson(Map<String, dynamic> json) {
-    return Product(
-      id: json['id'],
-      name: json['name'],
-      sku: json['sku'],
-      description: json['description'],
-      price: json['price']?.toDouble(),
-      priceOld: json['price_old']?.toDouble(),
-      length: json['length'],
-      width: json['width'],
-      height: json['height'],
-      weight: json['weight'],
-      brand: json['brand'],
-      brandId: json['brand_id'],
-      label: json['label'],
-      labelId: json['label_id'],
-      categories: json['categories'] != null
-          ? List<Category>.from(
-              json['categories'].map((x) => Category.fromJson(x)),
-            )
-          : null,
-      mainCategories: json['main_categories'] != null
-          ? List<Category>.from(
-              json['main_categories'].map((x) => Category.fromJson(x)),
-            )
-          : null,
-      subCategories: json['sub_categories'] != null
-          ? List<Category>.from(
-              json['sub_categories'].map((x) => Category.fromJson(x)),
-            )
-          : null,
-      sizes: json['sizes'] != null ? List<Size>.from(json['sizes'].map((x) => Size.fromJson(x))) : null,
-      colors: json['colors'] != null ? List<Color>.from(json['colors'].map((x) => Color.fromJson(x))) : null,
-      totalSold: json['total_sold'],
-      tax: json['tax'],
-      taxId: json['tax_id'],
-      stock: json['stock'],
-      isStock: json['is_stock'],
-      imagePath: json['image_path'],
-      thumbnailPath: json['thumbnail_path'],
-      visible: json['visible'],
-      reviews: json['reviews'],
-      reviewsCount: json['reviews_count'],
-      averageRating: json['average_rating'],
-      createdAt: json['created_at'],
-      updatedAt: json['updated_at'],
-    );
-  }
-
-  Map<String, dynamic> toJson() => {
-        'id': id,
-        'name': name,
-        'sku': sku,
-        'description': description,
-        'price': price,
-        'price_old': priceOld,
-        'length': length,
-        'width': width,
-        'height': height,
-        'weight': weight,
-        'brand': brand,
-        'brand_id': brandId,
-        'label': label,
-        'label_id': labelId,
-        'categories': categories?.map((x) => x.toJson()).toList(),
-        'main_categories': mainCategories?.map((x) => x.toJson()).toList(),
-        'sub_categories': subCategories?.map((x) => x.toJson()).toList(),
-        'sizes': sizes?.map((x) => x.toJson()).toList(),
-        'colors': colors?.map((x) => x.toJson()).toList(),
-        'total_sold': totalSold,
-        'tax': tax,
-        'tax_id': taxId,
-        'stock': stock,
-        'is_stock': isStock,
-        'image_path': imagePath,
-        'thumbnail_path': thumbnailPath,
-        'visible': visible,
-        'reviews': reviews,
-        'reviews_count': reviewsCount,
-        'average_rating': averageRating,
-        'created_at': createdAt,
-        'updated_at': updatedAt,
-      };
-}
-
 class Category {
   int? id;
   String? name;
   String? image;
   String? icon;
-  int? visible;
+  num? visible;
   dynamic parentId;
-  int? shopId;
+  num? shopId;
   dynamic deletedAt;
   String? createdAt;
   String? updatedAt;
@@ -329,4 +175,405 @@ class Color {
         'created_at': createdAt,
         'updated_at': updatedAt,
       };
+}
+
+class Reviews {
+  int? id;
+  String? review;
+  String? customer;
+  String? customerImage;
+  bool? createdBy;
+  String? product;
+  int? productId;
+  String? rating;
+  bool? visible;
+  String? createdAt;
+  String? updatedAt;
+
+  Reviews({
+    this.id,
+    this.review,
+    this.customer,
+    this.customerImage,
+    this.createdBy,
+    this.product,
+    this.productId,
+    this.rating,
+    this.visible,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  Reviews.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    review = json['review'];
+    customer = json['customer'];
+    customerImage = json['customer_image'];
+    createdBy = json['created_by'];
+    product = json['product'];
+    productId = json['product_id'];
+    rating = json['rating'];
+    visible = json['visible'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['review'] = review;
+    data['customer'] = customer;
+    data['customer_image'] = customerImage;
+    data['created_by'] = createdBy;
+    data['product'] = product;
+    data['product_id'] = productId;
+    data['rating'] = rating;
+    data['visible'] = visible;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    return data;
+  }
+}
+
+class Variants {
+  int? id;
+  String? skuCode;
+  num? skucodeId;
+  num? skuableId;
+  String? skuableType;
+  num? productId;
+  String? imagePath;
+  int? sizeId;
+  String? size;
+  String? type;
+  int? colorId;
+  String? color;
+  String? colorCode;
+  num? quantity;
+
+  Variants({
+    this.id,
+    this.skuCode,
+    this.skucodeId,
+    this.skuableId,
+    this.skuableType,
+    this.productId,
+    this.imagePath,
+    this.sizeId,
+    this.size,
+    this.type,
+    this.colorId,
+    this.color,
+    this.colorCode,
+    this.quantity,
+  });
+
+  Variants.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    skuCode = json['sku_code'];
+    skucodeId = json['skucode_id'];
+    skuableId = json['skuable_id'];
+    skuableType = json['skuable_type'];
+    productId = json['product_id'];
+    imagePath = json['image_path'];
+    sizeId = json['size_id'];
+    size = json['size'];
+    type = json['type'];
+    colorId = json['color_id'];
+    color = json['color'];
+    colorCode = json['color_code'];
+    quantity = json['quantity'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['sku_code'] = skuCode;
+    data['skucode_id'] = skucodeId;
+    data['skuable_id'] = skuableId;
+    data['skuable_type'] = skuableType;
+    data['product_id'] = productId;
+    data['image_path'] = imagePath;
+    data['size_id'] = sizeId;
+    data['size'] = size;
+    data['type'] = type;
+    data['color_id'] = colorId;
+    data['color'] = color;
+    data['color_code'] = colorCode;
+    data['quantity'] = quantity;
+    return data;
+  }
+}
+
+class Product {
+  int? id;
+  String? name;
+
+  String? nameAr;
+  String? nameEn;
+  String? description;
+  String? descriptionAr;
+  String? descriptionEn;
+  num? price;
+  num? priceOld;
+  num? length;
+  num? cost;
+  num? quantity;
+  num? width;
+  num? height;
+  num? weight;
+  String? brand;
+  num? brandId;
+  String? label;
+  num? labelId;
+  List<Categories>? categories;
+  List<Categories>? mainCategories;
+  List<Categories>? subCategories;
+  List<Variants>? variants;
+  List<Images>? images;
+  String? tax;
+  num? taxId;
+  String? imagePath;
+  String? thumbnailPath;
+  bool? visible;
+  List<Reviews>? reviews;
+  num? reviewsCount;
+  num? averageRating;
+  String? createdAt;
+  String? updatedAt;
+
+  Product(
+      {this.id,
+      this.name,
+      this.nameAr,
+      this.nameEn,
+      this.description,
+      this.descriptionAr,
+      this.descriptionEn,
+      this.price,
+      this.priceOld,
+      this.length,
+      this.cost,
+      this.quantity,
+      this.width,
+      this.height,
+      this.weight,
+      this.brand,
+      this.brandId,
+      this.label,
+      this.labelId,
+      this.categories,
+      this.mainCategories,
+      this.subCategories,
+      this.variants,
+      this.images,
+      this.tax,
+      this.taxId,
+      this.imagePath,
+      this.thumbnailPath,
+      this.visible,
+      this.reviews,
+      this.reviewsCount,
+      this.averageRating,
+      this.createdAt,
+      this.updatedAt});
+
+  Product.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+
+    nameAr = json['name_ar'];
+    nameEn = json['name_en'];
+    description = json['description'];
+    descriptionAr = json['description_ar'];
+    descriptionEn = json['description_en'];
+    price = json['price'];
+    priceOld = json['price_old'];
+    length = json['length'];
+    cost = json['cost'];
+    quantity = json['quantity'];
+    width = json['width'];
+    height = json['height'];
+    weight = json['weight'];
+    brand = json['brand'];
+    brandId = json['brand_id'];
+    label = json['label'];
+    labelId = json['label_id'];
+    if (json['categories'] != null) {
+      categories = <Categories>[];
+      json['categories'].forEach((v) {
+        categories!.add(Categories.fromJson(v));
+      });
+    }
+    if (json['main_categories'] != null) {
+      mainCategories = <Categories>[];
+      json['main_categories'].forEach((v) {
+        mainCategories!.add(Categories.fromJson(v));
+      });
+    }
+    if (json['sub_categories'] != null) {
+      subCategories = <Categories>[];
+      json['sub_categories'].forEach((v) {
+        subCategories!.add(Categories.fromJson(v));
+      });
+    }
+    if (json['variants'] != null) {
+      variants = <Variants>[];
+      json['variants'].forEach((v) {
+        variants!.add(Variants.fromJson(v));
+      });
+    }
+    if (json['images'] != null) {
+      images = <Images>[];
+      json['images'].forEach((v) {
+        images!.add(Images.fromJson(v));
+      });
+    }
+    tax = json['tax'];
+    taxId = json['tax_id'];
+    imagePath = json['image_path'];
+    thumbnailPath = json['thumbnail_path'];
+    visible = json['visible'];
+    if (json['reviews'] != null) {
+      reviews = <Reviews>[];
+      json['reviews'].forEach((v) {
+        reviews!.add(Reviews.fromJson(v));
+      });
+    }
+    reviewsCount = json['reviews_count'];
+    averageRating = json['average_rating'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+
+    data['name_ar'] = nameAr;
+    data['name_en'] = nameEn;
+    data['description'] = description;
+    data['description_ar'] = descriptionAr;
+    data['description_en'] = descriptionEn;
+    data['price'] = price;
+    data['price_old'] = priceOld;
+    data['length'] = length;
+    data['cost'] = cost;
+    data['quantity'] = quantity;
+    data['width'] = width;
+    data['height'] = height;
+    data['weight'] = weight;
+    data['brand'] = brand;
+    data['brand_id'] = brandId;
+    data['label'] = label;
+    data['label_id'] = labelId;
+    if (categories != null) {
+      data['categories'] = categories!.map((v) => v.toJson()).toList();
+    }
+    if (mainCategories != null) {
+      data['main_categories'] = mainCategories!.map((v) => v.toJson()).toList();
+    }
+    if (subCategories != null) {
+      data['sub_categories'] = subCategories!.map((v) => v.toJson()).toList();
+    }
+    if (variants != null) {
+      data['variants'] = variants!.map((v) => v.toJson()).toList();
+    }
+    if (images != null) {
+      data['images'] = images!.map((v) => v.toJson()).toList();
+    }
+    data['tax'] = tax;
+    data['tax_id'] = taxId;
+    data['image_path'] = imagePath;
+    data['thumbnail_path'] = thumbnailPath;
+    data['visible'] = visible;
+    if (reviews != null) {
+      data['reviews'] = reviews!.map((v) => v.toJson()).toList();
+    }
+    data['reviews_count'] = reviewsCount;
+    data['average_rating'] = averageRating;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    return data;
+  }
+}
+
+class Categories {
+  num? id;
+  String? name;
+  String? image;
+  String? icon;
+  num? visible;
+  num? parentId;
+  num? shopId;
+  String? createdAt;
+  String? updatedAt;
+  num? featured;
+  Pivot? pivot;
+
+  Categories({
+    this.id,
+    this.name,
+    this.image,
+    this.icon,
+    this.visible,
+    this.parentId,
+    this.shopId,
+    this.createdAt,
+    this.updatedAt,
+    this.featured,
+    this.pivot,
+  });
+
+  Categories.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    image = json['image'];
+    icon = json['icon'];
+    visible = json['visible'];
+    parentId = json['parent_id'];
+    shopId = json['shop_id'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+    featured = json['featured'];
+    pivot = json['pivot'] != null ? Pivot.fromJson(json['pivot']) : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['image'] = image;
+    data['icon'] = icon;
+    data['visible'] = visible;
+    data['parent_id'] = parentId;
+    data['shop_id'] = shopId;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    data['featured'] = featured;
+    if (pivot != null) {
+      data['pivot'] = pivot!.toJson();
+    }
+    return data;
+  }
+}
+
+class Images {
+  int? id;
+  String? image;
+
+  Images({this.id, this.image});
+
+  Images.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    image = json['image'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['image'] = image;
+    return data;
+  }
 }

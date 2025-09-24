@@ -4,7 +4,7 @@ import 'package:dobzz_seller/core/network/dio_helper.dart';
 import 'package:dobzz_seller/core/network/end_points.dart';
 import 'package:dobzz_seller/core/network/errors/failures.dart';
 
-class RemoveFromWhishListDataSource {
+class RemoveFrommWishListDataSource {
   static Future<Either<Failure, void>> removeFromWishList({required int productId}) async {
     try {
       await DioHelper.deleteData(
