@@ -66,8 +66,6 @@ class ServerFailure extends Failure {
 
       case DioExceptionType.unknown:
         return ServerFailure('Unexpected Error, Please try again!');
-      default:
-        return ServerFailure('Opps There was an Error, Please try again');
     }
   }
 
@@ -91,7 +89,13 @@ class ServerFailure extends Failure {
           log('error in put value in hive $e');
         }
       }
-      return ServerFailure(response['message'].toString());
+      if (response != null && response['message'] != null) {
+        return ServerFailure(response['message'].toString());
+      }
+      if (response != null && response['data'] != null) {
+        return ServerFailure(response['message'].toString());
+      }
+      return ServerFailure('Your request not found, Please try later!');
     } else if (statusCode == 404) {
       return ServerFailure('Your request not found, Please try later!');
     } else if (statusCode == 500) {

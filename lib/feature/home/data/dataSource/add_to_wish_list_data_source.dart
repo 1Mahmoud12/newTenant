@@ -5,12 +5,12 @@ import 'package:dobzz_seller/core/network/end_points.dart';
 import 'package:dobzz_seller/core/network/errors/failures.dart';
 
 class AddToWishListDataSource {
-  static Future<Either<Failure, void>> addToWishList({required int productId}) async {
+  static Future<Either<Failure, void>> addToWishList({required String skuCode}) async {
     try {
       await DioHelper.postData(
         endPoint: EndPoints.wishlist,
         data: {
-          'product_id': productId,
+          'sku_code': skuCode,
         },
       );
       return const Right(null);

@@ -1,8 +1,10 @@
+import 'package:dobzz_seller/feature/home/data/models/product_mdoel.dart';
+
 class ProductDetailsModel {
   bool? status;
   int? code;
   String? message;
-  ProductData? data;
+  Product? data;
 
   ProductDetailsModel({this.status, this.code, this.message, this.data});
 
@@ -10,112 +12,7 @@ class ProductDetailsModel {
         status: json['status'],
         code: json['code'],
         message: json['message'],
-        data: json['data'] != null ? ProductData.fromJson(json['data']) : null,
-      );
-}
-
-class ProductData {
-  int? id;
-  String? name;
-  String? sku;
-  String? description;
-  num? price;
-  num? priceOld;
-  num? length;
-  num? width;
-  num? height;
-  num? weight;
-  String? brand;
-  int? brandId;
-  String? label;
-  int? labelId;
-  List<Category>? categories;
-  List<Category>? mainCategories;
-  List<dynamic>? subCategories;
-  List<AvailableProductSize>? sizes;
-  List<ColorModel>? colors;
-  num? totalSold;
-  String? tax;
-  int? taxId;
-  int? stock;
-  int? isStock;
-  String? imagePath;
-  String? thumbnailPath;
-  bool? visible;
-  List<Review>? reviews;
-  int? reviewsCount;
-  num? averageRating;
-  String? createdAt;
-  String? updatedAt;
-
-  ProductData({
-    this.id,
-    this.name,
-    this.sku,
-    this.description,
-    this.price,
-    this.priceOld,
-    this.length,
-    this.width,
-    this.height,
-    this.weight,
-    this.brand,
-    this.brandId,
-    this.label,
-    this.labelId,
-    this.categories,
-    this.mainCategories,
-    this.subCategories,
-    this.sizes,
-    this.colors,
-    this.totalSold,
-    this.tax,
-    this.taxId,
-    this.stock,
-    this.isStock,
-    this.imagePath,
-    this.thumbnailPath,
-    this.visible,
-    this.reviews,
-    this.reviewsCount,
-    this.averageRating,
-    this.createdAt,
-    this.updatedAt,
-  });
-
-  factory ProductData.fromJson(Map<String, dynamic> json) => ProductData(
-        id: json['id'],
-        name: json['name'],
-        sku: json['sku_code'],
-        description: json['description'],
-        price: json['price'],
-        priceOld: json['price_old'],
-        length: json['length'],
-        width: json['width'],
-        height: json['height'],
-        weight: json['weight'],
-        brand: json['brand'],
-        brandId: json['brand_id'],
-        label: json['label'],
-        labelId: json['label_id'],
-        categories: (json['categories'] as List?)?.map((e) => Category.fromJson(e)).toList(),
-        mainCategories: (json['main_categories'] as List?)?.map((e) => Category.fromJson(e)).toList(),
-        subCategories: json['sub_categories'],
-        sizes: (json['sizes'] as List?)?.map((e) => AvailableProductSize.fromJson(e)).toList(),
-        colors: (json['colors'] as List?)?.map((e) => ColorModel.fromJson(e)).toList(),
-        totalSold: json['total_sold'],
-        tax: json['tax'],
-        taxId: json['tax_id'],
-        stock: json['stock'],
-        isStock: json['is_stock'],
-        imagePath: json['image_path'],
-        thumbnailPath: json['thumbnail_path'],
-        visible: json['visible'],
-        reviews: (json['reviews'] as List?)?.map((e) => Review.fromJson(e)).toList(),
-        reviewsCount: json['reviews_count'],
-        averageRating: json['average_rating'],
-        createdAt: json['created_at'],
-        updatedAt: json['updated_at'],
+        data: json['data'] != null ? Product.fromJson(json['data']) : null,
       );
 }
 

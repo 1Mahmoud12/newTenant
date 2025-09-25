@@ -1,7 +1,10 @@
 import 'package:dobzz_seller/core/component/loadsErros/loading_widget.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:dobzz_seller/core/utils/constants_models.dart';
+import 'package:dobzz_seller/core/utils/custom_show_toast.dart';
+import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/feature/Categories/presentation/manager/subCategroy/cubit/sub_category_cubit.dart';
+import 'package:dobzz_seller/feature/cart/view/presentation/cart_view.dart';
 import 'package:dobzz_seller/feature/home/views/manager/addToWhishlist/cubit/add_to_wish_list_cubit.dart';
 import 'package:dobzz_seller/feature/home/views/manager/categories/cubit/categories_cubit.dart';
 import 'package:dobzz_seller/feature/home/views/manager/removeFromWhislist/cubit/remove_from_whish_list_cubit.dart';
@@ -38,6 +41,12 @@ class _ProductCategoryViewState extends State<ProductCategoryView> {
     super.initState();
   }
 
+  @override
+  void didUpdateWidget(covariant ProductCategoryView oldWidget) {
+    loadData();
+    super.didUpdateWidget(oldWidget);
+  }
+
   Future<void> loadData() async {
     await categoriesCubit.getCategories(context: context);
     await topProductCubit.getTopProduct(
@@ -55,7 +64,14 @@ class _ProductCategoryViewState extends State<ProductCategoryView> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF8F9FA),
-      floatingActionButton: const CartFloatingAB(),
+      floatingActionButton: CartFloatingAB(
+        onTap: () async {
+          await context.navigateToPage(const CartView());
+          await topProductCubit.getTopProduct(
+            context: context,
+          );
+        },
+      ),
       body: SafeArea(
         child: CustomScrollView(
           slivers: [
@@ -82,7 +98,7 @@ class _ProductCategoryViewState extends State<ProductCategoryView> {
               value: categoriesCubit,
               child: BlocBuilder<CategoriesCubit, CategoriesState>(
                 builder: (context, state) {
-                  if (state is CategoriesLoading) {
+                  if (state is CategoriesLoading && (ConstantsModels.categoriesModel?.data?.isEmpty ?? true)) {
                     return const SliverToBoxAdapter(
                       child: Center(
                         child: LoadingWidget(),
@@ -167,7 +183,7 @@ class _ProductCategoryViewState extends State<ProductCategoryView> {
               value: topProductCubit,
               child: BlocBuilder<TopProductCubit, TopProductState>(
                 builder: (context, state) {
-                  if (state is TopProductLoading) {
+                  if (state is TopProductLoading && (ConstantsModels.topProductModel?.data?.isEmpty ?? true)) {
                     return const SliverFillRemaining(
                       child: Center(
                         child: LoadingWidget(),
@@ -202,7 +218,7 @@ class _ProductCategoryViewState extends State<ProductCategoryView> {
                         ),
                       ),
                     );
-                  } else if (state is TopProductSuccess) {
+                  } else if (ConstantsModels.topProductModel?.data?.isNotEmpty ?? false) {
                     // Check if products list is empty
                     if (ConstantsModels.topProductModel?.data == null || ConstantsModels.topProductModel!.data!.isEmpty) {
                       return SliverFillRemaining(
@@ -253,19 +269,31 @@ class _ProductCategoryViewState extends State<ProductCategoryView> {
                         crossAxisSpacing: 16,
                         childCount: ConstantsModels.topProductModel?.data?.length ?? 0,
                         itemBuilder: (context, index) {
-                          final product = ConstantsModels.topProductModel?.data![index];
+                          final product = ConstantsModels.topProductModel!.data![index];
                           return ProductCardThemeTwo(
-                            sku: product?.variants ?? [],
-                            description: product?.description ?? 'No description available'.tr(),
-                            rating: product?.reviewsCount?.toDouble() ?? 0.0,
-                            productId: product?.id ?? -1,
+                            sku: product.variants ?? [],
+                            skuCode: product.skuCode,
+                            description: product.description ?? 'No description available'.tr(),
+                            rating: product.reviewsCount?.toDouble() ?? 0.0,
+                            productId: product.id ?? -1,
                             initialLiked: false,
                             onLikeTap: (isNowLiked) {
-                              addToWishListCubit.addToWishList(context: context, productId: product?.id ?? -1);
+                              final sku = product.skuCode ?? product.variants?.firstOrNull?.skuCode;
+                              if (sku == null) {
+                                customShowToast(context, 'not_sku_for_this_item'.tr());
+                                return;
+                              }
+                              if (!isNowLiked) {
+                                // Add to wishlist
+                                addToWishListCubit.addToWishList(context: context, skuCode: sku);
+                              } else {
+                                removeFromWhishListCubit.removeFromWishList(context: context, skuCode: sku);
+                              }
                             },
-                            imagePath: product?.imagePath ?? '',
-                            title: product?.name ?? 'Unknown Product'.tr(),
-                            price: '\$${product?.price?.toString() ?? '0'}',
+                            imagePath: product.imagePath ?? '',
+                            title: product.name ?? 'Unknown Product'.tr(),
+                            price: '\$${product.price?.toString() ?? '0'}',
+
                             // Add staggered effect by alternating heights
                             useStaggered: index % 5 == 0 || index % 5 == 3,
                           );

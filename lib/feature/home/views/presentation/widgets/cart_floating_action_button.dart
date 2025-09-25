@@ -12,8 +12,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
 class CartFloatingAB extends StatelessWidget {
+  final Function()? onTap;
   const CartFloatingAB({
     super.key,
+    this.onTap,
   });
 
   @override
@@ -27,6 +29,10 @@ class CartFloatingAB extends StatelessWidget {
       child: FloatingActionButton(
         shape: const CircleBorder(), // Optional, but ensures circle shape
         backgroundColor: AppColors.primaryColor,
+        onPressed: onTap ??
+            () {
+              context.navigateToPage(const CartView());
+            },
         child: Stack(
           children: [
             SvgPicture.asset(
@@ -57,9 +63,6 @@ class CartFloatingAB extends StatelessWidget {
             ),
           ],
         ),
-        onPressed: () {
-          context.navigateToPage(const CartView());
-        },
       ),
     );
   }

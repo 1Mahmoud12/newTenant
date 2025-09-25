@@ -7,6 +7,7 @@ import 'package:dobzz_seller/core/utils/app_icons.dart';
 import 'package:dobzz_seller/core/utils/constant_gaping.dart';
 import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:dobzz_seller/core/utils/constants_models.dart';
+import 'package:dobzz_seller/core/utils/utils.dart';
 import 'package:dobzz_seller/feature/cart/view/manager/addToCart/cubit/add_to_cart_cubit.dart';
 import 'package:dobzz_seller/feature/cart/view/manager/cartItems/cubit/cart_items_cubit.dart';
 import 'package:dobzz_seller/feature/home/data/models/product_mdoel.dart';
@@ -14,6 +15,11 @@ import 'package:dobzz_seller/feature/home/views/manager/addToWhishlist/cubit/add
 import 'package:dobzz_seller/feature/home/views/manager/removeFromWhislist/cubit/remove_from_whish_list_cubit.dart';
 import 'package:dobzz_seller/feature/product/data/model/product_details_model.dart';
 import 'package:dobzz_seller/feature/product/views/manager/productDetails/cubit/product_details_cubit.dart';
+import 'package:dobzz_seller/feature/product/views/presentation/widgets/product_image_section_widget.dart';
+import 'package:dobzz_seller/feature/product/views/presentation/widgets/product_info_section_widget.dart';
+import 'package:dobzz_seller/feature/product/views/presentation/widgets/product_variant_section_widget.dart';
+import 'package:dobzz_seller/feature/product/views/presentation/widgets/specification_section_widget.dart';
+import 'package:dobzz_seller/feature/product/views/presentation/widgets/view_all_reviews_button.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -37,13 +43,13 @@ class ProductDetailsView extends StatefulWidget {
 }
 
 class _ProductDetailsViewState extends State<ProductDetailsView> {
-  String selectedSize = ConstantsModels.productDetailsModel?.data?.sizes?[0].code ?? '';
   final PageController controller = PageController();
   final AddToCartCubit addToCartCubit = AddToCartCubit();
   final ProductDetailsCubit productDetailsCubit = ProductDetailsCubit();
   AddToWishListCubit addToWishListCubit = AddToWishListCubit();
   RemoveFrommWishListCubit removeFromWhishListCubit = RemoveFrommWishListCubit();
-
+  Variants? selectVariant;
+  int selectedQuantity = 1;
   @override
   void initState() {
     super.initState();
@@ -79,12 +85,12 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
         builder: (context, state) {
           return Scaffold(
             persistentFooterButtons: [
-              if (state is ProductDetailsSuccess)
+              if (state is ProductDetailsSuccess && selectVariant != null)
                 PriceAndAddToCartWidget(
-                  sizeCode: selectedSize,
-                  price: ConstantsModels.productDetailsModel?.data?.price ?? 0,
+                  variant: selectVariant!,
+                  price: (ConstantsModels.productDetailsModel?.data?.price ?? 0) * selectedQuantity,
                   addToCartCubit: addToCartCubit,
-                  sku: ConstantsModels.productDetailsModel?.data?.sku ?? '',
+                  selectedQuantity: selectedQuantity,
                 )
               else
                 const SizedBox(height: 56),
@@ -114,57 +120,52 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
           ],
         ),
       );
-    } else if (state is ProductDetailsSuccess) {
-      final productDetails = ConstantsModels.productDetailsModel?.data;
+    } else if (state is ProductDetailsSuccess && ConstantsModels.productDetailsModel != null) {
+      final productDetails = ConstantsModels.productDetailsModel!.data!;
       return SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ProductGallery(
-              initialLiked: widget.initialLiked,
-              onLikeTap: (isNowLiked) {
-                if (isNowLiked) {
-                  addToWishListCubit.addToWishList(context: context, productId: productId);
-                }
-              },
-              controller: controller,
-              images: [productDetails?.imagePath ?? ''],
-            ),
-            const SizedBox(height: 16),
-            ProductTitle(productName: productDetails?.name ?? ''),
-            RatingAndReview(
-              rating: productDetails?.reviewsCount.toString() ?? '0',
-              reviewCount: productDetails?.reviews?.length ?? 0,
-              onTap: () {
-                // context.navigateToPage(
-                //   const ReviewsView(
-
-                //       // productId: widget.productId
-
-                //       ),
-                // );
-              },
-            ),
-            const SizedBox(height: 12),
-            ProductDescription(description: productDetails?.description ?? ''),
-            if (productDetails?.sizes?.isNotEmpty ?? false)
-              SizeSelectorSection(
-                selectedSize: ConstantsModels.productDetailsModel?.data?.sizes?[0].code ?? '',
-                onSelectSize: (value) {
-                  setState(() => selectedSize = value);
-                },
-                sizes: productDetails?.sizes! ?? [],
+            Container(
+              decoration: const BoxDecoration(
+                color: AppColors.white,
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(20),
+                  topLeft: Radius.circular(20),
+                ),
               ),
-            QuantitySelector(
-              addToCartCubit: addToCartCubit,
-              quantity: addToCartCubit.quantity,
-              onIncrease: () => setState(() => addToCartCubit.quantity++),
-              onDecrease: () {
-                if (addToCartCubit.quantity > 1) {
-                  setState(() => addToCartCubit.quantity--);
-                }
-              },
+              //  margin: const EdgeInsets.symmetric(horizontal: 16),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ProductImageSection(
+                      productModelData: productDetails,
+                    ),
+                    ProductInfoSection(
+                      productModelData: productDetails,
+                    ),
+                    ProductSpecsSection(
+                      productModelData: productDetails,
+                    ),
+                    if (productDetails.variants?.isNotEmpty ?? false)
+                      ProductVariantsSection(
+                        productModelData: productDetails,
+                        selectVariant: selectVariant,
+                        onSelectVariant: (variant, quantity) {
+                          selectVariant = variant;
+                          selectedQuantity = quantity;
+                          setState(() {});
+                        },
+                      ),
+                    if (productDetails.reviews?.isNotEmpty ?? false)
+                      CustomerReviewsSection(
+                        productModelData: productDetails,
+                      ),
+                  ],
+                ),
+              ),
             ),
           ],
         ),
@@ -183,7 +184,10 @@ class ProductTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       productName,
-      style: TextStyle(fontSize: Constants.tablet ? 14 : 24.sp, fontWeight: FontWeight.bold),
+      style: TextStyle(
+        fontSize: Constants.tablet ? 14 : 24.sp,
+        fontWeight: FontWeight.bold,
+      ),
     );
   }
 }
@@ -192,7 +196,12 @@ class RatingAndReview extends StatelessWidget {
   final VoidCallback onTap;
   final String rating;
   final int reviewCount;
-  const RatingAndReview({required this.onTap, super.key, required this.rating, required this.reviewCount});
+  const RatingAndReview({
+    required this.onTap,
+    super.key,
+    required this.rating,
+    required this.reviewCount,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -208,7 +217,11 @@ class RatingAndReview extends StatelessWidget {
               children: [
                 Text(
                   rating,
-                  style: TextStyle(fontSize: Constants.tablet ? 16 : 16.sp, fontWeight: FontWeight.w500, height: 1),
+                  style: TextStyle(
+                    fontSize: Constants.tablet ? 16 : 16.sp,
+                    fontWeight: FontWeight.w500,
+                    height: 1,
+                  ),
                 ),
                 Container(height: 1, color: Colors.black),
               ],
@@ -218,7 +231,10 @@ class RatingAndReview extends StatelessWidget {
         const SizedBox(width: 4),
         Text(
           '($reviewCount ${"reviews".tr()})',
-          style: TextStyle(fontSize: Constants.tablet ? 12 : 12.sp, color: Colors.grey),
+          style: TextStyle(
+            fontSize: Constants.tablet ? 12 : 12.sp,
+            color: Colors.grey,
+          ),
         ),
       ],
     );
@@ -232,7 +248,11 @@ class ProductDescription extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       description,
-      style: TextStyle(fontSize: Constants.tablet ? 16 : 16.sp, fontWeight: FontWeight.w500, color: Colors.grey),
+      style: TextStyle(
+        fontSize: Constants.tablet ? 16 : 16.sp,
+        fontWeight: FontWeight.w500,
+        color: Colors.grey,
+      ),
     );
   }
 }
@@ -256,7 +276,10 @@ class SizeSelectorSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Choose size'.tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+          Text(
+            'Choose size'.tr(),
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
           const SizedBox(height: 10),
           SizeSelector(
             onSelectSize: onSelectSize,
@@ -363,7 +386,10 @@ class QuantitySelector extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Text('Quantity'.tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+        Text(
+          'Quantity'.tr(),
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
         const SizedBox(width: 16),
         Container(
           decoration: BoxDecoration(
@@ -376,7 +402,10 @@ class QuantitySelector extends StatelessWidget {
                 onPressed: onDecrease,
                 icon: const Icon(Icons.remove),
               ),
-              Text('${addToCartCubit.quantity}', style: TextStyle(fontSize: Constants.tablet ? 16 : 16.sp)),
+              Text(
+                '$quantity',
+                style: TextStyle(fontSize: Constants.tablet ? 16 : 16.sp),
+              ),
               IconButton(
                 onPressed: onIncrease,
                 icon: const Icon(Icons.add),
@@ -495,13 +524,13 @@ class PriceAndAddToCartWidget extends StatefulWidget {
     super.key,
     required this.addToCartCubit,
     required this.price,
-    required this.sku,
-    required this.sizeCode,
+    required this.variant,
+    required this.selectedQuantity,
   });
   final AddToCartCubit addToCartCubit;
   final num price;
-  final String sku;
-  final String sizeCode;
+  final Variants variant;
+  final int selectedQuantity;
   @override
   State<PriceAndAddToCartWidget> createState() => _PriceAndAddToCartWidgetState();
 }
@@ -510,7 +539,9 @@ class _PriceAndAddToCartWidgetState extends State<PriceAndAddToCartWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(border: Border(top: BorderSide(color: Colors.grey.shade300))),
+      decoration: BoxDecoration(
+        border: Border(top: BorderSide(color: Colors.grey.shade300)),
+      ),
       padding: const EdgeInsets.all(10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -520,11 +551,18 @@ class _PriceAndAddToCartWidgetState extends State<PriceAndAddToCartWidget> {
             children: [
               Text(
                 'Price'.tr(),
-                style: TextStyle(fontSize: Constants.tablet ? 16 : 16.sp, color: Colors.grey, fontWeight: FontWeight.w500),
+                style: TextStyle(
+                  fontSize: Constants.tablet ? 16 : 16.sp,
+                  color: Colors.grey,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
               Text(
                 '${widget.price}',
-                style: TextStyle(fontSize: Constants.tablet ? 20 : 20.sp, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  fontSize: Constants.tablet ? 20 : 20.sp,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ],
           ),
@@ -598,8 +636,7 @@ class _PriceAndAddToCartWidgetState extends State<PriceAndAddToCartWidget> {
                       onPress: () async {
                         await widget.addToCartCubit.addToCart(
                           context: context,
-                          sku: widget.sku,
-                          sizeCode: widget.sizeCode,
+                          sku: widget.variant.skuCode!,
                         );
                       },
                     );
@@ -625,11 +662,20 @@ class _PriceAndAddToCartWidgetState extends State<PriceAndAddToCartWidget> {
                       ],
                     ),
                     onPress: () async {
+                      final int maxQty = (widget.variant.quantity ?? 1).toInt();
+                      final int desiredQty = widget.selectedQuantity;
+                      if (desiredQty > maxQty) {
+                        Utils.showToast(
+                          title: '${'Maximum quantity is'.tr()} $maxQty',
+                          state: UtilState.warning,
+                        );
+                        return;
+                      }
                       CartItemsCubit.of(context).addCartItems();
                       await widget.addToCartCubit.addToCart(
                         context: context,
-                        sku: widget.sku,
-                        sizeCode: widget.sizeCode,
+                        sku: widget.variant.skuCode!,
+                        quantity: desiredQty,
                       );
                     },
                   );

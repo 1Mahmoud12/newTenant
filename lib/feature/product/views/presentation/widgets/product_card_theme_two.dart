@@ -1,16 +1,17 @@
 import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:dobzz_seller/core/utils/constant_gaping.dart';
-import 'package:dobzz_seller/core/utils/custom_show_toast.dart';
 import 'package:dobzz_seller/feature/cart/view/manager/addToCart/cubit/add_to_cart_cubit.dart';
 import 'package:dobzz_seller/feature/cart/view/manager/cartItems/cubit/cart_items_cubit.dart';
+import 'package:dobzz_seller/feature/favorites/views/manager/wishList/cubit/wish_list_cubit.dart';
 import 'package:dobzz_seller/feature/home/data/models/product_mdoel.dart';
-import 'package:dobzz_seller/feature/product/views/presentation/widgets/like_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ProductCardThemeTwo extends StatefulWidget {
   final String imagePath;
   final String title;
+  final String? skuCode;
   final String price;
   final String description;
   final double rating;
@@ -24,6 +25,7 @@ class ProductCardThemeTwo extends StatefulWidget {
     Key? key,
     required this.imagePath,
     required this.title,
+    this.skuCode,
     required this.price,
     required this.description,
     required this.rating,
@@ -41,6 +43,16 @@ class ProductCardThemeTwo extends StatefulWidget {
 class _ProductCardThemeTwoState extends State<ProductCardThemeTwo> {
   AddToCartCubit addToCartCubit = AddToCartCubit();
   bool isAddedToCart = false;
+
+  void toggleLike() {
+    widget.onLikeTap.call(isWishListed());
+    debugPrint('Liked:  for ${widget.title}');
+  }
+
+  bool isWishListed() {
+    return WishListCubit.get(context).wishList.any((element) => element.productId == widget.productId);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -75,27 +87,23 @@ class _ProductCardThemeTwoState extends State<ProductCardThemeTwo> {
                     },
                   ),
                 ),
-                Positioned(
-                  top: 10,
-                  right: 10,
-                  child: Container(
-                    width: 36,
-                    height: 36,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.05),
-                          blurRadius: 3,
-                          offset: const Offset(0, 2),
+                BlocBuilder<WishListCubit, WishListState>(
+                  builder: (context, state) => Positioned(
+                    top: 12,
+                    right: 12,
+                    child: GestureDetector(
+                      onTap: toggleLike,
+                      child: Container(
+                        padding: const EdgeInsets.all(6),
+                        decoration: const BoxDecoration(
+                          color: Colors.black87,
+                          shape: BoxShape.circle,
                         ),
-                      ],
-                    ),
-                    child: Center(
-                      child: LikeButton(
-                        initialLiked: widget.initialLiked,
-                        onTap: widget.onLikeTap,
+                        child: Icon(
+                          isWishListed() ? Icons.favorite : Icons.favorite_border,
+                          color: Colors.white,
+                          size: 18,
+                        ),
                       ),
                     ),
                   ),
@@ -160,11 +168,12 @@ class _ProductCardThemeTwoState extends State<ProductCardThemeTwo> {
                   const SizedBox(height: 8),
                   InkWell(
                     onTap: () async {
-                      customShowToast(context, 'need_edit');
+                      //customShowToast(context, 'need_edit');
                       CartItemsCubit.of(context).addCartItems();
-                      await addToCartCubit.addToCart(context: context, sku: '' // widget.sku,
-                          //  sizeCode: '',
-                          );
+                      await addToCartCubit.addToCart(
+                        context: context, sku: widget.skuCode ?? widget.sku.firstOrNull?.skuCode ?? '',
+                        //  sizeCode: '',
+                      );
                       setState(() {
                         isAddedToCart = true;
                       });

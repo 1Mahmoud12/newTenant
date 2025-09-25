@@ -1,5 +1,6 @@
 import 'package:dobzz_seller/core/component/loadsErros/loading_widget.dart';
 import 'package:dobzz_seller/core/utils/constants_models.dart';
+import 'package:dobzz_seller/core/utils/custom_show_toast.dart';
 import 'package:dobzz_seller/feature/favorites/views/manager/wishList/cubit/wish_list_cubit.dart';
 import 'package:dobzz_seller/feature/home/views/manager/addToWhishlist/cubit/add_to_wish_list_cubit.dart';
 import 'package:dobzz_seller/feature/home/views/manager/removeFromWhislist/cubit/remove_from_whish_list_cubit.dart';
@@ -119,16 +120,23 @@ class TopProductHorizontalList extends StatelessWidget {
                                 variants: product.variants ?? [],
                                 description: product.description ?? 'No description available'.tr(),
                                 rating: product.reviewsCount?.toDouble() ?? 0.0,
+                                sku: product.skuCode,
                                 productId: product.id ?? -1,
                                 initialLiked: widget.isItWhishList!,
                                 onLikeTap: (isNowLiked) {
                                   logger.i('isWishListed $isNowLiked');
-                                  // Add to wishlist
+                                  final sku = product.skuCode ?? product.variants?.firstOrNull?.skuCode;
+                                  if (sku == null) {
+                                    customShowToast(context, 'not_sku_for_this_item'.tr());
+                                    return;
+                                  }
                                   if (isNowLiked) {
                                     // Remove from wishlist
-                                    removeFromWhishListCubit.removeFromWishList(context: context, productId: product.id ?? -1);
+                                    removeFromWhishListCubit.removeFromWishList(context: context, skuCode: sku);
                                   } else {
-                                    addToWishListCubit.addToWishList(context: context, productId: product.id ?? -1);
+                                    logger.i('Add to wishlist WishListed $isNowLiked');
+                                    // Add to wishlist
+                                    addToWishListCubit.addToWishList(context: context, skuCode: sku);
                                   }
                                 },
                                 imagePath: product.imagePath ?? '',
@@ -137,17 +145,22 @@ class TopProductHorizontalList extends StatelessWidget {
                               )
                             : ProductCard(
                                 variants: product.variants ?? [],
+                                sku: product.skuCode,
                                 description: product.description ?? 'No description available'.tr(),
                                 rating: product.reviewsCount?.toDouble() ?? 0.0,
                                 productId: product.id ?? -1,
                                 initialLiked: widget.isItWhishList!,
                                 onLikeTap: (isNowLiked) {
-                                  // Add to wishlist
-                                  if (widget.isItWhishList!) {
-                                    // Remove from wishlist
-                                    removeFromWhishListCubit.removeFromWishList(context: context, productId: product.id ?? -1);
+                                  final sku = product.skuCode ?? product.variants?.firstOrNull?.skuCode;
+                                  if (sku == null) {
+                                    customShowToast(context, 'not_sku_for_this_item'.tr());
+                                    return;
+                                  }
+                                  if (isNowLiked) {
+                                    // Add to wishlist
+                                    removeFromWhishListCubit.removeFromWishList(context: context, skuCode: sku);
                                   } else {
-                                    addToWishListCubit.addToWishList(context: context, productId: product.id ?? -1);
+                                    addToWishListCubit.addToWishList(context: context, skuCode: sku);
                                   }
                                 },
                                 imagePath: product.imagePath ?? '',
@@ -225,14 +238,12 @@ class FavoriteHorizontalList extends StatelessWidget {
                     productId: wishListItem.productId?.toInt() ?? -1,
                     initialLiked: true,
                     onLikeTap: (isNowLiked) {
-                      // Add to wishlist
-                      if (widget.isItWhishList!) {
-                        // Remove from wishlist
-                        removeFromWhishListCubit.removeFromWishList(
-                          context: context,
-                          productId: wishListItem.id?.toInt() ?? -1,
-                        );
+                      final sku = wishListItem.skuCode;
+                      if (sku == null) {
+                        customShowToast(context, 'not_sku_for_this_item'.tr());
+                        return;
                       }
+                      removeFromWhishListCubit.removeFromWishList(context: context, skuCode: sku);
                     },
                     imagePath: wishListItem.productImagePath ?? '',
                     title: wishListItem.product ?? 'Unknown Product'.tr(),

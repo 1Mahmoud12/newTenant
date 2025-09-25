@@ -35,6 +35,7 @@ class WishListModel {
 class ItemWishModel {
   num? id;
   String? product;
+  String? skuCode;
   num? productId;
   num? priceForProduct;
   String? descriptionProduct;
@@ -47,6 +48,7 @@ class ItemWishModel {
   ItemWishModel({
     this.id,
     this.product,
+    this.skuCode,
     this.productId,
     this.priceForProduct,
     this.descriptionProduct,
@@ -60,6 +62,7 @@ class ItemWishModel {
   ItemWishModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     product = json['product'];
+    skuCode = json['sku_code_value'];
     productId = json['product_id'];
     priceForProduct = json['priceForProduct'];
     descriptionProduct = json['description_product'];
@@ -73,7 +76,8 @@ class ItemWishModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
-    data['product'] = product;
+    // data['product'] = product;
+    data['sku_code_value'] = skuCode;
     data['product_id'] = productId;
     data['priceForProduct'] = priceForProduct;
     data['description_product'] = descriptionProduct;

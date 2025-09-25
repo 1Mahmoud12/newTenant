@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:dobzz_seller/core/network/dio_helper.dart';
@@ -11,7 +9,6 @@ class CartItemDataSource {
   static Future<Either<Failure, CartItemModel>> getCartItems() async {
     try {
       final response = await DioHelper.getData(url: EndPoints.cartItems);
-      log('Cart Response: ${response.data}');
       return Right(CartItemModel.fromJson(response.data));
     } catch (error) {
       if (error is DioException) {

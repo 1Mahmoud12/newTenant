@@ -10,10 +10,10 @@ part 'remove_from_whish_list_state.dart';
 class RemoveFrommWishListCubit extends Cubit<RemoveFromWhishListState> {
   RemoveFrommWishListCubit() : super(RemoveFromWhishListInitial());
 
-  Future<void> removeFromWishList({required BuildContext context, required int productId}) async {
+  Future<void> removeFromWishList({required BuildContext context, required String skuCode}) async {
     if (isClosed) return;
     emit(RemoveFromWhishListLoading());
-    final wishListId = WishListCubit.get(context).wishList.firstWhere((element) => element.productId == productId).id;
+    final wishListId = WishListCubit.get(context).wishList.firstWhere((element) => element.skuCode == skuCode).id;
     if (wishListId != null) {
       await RemoveFrommWishListDataSource.removeFromWishList(productId: wishListId.toInt()).then(
         (value) async {

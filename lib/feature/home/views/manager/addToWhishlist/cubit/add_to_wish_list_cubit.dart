@@ -9,10 +9,10 @@ part 'add_to_wish_list_state.dart';
 class AddToWishListCubit extends Cubit<AddToWishListState> {
   AddToWishListCubit() : super(AddToWishListInitial());
 
-  Future<void> addToWishList({required BuildContext context, required int productId}) async {
+  Future<void> addToWishList({required BuildContext context, required String skuCode}) async {
     if (isClosed) return;
     emit(AddToWishListLoading());
-    await AddToWishListDataSource.addToWishList(productId: productId).then(
+    await AddToWishListDataSource.addToWishList(skuCode: skuCode).then(
       (value) async {
         value.fold((l) {
           if (isClosed) return;

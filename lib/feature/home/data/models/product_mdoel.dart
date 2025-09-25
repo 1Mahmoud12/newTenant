@@ -305,9 +305,68 @@ class Variants {
   }
 }
 
+class ReviewModel {
+  int? id;
+  String? review;
+  String? customer;
+  String? customerImage;
+  bool? createdBy;
+  String? product;
+  int? productId;
+  String? rating;
+  bool? visible;
+  String? createdAt;
+  String? updatedAt;
+
+  ReviewModel({
+    this.id,
+    this.review,
+    this.customer,
+    this.customerImage,
+    this.createdBy,
+    this.product,
+    this.productId,
+    this.rating,
+    this.visible,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  ReviewModel.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    review = json['review'];
+    customer = json['customer'];
+    customerImage = json['customer_image'];
+    createdBy = json['created_by'];
+    product = json['product'];
+    productId = json['product_id'];
+    rating = json['rating'];
+    visible = json['visible'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['review'] = review;
+    data['customer'] = customer;
+    data['customer_image'] = customerImage;
+    data['created_by'] = createdBy;
+    data['product'] = product;
+    data['product_id'] = productId;
+    data['rating'] = rating;
+    data['visible'] = visible;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    return data;
+  }
+}
+
 class Product {
   int? id;
   String? name;
+  String? skuCode;
 
   String? nameAr;
   String? nameEn;
@@ -350,6 +409,7 @@ class Product {
       this.description,
       this.descriptionAr,
       this.descriptionEn,
+      this.skuCode,
       this.price,
       this.priceOld,
       this.length,
@@ -388,6 +448,7 @@ class Product {
     descriptionAr = json['description_ar'];
     descriptionEn = json['description_en'];
     price = json['price'];
+    skuCode = json['sku_code'];
     priceOld = json['price_old'];
     length = json['length'];
     cost = json['cost'];
@@ -457,6 +518,7 @@ class Product {
     data['description_ar'] = descriptionAr;
     data['description_en'] = descriptionEn;
     data['price'] = price;
+    data['sku_code'] = skuCode;
     data['price_old'] = priceOld;
     data['length'] = length;
     data['cost'] = cost;

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:dobzz_seller/core/component/cache_image.dart';
+import 'package:dobzz_seller/core/component/loadsErros/loading_widget.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:dobzz_seller/core/utils/app_icons.dart';
 import 'package:dobzz_seller/core/utils/constant_gaping.dart';
@@ -23,6 +24,7 @@ class ProductCard extends StatefulWidget {
   final String title;
   final String price;
   final String? discountPercentage;
+  final String? sku;
   final List<Variants> variants;
   final String description; // Added description parameter
   final double rating; // Added rating parameter
@@ -42,6 +44,7 @@ class ProductCard extends StatefulWidget {
     required this.initialLiked,
     required this.productId,
     required this.variants,
+    this.sku,
   }) : super(key: key);
 
   @override
@@ -195,7 +198,7 @@ class _ProductCardState extends State<ProductCard> {
                     w10,
                     AddToCartButton(
                       productId: widget.productId,
-                      sku: '', // widget.variants,
+                      sku: widget.sku != null ? widget.sku! : widget.variants.first.skuCode!, // widget.variants,
                     ),
                   ],
                 ),
@@ -273,63 +276,76 @@ class _AddToCartButtonState extends State<AddToCartButton> {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: InkWell(
-        onTap: () async {
-          await addToCartCubit
-              .addToCart(
-            sku: widget.sku,
-            context: context,
-          )
-              .then((_) {
-            CartItemsCubit.of(context).addCartItems();
+    return BlocProvider.value(
+      value: addToCartCubit,
+      child: BlocBuilder<AddToCartCubit, AddToCartState>(
+        builder: (context, state) => Expanded(
+          child: InkWell(
+            onTap: state is AddToCartLoading
+                ? null
+                : () async {
+                    await addToCartCubit
+                        .addToCart(
+                      sku: widget.sku,
+                      context: context,
+                    )
+                        .then((_) {
+                      CartItemsCubit.of(context).addCartItems();
 
-            if (!mounted) return; // Check if still mounted before setState
-            setState(() {
-              _isAdded = true;
-            });
+                      if (!mounted) return; // Check if still mounted before setState
+                      setState(() {
+                        _isAdded = true;
+                      });
 
-            // Cancel any existing timer
-            _resetTimer?.cancel();
+                      // Cancel any existing timer
+                      _resetTimer?.cancel();
 
-            // Create a new timer and store the reference
-            _resetTimer = Timer(const Duration(seconds: 2), () {
-              if (mounted) {
-                // Check if still mounted before setState
-                setState(() {
-                  _isAdded = false;
-                });
-              }
-            });
-          });
-        },
-        child: Container(
-          height: 30,
-          padding: const EdgeInsets.all(1),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8),
-            color: _isAdded
-                ? Colors.green // Change color when added if desired
-                : AppColors.primaryColor,
-          ),
-          child: _isAdded
-              ? const Icon(
-                  Icons.check,
-                  color: Colors.white,
-                ) // Replace with your check icon
-              : Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 5),
-                  child: FittedBox(
-                    child: Text(
-                      'Add to cart'.tr(),
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.white,
+                      // Create a new timer and store the reference
+                      _resetTimer = Timer(const Duration(seconds: 2), () {
+                        if (mounted) {
+                          // Check if still mounted before setState
+                          setState(() {
+                            _isAdded = false;
+                          });
+                        }
+                      });
+                    });
+                  },
+            child: Container(
+              height: 30,
+              padding: const EdgeInsets.all(1),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: _isAdded
+                    ? Colors.green // Change color when added if desired
+                    : AppColors.primaryColor,
+              ),
+              child: state is AddToCartLoading
+                  ? const Center(
+                      child: LoadingWidget(
+                        loadingColor: AppColors.white,
+                      ),
+                    )
+                  : _isAdded
+                      ? const Icon(
+                          Icons.check,
+                          color: Colors.white,
+                        ) // Replace with your check icon
+                      : Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 5),
+                          child: FittedBox(
+                            child: Text(
+                              'Add to cart'.tr(),
+                              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                    fontSize: 12.sp,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.white,
+                                  ),
+                            ),
                           ),
-                    ),
-                  ),
-                ),
+                        ),
+            ),
+          ),
         ),
       ),
     );
@@ -340,6 +356,7 @@ class HorizontalProductCard extends StatefulWidget {
   final String imagePath;
   final String title;
   final String price;
+  final String? sku;
   final String? discountPercentage;
   final String description;
   final double rating;
@@ -359,6 +376,7 @@ class HorizontalProductCard extends StatefulWidget {
     required this.initialLiked,
     required this.productId,
     required this.variants,
+    this.sku,
   }) : super(key: key);
 
   @override
@@ -380,7 +398,7 @@ class _HorizontalProductCardState extends State<HorizontalProductCard> {
       isLiked = !isLiked;
     });
     widget.onLikeTap?.call(isWishListed());
-    debugPrint('Liked: $isLiked for ${widget.title}');
+    debugPrint('Liked: $isWishListed for ${widget.title}');
   }
 
   bool isWishListed() {
@@ -545,7 +563,7 @@ class _HorizontalProductCardState extends State<HorizontalProductCard> {
                             ),
                             w10,
                             HorizontalAddToCartButton(
-                              sku: '', // widget.variants,
+                              sku: widget.sku != null ? widget.sku! : widget.variants.first.skuCode!, // widget.variants,
                               productId: widget.productId,
                             ),
                           ],
@@ -590,57 +608,71 @@ class _HorizontalAddToCartButtonState extends State<HorizontalAddToCartButton> {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: InkWell(
-        onTap: () async {
-          await addToCartCubit
-              .addToCart(
-            sku: widget.sku,
-            context: context,
-          )
-              .then((_) {
-            CartItemsCubit.of(context).addCartItems();
+      child: BlocProvider.value(
+        value: addToCartCubit,
+        child: BlocBuilder<AddToCartCubit, AddToCartState>(
+          builder: (context, state) => InkWell(
+            onTap: state is AddToCartLoading
+                ? null
+                : () async {
+                    await addToCartCubit
+                        .addToCart(
+                      sku: widget.sku,
+                      quantity: 1,
+                      context: context,
+                    )
+                        .then((_) {
+                      CartItemsCubit.of(context).addCartItems();
 
-            if (!mounted) return;
-            setState(() {
-              _isAdded = true;
-            });
+                      if (!mounted) return;
+                      setState(() {
+                        _isAdded = true;
+                      });
 
-            _resetTimer?.cancel();
-            _resetTimer = Timer(const Duration(seconds: 2), () {
-              if (mounted) {
-                setState(() {
-                  _isAdded = false;
-                });
-              }
-            });
-          });
-        },
-        child: Container(
-          height: 30,
-          padding: const EdgeInsets.all(5),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8),
-            color: _isAdded ? Colors.green : AppColors.primaryColor,
-          ),
-          child: _isAdded
-              ? const Icon(
-                  Icons.check,
-                  color: Colors.white,
-                  size: 20,
-                )
-              : Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 5),
-                  child: FittedBox(
-                    child: Text(
-                      'Add to cart'.tr(),
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.white,
+                      _resetTimer?.cancel();
+                      _resetTimer = Timer(const Duration(seconds: 2), () {
+                        if (mounted) {
+                          setState(() {
+                            _isAdded = false;
+                          });
+                        }
+                      });
+                    });
+                  },
+            child: Container(
+              height: 30,
+              padding: const EdgeInsets.all(5),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: _isAdded ? Colors.green : AppColors.primaryColor,
+              ),
+              child: _isAdded
+                  ? const Icon(
+                      Icons.check,
+                      color: Colors.white,
+                      size: 20,
+                    )
+                  : state is AddToCartLoading
+                      ? const Center(
+                          child: LoadingWidget(
+                            loadingColor: AppColors.white,
                           ),
-                    ),
-                  ),
-                ),
+                        )
+                      : Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 5),
+                          child: FittedBox(
+                            child: Text(
+                              'Add to cart'.tr(),
+                              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                    fontSize: 12.sp,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.white,
+                                  ),
+                            ),
+                          ),
+                        ),
+            ),
+          ),
         ),
       ),
     );

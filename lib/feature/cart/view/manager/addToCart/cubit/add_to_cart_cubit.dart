@@ -1,10 +1,9 @@
 import 'dart:developer';
 
-import 'package:bloc/bloc.dart';
 import 'package:dobzz_seller/core/utils/utils.dart';
 import 'package:dobzz_seller/feature/cart/data/dataSource/add_to_cart_data_source.dart';
 import 'package:flutter/material.dart';
-import 'package:meta/meta.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'add_to_cart_state.dart';
 
@@ -12,10 +11,10 @@ class AddToCartCubit extends Cubit<AddToCartState> {
   AddToCartCubit() : super(AddToCartInitial());
   int quantity = 1;
 
-  Future<void> addToCart({required BuildContext context, required String sku, String? sizeCode}) async {
+  Future<void> addToCart({required BuildContext context, required String sku, String? sizeCode, int? quantity}) async {
     if (isClosed) return;
     emit(AddToCartLoading());
-    await AddToCartDataSource.addToCart(sku: sku, quantity: quantity, sizeCode: sizeCode).then(
+    await AddToCartDataSource.addToCart(sku: sku, quantity: quantity ?? this.quantity, sizeCode: sizeCode).then(
       (value) async {
         value.fold((l) {
           if (isClosed) return;

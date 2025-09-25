@@ -2,6 +2,7 @@ import 'package:dobzz_seller/core/component/custom_app_bar.dart';
 import 'package:dobzz_seller/core/component/custom_list.dart';
 import 'package:dobzz_seller/core/component/loadsErros/loading_widget.dart';
 import 'package:dobzz_seller/core/utils/constants_models.dart';
+import 'package:dobzz_seller/core/utils/custom_show_toast.dart';
 import 'package:dobzz_seller/feature/Categories/presentation/manager/subCategroy/cubit/sub_category_cubit.dart';
 import 'package:dobzz_seller/feature/home/views/manager/addToWhishlist/cubit/add_to_wish_list_cubit.dart';
 import 'package:dobzz_seller/feature/home/views/manager/removeFromWhislist/cubit/remove_from_whish_list_cubit.dart';
@@ -164,13 +165,22 @@ class _CategorizedProductViewState extends State<CategorizedProductView> {
                         itemBuilder: (context, index) {
                           final product = ConstantsModels.productsModel!.data![index];
                           return ProductCard(
+                            sku: product.skuCode,
                             variants: product.variants ?? [],
                             description: product.description ?? 'No description available'.tr(),
                             rating: product.reviewsCount?.toDouble() ?? 0.0,
                             productId: product.id ?? -1,
                             initialLiked: false,
                             onLikeTap: (isNowLiked) {
-                              addToWishListCubit.addToWishList(context: context, productId: product.id ?? -1);
+                              final sku = product.skuCode ?? product.variants?.firstOrNull?.skuCode;
+                              if (sku == null) {
+                                customShowToast(context, 'not_sku_for_this_item'.tr());
+                                return;
+                              }
+                              if (isNowLiked) {
+                                // Add to wishlist
+                                addToWishListCubit.addToWishList(context: context, skuCode: sku);
+                              }
                             },
                             imagePath: product.imagePath ?? '',
                             title: product.name ?? 'Unknown Product'.tr(),

@@ -3,15 +3,17 @@ import 'package:dobzz_seller/core/utils/utils.dart';
 import 'package:dobzz_seller/feature/address/data/dataSourec/address_data_source.dart';
 import 'package:dobzz_seller/feature/address/presentation/manager/address/cubit/address_cubit.dart';
 import 'package:flutter/material.dart';
-import 'package:meta/meta.dart';
 
 part 'add_address_state.dart';
 
 class AddAddressCubit extends Cubit<AddAddressState> {
   AddAddressCubit() : super(AddAddressInitial());
+  TextEditingController nameController = TextEditingController();
   TextEditingController addressNicknameController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   int cityId = -1;
+  String? city;
+  String? stateName;
   int stateId = -1;
   bool isDefault = false;
   Future<void> addAddress({required BuildContext context, required AddressCubit addressCubit}) async {
@@ -19,10 +21,13 @@ class AddAddressCubit extends Cubit<AddAddressState> {
     emit(AddAddressLoading());
     await AddressDataSource.addAddress(
       data: {
-        'name': addressNicknameController.text,
+        'name': nameController.text,
+        'address': addressNicknameController.text,
         'phone': phoneController.text,
-        'city_id': cityId,
-        'state_id': stateId,
+        // 'city_id': cityId,
+        'city': city,
+        'state': stateName,
+        //'state_id': stateId,
         'is_default': isDefault,
       },
     ).then(

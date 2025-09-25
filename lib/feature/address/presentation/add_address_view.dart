@@ -41,7 +41,8 @@ class _AddAddressViewState extends State<AddAddressView> {
   @override
   void initState() {
     if (widget.isUpdate!) {
-      addAddressCubit.addressNicknameController.text = widget.addressDataModel?.name ?? 'unKnow address';
+      addAddressCubit.nameController.text = widget.addressDataModel?.name ?? 'unKnow address';
+      addAddressCubit.addressNicknameController.text = widget.addressDataModel?.address ?? 'unKnow address';
       addAddressCubit.phoneController.text = widget.addressDataModel?.phone ?? 'unKnow phone number';
       addAddressCubit.stateId = widget.addressDataModel?.stateId ?? -1;
       addAddressCubit.cityId = widget.addressDataModel?.cityId ?? -1;
@@ -66,6 +67,23 @@ class _AddAddressViewState extends State<AddAddressView> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              CustomTextFormField(
+                outPadding: EdgeInsets.zero,
+                controller: addAddressCubit.nameController,
+                hintText: 'Enter your name address'.tr(),
+                maxLines: 1,
+                nameField: 'Address Name'.tr(),
+                hintStyle: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+                nameFieldStyle: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
               CustomTextFormField(
                 outPadding: EdgeInsets.zero,
                 controller: addAddressCubit.addressNicknameController,
@@ -122,6 +140,8 @@ class _AddAddressViewState extends State<AddAddressView> {
                       onChanged: (value) {
                         setState(() {});
                         addAddressCubit.stateId = value?.value ?? -1;
+                        addAddressCubit.stateName = value?.name ?? 'N/A';
+
                         cityCubit.getAddress(context: context, stateId: addAddressCubit.stateId);
                       },
                     );
@@ -149,6 +169,7 @@ class _AddAddressViewState extends State<AddAddressView> {
                             [],
                         onChanged: (value) {
                           addAddressCubit.cityId = value?.value ?? -1;
+                          addAddressCubit.city = value?.name ?? 'N/A';
                         },
                       );
                     },
