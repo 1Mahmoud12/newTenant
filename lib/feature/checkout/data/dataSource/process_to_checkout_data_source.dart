@@ -26,6 +26,9 @@ class ProcessToCheckoutDataSourceImpl implements ProcessToCheckoutDataSource {
           'payment_method': paymentMethod,
         },
       );
+      if (response.data['status'] == false) {
+        return Left(ServerFailure(response.data['message']));
+      }
       final int idOrder = response.data['data']['order']['id'];
       logger.e(response.data['data']['order']['id']);
       return Right(idOrder);

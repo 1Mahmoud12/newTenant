@@ -2,15 +2,9 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:dobzz_seller/core/network/errors/failures.dart';
-import 'package:dobzz_seller/feature/auth/forgetPassword/view/presentation/reset_password_view.dart';
-import 'package:dobzz_seller/feature/auth/login/view/presentation/login_screen.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dobzz_seller/core/network/local/cache.dart';
 import 'package:dobzz_seller/core/utils/bottomSheet/failure_bottom_sheet_with_reason.dart';
 import 'package:dobzz_seller/core/utils/bottomSheet/select_county_code_dialog.dart';
-import 'package:dobzz_seller/core/utils/bottomSheet/success_bottom_sheet.dart';
 import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:dobzz_seller/core/utils/constants_models.dart';
 import 'package:dobzz_seller/core/utils/errorLoadingWidgets/dialog_loading_animation.dart';
@@ -20,9 +14,14 @@ import 'package:dobzz_seller/feature/auth/data/models/login_params.dart';
 import 'package:dobzz_seller/feature/auth/data/models/reset_password_params.dart';
 import 'package:dobzz_seller/feature/auth/data/models/sign_up_params.dart';
 import 'package:dobzz_seller/feature/auth/data/models/verify_code_model.dart';
+import 'package:dobzz_seller/feature/auth/forgetPassword/view/presentation/reset_password_view.dart';
+import 'package:dobzz_seller/feature/auth/login/view/presentation/login_screen.dart';
 import 'package:dobzz_seller/feature/auth/manager/authBloc/auth_state.dart';
 import 'package:dobzz_seller/feature/auth/verifyCode/view/presentation/verify_code_view.dart';
 import 'package:dobzz_seller/feature/navigation/view/presentation/navigation_view.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   AuthCubit() : super(AuthInitial());
@@ -160,8 +159,11 @@ class AuthCubit extends Cubit<AuthState> {
           emit(AuthSignUpErrorState(l.errMessage));
         }, (r) async {
           closeDialog(context);
-          // closeDialog(context);
-          // customShowToast(context, 'created_user_successfully'.tr());
+          ConstantsModels.registerModel = r;
+          userCacheValue = r;
+          Constants.token = r.data?.token ?? '';
+          userCache?.put(userCacheKey, jsonEncode(r.toJson()));
+          context.navigateToPage(const NavigationViewWithThemes());
           emit(AuthSignUpSuccessState());
         });
       },

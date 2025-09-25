@@ -53,7 +53,10 @@ class _CartViewState extends State<CartView> {
   void onAdd(CartItemData item) async {
     final itemId = item.id ?? -1;
     if (itemId == -1 || loadingItems[itemId] == true) return;
-
+    if (item.quantity! >= item.availableQuantity!) {
+      Utils.showToast(title: '${'Maximum quantity is'.tr()} ${item.availableQuantity!}', state: UtilState.error);
+      return;
+    }
     setState(() {
       item.quantity = (item.quantity ?? 0) + 1; // Fixed parentheses
     });

@@ -2,18 +2,18 @@ import 'dart:developer';
 
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
-import 'package:dobzz_seller/core/network/errors/api_error_model.dart';
-import 'package:dobzz_seller/core/utils/constants_models.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:dobzz_seller/core/network/dio_helper.dart';
 import 'package:dobzz_seller/core/network/end_points.dart';
+import 'package:dobzz_seller/core/network/errors/api_error_model.dart';
 import 'package:dobzz_seller/core/network/errors/failures.dart';
+import 'package:dobzz_seller/core/utils/constants_models.dart';
 import 'package:dobzz_seller/feature/auth/data/models/country_code_model.dart';
 import 'package:dobzz_seller/feature/auth/data/models/login_params.dart';
 import 'package:dobzz_seller/feature/auth/data/models/register_model.dart';
 import 'package:dobzz_seller/feature/auth/data/models/reset_password_params.dart';
 import 'package:dobzz_seller/feature/auth/data/models/sign_up_params.dart';
 import 'package:dobzz_seller/feature/auth/data/models/verify_code_model.dart';
+import 'package:flutter/cupertino.dart';
 
 abstract class AuthDataSource {
   Future<Either<Failure, CountryCodeModel>> getCountryCode();
@@ -24,7 +24,7 @@ abstract class AuthDataSource {
 
   Future<Either<Failure, String>> resetPasswordPassword(BuildContext context, ResetPasswordParams resetPasswordParams);
 
-  Future<Either<Failure, String>> postSignUp(BuildContext context, SignUpParams signUpParams);
+  Future<Either<Failure, RegisterModel>> postSignUp(BuildContext context, SignUpParams signUpParams);
 
   Future<Either<Failure, RegisterModel>> postLogin(BuildContext context, LoginParams loginParams);
 
@@ -52,7 +52,7 @@ class AuthDataSourceImpl implements AuthDataSource {
   }
 
   @override
-  Future<Either<Failure, String>> postSignUp(BuildContext context, SignUpParams signUpParams) async {
+  Future<Either<Failure, RegisterModel>> postSignUp(BuildContext context, SignUpParams signUpParams) async {
     try {
       const endpoint = EndPoints.register;
       final response = await DioHelper.postData(
@@ -76,7 +76,7 @@ class AuthDataSourceImpl implements AuthDataSource {
       if (statusCode == 200 && response.data['status']) {
         ConstantsModels.requiredValidationModel = RegisterModel.fromJson(response.data);
         log('print response ${response.data}');
-        return right('');
+        return right(RegisterModel.fromJson(response.data));
       }
       // Error case - we get here because we're treating 4xx as valid responses
       else {

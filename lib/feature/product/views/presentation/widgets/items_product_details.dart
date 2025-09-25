@@ -305,7 +305,7 @@ class ProductColorsItem extends StatelessWidget {
                     if (hasMore) ...[
                       const SizedBox(height: 8),
                       Text(
-                        '+${(colors?.length ?? 0) - 10} more colors',
+                        '+${(colors?.length ?? 0) - 10} ${'more_colors'.tr()}',
                         style: TextStyle(
                           fontSize: 12,
                           color: Colors.blue[600],

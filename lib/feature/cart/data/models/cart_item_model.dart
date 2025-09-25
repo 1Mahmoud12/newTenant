@@ -37,6 +37,7 @@ class CartItemData {
   String? color;
   String? colorCode;
   int? priceForProduct;
+  int? availableQuantity;
   String? productImagePath;
   String? productThumbnailPath;
   int? quantity;
@@ -56,6 +57,7 @@ class CartItemData {
     this.quantity,
     this.price,
     this.createdAt,
+    this.availableQuantity,
     this.updatedAt,
   });
 
@@ -65,6 +67,7 @@ class CartItemData {
     size = json['size'];
     color = json['color'];
     colorCode = json['color_code'];
+    availableQuantity = json['available_quantity'];
     priceForProduct = json['priceForProduct'];
     productImagePath = json['product_image_path'];
     productThumbnailPath = json['product_thumbnail_path'];
@@ -81,6 +84,7 @@ class CartItemData {
     data['size'] = size;
     data['color'] = color;
     data['color_code'] = colorCode;
+    data['available_quantity'] = availableQuantity;
     data['priceForProduct'] = priceForProduct;
     data['product_image_path'] = productImagePath;
     data['product_thumbnail_path'] = productThumbnailPath;
