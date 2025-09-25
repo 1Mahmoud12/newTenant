@@ -1,21 +1,20 @@
+import 'package:dobzz_seller/core/component/buttons/custom_text_button.dart';
+import 'package:dobzz_seller/core/component/custom_check_box.dart';
+import 'package:dobzz_seller/core/component/fields/custom_text_form_field.dart';
+import 'package:dobzz_seller/core/component/phone_number_field.dart';
+import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:dobzz_seller/core/utils/app_images.dart';
+import 'package:dobzz_seller/core/utils/extensions.dart';
+import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/core/utils/utils.dart';
+import 'package:dobzz_seller/feature/auth/login/view/presentation/login_screen.dart';
+import 'package:dobzz_seller/feature/auth/manager/authBloc/auth_cubit.dart';
+import 'package:dobzz_seller/feature/auth/manager/authBloc/auth_state.dart';
 import 'package:dobzz_seller/feature/auth/widgets/authRich_text_link.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:dobzz_seller/core/component/buttons/custom_text_button.dart';
-import 'package:dobzz_seller/core/component/custom_check_box.dart';
-import 'package:dobzz_seller/core/component/fields/custom_text_form_field.dart';
-import 'package:dobzz_seller/core/themes/colors.dart';
-import 'package:dobzz_seller/core/utils/extensions.dart';
-import 'package:dobzz_seller/core/utils/navigate.dart';
-import 'package:dobzz_seller/feature/auth/login/view/presentation/login_screen.dart';
-import 'package:dobzz_seller/feature/auth/manager/authBloc/auth_cubit.dart';
-import 'package:dobzz_seller/feature/auth/manager/authBloc/auth_state.dart';
-import 'package:dobzz_seller/feature/auth/verifyCode/view/presentation/verify_code_view.dart';
-import 'package:dobzz_seller/core/component/phone_number_field.dart';
 
 class SignUpView extends StatefulWidget {
   const SignUpView({super.key});
@@ -170,11 +169,11 @@ class _SignUpViewState extends State<SignUpView> {
                 ),
                 BlocConsumer<AuthCubit, AuthState>(
                   listener: (context, state) {
-                    if (state is AuthSignUpSuccessState) {
-                      context.navigateToPage(
-                        const VerifyCodeView(),
-                      );
-                    }
+                    // if (state is AuthSignUpSuccessState) {
+                    //   context.navigateToPage(
+                    //     const VerifyCodeView(),
+                    //   );
+                    // }
                   },
                   builder: (context, state) {
                     return CustomTextButton(
