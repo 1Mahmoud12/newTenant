@@ -83,12 +83,19 @@ class _HomePageHeaderState extends State<HomePageHeader> {
               value: addressCubit,
               child: BlocBuilder<AddressCubit, AddressState>(
                 builder: (context, state) {
-                  return Text(
-                    '${Constants.defaultAddress.name}', // added space after comma
-                    style: TextStyle(
-                      fontSize: 20.sp,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87,
+                  return InkWell(
+                    onTap: () {
+                      context.navigateToPage(const AddressView());
+                    },
+                    splashColor: Colors.transparent,
+                    highlightColor: Colors.transparent,
+                    child: Text(
+                      Constants.defaultAddress.name ?? 'Add New Address'.tr(), // added space after comma
+                      style: TextStyle(
+                        fontSize: 20.sp,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87,
+                      ),
                     ),
                   );
                 },

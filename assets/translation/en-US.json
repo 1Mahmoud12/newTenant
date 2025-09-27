@@ -304,5 +304,7 @@
   "unable_to_get_location": "Unable to get location",
   "selected_location": "Selected Location",
   "tap_to_select_location": "Tap to select location",
+  "available_quantity": "Available Quantity",
+  "you_must_request_a_little_amount_from_": "You must request a little amount from ",
   "": ""
 }

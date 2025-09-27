@@ -274,8 +274,16 @@ class GoToCheckOutButton extends StatelessWidget {
           CustomTextButton(
             borderRadius: 8,
             onPress: () {
-              context.navigateToPage(const CheckoutView());
-              //Todo :check if user is demo account ===== stop now =====
+              final items = ConstantsModels.cartItemModel?.data ?? [];
+              if (items.isNotEmpty) {
+                for (final element in items) {
+                  if ((element.quantity ?? 0) > (element.availableQuantity ?? 0)) {
+                    Utils.showToast(title: '${'you_must_request_a_little_amount_from_'.tr()}${element.product}', state: UtilState.error);
+                    return;
+                  }
+                }
+                context.navigateToPage(const CheckoutView());
+              }
 
               if (userCacheValue?.data?.phone == Constants.demoAccount) {
                 Utils.showToast(title: 'This is demo account you can not create order ', state: UtilState.error);
@@ -440,6 +448,15 @@ class CartItemWidget extends StatelessWidget {
                   if (cartItem.size != null)
                     Text(
                       '${'Size'.tr()} ${cartItem.size}',
+                      style: TextStyle(fontWeight: FontWeight.w500, fontSize: Constants.tablet ? 14 : 14.sp, color: Colors.grey),
+                    )
+                  else
+                    const SizedBox(
+                      height: 10,
+                    ),
+                  if (cartItem.availableQuantity != null)
+                    Text(
+                      '${'available_quantity'.tr()} ${cartItem.availableQuantity}',
                       style: TextStyle(fontWeight: FontWeight.w500, fontSize: Constants.tablet ? 14 : 14.sp, color: Colors.grey),
                     )
                   else
