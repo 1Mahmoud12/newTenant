@@ -354,7 +354,7 @@ class _LabeledCheckButtonState extends State<LabeledCheckButton> {
             setState(() {
               _isChecked = !_isChecked;
               if (widget.onChanged != null) {
-                widget.onChanged!(_isChecked);
+                widget.onChanged?.call(_isChecked);
               }
             });
           },

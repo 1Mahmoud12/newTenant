@@ -160,9 +160,9 @@ class _AddressViewState extends State<AddressView> {
                                 value: index,
                                 groupValue: selectedAddressIndex,
                                 onChanged: (value) {
-                                  setState(() {
-                                    selectedAddressIndex = value!;
-                                  });
+                                  // setState(() {
+                                  //   selectedAddressIndex = value!;
+                                  // });
                                 },
                                 fillColor: const WidgetStatePropertyAll(AppColors.primaryColor),
                                 activeColor: Colors.black,
