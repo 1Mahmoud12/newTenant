@@ -1,6 +1,7 @@
 import 'package:dobzz_seller/core/component/fields/custom_text_form_field.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:dobzz_seller/core/utils/app_icons.dart';
+import 'package:dobzz_seller/core/utils/extensions.dart';
 import 'package:dobzz_seller/feature/auth/manager/authBloc/auth_cubit.dart';
 import 'package:easy_localization/easy_localization.dart' as easy;
 import 'package:flutter/material.dart';
@@ -159,7 +160,7 @@ class _SaudiPhoneNumberFieldState extends State<SaudiPhoneNumberField> {
               Container(
                 height: 40,
                 width: 1,
-                color: AppColors.grey.withOpacity(0.3),
+                color: AppColors.grey.withOpacityNew(0.3),
               ),
             ],
           ),

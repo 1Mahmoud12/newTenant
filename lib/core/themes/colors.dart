@@ -35,13 +35,13 @@ class AppColors {
   static const cTextDate = Color(0xff787878);
 
   static const grey3Color = Color(0xff505050);
-  static Color greyBorderColor = const Color(0x00000033).withOpacity(.2);
+  static Color greyBorderColor = const Color(0x00000033).withOpacityNew(.2);
 
   // Text color
   static const cSecondaryBlack = Color(0xff797979);
   static const lightTextColor = Color(0xff898989);
   static const warmTextColor = Color(0xff565656);
-  static Color cBackGroundTextField = const Color(0xff99ABC6).withOpacity(.18);
+  static Color cBackGroundTextField = const Color(0xff99ABC6).withOpacityNew(.18);
   static const textColor = Color(0xff1A1E27);
   static const cBoldTextColor = Color(0xff171E44);
   static const subTextColor = Color(0xff979797);
@@ -63,7 +63,7 @@ class AppColors {
 
   static const cBackGroundColorSlider = Color(0xffDEE1E7);
   static const dividerColor = Color(0xffBAC8DC);
-  static Color cCustomDividerColor = const Color(0x0000001A).withOpacity(.1);
+  static Color cCustomDividerColor = const Color(0x0000001A).withOpacityNew(.1);
 
   static const cBorderDecoration = Color(0xffEEEEEE);
   static const cBackGroundHistorySearch = Color(0xffEFEFEF);

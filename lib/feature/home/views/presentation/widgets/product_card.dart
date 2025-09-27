@@ -11,7 +11,6 @@ import 'package:dobzz_seller/feature/cart/view/manager/addToCart/cubit/add_to_ca
 import 'package:dobzz_seller/feature/cart/view/manager/cartItems/cubit/cart_items_cubit.dart';
 import 'package:dobzz_seller/feature/favorites/views/manager/wishList/cubit/wish_list_cubit.dart';
 import 'package:dobzz_seller/feature/home/data/models/product_mdoel.dart';
-import 'package:dobzz_seller/feature/home/views/manager/addToWhishlist/cubit/add_to_wish_list_cubit.dart';
 import 'package:dobzz_seller/feature/product/views/presentation/product_details_view.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -65,149 +64,141 @@ class _ProductCardState extends State<ProductCard> {
   }
 
   bool isLiked = false;
-  AddToWishListCubit addToWishListCubit = AddToWishListCubit();
 
   void toggleLike() {
     setState(() {
       isLiked = !isLiked;
     });
-    widget.onLikeTap?.call(isWishListed());
+    widget.onLikeTap?.call(context.read<WishListCubit>().isWishListed(productId: widget.productId));
     debugPrint('Liked: $isLiked for ${widget.title}');
-  }
-
-  bool isWishListed() {
-    return WishListCubit.get(context).wishList.any((element) => element.productId == widget.productId);
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<WishListCubit, WishListState>(
-      buildWhen: (previous, current) => current is WishListSuccess,
-      builder: (context, state) => InkWell(
-        onTap: () {
-          context.navigateToPage(
-            ProductDetailsView(
-              variants: widget.variants ?? [],
-              initialLiked: widget.initialLiked,
-              productId: widget.productId,
+    return InkWell(
+      onTap: () {
+        context.navigateToPage(
+          ProductDetailsView(
+            variants: widget.variants ?? [],
+            initialLiked: widget.initialLiked,
+            productId: widget.productId,
+          ),
+        );
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          // border: Border.all(
+          //   color: Colors.grey.withOpacityNew(0.3),
+          // ),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween, // important
+
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Stack(
+              children: [
+                CacheImage(
+                  urlImage: widget.imagePath,
+                  errorColor: Colors.grey,
+                  height: 150,
+                  width: double.infinity,
+                  fit: BoxFit.contain,
+                ),
+                Positioned(
+                  top: 12,
+                  right: 12,
+                  child: GestureDetector(
+                    onTap: toggleLike,
+                    child: Container(
+                      padding: const EdgeInsets.all(6),
+                      decoration: const BoxDecoration(
+                        color: Colors.black87,
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        context.watch<WishListCubit>().isWishListed(productId: widget.productId) ? Icons.favorite : Icons.favorite_border,
+                        color: Colors.white,
+                        size: 18,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
-          );
-        },
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            // border: Border.all(
-            //   color: Colors.grey.withOpacity(0.3),
-            // ),
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween, // important
-
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Stack(
-                children: [
-                  CacheImage(
-                    urlImage: widget.imagePath,
-                    errorColor: Colors.grey,
-                    height: 150,
-                    width: double.infinity,
-                    fit: BoxFit.contain,
-                  ),
-                  Positioned(
-                    top: 12,
-                    right: 12,
-                    child: GestureDetector(
-                      onTap: toggleLike,
-                      child: Container(
-                        padding: const EdgeInsets.all(6),
-                        decoration: const BoxDecoration(
-                          color: Colors.black87,
-                          shape: BoxShape.circle,
-                        ),
-                        child: Icon(
-                          isWishListed() ? Icons.favorite : Icons.favorite_border,
-                          color: Colors.white,
-                          size: 18,
-                        ),
+            const SizedBox(height: 8),
+            Row(
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Text(
+                      widget.title,
+                      style: TextStyle(
+                        fontSize: Constants.tablet ? 12 : 12.sp,
+                        fontWeight: FontWeight.bold,
                       ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
+                  ),
+                ),
+                Review(widget: widget),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Text(
+                widget.description,
+                style: TextStyle(
+                  fontSize: Constants.tablet ? 10 : 10.sp,
+                  color: Colors.grey.shade400,
+                ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            const SizedBox(height: 4),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SizedBox(
+                    child: Row(
+                      children: [
+                        Text(
+                          widget.price,
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.grey.shade700,
+                          ),
+                        ),
+                        w5,
+                        SvgPicture.asset(
+                          AppIcons.currency,
+                          colorFilter: const ColorFilter.mode(Colors.black, BlendMode.srcIn),
+                          height: 14,
+                          width: 14,
+                        ),
+                      ],
+                    ),
+                  ),
+                  w10,
+                  AddToCartButton(
+                    productId: widget.productId,
+                    sku: widget.sku != null ? widget.sku! : widget.variants.first.skuCode!, // widget.variants,
                   ),
                 ],
               ),
-              const SizedBox(height: 8),
-              Row(
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: Text(
-                        widget.title,
-                        style: TextStyle(
-                          fontSize: Constants.tablet ? 12 : 12.sp,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ),
-                  Review(widget: widget),
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Text(
-                  widget.description,
-                  style: TextStyle(
-                    fontSize: Constants.tablet ? 10 : 10.sp,
-                    color: Colors.grey.shade400,
-                  ),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-              const SizedBox(height: 4),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SizedBox(
-                      child: Row(
-                        children: [
-                          Text(
-                            widget.price,
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.grey.shade700,
-                            ),
-                          ),
-                          w5,
-                          SvgPicture.asset(
-                            AppIcons.currency,
-                            colorFilter: const ColorFilter.mode(Colors.black, BlendMode.srcIn),
-                            height: 14,
-                            width: 14,
-                          ),
-                        ],
-                      ),
-                    ),
-                    w10,
-                    AddToCartButton(
-                      productId: widget.productId,
-                      sku: widget.sku != null ? widget.sku! : widget.variants.first.skuCode!, // widget.variants,
-                    ),
-                  ],
-                ),
-              ),
+            ),
 
-              // Removed the separate row for AddToCartButton
-              // Added bottom padding for better spacing
-            ],
-          ),
+            // Removed the separate row for AddToCartButton
+            // Added bottom padding for better spacing
+          ],
         ),
       ),
     );
@@ -391,18 +382,12 @@ class _HorizontalProductCardState extends State<HorizontalProductCard> {
   }
 
   bool isLiked = false;
-  AddToWishListCubit addToWishListCubit = AddToWishListCubit();
 
   void toggleLike() {
     setState(() {
       isLiked = !isLiked;
     });
-    widget.onLikeTap?.call(isWishListed());
-    debugPrint('Liked: $isWishListed for ${widget.title}');
-  }
-
-  bool isWishListed() {
-    return WishListCubit.get(context).wishList.any((element) => element.productId == widget.productId);
+    widget.onLikeTap?.call(context.read<WishListCubit>().isWishListed(productId: widget.productId));
   }
 
   @override
@@ -425,7 +410,7 @@ class _HorizontalProductCardState extends State<HorizontalProductCard> {
           decoration: BoxDecoration(
             color: Colors.white,
             // border: Border.all(
-            //   color: Colors.grey.withOpacity(0.3),
+            //   color: Colors.grey.withOpacityNew(0.3),
             // ),
             borderRadius: BorderRadius.circular(10),
           ),
@@ -462,7 +447,7 @@ class _HorizontalProductCardState extends State<HorizontalProductCard> {
                             shape: BoxShape.circle,
                           ),
                           child: Icon(
-                            isWishListed() ? Icons.favorite : Icons.favorite_border,
+                            context.watch<WishListCubit>().isWishListed(productId: widget.productId) ? Icons.favorite : Icons.favorite_border,
                             color: Colors.white,
                             size: 14,
                           ),

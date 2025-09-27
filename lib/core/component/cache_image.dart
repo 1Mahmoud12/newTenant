@@ -174,7 +174,7 @@ class CacheImage extends StatelessWidget {
             end: AlignmentDirectional.centerEnd,
             colors: [
               AppColors.black,
-              AppColors.black.withOpacity(.1),
+              AppColors.black.withOpacityNew(.1),
             ],
           ),
           borderRadius: BorderRadius.circular(borderRadius ?? 8),

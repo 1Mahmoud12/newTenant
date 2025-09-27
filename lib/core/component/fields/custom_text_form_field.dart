@@ -2,6 +2,7 @@ import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:dobzz_seller/core/themes/styles.dart';
 import 'package:dobzz_seller/core/utils/app_icons.dart';
 import 'package:dobzz_seller/core/utils/constants.dart';
+import 'package:dobzz_seller/core/utils/extensions.dart';
 import 'package:dobzz_seller/core/utils/screen_spaces_extension.dart';
 import 'package:easy_localization/easy_localization.dart' as easy;
 import 'package:flutter/material.dart';
@@ -168,14 +169,14 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
                 hintText: widget.hintText.tr(),
                 hintStyle: widget.hintStyle ??
                     TextStyle(
-                      color: AppColors.grey.withOpacity(.5),
+                      color: AppColors.grey.withOpacityNew(.5),
                       fontSize: Constants.tablet ? (widget.fontSizeHintText ?? 17) : (widget.fontSizeHintText ?? 17).sp,
                       fontWeight: FontWeight.w500,
                     ),
                 prefixIcon: widget.prefixIcon,
                 labelText: widget.labelText?.tr(),
                 labelStyle: TextStyle(
-                  color: AppColors.primaryColor.withOpacity(.5),
+                  color: AppColors.primaryColor.withOpacityNew(.5),
                   fontSize: Constants.tablet ? (widget.fontSizeHintText ?? 17) : (widget.fontSizeHintText ?? 17).sp,
                   fontWeight: FontWeight.w600,
                 ),
@@ -191,15 +192,15 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
                 contentPadding: widget.contentPadding ?? const EdgeInsets.symmetric(horizontal: 14, vertical: 13),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(widget.borderRadius ?? 8)),
-                  borderSide: BorderSide(color: widget.enabledBorder ?? AppColors.grey.withOpacity(.2)),
+                  borderSide: BorderSide(color: widget.enabledBorder ?? AppColors.grey.withOpacityNew(.2)),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(widget.borderRadius ?? 8)),
-                  borderSide: BorderSide(color: widget.focusedBorderColor ?? AppColors.primaryColor.withOpacity(.4)),
+                  borderSide: BorderSide(color: widget.focusedBorderColor ?? AppColors.primaryColor.withOpacityNew(.4)),
                 ),
                 focusedErrorBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(widget.borderRadius ?? 8)),
-                  borderSide: BorderSide(color: widget.focusedBorderColor ?? AppColors.primaryColor.withOpacity(.4)),
+                  borderSide: BorderSide(color: widget.focusedBorderColor ?? AppColors.primaryColor.withOpacityNew(.4)),
                 ),
                 errorBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(widget.borderRadius ?? 8)),
@@ -207,7 +208,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
                 ),
                 disabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(widget.borderRadius ?? 8)),
-                  borderSide: BorderSide(color: widget.focusedBorderColor ?? AppColors.black.withOpacity(.1)),
+                  borderSide: BorderSide(color: widget.focusedBorderColor ?? AppColors.black.withOpacityNew(.1)),
                 ),
                 suffixIcon: widget.password != null && widget.password!
                     ? Padding(

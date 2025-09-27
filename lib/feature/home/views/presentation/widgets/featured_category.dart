@@ -1,6 +1,7 @@
 import 'package:dobzz_seller/core/component/cache_image.dart';
 import 'package:dobzz_seller/core/component/loadsErros/loading_widget.dart';
 import 'package:dobzz_seller/core/utils/constants_models.dart';
+import 'package:dobzz_seller/core/utils/extensions.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/feature/Categories/presentation/categorized_product_veiw.dart';
 import 'package:dobzz_seller/feature/home/data/models/categories_model.dart';
@@ -276,8 +277,8 @@ class CategoryCard extends StatelessWidget {
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
-                    Colors.black.withOpacity(0.1),
-                    Colors.black.withOpacity(0.5),
+                    Colors.black.withOpacityNew(0.1),
+                    Colors.black.withOpacityNew(0.5),
                   ],
                 ),
               ),

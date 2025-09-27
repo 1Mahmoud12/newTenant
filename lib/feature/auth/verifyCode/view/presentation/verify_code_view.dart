@@ -1,9 +1,11 @@
 import 'dart:async';
-import 'package:easy_localization/easy_localization.dart' as easy;
-import 'package:flutter/material.dart';
+
 import 'package:dobzz_seller/core/component/buttons/custom_text_button.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
+import 'package:dobzz_seller/core/utils/extensions.dart';
 import 'package:dobzz_seller/feature/auth/manager/authBloc/auth_cubit.dart';
+import 'package:easy_localization/easy_localization.dart' as easy;
+import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 class VerifyCodeView extends StatefulWidget {
@@ -94,7 +96,7 @@ class _VerifyCodeViewState extends State<VerifyCodeView> {
                 children: [
                   Text(
                     '00:${_start.toString().padLeft(2, '0')}',
-                    style: Theme.of(context).textTheme.titleSmall?.copyWith(color: AppColors.primaryColor.withOpacity(.4)),
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(color: AppColors.primaryColor.withOpacityNew(.4)),
                   ),
                   InkWell(
                     onTap: _start != 0
@@ -109,8 +111,8 @@ class _VerifyCodeViewState extends State<VerifyCodeView> {
                       style: Theme.of(context).textTheme.displayMedium?.copyWith(
                             fontWeight: FontWeight.w700,
                             decoration: TextDecoration.underline,
-                            color: _start != 0 ? AppColors.primaryColor.withOpacity(.4) : AppColors.primaryColor,
-                            decorationColor: _start != 0 ? AppColors.primaryColor.withOpacity(.4) : AppColors.black,
+                            color: _start != 0 ? AppColors.primaryColor.withOpacityNew(.4) : AppColors.primaryColor,
+                            decorationColor: _start != 0 ? AppColors.primaryColor.withOpacityNew(.4) : AppColors.black,
                           ),
                     ),
                   ),
@@ -185,7 +187,7 @@ class _VerificationCodeState extends State<VerificationCode> {
           errorBorderColor: AppColors.cBorderPinColor,
           selectedColor: AppColors.primaryColor,
           selectedFillColor: AppColors.cBorderTextFormField,
-          inactiveColor: AppColors.cBorderPinColor.withOpacity(.15),
+          inactiveColor: AppColors.cBorderPinColor.withOpacityNew(.15),
           activeColor: AppColors.primaryColor,
           fieldWidth: fieldWidth,
           fieldHeight: fieldHeight,

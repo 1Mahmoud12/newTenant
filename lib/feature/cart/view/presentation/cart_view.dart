@@ -8,6 +8,7 @@ import 'package:dobzz_seller/core/utils/constant_gaping.dart';
 import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:dobzz_seller/core/utils/constants_models.dart';
 import 'package:dobzz_seller/core/utils/errorLoadingWidgets/empty_widget.dart';
+import 'package:dobzz_seller/core/utils/extensions.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/core/utils/utils.dart';
 import 'package:dobzz_seller/feature/cart/data/models/cart_item_model.dart';
@@ -267,7 +268,7 @@ class GoToCheckOutButton extends StatelessWidget {
           ),
           Divider(
             thickness: 0.7,
-            color: Colors.grey.withOpacity(0.5),
+            color: Colors.grey.withOpacityNew(0.5),
           ),
           h20,
           CustomTextButton(
@@ -423,7 +424,7 @@ class CartItemWidget extends StatelessWidget {
                               child: Container(
                                 padding: const EdgeInsets.all(5),
                                 decoration:
-                                    BoxDecoration(borderRadius: BorderRadius.circular(8), border: Border.all(color: Colors.red.withOpacity(0.2))),
+                                    BoxDecoration(borderRadius: BorderRadius.circular(8), border: Border.all(color: Colors.red.withOpacityNew(0.2))),
                                 child: Icon(
                                   Icons.delete_outline,
                                   color: state is AddToCartLoading ? Colors.grey : Colors.red,

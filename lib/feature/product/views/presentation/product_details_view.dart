@@ -11,8 +11,6 @@ import 'package:dobzz_seller/core/utils/utils.dart';
 import 'package:dobzz_seller/feature/cart/view/manager/addToCart/cubit/add_to_cart_cubit.dart';
 import 'package:dobzz_seller/feature/cart/view/manager/cartItems/cubit/cart_items_cubit.dart';
 import 'package:dobzz_seller/feature/home/data/models/product_mdoel.dart';
-import 'package:dobzz_seller/feature/home/views/manager/addToWhishlist/cubit/add_to_wish_list_cubit.dart';
-import 'package:dobzz_seller/feature/home/views/manager/removeFromWhislist/cubit/remove_from_whish_list_cubit.dart';
 import 'package:dobzz_seller/feature/product/data/model/product_details_model.dart';
 import 'package:dobzz_seller/feature/product/views/manager/productDetails/cubit/product_details_cubit.dart';
 import 'package:dobzz_seller/feature/product/views/presentation/widgets/product_image_section_widget.dart';
@@ -46,8 +44,6 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
   final PageController controller = PageController();
   final AddToCartCubit addToCartCubit = AddToCartCubit();
   final ProductDetailsCubit productDetailsCubit = ProductDetailsCubit();
-  AddToWishListCubit addToWishListCubit = AddToWishListCubit();
-  RemoveFrommWishListCubit removeFromWhishListCubit = RemoveFrommWishListCubit();
   Variants? selectVariant;
   int selectedQuantity = 1;
   @override

@@ -165,7 +165,7 @@ class _OtpVerificationContentState extends State<OtpVerificationContent> {
                 errorBorderColor: AppColors.cBorderPinColor,
                 selectedColor: AppColors.primaryColor,
                 selectedFillColor: AppColors.cBorderTextFormField,
-                inactiveColor: AppColors.cBorderPinColor.withOpacity(.15),
+                inactiveColor: AppColors.cBorderPinColor.withOpacityNew(.15),
                 activeColor: AppColors.primaryColor,
                 fieldWidth: 40,
                 fieldHeight: 50,
@@ -180,7 +180,7 @@ class _OtpVerificationContentState extends State<OtpVerificationContent> {
           //     Text(
           //       '00:${_start.toString().padLeft(2, '0')}',
           //       style: Theme.of(context).textTheme.titleSmall?.copyWith(
-          //             color: AppColors.primaryColor.withOpacity(.4),
+          //             color: AppColors.primaryColor.withOpacityNew(.4),
           //           ),
           //     ),
           //     InkWell(
@@ -196,8 +196,8 @@ class _OtpVerificationContentState extends State<OtpVerificationContent> {
           //         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
           //               fontWeight: FontWeight.w700,
           //               decoration: TextDecoration.underline,
-          //               color: _start != 0 ? AppColors.primaryColor.withOpacity(.4) : AppColors.primaryColor,
-          //               decorationColor: _start != 0 ? AppColors.primaryColor.withOpacity(.4) : Colors.black,
+          //               color: _start != 0 ? AppColors.primaryColor.withOpacityNew(.4) : AppColors.primaryColor,
+          //               decorationColor: _start != 0 ? AppColors.primaryColor.withOpacityNew(.4) : Colors.black,
           //             ),
           //       ),
           //     ),
@@ -209,7 +209,7 @@ class _OtpVerificationContentState extends State<OtpVerificationContent> {
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 12),
-                backgroundColor: _isOtpComplete ? Theme.of(context).primaryColor : Theme.of(context).primaryColor.withOpacity(0.5),
+                backgroundColor: _isOtpComplete ? Theme.of(context).primaryColor : Theme.of(context).primaryColor.withOpacityNew(0.5),
                 foregroundColor: Colors.white,
               ),
               onPressed: _isOtpComplete

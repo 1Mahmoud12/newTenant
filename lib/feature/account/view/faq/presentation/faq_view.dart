@@ -3,6 +3,7 @@ import 'package:dobzz_seller/core/component/custom_list.dart';
 import 'package:dobzz_seller/core/component/fields/custom_text_form_field.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:dobzz_seller/core/utils/constant_gaping.dart';
+import 'package:dobzz_seller/core/utils/extensions.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -117,10 +118,10 @@ class QuestionItem extends StatelessWidget {
                   ),
                   color: Colors.white,
                   border: Border(
-                    top: BorderSide(color: Colors.grey.withOpacity(0.2)),
-                    left: BorderSide(color: Colors.grey.withOpacity(0.2)),
-                    right: BorderSide(color: Colors.grey.withOpacity(0.2)),
-                    bottom: expandableController.expanded ? BorderSide.none : BorderSide(color: Colors.grey.withOpacity(0.2)),
+                    top: BorderSide(color: Colors.grey.withOpacityNew(0.2)),
+                    left: BorderSide(color: Colors.grey.withOpacityNew(0.2)),
+                    right: BorderSide(color: Colors.grey.withOpacityNew(0.2)),
+                    bottom: expandableController.expanded ? BorderSide.none : BorderSide(color: Colors.grey.withOpacityNew(0.2)),
                   ),
                 ),
                 child: Row(
@@ -148,9 +149,9 @@ class QuestionItem extends StatelessWidget {
             ),
             color: Colors.white,
             border: Border(
-              left: BorderSide(color: Colors.grey.withOpacity(0.2)),
-              right: BorderSide(color: Colors.grey.withOpacity(0.2)),
-              bottom: BorderSide(color: Colors.grey.withOpacity(0.2)),
+              left: BorderSide(color: Colors.grey.withOpacityNew(0.2)),
+              right: BorderSide(color: Colors.grey.withOpacityNew(0.2)),
+              bottom: BorderSide(color: Colors.grey.withOpacityNew(0.2)),
             ),
           ),
           child: Column(

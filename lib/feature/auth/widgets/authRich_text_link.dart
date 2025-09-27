@@ -26,7 +26,7 @@ class AuthRichTextLink extends StatelessWidget {
         text: text,
         style: TextStyle(
           fontFamily: 'Cairo',
-          color: Colors.black.withOpacity(0.6),
+          color: Colors.black.withOpacityNew(0.6),
           fontSize: Constants.tablet ? 16 : 16.sp,
         ),
         children: [

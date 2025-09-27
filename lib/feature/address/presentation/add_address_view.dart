@@ -5,6 +5,7 @@ import 'package:dobzz_seller/core/component/fields/custom_text_form_field.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:dobzz_seller/core/utils/constant_gaping.dart';
 import 'package:dobzz_seller/core/utils/constants_models.dart';
+import 'package:dobzz_seller/core/utils/extensions.dart';
 import 'package:dobzz_seller/feature/address/data/models/address_model.dart';
 import 'package:dobzz_seller/feature/address/presentation/manager/addAddress/cubit/add_address_cubit.dart';
 import 'package:dobzz_seller/feature/address/presentation/manager/address/cubit/address_cubit.dart';
@@ -128,7 +129,7 @@ class _AddAddressViewState extends State<AddAddressView> {
                       hasError: ConstantsModels.stateModel?.data?.isEmpty ?? true,
                       errorText: 'there is no state available'.tr(),
                       nameField: 'State'.tr(),
-                      borderColor: Colors.grey.withOpacity(0.2),
+                      borderColor: Colors.grey.withOpacityNew(0.2),
                       selectedItem: DropDownModel(
                         name: widget.isUpdate! ? stateName : 'Choose your state'.tr(),
                         value: widget.isUpdate! ? addAddressCubit.stateId : 0,
@@ -158,7 +159,7 @@ class _AddAddressViewState extends State<AddAddressView> {
                         hasError: widget.isUpdate! ? false : ConstantsModels.cityModel?.data?.isEmpty ?? true,
                         errorText: 'there is no cites available'.tr(),
                         nameField: 'City',
-                        borderColor: Colors.grey.withOpacity(0.2),
+                        borderColor: Colors.grey.withOpacityNew(0.2),
                         selectedItem: DropDownModel(
                           name: widget.isUpdate! ? cityName : 'Choose your city'.tr(),
                           value: widget.isUpdate! ? addAddressCubit.cityId : 0,

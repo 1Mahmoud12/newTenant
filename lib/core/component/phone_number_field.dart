@@ -1,8 +1,10 @@
 import 'dart:developer';
+
 import 'package:dobzz_seller/core/component/custom_drop_down_menu.dart';
 import 'package:dobzz_seller/core/component/fields/custom_text_form_field.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:dobzz_seller/core/utils/app_icons.dart';
+import 'package:dobzz_seller/core/utils/extensions.dart';
 import 'package:dobzz_seller/core/utils/utils.dart';
 import 'package:dobzz_seller/feature/auth/manager/authBloc/auth_cubit.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -126,7 +128,7 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
       outPadding: widget.outPadding ?? const EdgeInsets.symmetric(horizontal: 20),
       controller: widget.controller,
       hintText: 'Phone'.tr(),
-      hintStyle: TextStyle(color: AppColors.primaryColor.withOpacity(0.5)),
+      hintStyle: TextStyle(color: AppColors.primaryColor.withOpacityNew(0.5)),
       //  labelText: _phoneHint.tr(),
       validator: (value) => _validatePhoneNumber(value, _countryCode),
       prefixIcon: Padding(
@@ -149,7 +151,7 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
               Container(
                 height: 40,
                 width: 1,
-                color: AppColors.grey.withOpacity(0.3),
+                color: AppColors.grey.withOpacityNew(0.3),
               ),
             ],
           ),

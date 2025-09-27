@@ -5,6 +5,7 @@ import 'package:dobzz_seller/core/component/loadsErros/loading_widget.dart';
 import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:dobzz_seller/core/utils/constants_models.dart';
 import 'package:dobzz_seller/core/utils/errorLoadingWidgets/empty_widget.dart';
+import 'package:dobzz_seller/core/utils/extensions.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/feature/account/view/myOrders/data/models/order_model.dart';
 import 'package:dobzz_seller/feature/account/view/myOrders/presentation/manager/order/cubit/order_cubit.dart';
@@ -65,7 +66,7 @@ class _MyOrderViewState extends State<MyOrderView> {
                   children: [
                     Expanded(
                       child: ConstantsModels.orderModel?.data?.isEmpty ?? true
-                          ?  Center(
+                          ? Center(
                               child: EmptyWidget(
                                 data: 'No Ongoing Orders!'.tr(),
                                 subData: 'You don’t have any ongoing orders at this time.'.tr(),
@@ -135,14 +136,14 @@ class OrderCard extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
         side: BorderSide(
-          color: Colors.grey.withOpacity(0.1),
+          color: Colors.grey.withOpacityNew(0.1),
         ),
       ),
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: Colors.grey.withOpacity(0.1),
+            color: Colors.grey.withOpacityNew(0.1),
             width: 0.5,
           ),
         ),
@@ -194,7 +195,7 @@ class OrderCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
-        border: Border(bottom: BorderSide(color: Colors.grey.withOpacity(0.2))),
+        border: Border(bottom: BorderSide(color: Colors.grey.withOpacityNew(0.2))),
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(12),
           topRight: Radius.circular(12),
@@ -220,7 +221,7 @@ class OrderCard extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             decoration: BoxDecoration(
-              color: statusColor.withOpacity(0.2),
+              color: statusColor.withOpacityNew(0.2),
               borderRadius: BorderRadius.circular(12),
               border: Border.all(color: statusColor),
             ),
@@ -243,7 +244,7 @@ class OrderCard extends StatelessWidget {
   // Stacked product images
   Widget _buildProductImages(List<Items> items) {
     if (items.isEmpty) {
-      return  SizedBox(
+      return SizedBox(
         height: 120,
         child: Center(
           child: Text('No items available'.tr()),
@@ -271,7 +272,7 @@ class OrderCard extends StatelessWidget {
                     border: Border.all(color: Colors.white, width: 2),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
+                        color: Colors.black.withOpacityNew(0.1),
                         blurRadius: 4,
                         spreadRadius: 1,
                       ),
@@ -402,7 +403,7 @@ class OrderCard extends StatelessWidget {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
               decoration: BoxDecoration(
-                color: paymentStatusColor.withOpacity(0.1),
+                color: paymentStatusColor.withOpacityNew(0.1),
                 borderRadius: BorderRadius.circular(4),
               ),
               child: Row(
@@ -789,7 +790,7 @@ class OrderStatus extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
-        color: isItCompleted ? const Color(0xff0C9409).withOpacity(0.2) : const Color(0xffE6E6E6),
+        color: isItCompleted ? const Color(0xff0C9409).withOpacityNew(0.2) : const Color(0xffE6E6E6),
       ),
       child: Text(
         isItCompleted ? 'Completed' : 'In Transit',

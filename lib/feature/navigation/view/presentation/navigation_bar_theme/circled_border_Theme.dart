@@ -96,7 +96,7 @@ class NavItem extends StatelessWidget {
         height: 65,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: isSelected ? Colors.white.withOpacity(0.1) : Colors.transparent,
+          color: isSelected ? Colors.white.withOpacityNew(0.1) : Colors.transparent,
         ),
         child: Column(
           children: [

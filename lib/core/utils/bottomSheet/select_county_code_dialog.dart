@@ -1,9 +1,10 @@
+import 'package:dobzz_seller/core/themes/colors.dart';
+import 'package:dobzz_seller/core/utils/app_icons.dart';
+import 'package:dobzz_seller/core/utils/extensions.dart';
+import 'package:dobzz_seller/core/utils/item_above_modal_bottom_sheet.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:dobzz_seller/core/themes/colors.dart';
-import 'package:dobzz_seller/core/utils/app_icons.dart';
-import 'package:dobzz_seller/core/utils/item_above_modal_bottom_sheet.dart';
 
 class Country {
   final int id;
@@ -91,7 +92,7 @@ Future<Country> selectCountryCodeDialog(BuildContext context, {required Country 
                                 style: Theme.of(context)
                                     .textTheme
                                     .headlineLarge
-                                    ?.copyWith(fontWeight: FontWeight.w500, color: AppColors.cB700.withOpacity(.3)),
+                                    ?.copyWith(fontWeight: FontWeight.w500, color: AppColors.cB700.withOpacityNew(.3)),
                               ),
                             ],
                           ),

@@ -7,6 +7,7 @@ import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:dobzz_seller/core/utils/constant_gaping.dart';
 import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:dobzz_seller/core/utils/constants_models.dart';
+import 'package:dobzz_seller/core/utils/extensions.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/core/utils/utils.dart';
 import 'package:dobzz_seller/feature/address/presentation/add_address_view.dart';
@@ -129,7 +130,7 @@ class _CheckoutViewState extends State<CheckoutView> {
                                 hasError: ConstantsModels.addressModel?.data?.isEmpty ?? true,
                                 errorText: 'you should create address first'.tr(),
                                 nameField: 'Address'.tr(),
-                                borderColor: Colors.grey.withOpacity(0.2),
+                                borderColor: Colors.grey.withOpacityNew(0.2),
                                 selectedItem: DropDownModel(name: Constants.defaultAddress.name!, value: 0),
                                 items: ConstantsModels.addressModel?.data?.map((e) {
                                       return DropDownModel(name: e.name ?? '', value: e.id ?? -1);
@@ -175,7 +176,7 @@ class _CheckoutViewState extends State<CheckoutView> {
                     const SizedBox(height: 8),
                     Divider(
                       thickness: 0.7,
-                      color: Colors.grey.withOpacity(0.3),
+                      color: Colors.grey.withOpacityNew(0.3),
                     ),
                     const SizedBox(height: 8),
                     // Payment Method Section
@@ -208,7 +209,7 @@ class _CheckoutViewState extends State<CheckoutView> {
                     const SizedBox(height: 8),
                     Divider(
                       thickness: 0.7,
-                      color: Colors.grey.withOpacity(0.3),
+                      color: Colors.grey.withOpacityNew(0.3),
                     ),
                     const SizedBox(height: 8),
                     // Payment Method Section
@@ -230,7 +231,7 @@ class _CheckoutViewState extends State<CheckoutView> {
                     const SizedBox(height: 8),
                     Divider(
                       thickness: 0.7,
-                      color: Colors.grey.withOpacity(0.3),
+                      color: Colors.grey.withOpacityNew(0.3),
                     ),
                     const SizedBox(height: 8),
                     // Payment Method Section

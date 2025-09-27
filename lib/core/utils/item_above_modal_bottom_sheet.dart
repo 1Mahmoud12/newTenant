@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
+import 'package:dobzz_seller/core/utils/extensions.dart';
+import 'package:flutter/material.dart';
 
 class ItemAboveModalBottomSheet extends StatelessWidget {
   const ItemAboveModalBottomSheet({
@@ -15,7 +16,7 @@ class ItemAboveModalBottomSheet extends StatelessWidget {
           width: 40,
           height: 5,
           decoration: ShapeDecoration(
-            color: AppColors.grey.withOpacity(.5),
+            color: AppColors.grey.withOpacityNew(.5),
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
           ),
         ),

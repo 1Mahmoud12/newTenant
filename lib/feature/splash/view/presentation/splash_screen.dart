@@ -1,15 +1,17 @@
 import 'dart:async';
 import 'dart:ui';
+
 import 'package:dobzz_seller/core/network/local/cache.dart';
+import 'package:dobzz_seller/core/utils/app_images.dart';
+import 'package:dobzz_seller/core/utils/constants.dart';
+import 'package:dobzz_seller/core/utils/extensions.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
+import 'package:dobzz_seller/core/utils/utils.dart';
 import 'package:dobzz_seller/feature/auth/login/view/presentation/login_screen.dart';
 import 'package:dobzz_seller/feature/navigation/view/presentation/navigation_view.dart';
 import 'package:dobzz_seller/feature/splash/view/presentation/splash_two_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:dobzz_seller/core/utils/app_images.dart';
-import 'package:dobzz_seller/core/utils/constants.dart';
-import 'package:dobzz_seller/core/utils/utils.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -91,7 +93,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 child: Container(
                   width: 150,
                   height: 150,
-                  color: Colors.white.withOpacity(0.1), // light blur effect
+                  color: Colors.white.withOpacityNew(0.1), // light blur effect
                 ),
               ),
             ),

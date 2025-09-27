@@ -1,9 +1,8 @@
 import 'package:dobzz_seller/core/component/custom_app_bar.dart';
-import 'package:dobzz_seller/core/utils/app_images.dart';
 import 'package:dobzz_seller/core/utils/errorLoadingWidgets/empty_widget.dart';
+import 'package:dobzz_seller/core/utils/extensions.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class NotificationsView extends StatelessWidget {
   const NotificationsView({Key? key}) : super(key: key);
@@ -65,7 +64,7 @@ class NotificationsView extends StatelessWidget {
         title: 'Notification'.tr(),
         actions: const SizedBox.shrink(),
       ),
-      body:  Column(
+      body: Column(
         children: [
           EmptyWidget(
             data: 'You haven’t gotten any notifications yet!'.tr(),
@@ -154,7 +153,7 @@ class NotificationGroupWidget extends StatelessWidget {
           Divider(
             height: 1,
             thickness: 0.7,
-            color: Colors.grey.withOpacity(0.2),
+            color: Colors.grey.withOpacityNew(0.2),
           ),
       ],
     );

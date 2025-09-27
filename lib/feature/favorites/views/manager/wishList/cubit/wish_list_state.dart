@@ -14,3 +14,23 @@ final class WishListError extends WishListState {
 
   WishListError({required this.e});
 }
+
+final class AddToWishListLoading extends WishListState {}
+
+final class AddToWishListSuccess extends WishListState {}
+
+final class AddToWishListError extends WishListState {
+  final String e;
+
+  AddToWishListError({required this.e});
+}
+
+final class RemoveFromWishListLoading extends WishListState {}
+
+final class RemoveFromWishListSuccess extends WishListState {}
+
+final class RemoveFromWishListError extends WishListState {
+  final String e;
+
+  RemoveFromWishListError({required this.e});
+}

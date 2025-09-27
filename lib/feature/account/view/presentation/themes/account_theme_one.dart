@@ -3,6 +3,7 @@ import 'package:dobzz_seller/core/network/local/cache.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:dobzz_seller/core/utils/app_icons.dart';
 import 'package:dobzz_seller/core/utils/constants.dart';
+import 'package:dobzz_seller/core/utils/extensions.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/core/utils/utils.dart';
 import 'package:dobzz_seller/feature/account/view/helpCenter/presentation/help_center_view.dart';
@@ -81,7 +82,7 @@ class _ProfileViewThemeOneState extends State<ProfileViewThemeOne> {
                                   Container(
                                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                                     decoration: BoxDecoration(
-                                      color: Colors.white.withOpacity(0.2),
+                                      color: Colors.white.withOpacityNew(0.2),
                                       borderRadius: BorderRadius.circular(20),
                                     ),
                                     child: Row(
@@ -388,7 +389,7 @@ class _ProfileViewThemeOneState extends State<ProfileViewThemeOne> {
               width: 42,
               height: 42,
               decoration: BoxDecoration(
-                color: AppColors.primaryColor.withOpacity(0.1),
+                color: AppColors.primaryColor.withOpacityNew(0.1),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Center(
@@ -482,7 +483,7 @@ class _ProfileViewThemeOneState extends State<ProfileViewThemeOne> {
       padding: const EdgeInsets.only(left: 58),
       child: Container(
         height: 1,
-        color: Colors.grey.withOpacity(0.2),
+        color: Colors.grey.withOpacityNew(0.2),
       ),
     );
   }

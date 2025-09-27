@@ -1,8 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dobzz_seller/core/component/buttons/custom_text_button.dart';
-import 'package:dobzz_seller/core/component/fields/custom_text_form_field.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:dobzz_seller/core/utils/custom_show_toast.dart';
 import 'package:dobzz_seller/core/utils/extensions.dart';
@@ -11,6 +7,9 @@ import 'package:dobzz_seller/feature/auth/login/view/presentation/login_screen.d
 import 'package:dobzz_seller/feature/auth/manager/authBloc/auth_cubit.dart';
 import 'package:dobzz_seller/feature/auth/manager/authBloc/auth_state.dart';
 import 'package:dobzz_seller/feature/auth/verifyCode/view/presentation/verify_code_view.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AddPasswordView extends StatefulWidget {
   const AddPasswordView({super.key});
@@ -39,7 +38,7 @@ class AddPasswordViewState extends State<AddPasswordView> {
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
                 decoration: BoxDecoration(
-                  border: Border.all(color: AppColors.cB700.withOpacity(.05), width: 2),
+                  border: Border.all(color: AppColors.cB700.withOpacityNew(.05), width: 2),
                   borderRadius: BorderRadius.circular(40),
                 ),
                 child: Text(

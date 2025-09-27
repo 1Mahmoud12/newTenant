@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:dobzz_seller/core/component/cache_image.dart';
 import 'package:dobzz_seller/core/utils/constants_models.dart';
+import 'package:dobzz_seller/core/utils/extensions.dart';
 import 'package:dobzz_seller/feature/home/data/models/sales_model.dart';
 import 'package:dobzz_seller/feature/home/views/manager/salesBanner/cubit/sales_banner_cubit.dart';
 import 'package:flutter/material.dart';
@@ -339,7 +340,7 @@ class _SalesBannerLoadingWidgetState extends State<SalesBannerLoadingWidget> wit
                   Text(
                     'Loading Sales Banner...',
                     style: TextStyle(
-                      color: Colors.white.withOpacity(0.9),
+                      color: Colors.white.withOpacityNew(0.9),
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
                     ),

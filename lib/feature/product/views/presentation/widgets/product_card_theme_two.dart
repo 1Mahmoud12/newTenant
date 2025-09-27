@@ -45,12 +45,8 @@ class _ProductCardThemeTwoState extends State<ProductCardThemeTwo> {
   bool isAddedToCart = false;
 
   void toggleLike() {
-    widget.onLikeTap.call(isWishListed());
+    widget.onLikeTap.call(context.read<WishListCubit>().isWishListed(productId: widget.productId));
     debugPrint('Liked:  for ${widget.title}');
-  }
-
-  bool isWishListed() {
-    return WishListCubit.get(context).wishList.any((element) => element.productId == widget.productId);
   }
 
   @override
@@ -87,23 +83,21 @@ class _ProductCardThemeTwoState extends State<ProductCardThemeTwo> {
                     },
                   ),
                 ),
-                BlocBuilder<WishListCubit, WishListState>(
-                  builder: (context, state) => Positioned(
-                    top: 12,
-                    right: 12,
-                    child: GestureDetector(
-                      onTap: toggleLike,
-                      child: Container(
-                        padding: const EdgeInsets.all(6),
-                        decoration: const BoxDecoration(
-                          color: Colors.black87,
-                          shape: BoxShape.circle,
-                        ),
-                        child: Icon(
-                          isWishListed() ? Icons.favorite : Icons.favorite_border,
-                          color: Colors.white,
-                          size: 18,
-                        ),
+                Positioned(
+                  top: 12,
+                  right: 12,
+                  child: GestureDetector(
+                    onTap: toggleLike,
+                    child: Container(
+                      padding: const EdgeInsets.all(6),
+                      decoration: const BoxDecoration(
+                        color: Colors.black87,
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        context.watch<WishListCubit>().isWishListed(productId: widget.productId) ? Icons.favorite : Icons.favorite_border,
+                        color: Colors.white,
+                        size: 18,
                       ),
                     ),
                   ),

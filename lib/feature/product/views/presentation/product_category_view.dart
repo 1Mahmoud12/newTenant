@@ -5,9 +5,8 @@ import 'package:dobzz_seller/core/utils/custom_show_toast.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/feature/Categories/presentation/manager/subCategroy/cubit/sub_category_cubit.dart';
 import 'package:dobzz_seller/feature/cart/view/presentation/cart_view.dart';
-import 'package:dobzz_seller/feature/home/views/manager/addToWhishlist/cubit/add_to_wish_list_cubit.dart';
+import 'package:dobzz_seller/feature/favorites/views/manager/wishList/cubit/wish_list_cubit.dart';
 import 'package:dobzz_seller/feature/home/views/manager/categories/cubit/categories_cubit.dart';
-import 'package:dobzz_seller/feature/home/views/manager/removeFromWhislist/cubit/remove_from_whish_list_cubit.dart';
 import 'package:dobzz_seller/feature/home/views/manager/topProduct/cubit/top_product_cubit.dart';
 import 'package:dobzz_seller/feature/home/views/presentation/widgets/cart_floating_action_button.dart';
 import 'package:dobzz_seller/feature/product/views/presentation/widgets/product_card_theme_two.dart';
@@ -56,8 +55,6 @@ class _ProductCategoryViewState extends State<ProductCategoryView> {
 
   TopProductCubit topProductCubit = TopProductCubit();
   SubCategoryCubit subCategoryCubit = SubCategoryCubit();
-  RemoveFrommWishListCubit removeFromWhishListCubit = RemoveFrommWishListCubit();
-  AddToWishListCubit addToWishListCubit = AddToWishListCubit();
   CategoriesCubit categoriesCubit = CategoriesCubit();
 
   @override
@@ -149,7 +146,7 @@ class _ProductCategoryViewState extends State<ProductCategoryView> {
                                     // boxShadow: isSelected
                                     //     ? [
                                     //         BoxShadow(
-                                    //           color: AppColors.primaryColor.withOpacity(0.3),
+                                    //           color: AppColors.primaryColor.withOpacityNew(0.3),
                                     //           blurRadius: 8,
                                     //           offset: const Offset(0, 4),
                                     //         ),
@@ -285,9 +282,9 @@ class _ProductCategoryViewState extends State<ProductCategoryView> {
                               }
                               if (!isNowLiked) {
                                 // Add to wishlist
-                                addToWishListCubit.addToWishList(context: context, skuCode: sku);
+                                context.read<WishListCubit>().addToWishList(context: context, skuCode: sku, product: product);
                               } else {
-                                removeFromWhishListCubit.removeFromWishList(context: context, skuCode: sku);
+                                context.read<WishListCubit>().removeFromWishList(context: context, skuCode: sku);
                               }
                             },
                             imagePath: product.imagePath ?? '',

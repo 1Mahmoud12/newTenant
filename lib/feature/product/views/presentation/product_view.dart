@@ -2,7 +2,7 @@ import 'package:dobzz_seller/core/component/custom_app_bar.dart';
 import 'package:dobzz_seller/core/component/loadsErros/loading_widget.dart';
 import 'package:dobzz_seller/core/utils/constants_models.dart';
 import 'package:dobzz_seller/core/utils/custom_show_toast.dart';
-import 'package:dobzz_seller/feature/home/views/manager/addToWhishlist/cubit/add_to_wish_list_cubit.dart';
+import 'package:dobzz_seller/feature/favorites/views/manager/wishList/cubit/wish_list_cubit.dart';
 import 'package:dobzz_seller/feature/home/views/manager/topProduct/cubit/top_product_cubit.dart';
 import 'package:dobzz_seller/feature/home/views/presentation/widgets/empty_product.dart';
 import 'package:dobzz_seller/feature/home/views/presentation/widgets/product_card.dart';
@@ -20,12 +20,12 @@ class ProductView extends StatefulWidget {
 class _ProductViewState extends State<ProductView> {
   @override
   void initState() {
-    topProductCubit.getTopProduct(context: context, subCategoryId: widget.subCategoryId);
+    topProductCubit.getTopProduct(
+        context: context, subCategoryId: widget.subCategoryId);
     super.initState();
   }
 
   TopProductCubit topProductCubit = TopProductCubit();
-  AddToWishListCubit addToWishListCubit = AddToWishListCubit();
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +47,9 @@ class _ProductViewState extends State<ProductView> {
                 );
               } else if (state is TopProductSuccess) {
                 // Access the loaded top products
-                final products = widget.subCategoryId == null ? ConstantsModels.topProductModel?.data : ConstantsModels.productsModel?.data;
+                final products = widget.subCategoryId == null
+                    ? ConstantsModels.topProductModel?.data
+                    : ConstantsModels.productsModel?.data;
 
                 if (products == null || products.isEmpty) {
                   return Center(
@@ -78,14 +80,17 @@ class _ProductViewState extends State<ProductView> {
                       initialLiked: false,
                       sku: product.skuCode,
                       onLikeTap: (isNowLiked) {
-                        final sku = product.skuCode ?? product.variants?.firstOrNull?.skuCode;
+                        final sku = product.skuCode ??
+                            product.variants?.firstOrNull?.skuCode;
                         if (sku == null) {
-                          customShowToast(context, 'not_sku_for_this_item'.tr());
+                          customShowToast(
+                              context, 'not_sku_for_this_item'.tr());
                           return;
                         }
                         if (isNowLiked) {
                           // Add to wishlist
-                          addToWishListCubit.addToWishList(context: context, skuCode: sku);
+                          context.read<WishListCubit>().addToWishList(
+                              context: context, skuCode: sku, product: product);
                         }
                       },
                       imagePath: product.imagePath ?? '',

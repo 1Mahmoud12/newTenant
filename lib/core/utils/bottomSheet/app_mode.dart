@@ -1,10 +1,11 @@
-import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dobzz_seller/core/component/buttons/custom_text_button.dart';
 import 'package:dobzz_seller/core/network/local/cache.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
+import 'package:dobzz_seller/core/utils/extensions.dart';
 import 'package:dobzz_seller/feature/navigation/view/manager/homeBloc/cubit.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 Future<void> appModeDialog(BuildContext context) async {
   bool modeApp = darkModeValue;
@@ -67,7 +68,7 @@ Future<void> appModeDialog(BuildContext context) async {
                         color: AppColors.white,
                         boxShadow: [
                           BoxShadow(
-                            color: AppColors.black.withOpacity(0.25),
+                            color: AppColors.black.withOpacityNew(0.25),
                             spreadRadius: 1,
                             blurRadius: 19.31,
                             offset: const Offset(0, 4.83), // changes position of shadow
@@ -110,7 +111,7 @@ Future<void> appModeDialog(BuildContext context) async {
                         color: AppColors.black,
                         boxShadow: [
                           BoxShadow(
-                            color: AppColors.black.withOpacity(0.25),
+                            color: AppColors.black.withOpacityNew(0.25),
                             spreadRadius: 1,
                             blurRadius: 19.31,
                             offset: const Offset(0, 4.83), // changes position of shadow
