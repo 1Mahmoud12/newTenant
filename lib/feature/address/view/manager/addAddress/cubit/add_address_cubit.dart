@@ -1,8 +1,10 @@
-import 'package:bloc/bloc.dart';
 import 'package:dobzz_seller/core/utils/utils.dart';
 import 'package:dobzz_seller/feature/address/data/dataSourec/address_data_source.dart';
-import 'package:dobzz_seller/feature/address/presentation/manager/address/cubit/address_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+
+import '../../address/cubit/address_cubit.dart';
 
 part 'add_address_state.dart';
 
@@ -12,10 +14,13 @@ class AddAddressCubit extends Cubit<AddAddressState> {
   TextEditingController addressNicknameController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   int cityId = -1;
-  String? city;
-  String? stateName;
+  TextEditingController city = TextEditingController();
+  TextEditingController stateName = TextEditingController();
   int stateId = -1;
   bool isDefault = false;
+
+  LatLng? selectedLocation;
+
   Future<void> addAddress({required BuildContext context, required AddressCubit addressCubit}) async {
     if (isClosed) return;
     emit(AddAddressLoading());
@@ -24,9 +29,10 @@ class AddAddressCubit extends Cubit<AddAddressState> {
         'name': nameController.text,
         'address': addressNicknameController.text,
         'phone': phoneController.text,
-        // 'city_id': cityId,
-        'city': city,
-        'state': stateName,
+        'lat': selectedLocation?.latitude,
+        'lng': selectedLocation?.longitude,
+        'city': city.text,
+        'state': stateName.text,
         //'state_id': stateId,
         'is_default': isDefault,
       },
@@ -56,10 +62,13 @@ class AddAddressCubit extends Cubit<AddAddressState> {
     await AddressDataSource.updateAddress(
       addressId: addressId,
       data: {
-        'name': addressNicknameController.text,
+        'name': nameController.text,
+        'address': addressNicknameController.text,
         'phone': phoneController.text,
-        'city_id': cityId,
-        'state_id': stateId,
+        'lat': selectedLocation?.latitude,
+        'lng': selectedLocation?.longitude,
+        'city': city.text,
+        'state': stateName.text,
         'is_default': isDefault,
         '_method': 'put',
       },

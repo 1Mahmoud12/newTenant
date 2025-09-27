@@ -2,7 +2,6 @@ import 'package:dobzz_seller/core/network/local/cache.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:dobzz_seller/core/themes/light.dart';
 import 'package:dobzz_seller/core/utils/constants.dart';
-import 'package:dobzz_seller/feature/address/presentation/manager/address/cubit/address_cubit.dart';
 import 'package:dobzz_seller/feature/cart/view/manager/cartItems/cubit/cart_items_cubit.dart';
 import 'package:dobzz_seller/feature/favorites/views/manager/wishList/cubit/wish_list_cubit.dart';
 import 'package:dobzz_seller/feature/navigation/view/manager/homeBloc/state.dart';
@@ -14,6 +13,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'dobzz_seller_view.dart';
+import 'feature/address/view/manager/address/cubit/address_cubit.dart';
 import 'feature/auth/manager/authBloc/auth_cubit.dart';
 import 'feature/navigation/view/manager/homeBloc/cubit.dart';
 import 'main.dart';

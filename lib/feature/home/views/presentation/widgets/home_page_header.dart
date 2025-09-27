@@ -2,14 +2,15 @@ import 'package:dobzz_seller/core/utils/app_icons.dart';
 import 'package:dobzz_seller/core/utils/constant_gaping.dart';
 import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
-import 'package:dobzz_seller/feature/address/presentation/address_view.dart';
-import 'package:dobzz_seller/feature/address/presentation/manager/address/cubit/address_cubit.dart';
 import 'package:dobzz_seller/feature/notification/presentation/notification_view.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+
+import '../../../../address/view/manager/address/cubit/address_cubit.dart';
+import '../../../../address/view/presentation/address_view.dart';
 
 class HomePageHeader extends StatefulWidget {
   const HomePageHeader({super.key});

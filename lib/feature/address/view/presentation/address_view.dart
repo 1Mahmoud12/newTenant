@@ -7,13 +7,14 @@ import 'package:dobzz_seller/core/utils/constant_gaping.dart';
 import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:dobzz_seller/core/utils/constants_models.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
-import 'package:dobzz_seller/feature/address/presentation/add_address_view.dart';
-import 'package:dobzz_seller/feature/address/presentation/manager/address/cubit/address_cubit.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+
+import '../manager/address/cubit/address_cubit.dart';
+import 'add_address_view.dart';
 
 class AddressView extends StatefulWidget {
   const AddressView({super.key});
@@ -39,41 +40,48 @@ class _AddressViewState extends State<AddressView> {
     return Scaffold(
       appBar: customAppBar(context: context, title: 'Address'.tr()),
       persistentFooterButtons: [
-        InkWell(
-          onTap: () => context.navigateToPage(
-            AddAddressView(
-              addressCubit: addressCubit,
-            ),
-          ),
-          child: Container(
-            width: double.infinity,
-            padding: const EdgeInsets.symmetric(vertical: 16),
-            decoration: BoxDecoration(
-              color: AppColors.primaryColor,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Center(
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Icon(
-                    Icons.add,
-                    color: Colors.white,
+        Column(
+          children: [
+            InkWell(
+              onTap: () => context.navigateToPage(
+                AddAddressView(
+                  addressCubit: addressCubit,
+                ),
+              ),
+              child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                decoration: BoxDecoration(
+                  color: AppColors.primaryColor,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Center(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Icon(
+                        Icons.add,
+                        color: Colors.white,
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        'Add New Address'.tr(),
+                        style: TextStyle(
+                          fontSize: Constants.tablet ? 16 : 16.sp,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(width: 8),
-                  Text(
-                    'Add New Address'.tr(),
-                    style: TextStyle(
-                      fontSize: Constants.tablet ? 16 : 16.sp,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                ],
+                ),
               ),
             ),
-          ),
-        ),
+            const SizedBox(
+              height: 24,
+            ),
+          ],
+        )
 
         // BlocProvider.value(
         //   value: addressCubit,
@@ -182,7 +190,8 @@ class _AddressViewState extends State<AddressView> {
                                         fontSize: Constants.tablet ? 16 : 16.sp,
                                       ),
                                     ),
-                                    if (address?.isDefault ?? false)
+                                    if (address?.isDefault ?? false) ...[
+                                      const SizedBox(width: 8),
                                       Container(
                                         margin: const EdgeInsets.only(left: 8),
                                         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
@@ -198,6 +207,7 @@ class _AddressViewState extends State<AddressView> {
                                           ),
                                         ),
                                       ),
+                                    ],
                                   ],
                                 ),
                                 subtitle: Padding(

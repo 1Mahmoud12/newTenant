@@ -13,7 +13,6 @@ import 'package:dobzz_seller/feature/account/view/myDetalis/presentation/my_deta
 import 'package:dobzz_seller/feature/account/view/myOrders/presentation/my_order_view.dart';
 import 'package:dobzz_seller/feature/account/view/notificationSetting/presentation/notification_setting_view.dart';
 import 'package:dobzz_seller/feature/account/view/presentation/language_view.dart';
-import 'package:dobzz_seller/feature/address/presentation/address_view.dart';
 import 'package:dobzz_seller/feature/auth/forgetPassword/view/presentation/reset_password_view.dart';
 import 'package:dobzz_seller/feature/auth/login/view/presentation/login_screen.dart';
 import 'package:dobzz_seller/mainCubit/cubit/main_cubit_cubit.dart';
@@ -22,6 +21,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+
+import '../../../../address/view/presentation/address_view.dart';
 
 class ProfileViewThemeOne extends StatefulWidget {
   const ProfileViewThemeOne({Key? key}) : super(key: key);
