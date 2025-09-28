@@ -69,7 +69,7 @@ class _ProductCardState extends State<ProductCard> {
     setState(() {
       isLiked = !isLiked;
     });
-    widget.onLikeTap?.call(context.read<WishListCubit>().isWishListed(productId: widget.productId));
+    widget.onLikeTap?.call(context.read<WishListCubit>().isWishListed(skuCode: widget.sku ?? ''));
     debugPrint('Liked: $isLiked for ${widget.title}');
   }
 
@@ -119,7 +119,9 @@ class _ProductCardState extends State<ProductCard> {
                         shape: BoxShape.circle,
                       ),
                       child: Icon(
-                        context.watch<WishListCubit>().isWishListed(productId: widget.productId) ? Icons.favorite : Icons.favorite_border,
+                        context.watch<WishListCubit>().isWishListed(skuCode: widget.sku ?? widget.variants.first.skuCode!)
+                            ? Icons.favorite
+                            : Icons.favorite_border,
                         color: Colors.white,
                         size: 18,
                       ),
@@ -387,7 +389,7 @@ class _HorizontalProductCardState extends State<HorizontalProductCard> {
     setState(() {
       isLiked = !isLiked;
     });
-    widget.onLikeTap?.call(context.read<WishListCubit>().isWishListed(productId: widget.productId));
+    widget.onLikeTap?.call(context.read<WishListCubit>().isWishListed(skuCode: widget.sku ?? widget.variants.first.skuCode!));
   }
 
   @override
@@ -447,7 +449,9 @@ class _HorizontalProductCardState extends State<HorizontalProductCard> {
                             shape: BoxShape.circle,
                           ),
                           child: Icon(
-                            context.watch<WishListCubit>().isWishListed(productId: widget.productId) ? Icons.favorite : Icons.favorite_border,
+                            context.watch<WishListCubit>().isWishListed(skuCode: widget.sku ?? widget.variants.first.skuCode!)
+                                ? Icons.favorite
+                                : Icons.favorite_border,
                             color: Colors.white,
                             size: 14,
                           ),

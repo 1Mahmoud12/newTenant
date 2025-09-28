@@ -6,7 +6,6 @@ import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/feature/auth/login/view/presentation/login_screen.dart';
 import 'package:dobzz_seller/feature/auth/manager/authBloc/auth_cubit.dart';
 import 'package:dobzz_seller/feature/auth/manager/authBloc/auth_state.dart';
-import 'package:dobzz_seller/feature/auth/verifyCode/view/presentation/verify_code_view.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -71,17 +70,19 @@ class AddPasswordViewState extends State<AddPasswordView> {
           ),
           BlocConsumer<AuthCubit, AuthState>(
             listener: (context, state) {
-              if (state is AuthSignUpSuccessState) {
-                context.navigateToPageWithReplacement(
-                  const VerifyCodeView(
-                      // phoneNumber: AuthCubit.of(context).phoneController.text,
-                      // countryCodeId: AuthCubit.of(context).countryCodeId,
-                      // verifyButton: (context) {
-                      //   AuthCubit.of(context).verifyCode(context);
-                      // },
-                      ),
-                );
-              }
+              // if (state is AuthSignUpSuccessState) {
+              //   context.navigateToPage(
+              //     VerifyCodeView(
+              //       customerId: state.customerId,
+              //       isForgetPassword: false,
+              //       // phoneNumber: AuthCubit.of(context).phoneController.text,
+              //       // countryCodeId: AuthCubit.of(context).countryCodeId,
+              //       // verifyButton: (context) {
+              //       //   AuthCubit.of(context).verifyCode(context);
+              //       // },
+              //     ),
+              //   );
+              // }
             },
             builder: (context, state) => CustomTextButton(
               childText: 'finish'.tr(),
@@ -93,7 +94,7 @@ class AddPasswordViewState extends State<AddPasswordView> {
                   } else if (AuthCubit.of(context).termAndCondition == 0) {
                     customShowToast(context, 'you must agree with the terms & condition'.tr(), showToastStatus: ShowToastStatus.error);
                   } else {
-                    //  context.navigateToPage(const NavigationView());
+                    //AuthCubit.of(context).resetPassword(context);
                   }
                 }
               },

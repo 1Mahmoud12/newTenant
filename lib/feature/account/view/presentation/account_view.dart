@@ -167,7 +167,7 @@ class _AccountViewState extends State<AccountView> {
                   showLogoutDialog(context, () async {
                     userCacheValue = null;
                     await userCache?.clear();
-                    context.navigateToPageWithClearStack(const LoginScreen());
+                    context.navigateToPage(const LoginScreen());
                   });
                 },
                 isLogout: true,

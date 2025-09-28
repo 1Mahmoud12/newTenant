@@ -1,13 +1,12 @@
 import 'package:country_code_picker/country_code_picker.dart';
-import 'package:dobzz_seller/core/component/fields/custom_text_form_field.dart';
-import 'package:dobzz_seller/core/component/phone_number_field.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dobzz_seller/core/component/buttons/custom_text_button.dart';
+import 'package:dobzz_seller/core/component/phone_number_field.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:dobzz_seller/feature/auth/manager/authBloc/auth_cubit.dart';
 import 'package:dobzz_seller/feature/auth/manager/authBloc/auth_state.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ForgetPasswordView extends StatefulWidget {
   const ForgetPasswordView({super.key});
@@ -22,6 +21,7 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
   @override
   void initState() {
     _countryCodeNotifier = ValueNotifier(CountryCode.fromCountryCode('SA'));
+    AuthCubit.of(context).phoneController.clear();
     super.initState();
   }
 
@@ -54,7 +54,7 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
                 ),
                 const SizedBox(height: 32),
                 PhoneNumberField(
-                  controller: AuthCubit.of(context).forgetPasswordPhoneController,
+                  controller: AuthCubit.of(context).phoneController,
                   outPadding: EdgeInsets.zero,
                 ),
                 const SizedBox(height: 32),

@@ -15,11 +15,9 @@ import 'package:dobzz_seller/feature/auth/data/models/reset_password_params.dart
 import 'package:dobzz_seller/feature/auth/data/models/sign_up_params.dart';
 import 'package:dobzz_seller/feature/auth/data/models/verify_code_model.dart';
 import 'package:dobzz_seller/feature/auth/forgetPassword/view/presentation/reset_password_view.dart';
-import 'package:dobzz_seller/feature/auth/login/view/presentation/login_screen.dart';
 import 'package:dobzz_seller/feature/auth/manager/authBloc/auth_state.dart';
 import 'package:dobzz_seller/feature/auth/verifyCode/view/presentation/verify_code_view.dart';
 import 'package:dobzz_seller/feature/navigation/view/presentation/navigation_view.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -53,10 +51,10 @@ class AuthCubit extends Cubit<AuthState> {
     );
   }
 
-  void forgetPassword({required BuildContext context}) async {
+  void forgetPassword({required BuildContext context, bool navigateToVerifyCodeView = true}) async {
     emit(AuthGetCountryCodeLoadingState());
     animationDialogLoading(context);
-    authDataSource.forgetPassword(context, phone: countryCode + forgetPasswordPhoneController.text).then(
+    authDataSource.forgetPassword(context, phone: countryCode + phoneController.text).then(
       (value) async {
         closeDialog(context);
         // bool result = await InternetConnectionChecker().hasConnection;
@@ -64,28 +62,25 @@ class AuthCubit extends Cubit<AuthState> {
           failureModalBottomSheetWithReason(context, reasons: [l.errMessage], onPress: () {});
           emit(AuthGetCountryCodeErrorState(l.errMessage));
         }, (r) async {
-          //   await authDataSource.resendCode(context, customerId: userCacheValue?.data?.id.toString() ?? '-1');
-
-          context.navigateToPage(
-            VerifyCodeView(
-              // phoneNumber: phoneController.text,
-              // countryCodeId: countryCodeId,
-              verifyButton: (context) async {
-                context.navigateToPage(const ResetPasswordView());
-              },
-            ),
-          );
+          if (navigateToVerifyCodeView) {
+            context.navigateToPage(
+              const VerifyCodeView(
+                isForgetPassword: true,
+                isLogin: false,
+              ),
+            );
+          }
           emit(AuthGetCountryCodeSuccessState());
         });
       },
     );
   }
 
-  void resendCode({required BuildContext context}) async {
+  void resendCode({required BuildContext context, required bool isLogin}) async {
     emit(AuthResendCodeLoadingState());
     animationDialogLoading(context);
     //   customShowToast(context, 'we_send_again_code_for_you'.tr());
-    authDataSource.resendCode(context, customerId: ConstantsModels.requiredValidationModel?.data?.id.toString() ?? '-1').then(
+    authDataSource.resendCode(context, phone: countryCode + phoneController.text, customerId: Constants.customerId, isLogin: isLogin).then(
       (value) async {
         closeDialog(context);
         // bool result = await InternetConnectionChecker().hasConnection;
@@ -105,8 +100,7 @@ class AuthCubit extends Cubit<AuthState> {
 // reset password
   TextEditingController resetPasswordController = TextEditingController();
   TextEditingController resetConfirmationPasswordController = TextEditingController();
-//forget password controller
-  TextEditingController forgetPasswordPhoneController = TextEditingController();
+
 //
   TextEditingController nameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
@@ -145,8 +139,8 @@ class AuthCubit extends Cubit<AuthState> {
     )
         .then(
       (value) async {
+        closeDialog(context);
         value.fold((l) {
-          closeDialog(context);
           // Extract error reasons if available
           List<String> errorReasons = [];
           if (l is ServerFailure && l.apiError != null) {
@@ -158,12 +152,6 @@ class AuthCubit extends Cubit<AuthState> {
           // customShowToast(context, l.errMessage, showToastStatus: ShowToastStatus.error);
           emit(AuthSignUpErrorState(l.errMessage));
         }, (r) async {
-          closeDialog(context);
-          ConstantsModels.registerModel = r;
-          userCacheValue = r;
-          Constants.token = r.data?.token ?? '';
-          userCache?.put(userCacheKey, jsonEncode(r.toJson()));
-          context.navigateToPage(const NavigationViewWithThemes());
           emit(AuthSignUpSuccessState());
         });
       },
@@ -177,7 +165,7 @@ class AuthCubit extends Cubit<AuthState> {
     emit(AuthSetCodeState());
   }
 
-  void verifyCode(BuildContext context) async {
+  void verifyCode(BuildContext context, {bool isForgetPassword = false}) async {
     final otpValue = otpController.text;
     emit(AuthVerifyLoadingState());
     animationDialogLoading(context);
@@ -186,26 +174,37 @@ class AuthCubit extends Cubit<AuthState> {
       context,
       VerifyCodeModel(
         otp: otpValue,
-        customerId: ConstantsModels.requiredValidationModel?.data?.id.toString() ?? '-1',
+        phone: isForgetPassword ? countryCode + phoneController.text : null,
+        customerId: Constants.customerId,
       ),
+      isForgetPassword: isForgetPassword,
     )
         .then(
       (value) async {
+        closeDialog(context);
+
         // closeDialog(context);
         // bool result = await InternetConnectionChecker().hasConnection;
         value.fold((l) {
-          closeDialog(context);
           otpController.clear();
           failureModalBottomSheetWithReason(context, reasons: [l.errMessage], onPress: () {});
           emit(AuthVerifyErrorState(l.errMessage));
         }, (r) async {
-          closeDialog(context);
-          ConstantsModels.registerModel = r;
-          userCacheValue = r;
-          Constants.token = r.data?.token ?? '';
-          userCache?.put(userCacheKey, jsonEncode(r.toJson()));
-          context.navigateToPage(const LoginScreen());
-          //  emit(AuthVerifySuccessState());
+          if (isForgetPassword) {
+            Constants.token = r.data?.token ?? '';
+            context.navigateToPage(const ResetPasswordView());
+          } else {
+            ConstantsModels.registerModel = r;
+            userCacheValue = r;
+            Constants.token = r.data?.token ?? '';
+            userCache?.put(userCacheKey, jsonEncode(r.toJson()));
+            context.navigateToPage(const NavigationViewWithThemes());
+            phoneController.clear();
+            otpController.clear();
+            passwordController.clear();
+          }
+
+          emit(AuthVerifySuccessState());
         });
       },
     );
@@ -237,22 +236,12 @@ class AuthCubit extends Cubit<AuthState> {
             errorReasons = [l.errMessage];
           }
           if (l.errMessage == 'You have To Verify Your Phone') {
-            authDataSource.resendCode(context, customerId: ConstantsModels.requiredValidationModel?.data?.id.toString() ?? '-1');
-            failureModalBottomSheetWithReason(
-              buttonName: 'verify_code'.tr(),
-              context,
-              reasons: errorReasons,
-              onPress: () {
-                context.navigateToPage(
-                  const VerifyCodeView(
-                      // phoneNumber: AuthCubit.of(context).phoneController.text,
-                      // countryCodeId: AuthCubit.of(context).countryCodeId,
-                      // verifyButton: (context) {
-                      //   AuthCubit.of(context).verifyCode(context);
-                      // },
-                      ),
-                );
-              },
+            //authDataSource.resendCode(context, phone: countryCode + loginPhoneController.text);
+            context.navigateToPage(
+              const VerifyCodeView(
+                isForgetPassword: false,
+                isLogin: true,
+              ),
             );
           } else {
             failureModalBottomSheetWithReason(context, reasons: errorReasons, onPress: () {});
@@ -265,7 +254,7 @@ class AuthCubit extends Cubit<AuthState> {
           log('userCacheValue.data ==>${userCacheValue?.data?.token}');
           Constants.token = r.data?.token ?? '';
           await userCache?.put(userCacheKey, jsonEncode(r.toJson()));
-          context.navigateToPageWithClearStack(const NavigationViewWithThemes());
+          context.navigateToPage(const NavigationViewWithThemes());
           loginPhoneController.clear();
           loginPasswordController.clear();
           emit(AuthLoginSuccessState());
@@ -298,6 +287,9 @@ class AuthCubit extends Cubit<AuthState> {
           lastNameController.clear();
           passwordController.clear();
           confirmPasswordController.clear();
+          resetPasswordController.clear();
+          resetConfirmationPasswordController.clear();
+          otpController.clear();
           emit(AuthResetPasswordSuccessState());
         });
       },

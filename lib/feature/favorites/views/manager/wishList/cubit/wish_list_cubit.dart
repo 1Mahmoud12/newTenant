@@ -53,8 +53,8 @@ class WishListCubit extends Cubit<WishListState> {
     );
   }
 
-  bool isWishListed({required int productId}) {
-    return wishList.any((element) => element.productId == productId);
+  bool isWishListed({required String skuCode}) {
+    return wishList.any((element) => element.skuCode == skuCode);
   }
 
   Future<void> addToWishList({
@@ -65,7 +65,7 @@ class WishListCubit extends Cubit<WishListState> {
     if (isClosed) return;
 
     // Check if already in wishlist
-    if (isWishListed(productId: product?.id?.toInt() ?? 0)) {
+    if (isWishListed(skuCode: skuCode)) {
       return;
     }
 
@@ -87,8 +87,7 @@ class WishListCubit extends Cubit<WishListState> {
 
           // Remove the optimistically added item on error
           if (product != null) {
-            wishList.removeWhere((item) =>
-                item.productId == product.id && item.skuCode == skuCode);
+            wishList.removeWhere((item) => item.productId == product.id && item.skuCode == skuCode);
             emit(WishListSuccess()); // Update UI
           }
 
@@ -105,8 +104,7 @@ class WishListCubit extends Cubit<WishListState> {
     );
   }
 
-  Future<void> removeFromWishList(
-      {required BuildContext context, required String skuCode}) async {
+  Future<void> removeFromWishList({required BuildContext context, required String skuCode}) async {
     if (isClosed) return;
 
     // Find the item to remove
@@ -126,9 +124,7 @@ class WishListCubit extends Cubit<WishListState> {
     emit(WishListSuccess()); // Update UI immediately
 
     // Make API call
-    await RemoveFrommWishListDataSource.removeFromWishList(
-            productId: originalItem.id!.toInt())
-        .then(
+    await RemoveFrommWishListDataSource.removeFromWishList(productId: originalItem.id!.toInt()).then(
       (value) async {
         value.fold((l) {
           if (isClosed) return;

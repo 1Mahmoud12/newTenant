@@ -14,7 +14,9 @@ class AuthGetCountryCodeErrorState extends AuthState {
 
 class AuthSignUpLoadingState extends AuthState {}
 
-class AuthSignUpSuccessState extends AuthState {}
+class AuthSignUpSuccessState extends AuthState {
+  AuthSignUpSuccessState();
+}
 
 class AuthSignUpErrorState extends AuthState {
   String error;

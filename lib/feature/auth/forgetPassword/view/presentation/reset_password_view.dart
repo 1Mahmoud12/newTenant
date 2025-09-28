@@ -1,17 +1,17 @@
-import 'package:dobzz_seller/core/component/custom_app_bar.dart';
-import 'package:dobzz_seller/core/network/local/cache.dart';
-import 'package:dobzz_seller/core/utils/constants.dart';
-import 'package:dobzz_seller/core/utils/utils.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dobzz_seller/core/component/buttons/custom_text_button.dart';
+import 'package:dobzz_seller/core/component/custom_app_bar.dart';
 import 'package:dobzz_seller/core/component/fields/custom_text_form_field.dart';
+import 'package:dobzz_seller/core/network/local/cache.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
+import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
+import 'package:dobzz_seller/core/utils/utils.dart';
 import 'package:dobzz_seller/feature/auth/login/view/presentation/login_screen.dart';
 import 'package:dobzz_seller/feature/auth/manager/authBloc/auth_cubit.dart';
 import 'package:dobzz_seller/feature/auth/manager/authBloc/auth_state.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ResetPasswordView extends StatefulWidget {
   const ResetPasswordView({super.key});
@@ -21,6 +21,13 @@ class ResetPasswordView extends StatefulWidget {
 }
 
 class _ResetPasswordViewState extends State<ResetPasswordView> {
+  @override
+  void initState() {
+    AuthCubit.of(context).resetPasswordController.clear();
+    AuthCubit.of(context).resetConfirmationPasswordController.clear();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -87,7 +94,7 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
               BlocConsumer<AuthCubit, AuthState>(
                 listener: (context, state) {
                   if (state is AuthResetPasswordSuccessState) {
-                    context.navigateToPageWithClearStack(const LoginScreen());
+                    context.navigateToPage(const LoginScreen());
                   }
                 },
                 builder: (context, state) => CustomTextButton(

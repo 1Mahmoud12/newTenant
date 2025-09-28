@@ -38,7 +38,7 @@ class _AddressViewState extends State<AddressView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: customAppBar(context: context, title: 'Address'.tr()),
+      appBar: customAppBar(context: context, title: 'Addresses'.tr()),
       persistentFooterButtons: [
         Column(
           children: [
@@ -143,7 +143,7 @@ class _AddressViewState extends State<AddressView> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Saved Address'.tr(),
+                        'addresses_saved'.tr(),
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: Constants.tablet ? 20 : 20.sp,
@@ -164,16 +164,7 @@ class _AddressViewState extends State<AddressView> {
                                 border: Border.all(color: Colors.grey.shade300),
                                 borderRadius: BorderRadius.circular(10),
                               ),
-                              child: RadioListTile(
-                                value: index,
-                                groupValue: selectedAddressIndex,
-                                onChanged: (value) {
-                                  // setState(() {
-                                  //   selectedAddressIndex = value!;
-                                  // });
-                                },
-                                fillColor: const WidgetStatePropertyAll(AppColors.primaryColor),
-                                activeColor: Colors.black,
+                              child: ListTile(
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10),
                                 ),

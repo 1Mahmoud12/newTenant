@@ -28,6 +28,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void initState() {
+    AuthCubit.of(context).phoneController.clear();
+    AuthCubit.of(context).passwordController.clear();
     super.initState();
   }
 
@@ -217,7 +219,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   text: "Don't have an account? ".tr(),
                   linkText: 'Create account'.tr(),
                   onTap: () {
-                    context.navigateToPageWithClearStack(const SignUpView());
+                    context.navigateToPage(const SignUpView());
                   },
                 ),
               ],

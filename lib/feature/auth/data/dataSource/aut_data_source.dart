@@ -6,6 +6,7 @@ import 'package:dobzz_seller/core/network/dio_helper.dart';
 import 'package:dobzz_seller/core/network/end_points.dart';
 import 'package:dobzz_seller/core/network/errors/api_error_model.dart';
 import 'package:dobzz_seller/core/network/errors/failures.dart';
+import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:dobzz_seller/core/utils/constants_models.dart';
 import 'package:dobzz_seller/feature/auth/data/models/country_code_model.dart';
 import 'package:dobzz_seller/feature/auth/data/models/login_params.dart';
@@ -20,15 +21,15 @@ abstract class AuthDataSource {
 
   Future<Either<Failure, String>> forgetPassword(BuildContext context, {required String phone});
 
-  Future<Either<Failure, String>> resendCode(BuildContext context, {required String customerId});
+  Future<Either<Failure, String>> resendCode(BuildContext context, {required String phone, String? customerId, required bool isLogin});
 
   Future<Either<Failure, String>> resetPasswordPassword(BuildContext context, ResetPasswordParams resetPasswordParams);
 
-  Future<Either<Failure, RegisterModel>> postSignUp(BuildContext context, SignUpParams signUpParams);
+  Future<Either<Failure, String>> postSignUp(BuildContext context, SignUpParams signUpParams);
 
   Future<Either<Failure, RegisterModel>> postLogin(BuildContext context, LoginParams loginParams);
 
-  Future<Either<Failure, RegisterModel>> verifyCode(BuildContext context, VerifyCodeModel verifyCodeModel);
+  Future<Either<Failure, RegisterModel>> verifyCode(BuildContext context, VerifyCodeModel verifyCodeModel, {bool isForgetPassword = false});
 }
 
 class AuthDataSourceImpl implements AuthDataSource {
@@ -52,7 +53,7 @@ class AuthDataSourceImpl implements AuthDataSource {
   }
 
   @override
-  Future<Either<Failure, RegisterModel>> postSignUp(BuildContext context, SignUpParams signUpParams) async {
+  Future<Either<Failure, String>> postSignUp(BuildContext context, SignUpParams signUpParams) async {
     try {
       const endpoint = EndPoints.register;
       final response = await DioHelper.postData(
@@ -71,12 +72,12 @@ class AuthDataSourceImpl implements AuthDataSource {
 
       // Now check if the response indicates success or an error
       final statusCode = response.statusCode;
-      log('A7a========>$statusCode');
       // Success case
       if (statusCode == 200 && response.data['status']) {
-        ConstantsModels.requiredValidationModel = RegisterModel.fromJson(response.data);
-        log('print response ${response.data}');
-        return right(RegisterModel.fromJson(response.data));
+        final userId = response.data['data']['customer_id'].toString();
+        Constants.customerId = userId;
+
+        return right(userId);
       }
       // Error case - we get here because we're treating 4xx as valid responses
       else {
@@ -102,15 +103,14 @@ class AuthDataSourceImpl implements AuthDataSource {
   }
 
   @override
-  Future<Either<Failure, RegisterModel>> verifyCode(BuildContext context, VerifyCodeModel verifyCodeModel) async {
+  Future<Either<Failure, RegisterModel>> verifyCode(BuildContext context, VerifyCodeModel verifyCodeModel, {bool isForgetPassword = false}) async {
     try {
-      const endpoint = EndPoints.validateOTP;
+      final String endpoint = isForgetPassword ? EndPoints.verifyForgetPasswordOtp : EndPoints.validateOTP;
       final response = await DioHelper.postData(
         endPoint: endpoint,
         data: verifyCodeModel.toJson(),
         context: context,
       );
-      log('object response.dataSource ${response.data.runtimeType}');
       return right(RegisterModel.fromJson(response.data));
     } catch (error) {
       log(error.toString());
@@ -134,13 +134,13 @@ class AuthDataSourceImpl implements AuthDataSource {
       );
       // Now check if the response indicates success or an error
       final statusCode = response.statusCode;
-      log('A7a========>$response');
       // Success case
       if (statusCode! == 200 && response.data['status']) {
         log('Success response: ${response.data}');
         return right(RegisterModel.fromJson(response.data));
       } else if (response.data['status'] == false && response.data['message'] == 'You have To Verify Your Phone') {
         ConstantsModels.requiredValidationModel = RegisterModel.fromJson(response.data);
+        Constants.customerId = response.data['data']['id'].toString();
         return left(
           ServerFailure(
             'You have To Verify Your Phone',
@@ -196,12 +196,13 @@ class AuthDataSourceImpl implements AuthDataSource {
   }
 
   @override
-  Future<Either<Failure, String>> resendCode(BuildContext context, {required String customerId}) async {
+  Future<Either<Failure, String>> resendCode(BuildContext context, {required String phone, String? customerId, required bool isLogin}) async {
     try {
-      const String endpoint = EndPoints.resendOtp;
+      final String endpoint = isLogin ? EndPoints.resendLoginOtp : EndPoints.resendOtp;
       await DioHelper.postData(
         endPoint: endpoint,
         data: {
+          'phone': phone,
           'customer_id': customerId,
         },
         context: context,

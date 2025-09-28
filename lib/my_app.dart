@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dobzz_seller/core/network/local/cache.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:dobzz_seller/core/themes/light.dart';
@@ -80,44 +82,45 @@ class _MyAppState extends State<MyApp> {
                   systemNavigationBarDividerColor: AppColors.scaffoldBackGround,
                 ),
               );
-              return MaterialApp(
-                debugShowCheckedModeBanner: false,
-                localizationsDelegates: context.localizationDelegates,
-                supportedLocales: context.supportedLocales,
-                locale: context.locale,
-                //locale: DevicePreview.locale(context),
-                //builder: DevicePreview.appBuilder,
-                navigatorKey: navigatorKey,
-                theme: Themes(Constants.fontFamily).light(),
-                darkTheme: Themes(Constants.fontFamily).dark(),
-                themeMode: darkModeValue ? ThemeMode.dark : ThemeMode.light,
-                builder: (context, child) => MediaQuery(
-                  data: MediaQuery.of(context).copyWith(),
-                  child: AnnotatedRegion<SystemUiOverlayStyle>(
-                    value: const SystemUiOverlayStyle(
-                      statusBarColor: AppColors.scaffoldBackGround,
-                      statusBarIconBrightness: Brightness.dark,
-                      statusBarBrightness: Brightness.light,
-                    ),
-                    child: SafeArea(
-                      top: false,
-                      child: child ?? const SizedBox(),
-                    ),
-                  ),
-                ),
-                navigatorObservers: [
-                  HeroController(
-                    createRectTween: (begin, end) {
-                      return SlowRectTween(begin: begin, end: end);
-                    },
-                  ),
-                ],
-                home: const DobzzSellerApp(),
-              );
+              return Platform.isAndroid ? SafeArea(top: false, child: buildMaterialApp(context)) : buildMaterialApp(context);
             },
           ),
         ),
       ),
+    );
+  }
+
+  MaterialApp buildMaterialApp(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      localizationsDelegates: context.localizationDelegates,
+      supportedLocales: context.supportedLocales,
+      locale: context.locale,
+      //locale: DevicePreview.locale(context),
+      //builder: DevicePreview.appBuilder,
+      navigatorKey: navigatorKey,
+      theme: Themes(Constants.fontFamily).light(),
+      darkTheme: Themes(Constants.fontFamily).dark(),
+      themeMode: darkModeValue ? ThemeMode.dark : ThemeMode.light,
+      builder: (context, child) => MediaQuery(
+        data: MediaQuery.of(context).copyWith(),
+        child: AnnotatedRegion<SystemUiOverlayStyle>(
+          value: const SystemUiOverlayStyle(
+            statusBarColor: AppColors.scaffoldBackGround,
+            statusBarIconBrightness: Brightness.dark,
+            statusBarBrightness: Brightness.light,
+          ),
+          child: child ?? const SizedBox(),
+        ),
+      ),
+      navigatorObservers: [
+        HeroController(
+          createRectTween: (begin, end) {
+            return SlowRectTween(begin: begin, end: end);
+          },
+        ),
+      ],
+      home: const DobzzSellerApp(),
     );
   }
 }

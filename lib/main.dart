@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+
 import 'package:device_preview/device_preview.dart';
 import 'package:dobzz_seller/core/utils/bloc_observe.dart';
 import 'package:dobzz_seller/core/utils/constants.dart';
@@ -15,6 +16,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:logger/logger.dart';
+
 import 'core/network/dio_helper.dart';
 import 'core/network/local/cache.dart';
 import 'core/network/local/hive_data_base.dart';
@@ -52,7 +54,7 @@ void main() async {
   locationCacheValue = userCache?.get(locationCacheKey);
   userCacheValue = RegisterModel.fromJson(jsonDecode(await userCache?.get(userCacheKey, defaultValue: '{}')));
   log('userCacheValue ==>$userCacheValue');
-  log('userCacheValue.data ==>${userCacheValue?.data?.name}');
+  log('userCacheValue.data ==>${userCacheValue?.data?.toJson()}');
   Constants.token = userCacheValue?.data?.token ?? '';
   // ConstantsModels.advertiseModel = AdvertiseModel.fromJson(jsonDecode(await userCache!.get(advertiseModelKey, defaultValue: '{}')));
   // ConstantsModels.categoriesModel = CategoriesModel.fromJson(jsonDecode(await userCache!.get(categoriesModelKey, defaultValue: '{}')));

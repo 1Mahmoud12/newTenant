@@ -8,13 +8,18 @@ class EndPoints {
   static const countryCodes = 'Account/CountryCodes';
   static const register = 'shop/auth/register';
   static const login = 'shop/auth/login';
-  static const validateOTP = 'shop/auth/verify-otp-way';
+  static const validateOTP = 'shop/auth/verify-register-otp';
   static const updateFcmToken = 'Account/UpdateFCMToken';
   static const appVisit = 'AppSetting/Admin_UpdateAppVisit';
-  static const forgetPassword = 'shop/auth/forgot-password';
-  static const resetPassword = 'shop/auth/reset-password';
-  static const resendOtp = 'shop/auth/send-otp';
+  static const resendOtp = 'shop/auth/resend-register-otp';
+  static const resendLoginOtp = 'shop/auth/resend-login-otp';
   static const deleteUser = 'Account/DeleteUser';
+
+  // Forget Password
+  static const forgetPassword = 'shop/auth/forgot-password';
+  static const resendForgetPasswordOtp = 'shop/auth/resend-forgot-password-otp';
+  static const verifyForgetPasswordOtp = 'shop/auth/verify-otp';
+  static const resetPassword = 'shop/auth/reset-password';
 
   // EditProfile
   static const editProfile = 'shop/user/profile';
@@ -115,4 +120,9 @@ class EndPoints {
   static const address = 'shop/user/addresses';
   static const state = 'shop/user/states';
   static const cities = '/shop/user/cities';
+
+  // Notifications
+  static const getNotifications = 'shop/user/notifications/get-all-unread';
+  static const markAllRead = 'shop/user/notifications/mark-all-read';
+  static const markAsRead = 'shop/user/notifications/mark-as-read';
 }

@@ -25,9 +25,12 @@ flutter build appbundle
 open build/
 ```
 
+```shell
+flutter clean  
+fluttr pub get
 flutter build apk
 open build/app/outputs/flutter-apk/
-
+```
 ```shell
 flutter pub get
 cd ios

@@ -7,6 +7,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 class Constants {
   static String fontFamily = 'Cairo';
   static String appName = 'El-Mamlaka';
+  static String? customerId;
   static LatLng locationCache = const LatLng(30.033333, 31.233334);
   static int distance = 100; // Km
 

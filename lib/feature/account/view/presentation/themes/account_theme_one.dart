@@ -336,7 +336,7 @@ class _ProfileViewThemeOneState extends State<ProfileViewThemeOne> {
                             showLogoutDialog(context, () async {
                               userCacheValue = null;
                               await userCache?.clear();
-                              context.navigateToPageWithClearStack(const LoginScreen());
+                              context.navigateToPage(const LoginScreen());
                             });
                           },
                         ),

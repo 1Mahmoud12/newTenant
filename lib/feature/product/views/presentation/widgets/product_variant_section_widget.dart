@@ -2,10 +2,12 @@ import 'package:dobzz_seller/core/component/buttons/custom_text_button.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:dobzz_seller/core/themes/styles.dart';
 import 'package:dobzz_seller/core/utils/utils.dart';
+import 'package:dobzz_seller/feature/favorites/views/manager/wishList/cubit/wish_list_cubit.dart';
 import 'package:dobzz_seller/feature/home/data/models/product_mdoel.dart';
 import 'package:dobzz_seller/feature/product/views/presentation/widgets/items_product_details.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 class ProductVariantsSection extends StatefulWidget {
@@ -37,6 +39,14 @@ class _ProductVariantsSectionState extends State<ProductVariantsSection> {
     _variantQuantityBySku[sku] = quantity;
   }
 
+  void toggleLike({required String skuCode}) {
+    if (context.read<WishListCubit>().isWishListed(skuCode: skuCode)) {
+      context.read<WishListCubit>().removeFromWishList(context: context, skuCode: skuCode);
+    } else {
+      context.read<WishListCubit>().addToWishList(context: context, skuCode: skuCode);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -59,12 +69,34 @@ class _ProductVariantsSectionState extends State<ProductVariantsSection> {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  '${'variant'.tr()}: ${index + 1}',
-                  style: Styles.style16400.copyWith(
-                    color: AppColors.black,
-                    fontWeight: FontWeight.w700,
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      '${'variant'.tr()}: ${index + 1}',
+                      style: Styles.style16400.copyWith(
+                        color: AppColors.black,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        toggleLike(skuCode: item.skuCode ?? '');
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(6),
+                        decoration: const BoxDecoration(
+                          color: Colors.black87,
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          context.watch<WishListCubit>().isWishListed(skuCode: item.skuCode ?? '') ? Icons.favorite : Icons.favorite_border,
+                          color: Colors.white,
+                          size: 18,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
                 ProductSpecItem(
                   label: 'sku',

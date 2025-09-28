@@ -13,7 +13,6 @@ import 'package:dobzz_seller/feature/product/views/presentation/widgets/product_
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class ProductCategoryView extends StatefulWidget {
@@ -90,90 +89,90 @@ class _ProductCategoryViewState extends State<ProductCategoryView> {
               automaticallyImplyLeading: false,
             ),
 
-            // Categories Horizontal Scrolling List - Using SliverToBoxAdapter
-            BlocProvider.value(
-              value: categoriesCubit,
-              child: BlocBuilder<CategoriesCubit, CategoriesState>(
-                builder: (context, state) {
-                  if (state is CategoriesLoading && (ConstantsModels.categoriesModel?.data?.isEmpty ?? true)) {
-                    return const SliverToBoxAdapter(
-                      child: Center(
-                        child: LoadingWidget(),
-                      ),
-                    );
-                  } else if (state is CategoriesError) {
-                    return const SliverToBoxAdapter(child: SizedBox());
-                  }
-
-                  final categories = ConstantsModels.categoriesModel?.data;
-                  if (categories == null || categories.isEmpty) {
-                    return const SliverToBoxAdapter(child: SizedBox());
-                  }
-
-                  return SliverToBoxAdapter(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 16.0),
-                      child: SizedBox(
-                        height: 35,
-                        child: ListView.builder(
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          scrollDirection: Axis.horizontal,
-                          itemCount: categories.length,
-                          itemBuilder: (context, index) {
-                            final isSelected = selectedCategoryIndex == index;
-                            return Padding(
-                              padding: const EdgeInsets.only(right: 12),
-                              child: InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    selectedCategoryIndex = index;
-                                  });
-                                  topProductCubit.getTopProduct(
-                                    context: context,
-                                    subCategoryId: categories[index].id,
-                                  );
-                                },
-                                borderRadius: BorderRadius.circular(24),
-                                child: AnimatedContainer(
-                                  duration: const Duration(milliseconds: 200),
-                                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                                  decoration: BoxDecoration(
-                                    color: isSelected ? AppColors.primaryColor : Colors.white,
-                                    borderRadius: BorderRadius.circular(24),
-                                    border: Border.all(
-                                      color: isSelected ? AppColors.primaryColor : Colors.grey.shade300,
-                                    ),
-                                    // boxShadow: isSelected
-                                    //     ? [
-                                    //         BoxShadow(
-                                    //           color: AppColors.primaryColor.withOpacityNew(0.3),
-                                    //           blurRadius: 8,
-                                    //           offset: const Offset(0, 4),
-                                    //         ),
-                                    //       ]
-                                    //     : null,
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      categories[index].name ?? 'Unknown Category'.tr(),
-                                      style: TextStyle(
-                                        fontSize: 16.sp,
-                                        color: isSelected ? Colors.white : Colors.black87,
-                                        fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
+            // // Categories Horizontal Scrolling List - Using SliverToBoxAdapter
+            // BlocProvider.value(
+            //   value: categoriesCubit,
+            //   child: BlocBuilder<CategoriesCubit, CategoriesState>(
+            //     builder: (context, state) {
+            //       if (state is CategoriesLoading && (ConstantsModels.categoriesModel?.data?.isEmpty ?? true)) {
+            //         return const SliverToBoxAdapter(
+            //           child: Center(
+            //             child: LoadingWidget(),
+            //           ),
+            //         );
+            //       } else if (state is CategoriesError) {
+            //         return const SliverToBoxAdapter(child: SizedBox());
+            //       }
+            //
+            //       final categories = ConstantsModels.categoriesModel?.data;
+            //       if (categories == null || categories.isEmpty) {
+            //         return const SliverToBoxAdapter(child: SizedBox());
+            //       }
+            //
+            //       return SliverToBoxAdapter(
+            //         child: Padding(
+            //           padding: const EdgeInsets.symmetric(vertical: 16.0),
+            //           child: SizedBox(
+            //             height: 35,
+            //             child: ListView.builder(
+            //               padding: const EdgeInsets.symmetric(horizontal: 16),
+            //               scrollDirection: Axis.horizontal,
+            //               itemCount: categories.length,
+            //               itemBuilder: (context, index) {
+            //                 final isSelected = selectedCategoryIndex == index;
+            //                 return Padding(
+            //                   padding: const EdgeInsets.only(right: 12),
+            //                   child: InkWell(
+            //                     onTap: () {
+            //                       setState(() {
+            //                         selectedCategoryIndex = index;
+            //                       });
+            //                       topProductCubit.getTopProduct(
+            //                         context: context,
+            //                         subCategoryId: categories[index].id,
+            //                       );
+            //                     },
+            //                     borderRadius: BorderRadius.circular(24),
+            //                     child: AnimatedContainer(
+            //                       duration: const Duration(milliseconds: 200),
+            //                       padding: const EdgeInsets.symmetric(horizontal: 20),
+            //                       decoration: BoxDecoration(
+            //                         color: isSelected ? AppColors.primaryColor : Colors.white,
+            //                         borderRadius: BorderRadius.circular(24),
+            //                         border: Border.all(
+            //                           color: isSelected ? AppColors.primaryColor : Colors.grey.shade300,
+            //                         ),
+            //                         // boxShadow: isSelected
+            //                         //     ? [
+            //                         //         BoxShadow(
+            //                         //           color: AppColors.primaryColor.withOpacityNew(0.3),
+            //                         //           blurRadius: 8,
+            //                         //           offset: const Offset(0, 4),
+            //                         //         ),
+            //                         //       ]
+            //                         //     : null,
+            //                       ),
+            //                       child: Center(
+            //                         child: Text(
+            //                           categories[index].name ?? 'Unknown Category'.tr(),
+            //                           style: TextStyle(
+            //                             fontSize: 16.sp,
+            //                             color: isSelected ? Colors.white : Colors.black87,
+            //                             fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
+            //                           ),
+            //                         ),
+            //                       ),
+            //                     ),
+            //                   ),
+            //                 );
+            //               },
+            //             ),
+            //           ),
+            //         ),
+            //       );
+            //     },
+            //   ),
+            // ),
 
             // Product Grid - Using SliverPadding and SliverGrid
             BlocProvider.value(

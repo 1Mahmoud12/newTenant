@@ -11,11 +11,15 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 class VerifyCodeView extends StatefulWidget {
   final Function(BuildContext context)? verifyButton;
   final void Function(String)? onChanged;
+  final bool isForgetPassword;
+  final bool isLogin;
 
   const VerifyCodeView({
     super.key,
     this.onChanged,
     this.verifyButton,
+    required this.isForgetPassword,
+    required this.isLogin,
   });
 
   @override
@@ -45,6 +49,8 @@ class _VerifyCodeViewState extends State<VerifyCodeView> {
   @override
   void initState() {
     super.initState();
+    AuthCubit.of(context).otpController.clear();
+
     _focusNode.requestFocus();
     startTimer();
   }
@@ -88,7 +94,7 @@ class _VerifyCodeViewState extends State<VerifyCodeView> {
                 focusNode: _focusNode,
                 onChanged: (value) {},
                 onCompleted: (p0) {
-                  AuthCubit.of(context).verifyCode(context);
+                  AuthCubit.of(context).verifyCode(context, isForgetPassword: widget.isForgetPassword);
                 },
               ),
               Row(
@@ -99,10 +105,14 @@ class _VerifyCodeViewState extends State<VerifyCodeView> {
                     style: Theme.of(context).textTheme.titleSmall?.copyWith(color: AppColors.primaryColor.withOpacityNew(.4)),
                   ),
                   InkWell(
-                    onTap: _start != 0
+                    onTap: _start == 0
                         ? null
                         : () {
-                            AuthCubit.of(context).resendCode(context: context);
+                            if (widget.isForgetPassword) {
+                              AuthCubit.of(context).forgetPassword(context: context, navigateToVerifyCodeView: false);
+                            } else {
+                              AuthCubit.of(context).resendCode(context: context, isLogin: widget.isLogin);
+                            }
                             _timer.cancel();
                             startTimer();
                           },
@@ -123,7 +133,7 @@ class _VerifyCodeViewState extends State<VerifyCodeView> {
                 childText: 'verify'.tr(),
                 padding: const EdgeInsets.symmetric(vertical: 14.5),
                 onPress: () {
-                  AuthCubit.of(context).verifyCode(context);
+                  AuthCubit.of(context).verifyCode(context, isForgetPassword: widget.isForgetPassword);
                 },
               ),
             ],

@@ -10,6 +10,7 @@ import 'package:dobzz_seller/core/utils/utils.dart';
 import 'package:dobzz_seller/feature/auth/login/view/presentation/login_screen.dart';
 import 'package:dobzz_seller/feature/auth/manager/authBloc/auth_cubit.dart';
 import 'package:dobzz_seller/feature/auth/manager/authBloc/auth_state.dart';
+import 'package:dobzz_seller/feature/auth/verifyCode/view/presentation/verify_code_view.dart';
 import 'package:dobzz_seller/feature/auth/widgets/authRich_text_link.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/gestures.dart';
@@ -26,30 +27,26 @@ class SignUpView extends StatefulWidget {
 class _SignUpViewState extends State<SignUpView> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   bool checkBoxValue = false;
-
-  late final TextEditingController nameController;
-  late final TextEditingController phoneController;
-  late final TextEditingController passwordController;
-  late final TextEditingController confirmPasswordController;
+  late final AuthCubit authCubit;
 
   @override
   void initState() {
     super.initState();
-    final authCubit = AuthCubit.of(context);
-    nameController = authCubit.nameController;
-    phoneController = authCubit.phoneController;
-    passwordController = authCubit.passwordController;
-    confirmPasswordController = authCubit.confirmPasswordController;
+    authCubit = AuthCubit.of(context);
+    authCubit.nameController.clear();
+    authCubit.phoneController.clear();
+    authCubit.passwordController.clear();
+    authCubit.confirmPasswordController.clear();
   }
 
-  @override
-  void dispose() {
-    nameController.dispose();
-    phoneController.dispose();
-    passwordController.dispose();
-    confirmPasswordController.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   nameController.dispose();
+  //   phoneController.dispose();
+  //   passwordController.dispose();
+  //   confirmPasswordController.dispose();
+  //   super.dispose();
+  // }
 
   String? validatePassword(String? value) {
     if (value == null || value.isEmpty) {
@@ -65,7 +62,7 @@ class _SignUpViewState extends State<SignUpView> {
     if (value == null || value.isEmpty) {
       return 'Confirm password is required'.tr();
     }
-    if (value != passwordController.text) {
+    if (value != authCubit.passwordController.text) {
       return 'Passwords do not match'.tr();
     }
     return null;
@@ -102,17 +99,17 @@ class _SignUpViewState extends State<SignUpView> {
                   child: Column(
                     children: [
                       CustomTextFormField(
-                        controller: nameController,
+                        controller: authCubit.nameController,
                         hintText: 'Name'.tr(),
                         labelText: 'Name'.tr(),
                         outPadding: EdgeInsets.zero,
                       ),
                       PhoneNumberField(
-                        controller: phoneController,
+                        controller: authCubit.phoneController,
                         outPadding: EdgeInsets.zero,
                       ),
                       CustomTextFormField(
-                        controller: passwordController,
+                        controller: authCubit.passwordController,
                         hintText: 'Password'.tr(),
                         labelText: 'Password'.tr(),
                         helperText: 'Enter your password'.tr(),
@@ -121,7 +118,7 @@ class _SignUpViewState extends State<SignUpView> {
                         outPadding: EdgeInsets.zero,
                       ),
                       CustomTextFormField(
-                        controller: confirmPasswordController,
+                        controller: authCubit.confirmPasswordController,
                         hintText: 'Re-enter password'.tr(),
                         labelText: 'Re-enter password'.tr(),
                         password: true,
@@ -169,11 +166,14 @@ class _SignUpViewState extends State<SignUpView> {
                 ),
                 BlocConsumer<AuthCubit, AuthState>(
                   listener: (context, state) {
-                    // if (state is AuthSignUpSuccessState) {
-                    //   context.navigateToPage(
-                    //     const VerifyCodeView(),
-                    //   );
-                    // }
+                    if (state is AuthSignUpSuccessState) {
+                      context.navigateToPage(
+                        const VerifyCodeView(
+                          isForgetPassword: false,
+                          isLogin: false,
+                        ),
+                      );
+                    }
                   },
                   builder: (context, state) {
                     return CustomTextButton(
