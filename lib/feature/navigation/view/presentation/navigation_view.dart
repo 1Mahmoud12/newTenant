@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dobzz_seller/core/utils/utils.dart';
+import 'package:dobzz_seller/feature/account/view/myOrders/presentation/my_order_view.dart';
 import 'package:dobzz_seller/feature/account/view/presentation/themes/account_theme_one.dart';
 import 'package:dobzz_seller/feature/cart/view/manager/cartItems/cubit/cart_items_cubit.dart';
 import 'package:dobzz_seller/feature/favorites/views/presentation/favorite_view.dart';
@@ -8,7 +9,6 @@ import 'package:dobzz_seller/feature/home/views/presentation/home_page_view.dart
 import 'package:dobzz_seller/feature/navigation/view/presentation/navigation_bar_theme/circled_border_Theme.dart';
 import 'package:dobzz_seller/feature/navigation/view/presentation/navigation_bar_theme/reguler_theme.dart';
 import 'package:dobzz_seller/feature/navigation/view/presentation/navigation_bar_theme/theme_three.dart';
-import 'package:dobzz_seller/feature/product/views/presentation/product_category_view.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -57,7 +57,7 @@ class _NavigationViewWithThemesState extends State<NavigationViewWithThemes> {
 
   final List<Widget> _screens = [
     const HomePageView(),
-    const ProductCategoryView(),
+    const MyOrderView(),
     const FavoriteView(),
     const ProfileViewThemeOne(),
   ];

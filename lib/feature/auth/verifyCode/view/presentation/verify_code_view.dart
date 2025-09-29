@@ -105,7 +105,7 @@ class _VerifyCodeViewState extends State<VerifyCodeView> {
                     style: Theme.of(context).textTheme.titleSmall?.copyWith(color: AppColors.primaryColor.withOpacityNew(.4)),
                   ),
                   InkWell(
-                    onTap: _start == 0
+                    onTap: _start != 0
                         ? null
                         : () {
                             if (widget.isForgetPassword) {

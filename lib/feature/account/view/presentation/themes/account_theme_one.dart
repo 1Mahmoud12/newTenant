@@ -10,7 +10,6 @@ import 'package:dobzz_seller/feature/account/view/helpCenter/presentation/help_c
 import 'package:dobzz_seller/feature/account/view/manager/deleteAccount/cubit/delete_account_cubit.dart';
 import 'package:dobzz_seller/feature/account/view/myDetalis/presentation/manager/editProfile/cubit/edit_profile_cubit.dart';
 import 'package:dobzz_seller/feature/account/view/myDetalis/presentation/my_details_veiw.dart';
-import 'package:dobzz_seller/feature/account/view/myOrders/presentation/my_order_view.dart';
 import 'package:dobzz_seller/feature/account/view/notificationSetting/presentation/notification_setting_view.dart';
 import 'package:dobzz_seller/feature/account/view/presentation/language_view.dart';
 import 'package:dobzz_seller/feature/auth/forgetPassword/view/presentation/reset_password_view.dart';
@@ -182,15 +181,15 @@ class _ProfileViewThemeOneState extends State<ProfileViewThemeOne> {
                     ),
                     child: Column(
                       children: [
-                        _buildMenuItemNew(
-                          icon: AppIcons.myOrders,
-                          title: 'My Orders',
-                          subtitle: 'View your order history',
-                          onTap: () {
-                            context.navigateToPage(const MyOrderView());
-                          },
-                        ),
-                        _buildDivider(),
+                        // _buildMenuItemNew(
+                        //   icon: AppIcons.myOrders,
+                        //   title: 'My Orders',
+                        //   subtitle: 'View your order history',
+                        //   onTap: () {
+                        //     context.navigateToPage(const MyOrderView());
+                        //   },
+                        // ),
+                        //  _buildDivider(),
                         _buildMenuItemNew(
                           icon: AppIcons.myDetails,
                           title: 'My Details',
@@ -247,7 +246,9 @@ class _ProfileViewThemeOneState extends State<ProfileViewThemeOne> {
                           title: 'Change Password',
                           subtitle: 'Update your account password',
                           onTap: () {
-                            context.navigateToPage(const ResetPasswordView());
+                            context.navigateToPage(const ResetPasswordView(
+                              openLoginScreen: false,
+                            ));
                           },
                         ),
                         _buildDivider(),

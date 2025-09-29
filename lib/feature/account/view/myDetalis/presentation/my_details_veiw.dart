@@ -12,8 +12,10 @@ import 'package:dobzz_seller/core/utils/constant_gaping.dart';
 import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:dobzz_seller/core/utils/constants_models.dart';
 import 'package:dobzz_seller/core/utils/file.dart';
+import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/core/utils/utils.dart';
 import 'package:dobzz_seller/feature/account/view/myDetalis/presentation/manager/editProfile/cubit/edit_profile_cubit.dart';
+import 'package:dobzz_seller/feature/navigation/view/presentation/navigation_view.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -96,6 +98,11 @@ class _MyDetailsViewState extends State<MyDetailsView> {
         image: _profileImage,
       );
       await widget.editProfileCubit.getUserData(context: context);
+      context.navigateToPage(
+        const NavigationViewWithThemes(
+          initialIndex: 3,
+        ),
+      );
     } else {
       Utils.showToast(title: 'This is demo account you can not change user data', state: UtilState.error);
     }

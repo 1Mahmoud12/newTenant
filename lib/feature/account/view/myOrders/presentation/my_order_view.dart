@@ -44,59 +44,57 @@ class _MyOrderViewState extends State<MyOrderView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: customAppBar(context: context, title: 'My Orders'.tr()),
-      body: SafeArea(
-        child: BlocProvider.value(
-          value: orderCubit,
-          child: BlocBuilder<OrderCubit, OrderState>(
-            builder: (context, state) {
-              if (state is OrderLoading) {
-                return const Center(child: LoadingWidget());
-              }
-              if (state is OrderError) {
-                return Center(
-                  child: Text(
-                    state.e,
-                    style: TextStyle(fontSize: Constants.tablet ? 16 : 16.sp, color: Colors.red),
-                  ),
-                );
-              }
-              if (state is OrderSuccess) {
-                return Column(
-                  children: [
-                    Expanded(
-                      child: ConstantsModels.orderModel?.data?.isEmpty ?? true
-                          ? Center(
-                              child: EmptyWidget(
-                                data: 'No Ongoing Orders!'.tr(),
-                                subData: 'You don’t have any ongoing orders at this time.'.tr(),
-                                emptyImage: EmptyImages.noOrders,
-                              ),
-                            )
-                          : ListView.builder(
-                              padding: const EdgeInsets.all(16),
-                              itemCount: ConstantsModels.orderModel?.data?.length ?? 0,
-                              itemBuilder: (context, index) {
-                                return OrderCard(
-                                  order: ConstantsModels.orderModel?.data![index] ?? OrderData(),
-                                  onViewDetails: () {
-                                    context.navigateToPage(
-                                      OrderDetailsScreen(
-                                        order: ConstantsModels.orderModel?.data![index] ?? OrderData(),
-                                      ),
-                                    );
-                                  },
-                                );
-                              },
+      appBar: customAppBar(context: context, title: 'My Orders'.tr(), stopLeading: true),
+      body: BlocProvider.value(
+        value: orderCubit,
+        child: BlocBuilder<OrderCubit, OrderState>(
+          builder: (context, state) {
+            if (state is OrderLoading) {
+              return const Center(child: LoadingWidget());
+            }
+            if (state is OrderError) {
+              return Center(
+                child: Text(
+                  state.e,
+                  style: TextStyle(fontSize: Constants.tablet ? 16 : 16.sp, color: Colors.red),
+                ),
+              );
+            }
+            if (state is OrderSuccess) {
+              return Column(
+                children: [
+                  Expanded(
+                    child: ConstantsModels.orderModel?.data?.isEmpty ?? true
+                        ? Center(
+                            child: EmptyWidget(
+                              data: 'No Ongoing Orders!'.tr(),
+                              subData: 'You don’t have any ongoing orders at this time.'.tr(),
+                              emptyImage: EmptyImages.noOrders,
                             ),
-                    ),
-                  ],
-                );
-              }
+                          )
+                        : ListView.builder(
+                            padding: const EdgeInsets.all(16),
+                            itemCount: ConstantsModels.orderModel?.data?.length ?? 0,
+                            itemBuilder: (context, index) {
+                              return OrderCard(
+                                order: ConstantsModels.orderModel?.data![index] ?? OrderData(),
+                                onViewDetails: () {
+                                  context.navigateToPage(
+                                    OrderDetailsScreen(
+                                      order: ConstantsModels.orderModel?.data![index] ?? OrderData(),
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                          ),
+                  ),
+                ],
+              );
+            }
 
-              return const SizedBox.shrink();
-            },
-          ),
+            return const SizedBox.shrink();
+          },
         ),
       ),
     );
@@ -130,61 +128,64 @@ class OrderCard extends StatelessWidget {
 
     final dateFormatted = DateFormat('MMM dd, yyyy').format(createdAt);
 
-    return Card(
-      margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 2),
-      elevation: 0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-        side: BorderSide(
-          color: Colors.grey.withOpacityNew(0.1),
-        ),
-      ),
-      child: Container(
-        decoration: BoxDecoration(
+    return InkWell(
+      onTap: onViewDetails,
+      child: Card(
+        margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 2),
+        elevation: 0,
+        shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(
+          side: BorderSide(
             color: Colors.grey.withOpacityNew(0.1),
-            width: 0.5,
           ),
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Header with order number and status
-            _buildHeader(statusColor),
-            const SizedBox(height: 5),
-            // Order details
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Product images
-                  _buildProductImages(items),
-
-                  const SizedBox(height: 12),
-
-                  // Order info
-                  _buildOrderInfo(
-                    items,
-                    dateFormatted,
-                    paymentMethod,
-                    paymentStatus,
-                  ),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  // Shipping address summary
-                  if (order.address != null) _buildAddressSummary(order.address!),
-
-                  const SizedBox(height: 10),
-
-                  // Payment info
-                  _buildPaymentInfo(order.totalPrice ?? '0.00'),
-                ],
-              ),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              color: Colors.grey.withOpacityNew(0.1),
+              width: 0.5,
             ),
-          ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Header with order number and status
+              _buildHeader(statusColor),
+              const SizedBox(height: 5),
+              // Order details
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Product images
+                    _buildProductImages(items),
+
+                    const SizedBox(height: 12),
+
+                    // Order info
+                    _buildOrderInfo(
+                      items,
+                      dateFormatted,
+                      paymentMethod,
+                      paymentStatus,
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    // Shipping address summary
+                    if (order.address != null) _buildAddressSummary(order.address!),
+
+                    const SizedBox(height: 10),
+
+                    // Payment info
+                    _buildPaymentInfo(order.totalPrice ?? '0.00'),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -485,7 +486,7 @@ class OrderCard extends StatelessWidget {
           flex: 3,
           child: CustomTextButton(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
-            onPress: onViewDetails,
+            onPress: () {},
             child: Center(
               child: FittedBox(
                 fit: BoxFit.scaleDown,

@@ -1,6 +1,6 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
+
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:dobzz_seller/core/network/local/cache.dart';
@@ -8,7 +8,6 @@ import 'package:dobzz_seller/core/utils/constants_models.dart';
 import 'package:dobzz_seller/core/utils/utils.dart';
 import 'package:dobzz_seller/feature/account/view/myDetalis/data/dataSource/edit_profile_data_source.dart';
 import 'package:flutter/material.dart';
-import 'package:meta/meta.dart';
 
 part 'edit_profile_state.dart';
 
@@ -28,7 +27,6 @@ class EditProfileCubit extends Cubit<EditProfileState> {
           userCacheValue?.data?.phone = r.data?.phone ?? 'unKnow phone';
           userCacheValue?.data?.avatarPath = r.data?.avatarPath ?? '';
           await userCache?.put(userCacheKey, jsonEncode(userCacheValue?.toJson()));
-          log('userCacheValue.data ==>${userCacheValue?.data?.name}');
 
           emit(EditProfileSuccess());
         });
@@ -53,7 +51,6 @@ class EditProfileCubit extends Cubit<EditProfileState> {
 
           emit(UpdateProfileError(e: l.errMessage));
         }, (r) async {
-          Navigator.pop(context);
           Utils.showToast(title: 'Profile updated successfully', state: UtilState.success);
 
           emit(UpdateProfileSuccess());

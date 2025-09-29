@@ -14,7 +14,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ResetPasswordView extends StatefulWidget {
-  const ResetPasswordView({super.key});
+  final bool openLoginScreen;
+
+  const ResetPasswordView({super.key, required this.openLoginScreen});
 
   @override
   State<ResetPasswordView> createState() => _ResetPasswordViewState();
@@ -94,7 +96,11 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
               BlocConsumer<AuthCubit, AuthState>(
                 listener: (context, state) {
                   if (state is AuthResetPasswordSuccessState) {
-                    context.navigateToPage(const LoginScreen());
+                    if (widget.openLoginScreen) {
+                      context.navigateToPage(const LoginScreen());
+                    } else {
+                      Navigator.pop(context);
+                    }
                   }
                 },
                 builder: (context, state) => CustomTextButton(

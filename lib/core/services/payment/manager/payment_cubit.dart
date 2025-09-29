@@ -11,7 +11,6 @@ import 'package:dobzz_seller/core/utils/constants_models.dart';
 import 'package:dobzz_seller/core/utils/errorLoadingWidgets/dialog_loading_animation.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/core/utils/utils.dart';
-import 'package:dobzz_seller/feature/account/view/myOrders/presentation/my_order_view.dart';
 import 'package:dobzz_seller/feature/checkout/data/dataSource/process_to_checkout_data_source.dart';
 import 'package:dobzz_seller/feature/checkout/presentation/view/widgets/add_phone_payment.dart';
 import 'package:dobzz_seller/feature/checkout/presentation/view/widgets/show_otp.dart';
@@ -247,7 +246,9 @@ class PaymentCubit extends Cubit<PaymentState> {
           initialIndex: 1,
         ),
       );
-      context.navigateToPage(const MyOrderView());
+      context.navigateToPage(const NavigationViewWithThemes(
+        initialIndex: 1,
+      ));
     });
   }
 }

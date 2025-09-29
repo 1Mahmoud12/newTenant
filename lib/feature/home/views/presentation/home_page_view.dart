@@ -115,36 +115,36 @@ class _HomePageViewState extends State<HomePageView> {
                 //     },
                 //   ),
                 // ),
-                // Padding(
-                //   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                //   child: SeeAllWidget(
-                //     title: 'Top Product'.tr(),
-                //     onTap: () {
-                //       context.navigateToPage(const ProductView());
-                //     },
-                //   ),
-                // ),
-                // const Padding(
-                //   padding: EdgeInsets.symmetric(horizontal: 7),
-                //   child: FlashSaleHorizontalList(
-                //     isHorizontal: true,
-                //   ),
-                // ),
-                // Padding(
-                //   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                //   child: SeeAllWidget(
-                //     title: 'New Arrival'.tr(),
-                //     onTap: () {
-                //       context.navigateToPage(const ProductView());
-                //     },
-                //   ),
-                // ),
-                // const Padding(
-                //   padding: EdgeInsets.symmetric(horizontal: 7),
-                //   child: FlashSaleHorizontalList(
-                //     isHorizontal: true,
-                //   ),
-                // ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                  child: SeeAllWidget(
+                    title: 'Top Product'.tr(),
+                    onTap: () {
+                      context.navigateToPage(const ProductView());
+                    },
+                  ),
+                ),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 7),
+                  child: FlashSaleHorizontalList(
+                    isHorizontal: true,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                  child: SeeAllWidget(
+                    title: 'New Arrival'.tr(),
+                    onTap: () {
+                      context.navigateToPage(const ProductView());
+                    },
+                  ),
+                ),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 7),
+                  child: FlashSaleHorizontalList(
+                    isHorizontal: true,
+                  ),
+                ),
                 h10,
                 const FeaturedCategory(),
                 const FeaturedList(),

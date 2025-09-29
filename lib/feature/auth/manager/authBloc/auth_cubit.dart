@@ -192,7 +192,11 @@ class AuthCubit extends Cubit<AuthState> {
         }, (r) async {
           if (isForgetPassword) {
             Constants.token = r.data?.token ?? '';
-            context.navigateToPage(const ResetPasswordView());
+            context.navigateToPage(
+              const ResetPasswordView(
+                openLoginScreen: true,
+              ),
+            );
           } else {
             ConstantsModels.registerModel = r;
             userCacheValue = r;
@@ -254,6 +258,7 @@ class AuthCubit extends Cubit<AuthState> {
           log('userCacheValue.data ==>${userCacheValue?.data?.token}');
           Constants.token = r.data?.token ?? '';
           await userCache?.put(userCacheKey, jsonEncode(r.toJson()));
+
           context.navigateToPage(const NavigationViewWithThemes());
           loginPhoneController.clear();
           loginPasswordController.clear();
