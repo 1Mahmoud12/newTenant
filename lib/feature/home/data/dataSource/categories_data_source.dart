@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:dobzz_seller/core/network/dio_helper.dart';
@@ -11,7 +9,7 @@ class CategoriesDataSource {
   static Future<Either<Failure, CategoriesModel>> getCategories() async {
     try {
       final response = await DioHelper.getData(url: EndPoints.getCategories);
-      log('Top Product Response: ${response.data['data']}');
+      // log('Top Product Response: ${response.data['data']}');
       return Right(CategoriesModel.fromJson(response.data));
     } catch (error) {
       if (error is DioException) {

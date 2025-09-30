@@ -73,7 +73,7 @@ class ServerFailure extends Failure {
     if (statusCode == 400 || statusCode == 401 || statusCode == 403 || statusCode == 422 || statusCode == 302) {
       if (response != null &&
           response['message'] != null &&
-          (response['message'].toString().toLowerCase().contains('token is expired') ||
+          (response['message'].toString().toLowerCase().contains('Token not found') ||
               response['message'].toString().toLowerCase().contains('authorization token not found'))) {
         try {
           Future.delayed(Duration.zero, () {

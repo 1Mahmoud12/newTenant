@@ -4,10 +4,11 @@ import 'package:dobzz_seller/core/component/fields/custom_text_form_field.dart';
 import 'package:dobzz_seller/core/component/loadsErros/loading_widget.dart';
 import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:dobzz_seller/core/utils/constants_models.dart';
-import 'package:dobzz_seller/core/utils/custom_show_toast.dart';
 import 'package:dobzz_seller/core/utils/errorLoadingWidgets/empty_widget.dart';
+import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/feature/home/data/models/product_mdoel.dart';
 import 'package:dobzz_seller/feature/home/views/manager/topProduct/cubit/top_product_cubit.dart';
+import 'package:dobzz_seller/feature/product/views/presentation/product_details_view.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -115,6 +116,7 @@ class SearchedProductCard extends StatelessWidget {
         errorColor: Colors.grey,
         height: 60,
         width: 60,
+        fit: BoxFit.cover,
       ),
       title: Text(
         product.name ?? '',
@@ -130,14 +132,18 @@ class SearchedProductCard extends StatelessWidget {
       ),
       trailing: const Icon(Icons.arrow_outward),
       onTap: () {
-        // TODO: implement this
-        customShowToast(context, 'not_complete_yet');
         // context.navigateToPage(
         //   ProductDetailsView(
         //     productId: product.id ?? -1,
-        //     sku: product.variants?.first.skuCode ?? '',
+        //     variants: product.variants ?? [],
         //   ),
         // );
+        context.navigateToPage(
+          ProductDetailsView(
+            variants: product.variants ?? [],
+            productId: product.id!,
+          ),
+        );
       },
     );
   }

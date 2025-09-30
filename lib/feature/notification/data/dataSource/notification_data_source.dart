@@ -4,7 +4,6 @@ import 'package:dobzz_seller/core/network/dio_helper.dart';
 import 'package:dobzz_seller/core/network/end_points.dart';
 import 'package:dobzz_seller/core/network/errors/failures.dart';
 import 'package:dobzz_seller/feature/notification/data/models/notifications_model.dart';
-import 'package:dobzz_seller/main.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 abstract class NotificationDataSource {
@@ -20,7 +19,6 @@ class NotificationDataSourceImpl implements NotificationDataSource {
   Future<Either<Failure, NotificationsModel>> getNotifications() async {
     try {
       final response = await DioHelper.getData(url: EndPoints.getNotifications);
-      logger.d(response.data);
       return Right(NotificationsModel.fromJson(response.data));
     } catch (error) {
       if (error is DioException) {

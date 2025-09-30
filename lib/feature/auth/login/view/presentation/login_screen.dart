@@ -102,7 +102,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                   if (value.isEmpty) return 'required password'.tr();
                                   if (AuthCubit.of(context).errorMessage != null) return AuthCubit.of(context).errorMessage;
                                 },
-                                helperText: 'enter your password'.tr(),
                                 hintText: 'password'.tr(),
                                 labelText: 'password'.tr(),
                                 password: true,

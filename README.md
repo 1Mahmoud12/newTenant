@@ -21,7 +21,6 @@ samples, guidance on mobile development, and a full API reference.
 ```shell
 flutter clean  
 fluttr pub get
-flutter build appbundle
 open build/
 ```
 
@@ -40,5 +39,6 @@ rm -rf .symlinks
 pod install
 open .
 cd ..
-
+flutter build appbundle
+open build/app/outputs/bundle/
 ```

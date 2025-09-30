@@ -9,6 +9,9 @@ import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/feature/Categories/presentation/Categories_veiw.dart';
 import 'package:dobzz_seller/feature/home/views/manager/categories/cubit/categories_cubit.dart';
 import 'package:dobzz_seller/feature/home/views/manager/salesBanner/cubit/sales_banner_cubit.dart';
+import 'package:dobzz_seller/feature/home/views/manager/topProduct/cubit/top_product_cubit.dart';
+import 'package:dobzz_seller/feature/home/views/presentation/products_by_category_view.dart';
+import 'package:dobzz_seller/feature/home/views/presentation/products_feed_view.dart';
 import 'package:dobzz_seller/feature/home/views/presentation/search_product_home_view.dart';
 import 'package:dobzz_seller/feature/home/views/presentation/widgets/cart_floating_action_button.dart';
 import 'package:dobzz_seller/feature/home/views/presentation/widgets/categories_list.dart';
@@ -16,7 +19,6 @@ import 'package:dobzz_seller/feature/home/views/presentation/widgets/featured_ca
 import 'package:dobzz_seller/feature/home/views/presentation/widgets/home_page_header.dart';
 import 'package:dobzz_seller/feature/home/views/presentation/widgets/home_slider.dart';
 import 'package:dobzz_seller/feature/home/views/presentation/widgets/horizotal_product_list.dart';
-import 'package:dobzz_seller/feature/product/views/presentation/product_view.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -90,7 +92,12 @@ class _HomePageViewState extends State<HomePageView> {
                   child: SeeAllWidget(
                     title: 'Our Bestseller'.tr(),
                     onTap: () {
-                      context.navigateToPage(const ProductView());
+                      context.navigateToPage(
+                        const ProductsFeedView(
+                          feed: ProductsFeed.bestSeller,
+                          title: 'Our Bestseller',
+                        ),
+                      );
                     },
                   ),
                 ),
@@ -99,6 +106,7 @@ class _HomePageViewState extends State<HomePageView> {
                   padding: EdgeInsets.symmetric(horizontal: 7),
                   child: FlashSaleHorizontalList(
                     isHorizontal: true,
+                    feed: ProductsFeed.bestSeller,
                   ),
                 ),
                 // h10,
@@ -120,7 +128,12 @@ class _HomePageViewState extends State<HomePageView> {
                   child: SeeAllWidget(
                     title: 'Top Product'.tr(),
                     onTap: () {
-                      context.navigateToPage(const ProductView());
+                      context.navigateToPage(
+                        const ProductsFeedView(
+                          feed: ProductsFeed.top,
+                          title: 'Top Product',
+                        ),
+                      );
                     },
                   ),
                 ),
@@ -135,7 +148,12 @@ class _HomePageViewState extends State<HomePageView> {
                   child: SeeAllWidget(
                     title: 'New Arrival'.tr(),
                     onTap: () {
-                      context.navigateToPage(const ProductView());
+                      context.navigateToPage(
+                        const ProductsFeedView(
+                          feed: ProductsFeed.newArrival,
+                          title: 'New Arrival',
+                        ),
+                      );
                     },
                   ),
                 ),
@@ -143,6 +161,7 @@ class _HomePageViewState extends State<HomePageView> {
                   padding: EdgeInsets.symmetric(horizontal: 7),
                   child: FlashSaleHorizontalList(
                     isHorizontal: true,
+                    feed: ProductsFeed.newArrival,
                   ),
                 ),
                 h10,
@@ -229,7 +248,11 @@ class _FeaturedListState extends State<FeaturedList> {
 }
 
 class FeaturedCategoriesItem extends StatelessWidget {
-  const FeaturedCategoriesItem({super.key, required this.featuredName, required this.categoryId});
+  const FeaturedCategoriesItem({
+    super.key,
+    required this.featuredName,
+    required this.categoryId,
+  });
 
   final String featuredName;
   final int categoryId;
@@ -244,7 +267,12 @@ class FeaturedCategoriesItem extends StatelessWidget {
           child: SeeAllWidget(
             title: featuredName,
             onTap: () {
-              context.navigateToPage(const ProductView());
+              context.navigateToPage(
+                ProductsByCategoryView(
+                  categoryId: categoryId,
+                  title: featuredName,
+                ),
+              );
             },
           ),
         ),

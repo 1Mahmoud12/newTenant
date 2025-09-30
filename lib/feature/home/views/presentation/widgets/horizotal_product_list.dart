@@ -1,6 +1,7 @@
 import 'package:dobzz_seller/core/component/loadsErros/loading_widget.dart';
 import 'package:dobzz_seller/core/utils/constants_models.dart';
 import 'package:dobzz_seller/core/utils/custom_show_toast.dart';
+import 'package:dobzz_seller/core/utils/utils.dart';
 import 'package:dobzz_seller/feature/favorites/views/manager/wishList/cubit/wish_list_cubit.dart';
 import 'package:dobzz_seller/feature/home/views/manager/topProduct/cubit/top_product_cubit.dart';
 import 'package:dobzz_seller/feature/home/views/presentation/widgets/empty_product.dart';
@@ -11,18 +12,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class FlashSaleHorizontalList extends StatefulWidget {
-  const FlashSaleHorizontalList(
-      {super.key,
-      this.isItWhishList = false,
-      required this.isHorizontal,
-      this.categoryId});
+  const FlashSaleHorizontalList({
+    super.key,
+    this.isItWhishList = false,
+    required this.isHorizontal,
+    this.categoryId,
+    this.feed = ProductsFeed.top,
+  });
 
   final bool? isItWhishList;
   final bool isHorizontal;
   final int? categoryId;
+  final ProductsFeed feed;
   @override
-  State<FlashSaleHorizontalList> createState() =>
-      _FlashSaleHorizontalListState();
+  State<FlashSaleHorizontalList> createState() => _FlashSaleHorizontalListState();
 }
 
 class _FlashSaleHorizontalListState extends State<FlashSaleHorizontalList> {
@@ -33,8 +36,19 @@ class _FlashSaleHorizontalListState extends State<FlashSaleHorizontalList> {
     if (widget.isItWhishList!) {
       WishListCubit.get(context).getWishList(context: context);
     } else {
-      topProductCubit.getTopProduct(
-          context: context, subCategoryId: widget.categoryId);
+      // If a category is specified, use the generic search endpoint (shop/products)
+      if (widget.categoryId != null) {
+        topProductCubit.getTopProduct(
+          context: context,
+          subCategoryId: widget.categoryId,
+        );
+      } else {
+        // Otherwise use the selected feed endpoint
+        topProductCubit.getProductsByFeed(
+          context: context,
+          feed: widget.feed,
+        );
+      }
     }
   }
 
@@ -60,11 +74,13 @@ class TopProductHorizontalList extends StatelessWidget {
     required this.topProductCubit,
     required this.widget,
     required this.isHorizontal,
+    this.feed = ProductsFeed.top,
   });
 
   final TopProductCubit topProductCubit;
   final FlashSaleHorizontalList widget;
   final bool isHorizontal;
+  final ProductsFeed feed;
 
   @override
   Widget build(BuildContext context) {
@@ -96,8 +112,7 @@ class TopProductHorizontalList extends StatelessWidget {
               );
             }
             // Set a fixed height for the horizontal list items
-            final double itemWidth =
-                isHorizontal ? 300 : 180; // Adjust as needed
+            final double itemWidth = isHorizontal ? 300 : 180; // Adjust as needed
 
             //return SizedBox();
             return SingleChildScrollView(
@@ -114,35 +129,33 @@ class TopProductHorizontalList extends StatelessWidget {
                         child: isHorizontal
                             ? HorizontalProductCard(
                                 variants: product.variants ?? [],
-                                description: product.description ??
-                                    'No description available'.tr(),
+                                description: product.description ?? 'No description available'.tr(),
                                 rating: product.reviewsCount?.toDouble() ?? 0.0,
                                 sku: product.skuCode,
                                 productId: product.id ?? -1,
                                 initialLiked: widget.isItWhishList!,
                                 onLikeTap: (isNowLiked) {
-                                  logger.i('isWishListed $isNowLiked');
-                                  final sku = product.skuCode ??
-                                      product.variants?.firstOrNull?.skuCode;
+                                  final sku = product.skuCode ?? product.variants?.firstOrNull?.skuCode;
                                   if (sku == null) {
-                                    customShowToast(
-                                        context, 'not_sku_for_this_item'.tr());
+                                    Utils.showToast(title: 'not_sku_for_this_item'.tr(), state: UtilState.warning);
                                     return;
                                   }
                                   if (isNowLiked) {
                                     // Remove from wishlist
-                                    context
-                                        .read<WishListCubit>()
-                                        .removeFromWishList(
-                                            context: context, skuCode: sku);
+                                    context.read<WishListCubit>().removeFromWishList(
+                                          context: context,
+                                          skuCode: sku,
+                                        );
                                   } else {
                                     logger.i(
-                                        'Add to wishlist WishListed $isNowLiked');
+                                      'Add to wishlist WishListed $isNowLiked',
+                                    );
                                     // Add to wishlist
                                     context.read<WishListCubit>().addToWishList(
-                                        context: context,
-                                        skuCode: sku,
-                                        product: product);
+                                          context: context,
+                                          skuCode: sku,
+                                          product: product,
+                                        );
                                   }
                                 },
                                 imagePath: product.imagePath ?? '',
@@ -152,30 +165,31 @@ class TopProductHorizontalList extends StatelessWidget {
                             : ProductCard(
                                 variants: product.variants ?? [],
                                 sku: product.skuCode,
-                                description: product.description ??
-                                    'No description available'.tr(),
+                                description: product.description ?? 'No description available'.tr(),
                                 rating: product.reviewsCount?.toDouble() ?? 0.0,
                                 productId: product.id ?? -1,
                                 initialLiked: widget.isItWhishList!,
                                 onLikeTap: (isNowLiked) {
-                                  final sku = product.skuCode ??
-                                      product.variants?.firstOrNull?.skuCode;
+                                  final sku = product.skuCode ?? product.variants?.firstOrNull?.skuCode;
                                   if (sku == null) {
                                     customShowToast(
-                                        context, 'not_sku_for_this_item'.tr());
+                                      context,
+                                      'not_sku_for_this_item'.tr(),
+                                    );
                                     return;
                                   }
                                   if (isNowLiked) {
                                     // Add to wishlist
-                                    context
-                                        .read<WishListCubit>()
-                                        .removeFromWishList(
-                                            context: context, skuCode: sku);
+                                    context.read<WishListCubit>().removeFromWishList(
+                                          context: context,
+                                          skuCode: sku,
+                                        );
                                   } else {
                                     context.read<WishListCubit>().addToWishList(
-                                        context: context,
-                                        skuCode: sku,
-                                        product: product);
+                                          context: context,
+                                          skuCode: sku,
+                                          product: product,
+                                        );
                                   }
                                 },
                                 imagePath: product.imagePath ?? '',
@@ -190,7 +204,18 @@ class TopProductHorizontalList extends StatelessWidget {
             );
           }
 
-          // Initial state or any other state
+          // Trigger load if initial
+          if (widget.categoryId != null) {
+            topProductCubit.getTopProduct(
+              context: context,
+              subCategoryId: widget.categoryId,
+            );
+          } else {
+            topProductCubit.getProductsByFeed(
+              context: context,
+              feed: feed,
+            );
+          }
           return const SizedBox();
         },
       ),
@@ -256,14 +281,11 @@ class FavoriteHorizontalList extends StatelessWidget {
                         customShowToast(context, 'not_sku_for_this_item'.tr());
                         return;
                       }
-                      context
-                          .read<WishListCubit>()
-                          .removeFromWishList(context: context, skuCode: sku);
+                      context.read<WishListCubit>().removeFromWishList(context: context, skuCode: sku);
                     },
                     imagePath: wishListItem.productImagePath ?? '',
                     title: wishListItem.product ?? 'Unknown Product'.tr(),
-                    price:
-                        '\$${wishListItem.priceForProduct?.toString() ?? '0'}',
+                    price: '\$${wishListItem.priceForProduct?.toString() ?? '0'}',
                   ),
                 );
               },

@@ -451,7 +451,6 @@ class OrderItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        ///TODO: add sku
         context.navigateToPage(
           ProductDetailsView(
             productId: item.productId ?? -1,
@@ -695,7 +694,7 @@ class OrderInformation extends StatelessWidget {
           // Name
           _buildInfoRow(
             label: 'Name:'.tr(),
-            value: address?.name ?? 'Unknown',
+            value: order.customer ?? 'N/A',
           ),
 
           const SizedBox(height: 12),

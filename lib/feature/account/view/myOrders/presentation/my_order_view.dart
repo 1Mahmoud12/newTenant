@@ -486,7 +486,7 @@ class OrderCard extends StatelessWidget {
           flex: 3,
           child: CustomTextButton(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
-            onPress: () {},
+            onPress: null,
             child: Center(
               child: FittedBox(
                 fit: BoxFit.scaleDown,

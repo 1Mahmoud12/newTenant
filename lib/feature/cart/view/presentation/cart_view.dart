@@ -278,7 +278,7 @@ class GoToCheckOutButton extends StatelessWidget {
               if (items.isNotEmpty) {
                 for (final element in items) {
                   if ((element.quantity ?? 0) > (element.availableQuantity ?? 0)) {
-                    Utils.showToast(title: '${'you_must_request_a_little_amount_from_'.tr()}${element.product}', state: UtilState.error);
+                    Utils.showToast(title: '${'you_must_request_a_little_amount_from_'.tr()} ${element.product}', state: UtilState.error);
                     return;
                   }
                 }

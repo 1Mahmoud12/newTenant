@@ -66,7 +66,6 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
                       validator: (value) {
                         if (value == null) return 'wrong_password,_please_try_again'.tr();
                       },
-                      helperText: 'enter_your_password'.tr(),
                       hintText: 'password'.tr(),
                       labelText: 'password'.tr(),
                       password: true,
@@ -74,7 +73,7 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
                   ),
                 ],
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 20),
               Row(
                 children: [
                   Expanded(
@@ -84,7 +83,6 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
                       validator: (value) {
                         if (value == null) return 'wrong_password,_please_try_again'.tr();
                       },
-                      helperText: 'enter_your_password'.tr(),
                       hintText: 're-password'.tr(),
                       labelText: 're-enter_password'.tr(),
                       password: true,

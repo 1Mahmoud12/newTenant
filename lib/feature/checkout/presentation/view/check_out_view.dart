@@ -174,21 +174,21 @@ class _CheckoutViewState extends State<CheckoutView> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 8),
-                    Divider(
-                      thickness: 0.7,
-                      color: Colors.grey.withOpacityNew(0.3),
-                    ),
-                    const SizedBox(height: 8),
+                    // const SizedBox(height: 8),
+                    // Divider(
+                    //   thickness: 0.7,
+                    //   color: Colors.grey.withOpacityNew(0.3),
+                    // ),
+                    // const SizedBox(height: 8),
                     // Payment Method Section
-                    Text(
-                      'Payment Method'.tr(),
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 12),
+                    // Text(
+                    //   'Payment Method'.tr(),
+                    //   style: const TextStyle(
+                    //     fontSize: 16,
+                    //     fontWeight: FontWeight.bold,
+                    //   ),
+                    // ),
+                    // const SizedBox(height: 12),
 
                     // Padding(
                     //   padding: const EdgeInsets.symmetric(horizontal: 5),

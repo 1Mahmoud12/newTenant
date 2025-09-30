@@ -1,5 +1,5 @@
-import 'package:hive_flutter/adapters.dart';
 import 'package:dobzz_seller/feature/auth/data/models/register_model.dart';
+import 'package:hive_flutter/adapters.dart';
 
 Box? userCache;
 String userCacheBoxKey = 'userCache';
@@ -15,6 +15,9 @@ String locationCacheKey = 'locationCacheKey';
 String allMyAddressesKey = 'allMyAddressesKey';
 String advertiseModelKey = 'advertiseModelKey';
 String categoriesModelKey = 'categoriesModelKey';
+String homeTopProductsKey = 'homeTopProductsKey';
+String homeBestSellerKey = 'homeBestSellerKey';
+String homeNewArrivalsKey = 'homeNewArrivalsKey';
 int idUserValue = 0;
 String fcmTokenKey = 'fcmTokenKey';
 String deviceIdKey = 'deviceIdKey';
@@ -25,7 +28,7 @@ bool rememberMe = false;
 
 bool darkModeValue = false;
 
-RegisterModel? userCacheValue ;
+RegisterModel? userCacheValue;
 // AllMyAddresses allMyAddressesCache = AllMyAddresses();
 // AdvertiseModel advertiseModelCache = AdvertiseModel();
 // CategoriesModel? categoriesModelCache;
