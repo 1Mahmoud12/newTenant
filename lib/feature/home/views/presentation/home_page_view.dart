@@ -31,15 +31,29 @@ class HomePageView extends StatefulWidget {
 }
 
 class _HomePageViewState extends State<HomePageView> {
+  late TopProductCubit bestsellerCubit;
+  late TopProductCubit topCubit;
+  late TopProductCubit newCubit;
   @override
   void initState() {
     if (ConstantsModels.salesBannerModel == null) {
       salesBannerCubit.getSaleBanner(context: context);
     }
+    bestsellerCubit = TopProductCubit();
+    topCubit = TopProductCubit();
+    newCubit = TopProductCubit();
     super.initState();
   }
 
   SalesBannerCubit salesBannerCubit = SalesBannerCubit();
+
+  @override
+  void dispose() {
+    bestsellerCubit.close();
+    topCubit.close();
+    newCubit.close();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -87,26 +101,41 @@ class _HomePageViewState extends State<HomePageView> {
                 h10,
                 const CategoriesList(),
                 h10,
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                  child: SeeAllWidget(
-                    title: 'Our Bestseller'.tr(),
-                    onTap: () {
-                      context.navigateToPage(
-                        const ProductsFeedView(
-                          feed: ProductsFeed.bestSeller,
-                          title: 'Our Bestseller',
-                        ),
+                BlocProvider.value(
+                  value: bestsellerCubit,
+                  child: BlocBuilder<TopProductCubit, TopProductState>(
+                    builder: (context, state) {
+                      final cubit = TopProductCubit.of(context);
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          if (cubit.bestsellerHasProducts)
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                              child: SeeAllWidget(
+                                title: 'Our Bestseller'.tr(),
+                                onTap: () {
+                                  context.navigateToPage(
+                                    const ProductsFeedView(
+                                      feed: ProductsFeed.bestSeller,
+                                      title: 'Our Bestseller',
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                          h10,
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 7),
+                            child: FlashSaleHorizontalList(
+                              isHorizontal: true,
+                              feed: ProductsFeed.bestSeller,
+                              topProductCubit: bestsellerCubit,
+                            ),
+                          ),
+                        ],
                       );
                     },
-                  ),
-                ),
-                h10,
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 7),
-                  child: FlashSaleHorizontalList(
-                    isHorizontal: true,
-                    feed: ProductsFeed.bestSeller,
                   ),
                 ),
                 // h10,
@@ -123,45 +152,75 @@ class _HomePageViewState extends State<HomePageView> {
                 //     },
                 //   ),
                 // ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                  child: SeeAllWidget(
-                    title: 'Top Product'.tr(),
-                    onTap: () {
-                      context.navigateToPage(
-                        const ProductsFeedView(
-                          feed: ProductsFeed.top,
-                          title: 'Top Product',
-                        ),
+                BlocProvider.value(
+                  value: topCubit,
+                  child: BlocBuilder<TopProductCubit, TopProductState>(
+                    builder: (context, state) {
+                      final cubit = TopProductCubit.of(context);
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          if (cubit.topHasProducts)
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                              child: SeeAllWidget(
+                                title: 'Top Product'.tr(),
+                                onTap: () {
+                                  context.navigateToPage(
+                                    const ProductsFeedView(
+                                      feed: ProductsFeed.top,
+                                      title: 'Top Product',
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 7),
+                            child: FlashSaleHorizontalList(
+                              isHorizontal: true,
+                              topProductCubit: topCubit,
+                            ),
+                          ),
+                        ],
                       );
                     },
                   ),
                 ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 7),
-                  child: FlashSaleHorizontalList(
-                    isHorizontal: true,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                  child: SeeAllWidget(
-                    title: 'New Arrival'.tr(),
-                    onTap: () {
-                      context.navigateToPage(
-                        const ProductsFeedView(
-                          feed: ProductsFeed.newArrival,
-                          title: 'New Arrival',
-                        ),
+                BlocProvider.value(
+                  value: newCubit,
+                  child: BlocBuilder<TopProductCubit, TopProductState>(
+                    builder: (context, state) {
+                      final cubit = TopProductCubit.of(context);
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          if (cubit.newArrivalHasProducts)
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                              child: SeeAllWidget(
+                                title: 'New Arrival'.tr(),
+                                onTap: () {
+                                  context.navigateToPage(
+                                    const ProductsFeedView(
+                                      feed: ProductsFeed.newArrival,
+                                      title: 'New Arrival',
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 7),
+                            child: FlashSaleHorizontalList(
+                              isHorizontal: true,
+                              feed: ProductsFeed.newArrival,
+                              topProductCubit: newCubit,
+                            ),
+                          ),
+                        ],
                       );
                     },
-                  ),
-                ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 7),
-                  child: FlashSaleHorizontalList(
-                    isHorizontal: true,
-                    feed: ProductsFeed.newArrival,
                   ),
                 ),
                 h10,
@@ -247,7 +306,7 @@ class _FeaturedListState extends State<FeaturedList> {
   }
 }
 
-class FeaturedCategoriesItem extends StatelessWidget {
+class FeaturedCategoriesItem extends StatefulWidget {
   const FeaturedCategoriesItem({
     super.key,
     required this.featuredName,
@@ -258,29 +317,45 @@ class FeaturedCategoriesItem extends StatelessWidget {
   final int categoryId;
 
   @override
+  State<FeaturedCategoriesItem> createState() => _FeaturedCategoriesItemState();
+}
+
+class _FeaturedCategoriesItemState extends State<FeaturedCategoriesItem> {
+  bool _hasProducts = true;
+
+  @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-          child: SeeAllWidget(
-            title: featuredName,
-            onTap: () {
-              context.navigateToPage(
-                ProductsByCategoryView(
-                  categoryId: categoryId,
-                  title: featuredName,
-                ),
-              );
-            },
+        if (_hasProducts)
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+            child: SeeAllWidget(
+              title: widget.featuredName,
+              onTap: () {
+                context.navigateToPage(
+                  ProductsByCategoryView(
+                    categoryId: widget.categoryId,
+                    title: widget.featuredName,
+                  ),
+                );
+              },
+            ),
           ),
-        ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 7),
           child: FlashSaleHorizontalList(
             isHorizontal: false,
-            categoryId: categoryId,
+            categoryId: widget.categoryId,
+            topProductCubit: TopProductCubit(),
+            onProductsLoaded: (count) {
+              if (mounted) {
+                setState(() {
+                  _hasProducts = count > 0;
+                });
+              }
+            },
           ),
         ),
       ],

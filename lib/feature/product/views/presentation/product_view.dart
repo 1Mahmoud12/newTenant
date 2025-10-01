@@ -20,14 +20,17 @@ class ProductView extends StatefulWidget {
 class _ProductViewState extends State<ProductView> {
   @override
   void initState() {
-    topProductCubit.getTopProduct(
-      context: context,
-      subCategoryId: widget.subCategoryId,
-    );
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      topProductCubit = TopProductCubit.of(context);
+      topProductCubit.getTopProduct(
+        context: context,
+        subCategoryId: widget.subCategoryId,
+      );
+    });
     super.initState();
   }
 
-  TopProductCubit topProductCubit = TopProductCubit();
+  late TopProductCubit topProductCubit;
 
   @override
   Widget build(BuildContext context) {

@@ -18,12 +18,16 @@ class FlashSaleHorizontalList extends StatefulWidget {
     required this.isHorizontal,
     this.categoryId,
     this.feed = ProductsFeed.top,
+    this.onProductsLoaded,
+    required this.topProductCubit,
   });
 
   final bool? isItWhishList;
   final bool isHorizontal;
   final int? categoryId;
   final ProductsFeed feed;
+  final TopProductCubit topProductCubit;
+  final ValueChanged<int>? onProductsLoaded;
   @override
   State<FlashSaleHorizontalList> createState() => _FlashSaleHorizontalListState();
 }
@@ -32,6 +36,7 @@ class _FlashSaleHorizontalListState extends State<FlashSaleHorizontalList> {
   @override
   void initState() {
     super.initState();
+    topProductCubit = widget.topProductCubit;
     // Fetch top products when widget initializes
     if (widget.isItWhishList!) {
       WishListCubit.get(context).getWishList(context: context);
@@ -52,19 +57,22 @@ class _FlashSaleHorizontalListState extends State<FlashSaleHorizontalList> {
     }
   }
 
-  TopProductCubit topProductCubit = TopProductCubit();
+  late TopProductCubit topProductCubit;
 
   @override
   Widget build(BuildContext context) {
-    return widget.isItWhishList!
-        ? FavoriteHorizontalList(
-            widget: widget,
-          )
-        : TopProductHorizontalList(
-            isHorizontal: widget.isHorizontal,
-            topProductCubit: topProductCubit,
-            widget: widget,
-          );
+    return !mounted
+        ? const SizedBox()
+        : widget.isItWhishList!
+            ? FavoriteHorizontalList(
+                widget: widget,
+              )
+            : TopProductHorizontalList(
+                isHorizontal: widget.isHorizontal,
+                topProductCubit: topProductCubit,
+                widget: widget,
+                //onProductsLoaded: widget.onProductsLoaded,
+              );
   }
 }
 
@@ -75,12 +83,14 @@ class TopProductHorizontalList extends StatelessWidget {
     required this.widget,
     required this.isHorizontal,
     this.feed = ProductsFeed.top,
+    this.onProductsLoaded,
   });
 
   final TopProductCubit topProductCubit;
   final FlashSaleHorizontalList widget;
   final bool isHorizontal;
   final ProductsFeed feed;
+  final ValueChanged<int>? onProductsLoaded;
 
   @override
   Widget build(BuildContext context) {
@@ -93,12 +103,16 @@ class TopProductHorizontalList extends StatelessWidget {
               child: LoadingWidget(),
             );
           } else if (state is TopProductError) {
+            // Notify empty on error
+            onProductsLoaded?.call(0);
             return Center(
               child: Text('${'Error:'.tr()}${state.e}'),
             );
           } else if (topProductCubit.products.isNotEmpty) {
             // Access the loaded top products
             final topProducts = topProductCubit.products;
+            // Notify parent of products count
+            onProductsLoaded?.call(topProducts.length);
 
             if (topProducts.isEmpty) {
               return Center(
@@ -137,7 +151,10 @@ class TopProductHorizontalList extends StatelessWidget {
                                 onLikeTap: (isNowLiked) {
                                   final sku = product.skuCode ?? product.variants?.firstOrNull?.skuCode;
                                   if (sku == null) {
-                                    Utils.showToast(title: 'not_sku_for_this_item'.tr(), state: UtilState.warning);
+                                    Utils.showToast(
+                                      title: 'not_sku_for_this_item'.tr(),
+                                      state: UtilState.warning,
+                                    );
                                     return;
                                   }
                                   if (isNowLiked) {
@@ -204,18 +221,10 @@ class TopProductHorizontalList extends StatelessWidget {
             );
           }
 
-          // Trigger load if initial
-          if (widget.categoryId != null) {
-            topProductCubit.getTopProduct(
-              context: context,
-              subCategoryId: widget.categoryId,
-            );
-          } else {
-            topProductCubit.getProductsByFeed(
-              context: context,
-              feed: feed,
-            );
-          }
+          // Do not trigger fetches here to avoid repeated calls on rebuilds.
+          // Fetching is handled once in initState of FlashSaleHorizontalList.
+          // If we reach here with no data, notify empty
+          onProductsLoaded?.call(0);
           return const SizedBox();
         },
       ),

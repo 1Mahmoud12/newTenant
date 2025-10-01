@@ -1,11 +1,11 @@
 import 'dart:developer';
 
-import 'package:bloc/bloc.dart';
 import 'package:dobzz_seller/core/services/cache_service.dart';
 import 'package:dobzz_seller/core/utils/constants_models.dart';
 import 'package:dobzz_seller/feature/home/data/dataSource/get_top_product_data_source.dart';
 import 'package:dobzz_seller/feature/home/data/models/product_mdoel.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'top_product_state.dart';
 
@@ -15,6 +15,8 @@ class TopProductCubit extends Cubit<TopProductState> {
   TopProductCubit() : super(TopProductInitial());
 
   List<Product> products = [];
+
+  static TopProductCubit of(BuildContext context) => BlocProvider.of<TopProductCubit>(context);
 
   Future<bool> loadFromCache(ProductsFeed feed) async {
     final key = switch (feed) {
@@ -67,6 +69,9 @@ class TopProductCubit extends Cubit<TopProductState> {
     );
   }
 
+  bool bestsellerHasProducts = true;
+  bool topHasProducts = true;
+  bool newArrivalHasProducts = true;
   Future<void> getProductsByFeed({
     required BuildContext context,
     required ProductsFeed feed,
@@ -87,13 +92,16 @@ class TopProductCubit extends Cubit<TopProductState> {
           products = r.data ?? [];
           switch (feed) {
             case ProductsFeed.top:
+              topHasProducts = r.data?.isNotEmpty ?? false;
               ConstantsModels.topProductModel = r;
               break;
             case ProductsFeed.bestSeller:
               // Reuse container if desired or add a new one in ConstantsModels
+              bestsellerHasProducts = r.data?.isNotEmpty ?? false;
               ConstantsModels.bestSellerModel = r;
               break;
             case ProductsFeed.newArrival:
+              newArrivalHasProducts = r.data?.isNotEmpty ?? false;
               ConstantsModels.newArrivalsModel = r;
               break;
           }
