@@ -2,6 +2,9 @@ import 'package:dobzz_seller/feature/auth/data/models/register_model.dart';
 import 'package:hive_flutter/adapters.dart';
 
 Box? userCache;
+Box? loginCache;
+String loginCacheBoxKey = 'loginCache';
+
 String userCacheBoxKey = 'userCache';
 // keys
 
@@ -33,3 +36,14 @@ RegisterModel? userCacheValue;
 // AdvertiseModel advertiseModelCache = AdvertiseModel();
 // CategoriesModel? categoriesModelCache;
 String? locationCacheValue;
+
+// biometrics
+String biometricEnabledKey = 'biometricEnabledKey';
+String biometricTypeKey = 'biometricTypeKey';
+String biometricUserCacheKey = 'biometricUserCacheKey';
+String biometricAuthKey = 'biometricAuthKey';
+// login credentials
+String loginEmailKey = 'loginEmailKey';
+String alternativeLoginEmailKey = 'alternativeLoginEmailKey';
+String loginPasswordKey = 'loginPasswordKey';
+String alternativeLoginPasswordKey = 'alternativeLoginPasswordKey';

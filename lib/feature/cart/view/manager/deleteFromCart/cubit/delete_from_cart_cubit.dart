@@ -1,7 +1,6 @@
-import 'package:bloc/bloc.dart';
 import 'package:dobzz_seller/feature/cart/data/dataSource/delete_form_cart_data_source.dart';
 import 'package:flutter/material.dart';
-import 'package:meta/meta.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'delete_from_cart_state.dart';
 

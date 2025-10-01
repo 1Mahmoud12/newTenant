@@ -1,13 +1,14 @@
 class SignUpParams {
   final String name;
   final String phone;
-  final String password;
+
+//  final String password;
   final int termAndCondition;
 
   SignUpParams({
     required this.name,
     required this.phone,
-    required this.password,
+    //  required this.password,
     required this.termAndCondition,
   });
 
@@ -15,7 +16,7 @@ class SignUpParams {
     return <String, dynamic>{
       'name': name,
       'phone': phone,
-      'password': password,
+      // 'password': password,
       'agree_terms': termAndCondition,
     };
   }

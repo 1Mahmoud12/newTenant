@@ -12,7 +12,6 @@ import 'package:dobzz_seller/feature/account/view/myDetalis/presentation/manager
 import 'package:dobzz_seller/feature/account/view/myDetalis/presentation/my_details_veiw.dart';
 import 'package:dobzz_seller/feature/account/view/notificationSetting/presentation/notification_setting_view.dart';
 import 'package:dobzz_seller/feature/account/view/presentation/language_view.dart';
-import 'package:dobzz_seller/feature/auth/forgetPassword/view/presentation/reset_password_view.dart';
 import 'package:dobzz_seller/feature/auth/login/view/presentation/login_screen.dart';
 import 'package:dobzz_seller/mainCubit/cubit/main_cubit_cubit.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -241,17 +240,17 @@ class _ProfileViewThemeOneState extends State<ProfileViewThemeOne> {
                     ),
                     child: Column(
                       children: [
-                        _buildMenuItemNew(
-                          icon: AppIcons.changePassword,
-                          title: 'Change Password',
-                          subtitle: 'Update your account password',
-                          onTap: () {
-                            context.navigateToPage(const ResetPasswordView(
-                              openLoginScreen: false,
-                            ));
-                          },
-                        ),
-                        _buildDivider(),
+                        // _buildMenuItemNew(
+                        //   icon: AppIcons.changePassword,
+                        //   title: 'Change Password',
+                        //   subtitle: 'Update your account password',
+                        //   onTap: () {
+                        //     context.navigateToPage(const ResetPasswordView(
+                        //       openLoginScreen: false,
+                        //     ));
+                        //   },
+                        // ),
+                        // _buildDivider(),
                         _buildMenuItemNew(
                           icon: AppIcons.notificationIcon,
                           title: 'Notifications',

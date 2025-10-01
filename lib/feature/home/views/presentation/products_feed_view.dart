@@ -67,7 +67,7 @@ class _ProductsFeedViewState extends State<ProductsFeedView> {
                   sku: product.skuCode,
                   description: product.description ?? 'No description available'.tr(),
                   rating: product.reviewsCount?.toDouble() ?? 0.0,
-                  productId: product.id?.toInt() ?? -1,
+                  productId: product.id ?? -1,
                   initialLiked: false,
                   onLikeTap: (_) {},
                   imagePath: product.imagePath ?? '',

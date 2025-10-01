@@ -1,17 +1,14 @@
 import 'dart:developer';
 
 import 'package:dobzz_seller/core/component/buttons/custom_text_button.dart';
-import 'package:dobzz_seller/core/component/fields/custom_text_form_field.dart';
 import 'package:dobzz_seller/core/component/phone_number_field.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:dobzz_seller/core/utils/app_images.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
-import 'package:dobzz_seller/feature/auth/forgetPassword/view/presentation/forget_password_view.dart';
 import 'package:dobzz_seller/feature/auth/manager/authBloc/auth_cubit.dart';
 import 'package:dobzz_seller/feature/auth/manager/authBloc/auth_state.dart';
 import 'package:dobzz_seller/feature/auth/signUp/view/presentation/sign_up_view.dart';
 import 'package:dobzz_seller/feature/auth/widgets/authRich_text_link.dart';
-import 'package:dobzz_seller/feature/navigation/view/presentation/navigation_view.dart';
 import 'package:easy_localization/easy_localization.dart' as easy;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -29,7 +26,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     AuthCubit.of(context).phoneController.clear();
-    AuthCubit.of(context).passwordController.clear();
+    //AuthCubit.of(context).passwordController.clear();
     super.initState();
   }
 
@@ -90,53 +87,53 @@ class _LoginScreenState extends State<LoginScreen> {
                         outPadding: EdgeInsets.zero,
                         controller: AuthCubit.of(context).loginPhoneController,
                       ),
-                      const SizedBox(height: 16),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: BlocBuilder<AuthCubit, AuthState>(
-                              builder: (context, state) => CustomTextFormField(
-                                outPadding: EdgeInsets.zero,
-                                controller: AuthCubit.of(context).loginPasswordController,
-                                validator: (value) {
-                                  if (value.isEmpty) return 'required password'.tr();
-                                  if (AuthCubit.of(context).errorMessage != null) return AuthCubit.of(context).errorMessage;
-                                },
-                                hintText: 'password'.tr(),
-                                labelText: 'password'.tr(),
-                                password: true,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                      // const SizedBox(height: 16),
+                      // Row(
+                      //   children: [
+                      //     Expanded(
+                      //       child: BlocBuilder<AuthCubit, AuthState>(
+                      //         builder: (context, state) => CustomTextFormField(
+                      //           outPadding: EdgeInsets.zero,
+                      //           controller: AuthCubit.of(context).loginPasswordController,
+                      //           validator: (value) {
+                      //             if (value.isEmpty) return 'required password'.tr();
+                      //             if (AuthCubit.of(context).errorMessage != null) return AuthCubit.of(context).errorMessage;
+                      //           },
+                      //           hintText: 'password'.tr(),
+                      //           labelText: 'password'.tr(),
+                      //           password: true,
+                      //         ),
+                      //       ),
+                      //     ),
+                      //   ],
+                      // ),
                     ],
                   ),
                 ),
-                const SizedBox(height: 4),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    InkWell(
-                      onTap: () => context.navigateToPage(const ForgetPasswordView()),
-                      child: Text(
-                        'forget password?'.tr(),
-                        style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                              fontWeight: FontWeight.w700,
-                              color: AppColors.primaryColor,
-                              decorationColor: AppColors.primaryColor,
-                              decoration: TextDecoration.underline,
-                            ),
-                      ),
-                    ),
-                  ],
-                ),
+                // const SizedBox(height: 4),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.end,
+                //   children: [
+                //     InkWell(
+                //       onTap: () => context.navigateToPage(const ForgetPasswordView()),
+                //       child: Text(
+                //         'forget password?'.tr(),
+                //         style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                //               fontWeight: FontWeight.w700,
+                //               color: AppColors.primaryColor,
+                //               decorationColor: AppColors.primaryColor,
+                //               decoration: TextDecoration.underline,
+                //             ),
+                //       ),
+                //     ),
+                //   ],
+                // ),
                 const SizedBox(height: 16),
                 BlocConsumer<AuthCubit, AuthState>(
                   listener: (context, state) {
-                    if (state is AuthLoginSuccessState) {
-                      context.navigateToPage(const NavigationViewWithThemes());
-                    }
+                    // if (state is AuthLoginSuccessState) {
+                    //   context.navigateToPage(const NavigationViewWithThemes());
+                    // }
                     if (state is AuthLoginErrorState) {
                       log('current State is $state');
 

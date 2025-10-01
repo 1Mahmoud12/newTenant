@@ -1,6 +1,5 @@
 import 'package:dobzz_seller/core/component/buttons/custom_text_button.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
-import 'package:dobzz_seller/core/utils/custom_show_toast.dart';
 import 'package:dobzz_seller/core/utils/extensions.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/feature/auth/login/view/presentation/login_screen.dart';
@@ -88,15 +87,15 @@ class AddPasswordViewState extends State<AddPasswordView> {
               childText: 'finish'.tr(),
               padding: const EdgeInsets.symmetric(vertical: 14.5),
               onPress: () {
-                if (formKey.currentState!.validate()) {
-                  if (AuthCubit.of(context).passwordController.text != AuthCubit.of(context).confirmPasswordController.text) {
-                    customShowToast(context, 'passwords do not match'.tr(), showToastStatus: ShowToastStatus.error);
-                  } else if (AuthCubit.of(context).termAndCondition == 0) {
-                    customShowToast(context, 'you must agree with the terms & condition'.tr(), showToastStatus: ShowToastStatus.error);
-                  } else {
-                    //AuthCubit.of(context).resetPassword(context);
-                  }
-                }
+                // if (formKey.currentState!.validate()) {
+                //   if (AuthCubit.of(context).passwordController.text != AuthCubit.of(context).confirmPasswordController.text) {
+                //     customShowToast(context, 'passwords do not match'.tr(), showToastStatus: ShowToastStatus.error);
+                //   } else if (AuthCubit.of(context).termAndCondition == 0) {
+                //     customShowToast(context, 'you must agree with the terms & condition'.tr(), showToastStatus: ShowToastStatus.error);
+                //   } else {
+                //     //AuthCubit.of(context).resetPassword(context);
+                //   }
+                // }
               },
               // child: state is AuthSignUpLoadingState ? const LoadingWidget() : null,
             ),

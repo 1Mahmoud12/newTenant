@@ -14,7 +14,6 @@ import 'package:dobzz_seller/feature/account/view/myDetalis/presentation/manager
 import 'package:dobzz_seller/feature/account/view/myDetalis/presentation/my_details_veiw.dart';
 import 'package:dobzz_seller/feature/account/view/notificationSetting/presentation/notification_setting_view.dart';
 import 'package:dobzz_seller/feature/account/view/presentation/language_view.dart';
-import 'package:dobzz_seller/feature/auth/forgetPassword/view/presentation/reset_password_view.dart';
 import 'package:dobzz_seller/feature/auth/login/view/presentation/login_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -119,15 +118,15 @@ class _AccountViewState extends State<AccountView> {
                   context.navigateToPage(const AddressView());
                 },
               ),
-              _buildMenuItem(
-                icon: AppIcons.changePassword,
-                title: 'Change Password',
-                onTap: () {
-                  context.navigateToPage(const ResetPasswordView(
-                    openLoginScreen: false,
-                  ));
-                },
-              ),
+              // _buildMenuItem(
+              //   icon: AppIcons.changePassword,
+              //   title: 'Change Password',
+              //   onTap: () {
+              //     context.navigateToPage(const ResetPasswordView(
+              //       openLoginScreen: false,
+              //     ));
+              //   },
+              // ),
               // _buildMenuItem(
               //   icon: AppIcons.paymentMethod,
               //   title: 'Payment Methods',

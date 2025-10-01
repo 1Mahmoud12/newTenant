@@ -1,7 +1,7 @@
-import 'package:bloc/bloc.dart';
 import 'package:dobzz_seller/core/utils/utils.dart';
 import 'package:dobzz_seller/feature/notification/data/dataSource/notification_data_source.dart';
 import 'package:dobzz_seller/feature/notification/data/models/notifications_model.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'notifications_state.dart';
 

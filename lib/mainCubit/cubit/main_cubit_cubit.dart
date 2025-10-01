@@ -1,11 +1,10 @@
 import 'dart:io';
 
-import 'package:bloc/bloc.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:meta/meta.dart';
-import 'package:device_info_plus/device_info_plus.dart';
+
 part 'main_cubit_state.dart';
 
 class MainCubitCubit extends Cubit<MainCubitState> {

@@ -21,7 +21,9 @@ class _ProductViewState extends State<ProductView> {
   @override
   void initState() {
     topProductCubit.getTopProduct(
-        context: context, subCategoryId: widget.subCategoryId);
+      context: context,
+      subCategoryId: widget.subCategoryId,
+    );
     super.initState();
   }
 
@@ -47,9 +49,7 @@ class _ProductViewState extends State<ProductView> {
                 );
               } else if (state is TopProductSuccess) {
                 // Access the loaded top products
-                final products = widget.subCategoryId == null
-                    ? ConstantsModels.topProductModel?.data
-                    : ConstantsModels.productsModel?.data;
+                final products = widget.subCategoryId == null ? ConstantsModels.topProductModel?.data : ConstantsModels.productsModel?.data;
 
                 if (products == null || products.isEmpty) {
                   return Center(
@@ -80,17 +80,21 @@ class _ProductViewState extends State<ProductView> {
                       initialLiked: false,
                       sku: product.skuCode,
                       onLikeTap: (isNowLiked) {
-                        final sku = product.skuCode ??
-                            product.variants?.firstOrNull?.skuCode;
+                        final sku = product.skuCode ?? product.variants?.firstOrNull?.skuCode;
                         if (sku == null) {
                           customShowToast(
-                              context, 'not_sku_for_this_item'.tr());
+                            context,
+                            'not_sku_for_this_item'.tr(),
+                          );
                           return;
                         }
                         if (isNowLiked) {
                           // Add to wishlist
                           context.read<WishListCubit>().addToWishList(
-                              context: context, skuCode: sku, product: product);
+                                context: context,
+                                skuCode: sku,
+                                product: product,
+                              );
                         }
                       },
                       imagePath: product.imagePath ?? '',

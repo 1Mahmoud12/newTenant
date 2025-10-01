@@ -12,8 +12,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CategorizedProductView extends StatefulWidget {
-  const CategorizedProductView(
-      {super.key, required this.categoryId, required this.categoryName});
+  const CategorizedProductView({
+    super.key,
+    required this.categoryId,
+    required this.categoryName,
+  });
   final String categoryName;
   final int categoryId;
 
@@ -30,12 +33,12 @@ class _CategorizedProductViewState extends State<CategorizedProductView> {
 
   Future<void> loadData() async {
     subCategoryCubit.getSubCategories(
-        context: context, categoryId: widget.categoryId);
+      context: context,
+      categoryId: widget.categoryId,
+    );
     topProductCubit.getTopProduct(
       context: context,
-      subCategoryId: ConstantsModels.subCategoryModel?.data?.isNotEmpty ?? false
-          ? ConstantsModels.subCategoryModel?.data![0].id
-          : widget.categoryId,
+      subCategoryId: ConstantsModels.subCategoryModel?.data?.isNotEmpty ?? false ? ConstantsModels.subCategoryModel?.data![0].id : widget.categoryId,
     );
   }
 
@@ -68,12 +71,8 @@ class _CategorizedProductViewState extends State<CategorizedProductView> {
                         padding: const EdgeInsets.symmetric(horizontal: 5),
                         child: CustomList(
                           borderOnlySelection: true,
-                          tabs: List.generate(
-                              ConstantsModels.subCategoryModel?.data?.length ??
-                                  0, (index) {
-                            return ConstantsModels
-                                    .subCategoryModel?.data![index].name ??
-                                'unKnowSubCategory';
+                          tabs: List.generate(ConstantsModels.subCategoryModel?.data?.length ?? 0, (index) {
+                            return ConstantsModels.subCategoryModel?.data![index].name ?? 'unKnowSubCategory';
                           }),
                           onTabChanged: (index) {
                             // Handle tab change logic here
@@ -104,13 +103,18 @@ class _CategorizedProductViewState extends State<CategorizedProductView> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Icon(Icons.error_outline,
-                              size: 60, color: Colors.grey),
+                          const Icon(
+                            Icons.error_outline,
+                            size: 60,
+                            color: Colors.grey,
+                          ),
                           const SizedBox(height: 16),
                           Text(
                             'Error loading products'.tr(),
                             style: const TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold),
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                           const SizedBox(height: 8),
                           ElevatedButton(
@@ -123,33 +127,36 @@ class _CategorizedProductViewState extends State<CategorizedProductView> {
                   );
                 } else if (state is TopProductSuccess) {
                   // Check if products list is empty
-                  if (ConstantsModels.productsModel?.data == null ||
-                      ConstantsModels.productsModel!.data!.isEmpty) {
+                  if (ConstantsModels.productsModel?.data == null || ConstantsModels.productsModel!.data!.isEmpty) {
                     return Expanded(
                       child: Center(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(Icons.shopping_bag_outlined,
-                                size: 80, color: Colors.grey[400]),
+                            Icon(
+                              Icons.shopping_bag_outlined,
+                              size: 80,
+                              color: Colors.grey[400],
+                            ),
                             const SizedBox(height: 16),
                             Text(
                               'No products found'.tr(),
                               style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.grey[700]),
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey[700],
+                              ),
                             ),
                             const SizedBox(height: 8),
                             Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 32),
+                              padding: const EdgeInsets.symmetric(horizontal: 32),
                               child: Text(
-                                'There are no products available in this category right now'
-                                    .tr(),
+                                'There are no products available in this category right now'.tr(),
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                    fontSize: 14, color: Colors.grey[600]),
+                                  fontSize: 14,
+                                  color: Colors.grey[600],
+                                ),
                               ),
                             ),
                             const SizedBox(height: 24),
@@ -168,42 +175,40 @@ class _CategorizedProductViewState extends State<CategorizedProductView> {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: GridView.builder(
-                        itemCount:
-                            ConstantsModels.productsModel?.data?.length ?? 0,
+                        itemCount: ConstantsModels.productsModel?.data?.length ?? 0,
                         physics: const AlwaysScrollableScrollPhysics(),
                         padding: EdgeInsets.zero,
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,
                           mainAxisSpacing: 10,
                           crossAxisSpacing: 10,
                           childAspectRatio: 0.6,
                         ),
                         itemBuilder: (context, index) {
-                          final product =
-                              ConstantsModels.productsModel!.data![index];
+                          final product = ConstantsModels.productsModel!.data![index];
                           return ProductCard(
                             sku: product.skuCode,
                             variants: product.variants ?? [],
-                            description: product.description ??
-                                'No description available'.tr(),
+                            description: product.description ?? 'No description available'.tr(),
                             rating: product.reviewsCount?.toDouble() ?? 0.0,
                             productId: product.id ?? -1,
                             initialLiked: false,
                             onLikeTap: (isNowLiked) {
-                              final sku = product.skuCode ??
-                                  product.variants?.firstOrNull?.skuCode;
+                              final sku = product.skuCode ?? product.variants?.firstOrNull?.skuCode;
                               if (sku == null) {
                                 customShowToast(
-                                    context, 'not_sku_for_this_item'.tr());
+                                  context,
+                                  'not_sku_for_this_item'.tr(),
+                                );
                                 return;
                               }
                               if (isNowLiked) {
                                 // Add to wishlist
                                 context.read<WishListCubit>().addToWishList(
-                                    context: context,
-                                    skuCode: sku,
-                                    product: product);
+                                      context: context,
+                                      skuCode: sku,
+                                      product: product,
+                                    );
                               }
                             },
                             imagePath: product.imagePath ?? '',

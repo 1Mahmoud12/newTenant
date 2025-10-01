@@ -98,26 +98,25 @@ class TopProductGrid extends StatelessWidget {
                 final product = topProducts[index];
                 return ProductCard(
                   variants: product.variants ?? [],
-                  description:
-                      product.description ?? 'No description available'.tr(),
+                  description: product.description ?? 'No description available'.tr(),
                   rating: product.reviewsCount?.toDouble() ?? 0.0,
                   productId: product.id ?? -1,
                   initialLiked: widget.isItWhishList!,
                   onLikeTap: (isNowLiked) {
-                    final sku = product.skuCode ??
-                        product.variants?.firstOrNull?.skuCode;
+                    final sku = product.skuCode ?? product.variants?.firstOrNull?.skuCode;
                     if (sku == null) {
                       customShowToast(context, 'not_sku_for_this_item'.tr());
                       return;
                     }
                     if (isNowLiked) {
                       // Add to wishlist
-                      context
-                          .read<WishListCubit>()
-                          .removeFromWishList(context: context, skuCode: sku);
+                      context.read<WishListCubit>().removeFromWishList(context: context, skuCode: sku);
                     } else {
                       context.read<WishListCubit>().addToWishList(
-                          context: context, skuCode: sku, product: product);
+                            context: context,
+                            skuCode: sku,
+                            product: product,
+                          );
                     }
                   },
                   imagePath: product.imagePath ?? '',
@@ -150,8 +149,7 @@ class FavoriteGrid extends StatelessWidget {
       value: WishListCubit.get(context),
       child: BlocBuilder<WishListCubit, WishListState>(
         builder: (context, state) {
-          if (state is WishListLoading &&
-              WishListCubit.get(context).wishList.isEmpty) {
+          if (state is WishListLoading && WishListCubit.get(context).wishList.isEmpty) {
             return const Center(
               child: LoadingWidget(),
             );
@@ -166,9 +164,7 @@ class FavoriteGrid extends StatelessWidget {
             if (wishList.isEmpty) {
               return EmptyWidget(
                 data: 'No Saved Items!'.tr(),
-                subData:
-                    'You don’t have any saved items. Go to home and add some.'
-                        .tr(),
+                subData: 'You don’t have any saved items. Go to home and add some.'.tr(),
                 emptyImage: EmptyImages.noSavedItem,
               );
             }
@@ -196,29 +192,30 @@ class FavoriteGrid extends StatelessWidget {
                       sku: wishListItem.skuCode,
                       productId: wishListItem.productId?.toInt() ?? -1,
                       initialLiked: true,
-                      description:
-                          wishListItem.descriptionProduct ?? unknownValue,
+                      description: wishListItem.descriptionProduct ?? unknownValue,
                       onLikeTap: (isNowLiked) {
                         final sku = wishListItem.skuCode;
                         if (sku == null) {
                           customShowToast(
-                              context, 'not_sku_for_this_item'.tr());
+                            context,
+                            'not_sku_for_this_item'.tr(),
+                          );
                           return;
                         }
                         if (isNowLiked) {
                           context.read<WishListCubit>().removeFromWishList(
-                              context: context, skuCode: sku);
+                                context: context,
+                                skuCode: sku,
+                              );
                         }
                       },
                       imagePath: wishListItem.productImagePath ?? '',
                       title: wishListItem.product ?? 'Unknown Product'.tr(),
-                      price:
-                          '\$${wishListItem.priceForProduct?.toString() ?? '0'}',
+                      price: '\$${wishListItem.priceForProduct?.toString() ?? '0'}',
                     );
                   },
                 ),
-                if (state is WishListLoading &&
-                    WishListCubit.get(context).wishList.isNotEmpty) ...[
+                if (state is WishListLoading && WishListCubit.get(context).wishList.isNotEmpty) ...[
                   const Center(
                     child: LoadingWidget(),
                   ),

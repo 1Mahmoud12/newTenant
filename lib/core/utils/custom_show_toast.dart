@@ -84,7 +84,7 @@ class _BottomToastOverlayContainerState extends State<BottomToastOverlayContaine
       animation: slideAnimation,
       builder: (context, child) {
         return PositionedDirectional(
-          start: MediaQuery.of(context).size.width * (0.1),
+          start: MediaQuery.of(context).size.width * 0.1,
           //bottom: (MediaQuery.of(context).size.height * widget.heightRatio! * (slideAnimation.value)) + MediaQuery.viewInsetsOf(context).bottom,
           top: widget.showToastPosition == ShowToastPosition.top
               ? (MediaQuery.of(context).size.height * (slideAnimation.value * widget.heightRatio)) // Move from top to center
@@ -100,7 +100,7 @@ class _BottomToastOverlayContainerState extends State<BottomToastOverlayContaine
                 ShowToastStatus.success => Stack(
                     children: [
                       Container(
-                        width: MediaQuery.of(context).size.width * (0.8),
+                        width: MediaQuery.of(context).size.width * 0.8,
                         padding: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 14.0),
                         decoration: BoxDecoration(
                           color: AppColors.primaryColor,
@@ -125,7 +125,7 @@ class _BottomToastOverlayContainerState extends State<BottomToastOverlayContaine
                     ],
                   ),
                 ShowToastStatus.warning => Container(
-                    width: MediaQuery.of(context).size.width * (0.8),
+                    width: MediaQuery.of(context).size.width * 0.8,
                     padding: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 10.0),
                     decoration: BoxDecoration(
                       color: AppColors.cBackgroundToast,
@@ -148,7 +148,7 @@ class _BottomToastOverlayContainerState extends State<BottomToastOverlayContaine
                     ),
                   ),
                 ShowToastStatus.error => Container(
-                    width: MediaQuery.of(context).size.width * (0.8),
+                    width: MediaQuery.of(context).size.width * 0.8,
                     padding: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 10.0),
                     decoration: BoxDecoration(
                       color: AppColors.red,

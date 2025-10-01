@@ -11,10 +11,8 @@ import 'package:dobzz_seller/core/utils/errorLoadingWidgets/dialog_loading_anima
 import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/feature/auth/data/dataSource/aut_data_source.dart';
 import 'package:dobzz_seller/feature/auth/data/models/login_params.dart';
-import 'package:dobzz_seller/feature/auth/data/models/reset_password_params.dart';
 import 'package:dobzz_seller/feature/auth/data/models/sign_up_params.dart';
 import 'package:dobzz_seller/feature/auth/data/models/verify_code_model.dart';
-import 'package:dobzz_seller/feature/auth/forgetPassword/view/presentation/reset_password_view.dart';
 import 'package:dobzz_seller/feature/auth/manager/authBloc/auth_state.dart';
 import 'package:dobzz_seller/feature/auth/verifyCode/view/presentation/verify_code_view.dart';
 import 'package:dobzz_seller/feature/navigation/view/presentation/navigation_view.dart';
@@ -98,15 +96,16 @@ class AuthCubit extends Cubit<AuthState> {
   TextEditingController loginPhoneController = TextEditingController();
   TextEditingController loginPasswordController = TextEditingController();
 // reset password
-  TextEditingController resetPasswordController = TextEditingController();
-  TextEditingController resetConfirmationPasswordController = TextEditingController();
+  // TextEditingController resetPasswordController = TextEditingController();
+  //TextEditingController resetConfirmationPasswordController = TextEditingController();
 
 //
   TextEditingController nameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-  TextEditingController confirmPasswordController = TextEditingController();
+
+  //TextEditingController passwordController = TextEditingController();
+  //TextEditingController confirmPasswordController = TextEditingController();
   TextEditingController nationalIdController = TextEditingController();
   TextEditingController otpController = TextEditingController();
   int gender = 1;
@@ -133,7 +132,7 @@ class AuthCubit extends Cubit<AuthState> {
       SignUpParams(
         name: nameController.text,
         phone: countryCode + phoneController.text,
-        password: passwordController.text,
+        //  password: passwordController.text,
         termAndCondition: termAndCondition,
       ),
     )
@@ -192,11 +191,11 @@ class AuthCubit extends Cubit<AuthState> {
         }, (r) async {
           if (isForgetPassword) {
             Constants.token = r.data?.token ?? '';
-            context.navigateToPage(
-              const ResetPasswordView(
-                openLoginScreen: true,
-              ),
-            );
+            // context.navigateToPage(
+            //   const ResetPasswordView(
+            //     openLoginScreen: true,
+            //   ),
+            // );
           } else {
             ConstantsModels.registerModel = r;
             userCacheValue = r;
@@ -205,7 +204,7 @@ class AuthCubit extends Cubit<AuthState> {
             context.navigateToPage(const NavigationViewWithThemes());
             phoneController.clear();
             otpController.clear();
-            passwordController.clear();
+            // passwordController.clear();
           }
 
           emit(AuthVerifySuccessState());
@@ -216,88 +215,85 @@ class AuthCubit extends Cubit<AuthState> {
 
   String? errorMessage;
 
-  void login(BuildContext context) async {
+  Future<bool> login(BuildContext context) async {
     emit(AuthLoginLoadingState());
     animationDialogLoading(context);
-    authDataSource
-        .postLogin(
+    final result = await authDataSource.postLogin(
       context,
       LoginParams(
         phone: countryCode + loginPhoneController.text,
         password: loginPasswordController.text,
       ),
-    )
-        .then(
-      (value) async {
-        // bool result = await InternetConnectionChecker().hasConnection;
-        value.fold((l) {
-          closeDialog(context);
-          // Extract error reasons if available
-          List<String> errorReasons = [];
-          if (l is ServerFailure && l.apiError != null) {
-            errorReasons = l.apiError!.getErrorsList();
-          } else {
-            errorReasons = [l.errMessage];
-          }
-          if (l.errMessage == 'You have To Verify Your Phone') {
-            //authDataSource.resendCode(context, phone: countryCode + loginPhoneController.text);
-            context.navigateToPage(
-              const VerifyCodeView(
-                isForgetPassword: false,
-                isLogin: true,
-              ),
-            );
-          } else {
-            failureModalBottomSheetWithReason(context, reasons: errorReasons, onPress: () {});
-          }
-
-          emit(AuthLoginErrorState(l.errMessage));
-        }, (r) async {
-          ConstantsModels.registerModel = r;
-          userCacheValue = r;
-          log('userCacheValue.data ==>${userCacheValue?.data?.token}');
-          Constants.token = r.data?.token ?? '';
-          await userCache?.put(userCacheKey, jsonEncode(r.toJson()));
-
-          context.navigateToPage(const NavigationViewWithThemes());
-          loginPhoneController.clear();
-          loginPasswordController.clear();
-          emit(AuthLoginSuccessState());
-        });
-      },
     );
+    return result.fold((l) {
+      closeDialog(context);
+      // Extract error reasons if available
+      List<String> errorReasons = [];
+      if (l is ServerFailure && l.apiError != null) {
+        errorReasons = l.apiError!.getErrorsList();
+      } else {
+        errorReasons = [l.errMessage];
+      }
+      if (l.errMessage == 'You have To Verify Your Phone') {
+        //authDataSource.resendCode(context, phone: countryCode + loginPhoneController.text);
+        context.navigateToPage(
+          const VerifyCodeView(
+            isForgetPassword: false,
+            isLogin: true,
+          ),
+        );
+      } else {
+        failureModalBottomSheetWithReason(context, reasons: errorReasons, onPress: () {});
+      }
+
+      emit(AuthLoginErrorState(l.errMessage));
+      return false;
+    }, (r) async {
+      ConstantsModels.registerModel = r;
+      userCacheValue = r;
+      Constants.customerId = r.data!.id!.toString();
+      log('userCacheValue.data ==>${userCacheValue?.data?.token}');
+      Constants.token = r.data?.token ?? '';
+      await userCache?.put(userCacheKey, jsonEncode(r.toJson()));
+
+      context.navigateToPage(const VerifyCodeView(isForgetPassword: false, isLogin: true));
+      loginPhoneController.clear();
+      loginPasswordController.clear();
+      emit(AuthLoginSuccessState());
+      return true;
+    });
   }
 
-  void resetPassword(BuildContext context) async {
-    emit(AuthResetPasswordLoadingState());
-    animationDialogLoading(context);
-    authDataSource
-        .resetPasswordPassword(
-      context,
-      ResetPasswordParams(
-        password: resetPasswordController.text,
-        confirmPassword: resetConfirmationPasswordController.text,
-      ),
-    )
-        .then(
-      (value) async {
-        closeDialog(context);
-        // bool result = await InternetConnectionChecker().hasConnection;
-        value.fold((l) {
-          failureModalBottomSheetWithReason(context, reasons: [l.errMessage], onPress: () {});
-          emit(AuthResetPasswordErrorState(l.errMessage));
-        }, (r) async {
-          userCacheValue = null;
-          await userCache?.clear();
-          lastNameController.clear();
-          passwordController.clear();
-          confirmPasswordController.clear();
-          resetPasswordController.clear();
-          resetConfirmationPasswordController.clear();
-          otpController.clear();
-          emit(AuthResetPasswordSuccessState());
-        });
-      },
-    );
-  }
+// void resetPassword(BuildContext context) async {
+//   emit(AuthResetPasswordLoadingState());
+//   animationDialogLoading(context);
+//   authDataSource
+//       .resetPasswordPassword(
+//     context,
+//     ResetPasswordParams(
+//       password: resetPasswordController.text,
+//       confirmPassword: resetConfirmationPasswordController.text,
+//     ),
+//   )
+//       .then(
+//     (value) async {
+//       closeDialog(context);
+//       // bool result = await InternetConnectionChecker().hasConnection;
+//       value.fold((l) {
+//         failureModalBottomSheetWithReason(context, reasons: [l.errMessage], onPress: () {});
+//         emit(AuthResetPasswordErrorState(l.errMessage));
+//       }, (r) async {
+//         userCacheValue = null;
+//         await userCache?.clear();
+//         lastNameController.clear();
+//         passwordController.clear();
+//         confirmPasswordController.clear();
+//         resetPasswordController.clear();
+//         resetConfirmationPasswordController.clear();
+//         otpController.clear();
+//         emit(AuthResetPasswordSuccessState());
+//       });
+//     },
+//   );
+// }
 }

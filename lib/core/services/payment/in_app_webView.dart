@@ -39,7 +39,7 @@ class _MyInAppWebViewState extends State<MyInAppWebView> {
           onPageStarted: widget.onPageStarted,
           onPageFinished: (String url) async {
             widget.onPageFinished?.call(url);
-            print('Page finished loading: $url');
+            log('Page finished loading: $url');
             _checkPaymentStatus(url);
           },
           onHttpError: (HttpResponseError error) {
@@ -56,9 +56,9 @@ class _MyInAppWebViewState extends State<MyInAppWebView> {
                     'Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Mobile/15A372 Safari/604.1'
               },
             );
-            print('esponse.request?.url ${response.request?.url}'); // Final redirected URL
-            print('Navigating to: ${request.url}');
-            print('current to: ${await controller.currentUrl()}');
+            log('esponse.request?.url ${response.request?.url}'); // Final redirected URL
+            log('Navigating to: ${request.url}');
+            log('current to: ${await controller.currentUrl()}');
             widget.onPageStarted?.call(request.url);
             _checkPaymentStatus(request.url);
             return NavigationDecision.navigate;
@@ -93,7 +93,7 @@ class _MyInAppWebViewState extends State<MyInAppWebView> {
         finish(context);
         toast(language.paymentSuccess);
       });
-      print('Payment success detected!');
+      log('Payment success detected!');
       widget.onPageStarted?.call(url);
     } else if (url.contains('https://app.m-clean.net/payment-failed')) {
       setState(() {
@@ -103,7 +103,7 @@ class _MyInAppWebViewState extends State<MyInAppWebView> {
         finish(context);
         toast(language.yourPaymentFailedPleaseTryAgain);
       });
-      print('Payment failed detected!');
+      log('Payment failed detected!');
       widget.onPageStarted?.call(url);
     }
   }
@@ -134,6 +134,8 @@ class _MyInAppWebViewState extends State<MyInAppWebView> {
     );
   }
 }*/
+import 'dart:developer';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
@@ -197,7 +199,7 @@ class _MyInAppWebViewState extends State<MyInAppWebView> {
         if (!didPop) {
           // Handle back button press
           if (widget.onPopInvokedWithResult != null) {
-            widget.onPopInvokedWithResult!(false, null);
+            widget.onPopInvokedWithResult!.call(false, null);
           }
           // Safely close the screen
           Navigator.of(context).pop();
@@ -215,7 +217,7 @@ class _MyInAppWebViewState extends State<MyInAppWebView> {
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
               if (widget.onPopInvokedWithResult != null) {
-                widget.onPopInvokedWithResult!(false, null);
+                widget.onPopInvokedWithResult!.call(false, null);
               }
               Navigator.of(context).pop();
             },
@@ -230,21 +232,21 @@ class _MyInAppWebViewState extends State<MyInAppWebView> {
           },
           onLoadStart: (controller, url) {
             if (url != null) {
-              print('Page started loading: $url');
+              log('Page started loading: $url');
               widget.onPageStarted?.call(url.toString());
 
               // Check for Tap's response URL
               if (url.toString().contains('payments.tap.company/gosell/v6/payment/response.aspx')) {
-                print('Detected Tap response page - waiting for final redirect');
+                log('Detected Tap response page - waiting for final redirect');
               }
               // Check for success URL
               else if (url.toString().contains('app.m-clean.net/payment-success')) {
-                print('Payment success detected!');
+                log('Payment success detected!');
                 // Let the parent handle success logic
               }
               // Check for failure URL
               else if (url.toString().contains('app.m-clean.net/payment-fail')) {
-                print('Payment failure detected!');
+                log('Payment failure detected!');
                 // Let the parent handle failure logic
               }
             }
@@ -252,7 +254,7 @@ class _MyInAppWebViewState extends State<MyInAppWebView> {
           onLoadStop: (controller, url) async {
             if (url != null && mounted) {
               // Check if mounted before proceeding
-              print('Page finished loading: $url');
+              log('Page finished loading: $url');
               widget.onPageFinished?.call(url.toString());
 
               if (url.toString().contains('app.m-clean.net/payment-success')) {
@@ -275,10 +277,10 @@ class _MyInAppWebViewState extends State<MyInAppWebView> {
           },
           shouldOverrideUrlLoading: (controller, navigationAction) async {
             var uri = navigationAction.request.url!;
-            print('Navigating to: $uri');
+            log('Navigating to: $uri');
 
             if (uri.toString().contains('app.m-clean.net/payment-success')) {
-              print('Payment success override detected!');
+              log('Payment success override detected!');
               // Allow navigation so the parent's onPageStarted can handle it
               return NavigationActionPolicy.ALLOW;
             }
@@ -287,20 +289,20 @@ class _MyInAppWebViewState extends State<MyInAppWebView> {
             return NavigationActionPolicy.ALLOW;
           },
           onConsoleMessage: (controller, consoleMessage) {
-            print('Console: ${consoleMessage.message}');
+            log('Console: ${consoleMessage.message}');
           },
           onProgressChanged: (controller, progress) {
             // You can add a progress indicator here if needed
           },
           iosOnNavigationResponse: (controller, navigationResponse) async {
-            print('iosOnNavigationResponse ${navigationResponse.response?.url}');
+            log('iosOnNavigationResponse ${navigationResponse.response?.url}');
             return null;
           },
           // onReceivedHttpError: (controller, request, errorResponse) {
-          //   print('HTTP Error: ${errorResponse.statusCode}');
+          //   log('HTTP Error: ${errorResponse.statusCode}');
           // },
           // onReceivedError: (controller, request, error) {
-          //   print('WebView Error: $error');
+          //   log('WebView Error: $error');
           // },
         ),
       ),

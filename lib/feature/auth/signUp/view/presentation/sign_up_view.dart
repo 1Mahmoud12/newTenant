@@ -35,8 +35,8 @@ class _SignUpViewState extends State<SignUpView> {
     authCubit = AuthCubit.of(context);
     authCubit.nameController.clear();
     authCubit.phoneController.clear();
-    authCubit.passwordController.clear();
-    authCubit.confirmPasswordController.clear();
+    // authCubit.passwordController.clear();
+    // authCubit.confirmPasswordController.clear();
   }
 
   // @override
@@ -58,15 +58,15 @@ class _SignUpViewState extends State<SignUpView> {
     return null;
   }
 
-  String? validateConfirmPassword(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Confirm password is required'.tr();
-    }
-    if (value != authCubit.passwordController.text) {
-      return 'Passwords do not match'.tr();
-    }
-    return null;
-  }
+  // String? validateConfirmPassword(String? value) {
+  //   if (value == null || value.isEmpty) {
+  //     return 'Confirm password is required'.tr();
+  //   }
+  //   if (value != authCubit.passwordController.text) {
+  //     return 'Passwords do not match'.tr();
+  //   }
+  //   return null;
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -108,23 +108,23 @@ class _SignUpViewState extends State<SignUpView> {
                         controller: authCubit.phoneController,
                         outPadding: EdgeInsets.zero,
                       ),
-                      CustomTextFormField(
-                        controller: authCubit.passwordController,
-                        hintText: 'Password'.tr(),
-                        labelText: 'Password'.tr(),
-                        helperText: 'Enter your password'.tr(),
-                        password: true,
-                        validator: validatePassword,
-                        outPadding: EdgeInsets.zero,
-                      ),
-                      CustomTextFormField(
-                        controller: authCubit.confirmPasswordController,
-                        hintText: 'Re-enter password'.tr(),
-                        labelText: 'Re-enter password'.tr(),
-                        password: true,
-                        validator: validateConfirmPassword,
-                        outPadding: EdgeInsets.zero,
-                      ),
+                      // CustomTextFormField(
+                      //   controller: authCubit.passwordController,
+                      //   hintText: 'Password'.tr(),
+                      //   labelText: 'Password'.tr(),
+                      //   helperText: 'Enter your password'.tr(),
+                      //   password: true,
+                      //   validator: validatePassword,
+                      //   outPadding: EdgeInsets.zero,
+                      // ),
+                      // CustomTextFormField(
+                      //   controller: authCubit.confirmPasswordController,
+                      //   hintText: 'Re-enter password'.tr(),
+                      //   labelText: 'Re-enter password'.tr(),
+                      //   password: true,
+                      //   validator: validateConfirmPassword,
+                      //   outPadding: EdgeInsets.zero,
+                      // ),
                       CustomCheckBox(
                         checkBox: checkBoxValue,
                         onTap: () {
