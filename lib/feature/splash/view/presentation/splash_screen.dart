@@ -38,7 +38,7 @@ class _SplashScreenState extends State<SplashScreen> {
         if (onBoardingValue) {
           context.navigateToPage(const SplashTwoScreen());
         } else {
-          context.navigateToPage(userCacheValue?.data != null ? const NavigationViewWithThemes() : const LoginScreen());
+          context.navigateToPage(loginCacheValue?.data != null ? const NavigationViewWithThemes() : const LoginScreen());
         }
         // userCacheValue.data != null ? context.navigateToPage(const NavigationView()) : context.navigateToPage(const LoginScreen());
         // userCache?.put(onBoardingKey, false);

@@ -11,7 +11,7 @@ String userCacheBoxKey = 'userCache';
 String languageAppKey = 'languageAppKey';
 String rememberMeKey = 'rememberMeKey';
 String onBoardingKey = 'onBoardingKey';
-String userCacheKey = 'userCacheKey';
+String loginCacheKey = 'userCacheKey';
 String darkModeKey = 'darkModeKey';
 String idUserKey = 'idUserKey';
 String locationCacheKey = 'locationCacheKey';
@@ -31,7 +31,7 @@ bool rememberMe = false;
 
 bool darkModeValue = false;
 
-RegisterModel? userCacheValue;
+RegisterModel? loginCacheValue;
 // AllMyAddresses allMyAddressesCache = AllMyAddresses();
 // AdvertiseModel advertiseModelCache = AdvertiseModel();
 // CategoriesModel? categoriesModelCache;

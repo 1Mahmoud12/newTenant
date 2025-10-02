@@ -1,10 +1,14 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:dobzz_seller/core/component/buttons/custom_text_button.dart';
 import 'package:dobzz_seller/core/component/phone_number_field.dart';
+import 'package:dobzz_seller/core/services/biometrics/biometric_service.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
+import 'package:dobzz_seller/core/utils/app_icons.dart';
 import 'package:dobzz_seller/core/utils/app_images.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
+import 'package:dobzz_seller/core/utils/utils.dart';
 import 'package:dobzz_seller/feature/auth/manager/authBloc/auth_cubit.dart';
 import 'package:dobzz_seller/feature/auth/manager/authBloc/auth_state.dart';
 import 'package:dobzz_seller/feature/auth/signUp/view/presentation/sign_up_view.dart';
@@ -12,6 +16,7 @@ import 'package:dobzz_seller/feature/auth/widgets/authRich_text_link.dart';
 import 'package:easy_localization/easy_localization.dart' as easy;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -22,41 +27,39 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final formKey = GlobalKey<FormState>();
+  final BiometricService _biometricService = BiometricService();
+  bool _showBiometricButton = false;
 
   @override
   void initState() {
+    super.initState();
     AuthCubit.of(context).phoneController.clear();
     //AuthCubit.of(context).passwordController.clear();
-    super.initState();
+    _checkBiometricAvailability();
+  }
+
+  Future<void> _checkBiometricAvailability() async {
+    final isEnabled = await _biometricService.isBiometricEnabled();
+    final isSupported = await _biometricService.isDeviceSupported();
+    final canCheck = await _biometricService.canCheckBiometrics();
+
+    if (mounted) {
+      setState(() {
+        _showBiometricButton = isEnabled && isSupported && canCheck;
+      });
+    }
+  }
+
+  Future<void> _handleBiometricLogin() async {
+    final success = await _biometricService.attemptBiometricLogin(context);
+    if (!success && mounted) {
+      Utils.showToast(title: 'biometric_login_failed'.tr(), state: UtilState.error);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   backgroundColor: Colors.transparent,
-      //   elevation: 0,
-      //   // actions: [
-      //   //   InkWell(
-      //   //     onTap: () {},
-      //   //     child: Padding(
-      //   //       padding: const EdgeInsets.symmetric(horizontal: 12),
-      //   //       child: Container(
-      //   //         padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
-      //   //         decoration: BoxDecoration(
-      //   //           border: Border.all(color: AppColors.cB700.withOpacityNew(.05), width: 2),
-      //   //           borderRadius: BorderRadius.circular(40),
-      //   //         ),
-      //   //         child: Text(
-      //   //           'sing up'.tr(),
-      //   //           style: Theme.of(context).textTheme.displaySmall?.copyWith(fontWeight: FontWeight.w600, color: AppColors.primaryColor),
-      //   //         ),
-      //   //       ),
-      //   //     ),
-      //   //   ),
-      //   // ],
-      // ),
-
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -142,74 +145,98 @@ class _LoginScreenState extends State<LoginScreen> {
                       });
                     }
                   },
-                  builder: (context, state) => Row(
-                    children: [
-                      Expanded(
-                        flex: 2,
-                        child: CustomTextButton(
-                          borderRadius: 8,
-                          backgroundColor: AppColors.primaryColor,
-                          padding: const EdgeInsets.symmetric(vertical: 14.5),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  'log in'.tr(),
-                                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                                        fontWeight: FontWeight.w500,
-                                        color: AppColors.white,
-                                      ),
-                                  textAlign: TextAlign.center,
+                  builder: (context, state) => IntrinsicHeight(
+                    child: Row(
+                      children: [
+                        Expanded(
+                          flex: 2,
+                          child: CustomTextButton(
+                            borderRadius: 8,
+                            backgroundColor: AppColors.primaryColor,
+                            padding: const EdgeInsets.symmetric(vertical: 14.5),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    'log in'.tr(),
+                                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                                          fontWeight: FontWeight.w500,
+                                          color: AppColors.white,
+                                        ),
+                                    textAlign: TextAlign.center,
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                          onPress: () {
-                            AuthCubit.of(context).errorMessage = null;
-                            if (formKey.currentState!.validate()) {
-                              //context.navigateToPage(const NavigationView());
+                              ],
+                            ),
+                            onPress: () {
+                              AuthCubit.of(context).errorMessage = null;
+                              if (formKey.currentState!.validate()) {
+                                //context.navigateToPage(const NavigationView());
 
-                              AuthCubit.of(context).login(context);
-                            }
-                          },
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Expanded(
-                        child: CustomTextButton(
-                          borderRadius: 8,
-                          backgroundColor: AppColors.primaryColor,
-                          padding: const EdgeInsets.symmetric(vertical: 14.5),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  'guest'.tr(),
-                                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                                        fontWeight: FontWeight.w500,
-                                        color: AppColors.white,
-                                      ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            ],
+                                AuthCubit.of(context).login(context);
+                              }
+                            },
                           ),
-                          onPress: () {
-                            AuthCubit.of(context).countryCode = '+966';
-                            AuthCubit.of(context).loginPhoneController.text = '500975853';
-                            AuthCubit.of(context).loginPasswordController.text = '+966500975853';
-                            AuthCubit.of(context).login(context);
-                          },
                         ),
-                      ),
-                    ],
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                          child: CustomTextButton(
+                            borderRadius: 8,
+                            backgroundColor: AppColors.primaryColor,
+                            padding: const EdgeInsets.symmetric(vertical: 14.5),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    'guest'.tr(),
+                                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                                          fontWeight: FontWeight.w500,
+                                          color: AppColors.white,
+                                        ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            onPress: () {
+                              AuthCubit.of(context).countryCode = '+966';
+                              AuthCubit.of(context).loginPhoneController.text = '500975853';
+                              AuthCubit.of(context).loginPasswordController.text = '+966500975853';
+                              AuthCubit.of(context).login(context);
+                            },
+                          ),
+                        ),
+                        if (_showBiometricButton) ...[
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Expanded(
+                            child: CustomTextButton(
+                              borderRadius: 8,
+                              //  backgroundColor: AppColors.white,
+                              // border: Border.all(color: AppColors.primaryColor, width: 1.5),
+                              padding: const EdgeInsets.symmetric(vertical: 14.5),
+                              onPress: _handleBiometricLogin,
+                              child: Platform.isIOS
+                                  ? SvgPicture.asset(
+                                      AppIcons.faceIdIc,
+                                      width: 30,
+                                      height: 30,
+                                    )
+                                  : SvgPicture.asset(AppIcons.fingerPrintIc),
+                            ),
+                          ),
+                        ],
+                      ],
+                    ),
                   ),
                 ),
                 const SizedBox(
                   height: 20,
                 ),
+
                 AuthRichTextLink(
                   isCentered: true,
                   text: "Don't have an account? ".tr(),

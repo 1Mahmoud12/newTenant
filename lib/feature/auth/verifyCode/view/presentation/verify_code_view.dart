@@ -94,7 +94,7 @@ class _VerifyCodeViewState extends State<VerifyCodeView> {
                 focusNode: _focusNode,
                 onChanged: (value) {},
                 onCompleted: (p0) {
-                  AuthCubit.of(context).verifyCode(context, isForgetPassword: widget.isForgetPassword);
+                  AuthCubit.of(context).verifyCode(context, isForgetPassword: widget.isForgetPassword, isLogin: widget.isLogin);
                 },
               ),
               Row(
@@ -133,7 +133,7 @@ class _VerifyCodeViewState extends State<VerifyCodeView> {
                 childText: 'verify'.tr(),
                 padding: const EdgeInsets.symmetric(vertical: 14.5),
                 onPress: () {
-                  AuthCubit.of(context).verifyCode(context, isForgetPassword: widget.isForgetPassword);
+                  AuthCubit.of(context).verifyCode(context, isForgetPassword: widget.isForgetPassword, isLogin: widget.isLogin);
                 },
               ),
             ],

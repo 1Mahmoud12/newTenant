@@ -164,7 +164,7 @@ class AuthCubit extends Cubit<AuthState> {
     emit(AuthSetCodeState());
   }
 
-  void verifyCode(BuildContext context, {bool isForgetPassword = false}) async {
+  void verifyCode(BuildContext context, {bool isForgetPassword = false, bool isLogin = false}) async {
     final otpValue = otpController.text;
     emit(AuthVerifyLoadingState());
     animationDialogLoading(context);
@@ -198,12 +198,34 @@ class AuthCubit extends Cubit<AuthState> {
             // );
           } else {
             ConstantsModels.registerModel = r;
-            userCacheValue = r;
+            loginCacheValue = r;
             Constants.token = r.data?.token ?? '';
-            userCache?.put(userCacheKey, jsonEncode(r.toJson()));
+            loginCache?.put(loginCacheKey, jsonEncode(r.toJson()));
+
+            // // Save biometric login data after successful verification
+            // if (isLogin) {
+            //   final biometricService = BiometricService();
+            //   final phone = countryCode + loginPhoneController.text;
+            //
+            //   // Check if device supports biometrics
+            //   final isSupported = await biometricService.isDeviceSupported();
+            //   final canCheck = await biometricService.canCheckBiometrics();
+            //
+            //   if (isSupported && canCheck) {
+            //     // Enable biometric login with saved credentials
+            //     await biometricService.enableBiometricLogin(
+            //       r,
+            //       phone: phone,
+            //     );
+            //     log('Biometric login data saved successfully');
+            //   }
+            // }
+
             context.navigateToPage(const NavigationViewWithThemes());
             phoneController.clear();
             otpController.clear();
+            loginPhoneController.clear();
+            loginPasswordController.clear();
             // passwordController.clear();
           }
 
@@ -250,11 +272,14 @@ class AuthCubit extends Cubit<AuthState> {
       return false;
     }, (r) async {
       ConstantsModels.registerModel = r;
-      userCacheValue = r;
+      loginCacheValue = r;
       Constants.customerId = r.data!.id!.toString();
-      log('userCacheValue.data ==>${userCacheValue?.data?.token}');
+      log('userCacheValue.data ==>${loginCacheValue?.data?.token}');
       Constants.token = r.data?.token ?? '';
-      await userCache?.put(userCacheKey, jsonEncode(r.toJson()));
+      // Mirror userCache payload into login cache for system biometric
+      await loginCache?.put(loginCacheKey, jsonEncode(r.toJson()));
+      await loginCache?.put(biometricAuthKey, r.data?.token ?? '');
+      await loginCache?.put(biometricUserCacheKey, jsonEncode(r.toJson()));
 
       context.navigateToPage(const VerifyCodeView(isForgetPassword: false, isLogin: true));
       loginPhoneController.clear();

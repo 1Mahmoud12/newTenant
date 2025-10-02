@@ -1,352 +1,363 @@
-import 'dart:math';
-
-import 'package:dobzz_seller/core/component/cache_image.dart';
-import 'package:dobzz_seller/core/component/custom_app_bar.dart';
-import 'package:dobzz_seller/core/network/local/cache.dart';
-import 'package:dobzz_seller/core/themes/colors.dart';
-import 'package:dobzz_seller/core/utils/app_icons.dart';
-import 'package:dobzz_seller/core/utils/constants.dart';
-import 'package:dobzz_seller/core/utils/navigate.dart';
-import 'package:dobzz_seller/core/utils/utils.dart';
-import 'package:dobzz_seller/feature/account/view/helpCenter/presentation/help_center_view.dart';
-import 'package:dobzz_seller/feature/account/view/manager/deleteAccount/cubit/delete_account_cubit.dart';
-import 'package:dobzz_seller/feature/account/view/myDetalis/presentation/manager/editProfile/cubit/edit_profile_cubit.dart';
-import 'package:dobzz_seller/feature/account/view/myDetalis/presentation/my_details_veiw.dart';
-import 'package:dobzz_seller/feature/account/view/notificationSetting/presentation/notification_setting_view.dart';
-import 'package:dobzz_seller/feature/account/view/presentation/language_view.dart';
-import 'package:dobzz_seller/feature/auth/login/view/presentation/login_screen.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
-
-import '../../../address/view/presentation/address_view.dart';
-
-class AccountView extends StatefulWidget {
-  const AccountView({Key? key}) : super(key: key);
-
-  @override
-  State<AccountView> createState() => _AccountViewState();
-}
-
-class _AccountViewState extends State<AccountView> {
-  final currentLanguage = 'English';
-  DeleteAccountCubit deleteAccountCubit = DeleteAccountCubit();
-  EditProfileCubit editProfileCubit = EditProfileCubit();
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              customAppBar(context: context, title: 'Account'.tr(), stopLeading: true),
-              // Profile header
-              Container(
-                padding: const EdgeInsets.symmetric(vertical: 20),
-                width: double.infinity,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    // Profile image
-                    BlocProvider.value(
-                      value: editProfileCubit,
-                      child: BlocBuilder<EditProfileCubit, EditProfileState>(
-                        builder: (context, state) {
-                          return Column(
-                            children: [
-                              CacheImage(
-                                errorColor: Colors.grey,
-                                height: 60,
-                                width: 60,
-                                circle: true,
-                                urlImage: userCacheValue?.data?.avatarPath ?? '',
-                              ),
-                              const SizedBox(height: 10),
-                              // Name
-                              Text(
-                                userCacheValue?.data?.name ?? 'Unknown'.tr(),
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                ),
-                              ),
-                            ],
-                          );
-                        },
-                      ),
-                    ),
-
-                    // const SizedBox(height: 2),
-                    // // Member since
-                    // Text(
-                    //   'member since 10/10/2024',
-                    //   style: TextStyle(
-                    //     color: Colors.grey[600],
-                    //     fontSize: 12,
-                    //   ),
-                    // ),
-                  ],
-                ),
-              ),
-
-              // // Menu items
-              // _buildMenuItem(
-              //   icon: AppIcons.myOrders,
-              //   title: 'My Orders',
-              //   onTap: () {
-              //     context.navigateToPage(const MyOrderView());
-              //   },
-              // ),
-              _buildMenuItem(
-                icon: AppIcons.myDetails,
-                title: 'My Details',
-                onTap: () {
-                  context.navigateToPage(
-                    MyDetailsView(
-                      editProfileCubit: editProfileCubit,
-                    ),
-                  );
-                },
-              ),
-              _buildMenuItem(
-                icon: AppIcons.addressBook,
-                title: 'Address Book',
-                onTap: () {
-                  context.navigateToPage(const AddressView());
-                },
-              ),
-              // _buildMenuItem(
-              //   icon: AppIcons.changePassword,
-              //   title: 'Change Password',
-              //   onTap: () {
-              //     context.navigateToPage(const ResetPasswordView(
-              //       openLoginScreen: false,
-              //     ));
-              //   },
-              // ),
-              // _buildMenuItem(
-              //   icon: AppIcons.paymentMethod,
-              //   title: 'Payment Methods',
-              //   onTap: () {},
-              // ),
-              _buildMenuItem(
-                icon: AppIcons.notificationIcon,
-                title: 'Notifications',
-                onTap: () {
-                  context.navigateToPage(const NotificationsSettingsView());
-                },
-              ),
-              // _buildMenuItem(
-              //   icon: AppIcons.faq,
-              //   title: 'FAQs',
-              //   onTap: () {
-              //     context.navigateToPage(const FaqsView());
-              //   },
-              // ),
-              _buildMenuItem(
-                icon: AppIcons.translation,
-                title: 'Language',
-                onTap: () {
-                  context.navigateToPage(const LanguageView());
-                },
-              ),
-              _buildMenuItem(
-                icon: AppIcons.customerSerivce,
-                title: 'Help Center',
-                onTap: () {
-                  context.navigateToPage(const HelpCenterView());
-                },
-              ),
-              _buildMenuItem(
-                icon: AppIcons.logout,
-                title: 'Logout',
-                onTap: () {
-                  showLogoutDialog(context, () async {
-                    userCacheValue = null;
-                    await userCache?.clear();
-                    context.navigateToPage(const LoginScreen());
-                  });
-                },
-                isLogout: true,
-              ),
-              _buildMenuItem(
-                icon: AppIcons.deleteIcon,
-                title: 'Delete Account',
-                onTap: () {
-                  if (userCacheValue?.data?.phone != Constants.demoAccount) {
-                    showDeleteAccountDialog(context, () async {
-                      await deleteAccountCubit.deleteAccount(context: context);
-                    });
-                  } else {
-                    Utils.showToast(title: 'This is demo account you can not delete account', state: UtilState.error);
-                  }
-                },
-                isDeleteAccount: true,
-              ),
-              const SizedBox(height: 100),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  /// Shows a confirmation dialog for logging out
-  void showLogoutDialog(BuildContext context, VoidCallback onConfirm) {
-    _showConfirmationDialog(
-      context,
-      icon: const Icon(
-        Icons.logout_rounded,
-        color: AppColors.primaryColor,
-        size: 48,
-      ),
-      title: 'Logout?'.tr(),
-      message: 'Are you sure you want to logout?'.tr(),
-      confirmButtonText: 'Yes, Logout'.tr(),
-      onConfirm: onConfirm,
-    );
-  }
-
-  /// Shows a confirmation dialog for deleting account
-  void showDeleteAccountDialog(BuildContext context, VoidCallback onConfirm) {
-    _showConfirmationDialog(
-      context,
-      icon: const Icon(
-        Icons.delete_forever_rounded,
-        color: AppColors.primaryColor,
-        size: 48,
-      ),
-      title: 'Delete Account?'.tr(),
-      message: 'Are you sure you want to delete your account? This action cannot be undone.'.tr(),
-      confirmButtonText: 'Yes, Delete Account'.tr(),
-      onConfirm: onConfirm,
-    );
-  }
-
-  /// Private helper method to avoid code duplication between the two dialogs
-  void _showConfirmationDialog(
-    BuildContext context, {
-    required Widget icon,
-    required String title,
-    required String message,
-    required String confirmButtonText,
-    required VoidCallback onConfirm,
-    Color confirmButtonColor = AppColors.primaryColor,
-  }) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return Dialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          backgroundColor: Colors.white,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 30),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                icon,
-                const SizedBox(height: 16),
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  message,
-                  style: TextStyle(color: Colors.grey, fontSize: Constants.tablet ? 16 : 16.sp, fontWeight: FontWeight.w500),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 24),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                    onConfirm();
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: confirmButtonColor,
-                    minimumSize: const Size(double.infinity, 50),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                  child: Text(
-                    confirmButtonText,
-                    style: const TextStyle(color: Colors.white),
-                  ),
-                ),
-                const SizedBox(height: 12),
-                OutlinedButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  style: OutlinedButton.styleFrom(
-                    side: const BorderSide(color: Colors.grey),
-                    minimumSize: const Size(double.infinity, 50),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                  child: Text(
-                    'No, Cancel'.tr(),
-                    style: const TextStyle(color: Colors.black),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  Widget _buildMenuItem({
-    required String icon,
-    required String title,
-    required VoidCallback onTap,
-    bool isLogout = false,
-    bool isDeleteAccount = false,
-  }) {
-    Color textColor = Colors.black;
-    if (isLogout) textColor = Colors.red;
-    if (isDeleteAccount) textColor = Colors.red;
-
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(8),
-      ),
-      margin: const EdgeInsets.only(bottom: 5, left: 16, right: 16),
-      child: ListTile(
-        leading: SvgPicture.asset(
-          icon,
-          width: 24,
-          height: 24,
-          colorFilter: ColorFilter.mode(
-            isLogout || isDeleteAccount ? Colors.red : Colors.black,
-            BlendMode.srcIn,
-          ),
-        ),
-        title: Text(
-          title.tr(),
-          style: TextStyle(
-            color: textColor,
-            fontSize: 14,
-          ),
-        ),
-        trailing: (isLogout || isDeleteAccount)
-            ? null
-            : context.locale.languageCode == 'ar'
-                ? Transform.rotate(angle: pi, child: SvgPicture.asset(AppIcons.arrowRight))
-                : SvgPicture.asset(AppIcons.arrowRight),
-        onTap: onTap,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 20),
-      ),
-    );
-  }
-}
+// import 'dart:math';
+//
+// import 'package:dobzz_seller/core/component/cache_image.dart';
+// import 'package:dobzz_seller/core/component/custom_app_bar.dart';
+// import 'package:dobzz_seller/core/component/custom_check_box.dart';
+// import 'package:dobzz_seller/core/network/local/cache.dart';
+// import 'package:dobzz_seller/core/themes/colors.dart';
+// import 'package:dobzz_seller/core/utils/app_icons.dart';
+// import 'package:dobzz_seller/core/utils/constants.dart';
+// import 'package:dobzz_seller/core/utils/navigate.dart';
+// import 'package:dobzz_seller/core/utils/utils.dart';
+// import 'package:dobzz_seller/feature/account/view/helpCenter/presentation/help_center_view.dart';
+// import 'package:dobzz_seller/feature/account/view/manager/deleteAccount/cubit/delete_account_cubit.dart';
+// import 'package:dobzz_seller/feature/account/view/myDetalis/presentation/manager/editProfile/cubit/edit_profile_cubit.dart';
+// import 'package:dobzz_seller/feature/account/view/myDetalis/presentation/my_details_veiw.dart';
+// import 'package:dobzz_seller/feature/account/view/notificationSetting/presentation/notification_setting_view.dart';
+// import 'package:dobzz_seller/feature/account/view/presentation/language_view.dart';
+// import 'package:dobzz_seller/feature/auth/login/view/presentation/login_screen.dart';
+// import 'package:easy_localization/easy_localization.dart';
+// import 'package:flutter/material.dart';
+// import 'package:flutter_bloc/flutter_bloc.dart';
+// import 'package:flutter_screenutil/flutter_screenutil.dart';
+// import 'package:flutter_svg/svg.dart';
+//
+// import '../../../address/view/presentation/address_view.dart';
+//
+// class AccountView extends StatefulWidget {
+//   const AccountView({Key? key}) : super(key: key);
+//
+//   @override
+//   State<AccountView> createState() => _AccountViewState();
+// }
+//
+// class _AccountViewState extends State<AccountView> {
+//   final currentLanguage = 'English';
+//   DeleteAccountCubit deleteAccountCubit = DeleteAccountCubit();
+//   EditProfileCubit editProfileCubit = EditProfileCubit();
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       body: SafeArea(
+//         child: SingleChildScrollView(
+//           child: Column(
+//             children: [
+//               customAppBar(context: context, title: 'Account'.tr(), stopLeading: true),
+//               // Profile header
+//               Container(
+//                 padding: const EdgeInsets.symmetric(vertical: 20),
+//                 width: double.infinity,
+//                 child: Column(
+//                   mainAxisAlignment: MainAxisAlignment.center,
+//                   children: [
+//                     // Profile image
+//                     BlocProvider.value(
+//                       value: editProfileCubit,
+//                       child: BlocBuilder<EditProfileCubit, EditProfileState>(
+//                         builder: (context, state) {
+//                           return Column(
+//                             children: [
+//                               CacheImage(
+//                                 errorColor: Colors.grey,
+//                                 height: 60,
+//                                 width: 60,
+//                                 circle: true,
+//                                 urlImage: loginCacheValue?.data?.avatarPath ?? '',
+//                               ),
+//                               const SizedBox(height: 10),
+//                               // Name
+//                               Text(
+//                                 loginCacheValue?.data?.name ?? 'Unknown'.tr(),
+//                                 style: const TextStyle(
+//                                   fontWeight: FontWeight.bold,
+//                                   fontSize: 16,
+//                                 ),
+//                               ),
+//                             ],
+//                           );
+//                         },
+//                       ),
+//                     ),
+//
+//                     // const SizedBox(height: 2),
+//                     // // Member since
+//                     // Text(
+//                     //   'member since 10/10/2024',
+//                     //   style: TextStyle(
+//                     //     color: Colors.grey[600],
+//                     //     fontSize: 12,
+//                     //   ),
+//                     // ),
+//                   ],
+//                 ),
+//               ),
+//
+//               // // Menu items
+//               // _buildMenuItem(
+//               //   icon: AppIcons.myOrders,
+//               //   title: 'My Orders',
+//               //   onTap: () {
+//               //     context.navigateToPage(const MyOrderView());
+//               //   },
+//               // ),
+//               _buildMenuItem(
+//                 icon: AppIcons.myDetails,
+//                 title: 'My Details',
+//                 onTap: () {
+//                   context.navigateToPage(
+//                     MyDetailsView(
+//                       editProfileCubit: editProfileCubit,
+//                     ),
+//                   );
+//                 },
+//               ),
+//               _buildMenuItem(
+//                 icon: AppIcons.addressBook,
+//                 title: 'Address Book',
+//                 onTap: () {
+//                   context.navigateToPage(const AddressView());
+//                 },
+//               ),
+//               // _buildMenuItem(
+//               //   icon: AppIcons.changePassword,
+//               //   title: 'Change Password',
+//               //   onTap: () {
+//               //     context.navigateToPage(const ResetPasswordView(
+//               //       openLoginScreen: false,
+//               //     ));
+//               //   },
+//               // ),
+//               // _buildMenuItem(
+//               //   icon: AppIcons.paymentMethod,
+//               //   title: 'Payment Methods',
+//               //   onTap: () {},
+//               // ),
+//               _buildMenuItem(
+//                 icon: AppIcons.notificationIcon,
+//                 title: 'Notifications',
+//                 onTap: () {
+//                   context.navigateToPage(const NotificationsSettingsView());
+//                 },
+//               ),
+//               _buildMenuItem(
+//                 icon: AppIcons.bioMetricIc,
+//                 title: 'sing_in_by_biometric',
+//                 trailing: CustomCheckBox(),
+//                 onTap: () {
+//                   context.navigateToPage(const NotificationsSettingsView());
+//                 },
+//               ),
+//               // _buildMenuItem(
+//               //   icon: AppIcons.faq,
+//               //   title: 'FAQs',
+//               //   onTap: () {
+//               //     context.navigateToPage(const FaqsView());
+//               //   },
+//               // ),
+//               _buildMenuItem(
+//                 icon: AppIcons.translation,
+//                 title: 'Language',
+//                 onTap: () {
+//                   context.navigateToPage(const LanguageView());
+//                 },
+//               ),
+//               _buildMenuItem(
+//                 icon: AppIcons.customerSerivce,
+//                 title: 'Help Center',
+//                 onTap: () {
+//                   context.navigateToPage(const HelpCenterView());
+//                 },
+//               ),
+//               _buildMenuItem(
+//                 icon: AppIcons.logout,
+//                 title: 'Logout',
+//                 onTap: () {
+//                   showLogoutDialog(context, () async {
+//                     loginCacheValue = null;
+//                     await userCache?.clear();
+//                     context.navigateToPage(const LoginScreen());
+//                   });
+//                 },
+//                 isLogout: true,
+//               ),
+//               _buildMenuItem(
+//                 icon: AppIcons.deleteIcon,
+//                 title: 'Delete Account',
+//                 onTap: () {
+//                   if (loginCacheValue?.data?.phone != Constants.demoAccount) {
+//                     showDeleteAccountDialog(context, () async {
+//                       await deleteAccountCubit.deleteAccount(context: context);
+//                     });
+//                   } else {
+//                     Utils.showToast(title: 'This is demo account you can not delete account', state: UtilState.error);
+//                   }
+//                 },
+//                 isDeleteAccount: true,
+//               ),
+//               const SizedBox(height: 100),
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+//
+//   /// Shows a confirmation dialog for logging out
+//   void showLogoutDialog(BuildContext context, VoidCallback onConfirm) {
+//     _showConfirmationDialog(
+//       context,
+//       icon: const Icon(
+//         Icons.logout_rounded,
+//         color: AppColors.primaryColor,
+//         size: 48,
+//       ),
+//       title: 'Logout?'.tr(),
+//       message: 'Are you sure you want to logout?'.tr(),
+//       confirmButtonText: 'Yes, Logout'.tr(),
+//       onConfirm: onConfirm,
+//     );
+//   }
+//
+//   /// Shows a confirmation dialog for deleting account
+//   void showDeleteAccountDialog(BuildContext context, VoidCallback onConfirm) {
+//     _showConfirmationDialog(
+//       context,
+//       icon: const Icon(
+//         Icons.delete_forever_rounded,
+//         color: AppColors.primaryColor,
+//         size: 48,
+//       ),
+//       title: 'Delete Account?'.tr(),
+//       message: 'Are you sure you want to delete your account? This action cannot be undone.'.tr(),
+//       confirmButtonText: 'Yes, Delete Account'.tr(),
+//       onConfirm: onConfirm,
+//     );
+//   }
+//
+//   /// Private helper method to avoid code duplication between the two dialogs
+//   void _showConfirmationDialog(
+//     BuildContext context, {
+//     required Widget icon,
+//     required String title,
+//     required String message,
+//     required String confirmButtonText,
+//     required VoidCallback onConfirm,
+//     Color confirmButtonColor = AppColors.primaryColor,
+//   }) {
+//     showDialog(
+//       context: context,
+//       builder: (context) {
+//         return Dialog(
+//           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+//           backgroundColor: Colors.white,
+//           child: Padding(
+//             padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 30),
+//             child: Column(
+//               mainAxisSize: MainAxisSize.min,
+//               children: [
+//                 icon,
+//                 const SizedBox(height: 16),
+//                 Text(
+//                   title,
+//                   style: const TextStyle(
+//                     fontSize: 20,
+//                     fontWeight: FontWeight.bold,
+//                   ),
+//                 ),
+//                 const SizedBox(height: 8),
+//                 Text(
+//                   message,
+//                   style: TextStyle(color: Colors.grey, fontSize: Constants.tablet ? 16 : 16.sp, fontWeight: FontWeight.w500),
+//                   textAlign: TextAlign.center,
+//                 ),
+//                 const SizedBox(height: 24),
+//                 ElevatedButton(
+//                   onPressed: () {
+//                     Navigator.of(context).pop();
+//                     onConfirm();
+//                   },
+//                   style: ElevatedButton.styleFrom(
+//                     backgroundColor: confirmButtonColor,
+//                     minimumSize: const Size(double.infinity, 50),
+//                     shape: RoundedRectangleBorder(
+//                       borderRadius: BorderRadius.circular(12),
+//                     ),
+//                   ),
+//                   child: Text(
+//                     confirmButtonText,
+//                     style: const TextStyle(color: Colors.white),
+//                   ),
+//                 ),
+//                 const SizedBox(height: 12),
+//                 OutlinedButton(
+//                   onPressed: () {
+//                     Navigator.of(context).pop();
+//                   },
+//                   style: OutlinedButton.styleFrom(
+//                     side: const BorderSide(color: Colors.grey),
+//                     minimumSize: const Size(double.infinity, 50),
+//                     shape: RoundedRectangleBorder(
+//                       borderRadius: BorderRadius.circular(12),
+//                     ),
+//                   ),
+//                   child: Text(
+//                     'No, Cancel'.tr(),
+//                     style: const TextStyle(color: Colors.black),
+//                   ),
+//                 ),
+//               ],
+//             ),
+//           ),
+//         );
+//       },
+//     );
+//   }
+//
+//   Widget _buildMenuItem({
+//     required String icon,
+//     required String title,
+//     required VoidCallback onTap,
+//     Widget? trailing,
+//     bool isLogout = false,
+//     bool isDeleteAccount = false,
+//   }) {
+//     Color textColor = Colors.black;
+//     if (isLogout) textColor = Colors.red;
+//     if (isDeleteAccount) textColor = Colors.red;
+//
+//     return Container(
+//       decoration: BoxDecoration(
+//         color: Colors.white,
+//         borderRadius: BorderRadius.circular(8),
+//       ),
+//       margin: const EdgeInsets.only(bottom: 5, left: 16, right: 16),
+//       child: ListTile(
+//         leading: SvgPicture.asset(
+//           icon,
+//           width: 24,
+//           height: 24,
+//           colorFilter: ColorFilter.mode(
+//             isLogout || isDeleteAccount ? Colors.red : Colors.black,
+//             BlendMode.srcIn,
+//           ),
+//         ),
+//         title: Text(
+//           title.tr(),
+//           style: TextStyle(
+//             color: textColor,
+//             fontSize: 14,
+//           ),
+//         ),
+//         trailing: trailing ??
+//             ((isLogout || isDeleteAccount)
+//                 ? null
+//                 : context.locale.languageCode == 'ar'
+//                     ? Transform.rotate(angle: pi, child: SvgPicture.asset(AppIcons.arrowRight))
+//                     : SvgPicture.asset(AppIcons.arrowRight)),
+//         onTap: onTap,
+//         contentPadding: const EdgeInsets.symmetric(horizontal: 20),
+//       ),
+//     );
+//   }
+// }

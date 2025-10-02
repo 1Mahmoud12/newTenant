@@ -5,7 +5,6 @@ import 'package:dobzz_seller/core/utils/utils.dart';
 import 'package:dobzz_seller/feature/account/data/dataSoruce/delete_account_data_source.dart';
 import 'package:dobzz_seller/feature/auth/login/view/presentation/login_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:meta/meta.dart';
 
 part 'delete_account_state.dart';
 
@@ -16,8 +15,8 @@ class DeleteAccountCubit extends Cubit<DeleteAccountState> {
     await DeleteAccountDataSource.deleteAccount().then(
       (value) async {
         value.fold((l) {}, (r) async {
-          userCacheValue = null;
-          await userCache?.clear();
+          loginCacheValue = null;
+          await loginCache?.clear();
           context.navigateToPageWithClearStack(const LoginScreen());
           Utils.showToast(title: 'Account Deleted Successfully', state: UtilState.success);
         });

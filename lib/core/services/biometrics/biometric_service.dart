@@ -2,9 +2,12 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:dobzz_seller/core/network/local/cache.dart';
+import 'package:dobzz_seller/core/utils/constants.dart';
+import 'package:dobzz_seller/core/utils/constants_models.dart';
 import 'package:dobzz_seller/feature/auth/data/models/register_model.dart';
-import 'package:dobzz_seller/feature/auth/manager/authBloc/auth_cubit.dart';
+import 'package:dobzz_seller/feature/navigation/view/presentation/navigation_view.dart';
 import 'package:dobzz_seller/main.dart';
+import 'package:flutter/material.dart';
 import 'package:local_auth/local_auth.dart';
 
 enum BiometricTypeSimple { none, face, fingerprint, iris, weak, strong }
@@ -65,29 +68,39 @@ class BiometricService {
     return BiometricTypeSimple.none;
   }
 
-  Future<bool> authenticate({String reason = 'Authenticate to continue'}) async {
+  Future<bool> authenticate({
+    String reason = 'Authenticate to continue',
+  }) async {
     try {
-      return await _auth.authenticate(localizedReason: reason, options: const AuthenticationOptions(stickyAuth: true));
+      return await _auth.authenticate(
+        localizedReason: reason,
+        options: const AuthenticationOptions(stickyAuth: true),
+      );
     } catch (e) {
       log('Biometric authentication error: $e');
       return false;
     }
   }
 
-  Future<void> enableBiometricLogin(RegisterModel loginModel) async {
+  Future<void> enableBiometricLogin(
+    RegisterModel loginModel, {
+    String? phone,
+  }) async {
     final selectedType = await getPreferredBiometricType();
     await loginCache?.put(biometricEnabledKey, true);
     await loginCache?.put(biometricTypeKey, selectedType.name);
-    await loginCache?.put(biometricUserCacheKey, jsonEncode(loginModel.toJson()));
+    await loginCache?.put(
+      biometricUserCacheKey,
+      jsonEncode(loginModel.toJson()),
+    );
     await loginCache?.put(biometricAuthKey, loginModel.data?.token ?? '');
 
-    if (userCacheValue?.data?.email == await userCache?.get(loginEmailKey)) {
-      await loginCache?.put(loginEmailKey, userCacheValue?.data?.email ?? '');
-      await loginCache?.put(loginPasswordKey, await loginCache?.get(loginPasswordKey));
-    } else {
-      await loginCache?.put(loginEmailKey, loginModel.data?.email ?? '');
-      await loginCache?.put(loginPasswordKey, await loginCache?.get(alternativeLoginPasswordKey));
+    // Save phone and password for biometric login
+    if (loginModel.data?.phone != null) {
+      await loginCache?.put(loginEmailKey, loginModel.data?.phone);
     }
+
+    log('Biometric login enabled for user: ${loginModel.data?.email}');
   }
 
   Future<void> disableBiometricLogin() async {
@@ -95,9 +108,15 @@ class BiometricService {
     await loginCache?.put(biometricTypeKey, 'none');
     await loginCache?.put(biometricUserCacheKey, '{}');
     await loginCache?.put(biometricAuthKey, '');
+    // Also clear saved credentials so UI cannot infer enabled state
+    await loginCache?.put(loginEmailKey, '');
+    await loginCache?.put(loginPasswordKey, '');
+    logger.d(await loginCache?.get(biometricEnabledKey));
   }
 
   Future<bool> isBiometricEnabled() async {
+    logger.d(await loginCache?.get(biometricEnabledKey));
+
     return loginCache?.get(biometricEnabledKey, defaultValue: false) ?? false;
   }
 
@@ -115,7 +134,7 @@ class BiometricService {
     }
   }
 
-  Future<bool> attemptBiometricLogin() async {
+  Future<bool> attemptBiometricLogin(BuildContext context) async {
     try {
       log('Starting biometric login attempt...');
 
@@ -136,27 +155,34 @@ class BiometricService {
       log('Authentication result: $ok');
       if (!ok) return false;
 
-      log('Getting saved credentials...');
-      final String? key = await getSavedAuthKey();
-      final RegisterModel? user = await getSavedUser();
-      log('Saved key exists: ${key != null && key.isNotEmpty}');
-      log('Saved user exists: ${user != null}');
+      // Prefer token-based fast login if available
+      final RegisterModel? savedUser = await getSavedUser();
+      final String? savedToken = await getSavedAuthKey();
+      if (savedUser != null && savedToken != null && savedToken.isNotEmpty) {
+        log('Logging in via saved token');
+        // Hydrate global state
+        ConstantsModels.registerModel = savedUser;
+        loginCacheValue = savedUser;
+        Constants.token = savedToken;
+        await loginCache?.put(loginCacheKey, jsonEncode(savedUser.toJson()));
+        if (navigatorKey.currentState != null) {
+          navigatorKey.currentState!.pushAndRemoveUntil(
+            MaterialPageRoute(builder: (_) => const NavigationViewWithThemes()),
+            (route) => false,
+          );
+        } else {
+          // fallback to context navigation
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (_) => const NavigationViewWithThemes()),
+            (route) => false,
+          );
+        }
+        return true;
+      }
 
-      if (key == null || key.isEmpty || user == null) return false;
-      final cubit = AuthCubit();
-      cubit.phoneController.text = await loginCache?.get(loginEmailKey);
-      //   cubit.passwordController.text = await loginCache?.get(loginPasswordKey);
-      final result = cubit.login(
-        navigatorKey.currentState!.context,
-      );
-      // Set global models for in-app session reuse
-      // userCacheValue = user;
-      // ConstantsModels.loginModel = user;
-      // Constants.token = key;
-      // await userCache?.put(userCacheKey, jsonEncode(user.toJson()));
-
-      log('Biometric login successful!');
-      return result;
+      // No password fallback in this system; depend solely on biometricEnabledKey + cached token
+      log('No cached token found for biometric login');
+      return false;
     } catch (e) {
       log('Error during biometric login: $e');
       return false;

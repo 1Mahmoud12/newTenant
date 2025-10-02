@@ -167,4 +167,9 @@ class AppIcons {
   static const stcPay = '$baseUrl/STCpay.svg';
   static const mada = '$baseUrl/madaIc.svg';
   static const retryPayIc = '$baseUrl/retryPayIc.svg';
+
+  // Login BioMetric
+  static const faceIdIc = '$baseUrl/faceIdIc.svg';
+  static const fingerPrintIc = '$baseUrl/fingerPrintIc.svg';
+  static const bioMetricIc = '$baseUrl/bioMetricIc.svg';
 }

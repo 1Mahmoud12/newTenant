@@ -2,15 +2,16 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
+
 import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:dobzz_seller/core/network/local/cache.dart';
+import 'package:dobzz_seller/core/utils/constants.dart';
+import 'package:dobzz_seller/core/utils/device_id.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:googleapis_auth/auth_io.dart';
 import 'package:http/http.dart';
-import 'package:dobzz_seller/core/network/local/cache.dart';
-import 'package:dobzz_seller/core/utils/constants.dart';
-import 'package:dobzz_seller/core/utils/device_id.dart';
 
 enum NotificationType { Order, Inbox, Announcement }
 
@@ -404,11 +405,11 @@ Future<void> selectTokens() async {
     log('Need Get Token');
     Constants.fcmToken = newToken;
     Constants.deviceId = await DeviceUUid().getUniqueDeviceId();
-    if (userCacheValue?.data != null) {
+    if (loginCacheValue?.data != null) {
       //HomeDataSourceImpl().updateFcmToken(fcmToken: Constants.fcmToken, deviceId: Constants.deviceId);
     }
-    userCache?.put(fcmTokenKey, Constants.fcmToken);
-    userCache?.put(deviceIdKey, Constants.deviceId);
+    loginCache?.put(fcmTokenKey, Constants.fcmToken);
+    loginCache?.put(deviceIdKey, Constants.deviceId);
   }
   debugPrint('Device Id ===> ${Constants.deviceId}');
   debugPrint('FCM ===> ${Constants.fcmToken}');

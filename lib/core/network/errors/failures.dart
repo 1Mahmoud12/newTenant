@@ -84,7 +84,7 @@ class ServerFailure extends Failure {
             );
           });
           Constants.token = '';
-          userCache?.put(userCacheKey, '{}');
+          userCache?.put(loginCacheKey, '{}');
         } catch (e) {
           log('error in put value in hive $e');
         }

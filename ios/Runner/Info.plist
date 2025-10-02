@@ -49,6 +49,8 @@
 	<string>This app requires access to the photo library so you can pick profile picture</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSFaceIDUsageDescription</key>
+    <string>we want use face ID to easy Login after that</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>

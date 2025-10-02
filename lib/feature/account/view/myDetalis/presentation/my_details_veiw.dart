@@ -89,7 +89,7 @@ class _MyDetailsViewState extends State<MyDetailsView> {
   }
 
   void _handleSubmit() async {
-    if (userCacheValue?.data?.phone != Constants.demoAccount) {
+    if (loginCacheValue?.data?.phone != Constants.demoAccount) {
       await widget.editProfileCubit.updateUserData(
         context: context,
         name: _firstNameController.text,
@@ -258,7 +258,7 @@ class UserDetailsForm extends StatefulWidget {
 class _UserDetailsFormState extends State<UserDetailsForm> {
   @override
   void initState() {
-    getCountryCode(number: userCacheValue?.data?.phone ?? '+966');
+    getCountryCode(number: loginCacheValue?.data?.phone ?? '+966');
     super.initState();
   }
 
@@ -286,7 +286,7 @@ class _UserDetailsFormState extends State<UserDetailsForm> {
           enabled: false,
           initialCountryCode: initialCountryCode,
           controller: formatPhone(
-            number: userCacheValue?.data?.phone ?? ' ',
+            number: loginCacheValue?.data?.phone ?? ' ',
             initialCountryCode: initialCountryCode,
           ),
         ),

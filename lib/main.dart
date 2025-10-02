@@ -44,6 +44,7 @@ void main() async {
   await DioHelper.init();
 
   userCache = await openHiveBox(userCacheBoxKey);
+  loginCache = await openHiveBox(loginCacheBoxKey);
   // get device id
   // final MainCubitCubit mainCubit = MainCubitCubit();
   // Constants.deviceId = await mainCubit.getDeviceIdentifier() ?? '';
@@ -52,15 +53,30 @@ void main() async {
   onBoardingValue = userCache?.get(onBoardingKey, defaultValue: true);
   darkModeValue = userCache?.get(darkModeKey, defaultValue: false);
   locationCacheValue = userCache?.get(locationCacheKey);
-  userCacheValue = RegisterModel.fromJson(jsonDecode(await userCache?.get(userCacheKey, defaultValue: '{}')));
-  log('userCacheValue ==>$userCacheValue');
-  log('userCacheValue.data ==>${userCacheValue?.data?.toJson()}');
-  Constants.token = userCacheValue?.data?.token ?? '';
+  // Load login cache first; if legacy userCache exists, migrate it to loginCache
+  loginCacheValue = RegisterModel.fromJson(jsonDecode(await loginCache?.get(loginCacheKey, defaultValue: '{}')));
+  if ((loginCacheValue?.data?.token == null || (loginCacheValue?.data?.token?.isEmpty ?? true))) {
+    try {
+      final raw = await loginCache?.get(loginCacheKey, defaultValue: '{}');
+      if (raw != null && (raw as String).isNotEmpty && raw != '{}') {
+        final migrated = RegisterModel.fromJson(jsonDecode(raw));
+        loginCacheValue = migrated;
+        await loginCache?.put(loginCacheKey, jsonEncode(migrated.toJson()));
+        await loginCache?.put(biometricAuthKey, migrated.data?.token ?? '');
+        await loginCache?.put(biometricUserCacheKey, jsonEncode(migrated.toJson()));
+      }
+    } catch (e) {
+      log('migrate userCache to loginCache error: $e');
+    }
+  }
+  log('userCacheValue ==>$loginCacheValue');
+  log('userCacheValue.data ==>${loginCacheValue?.data?.toJson()}');
+  Constants.token = loginCacheValue?.data?.token ?? '';
   // ConstantsModels.advertiseModel = AdvertiseModel.fromJson(jsonDecode(await userCache!.get(advertiseModelKey, defaultValue: '{}')));
   // ConstantsModels.categoriesModel = CategoriesModel.fromJson(jsonDecode(await userCache!.get(categoriesModelKey, defaultValue: '{}')));
   // ConstantsModels.allMyAddresses = AllMyAddresses.fromJson(jsonDecode(await userCache!.get(allMyAddressesKey, defaultValue: '{}')));
-  Constants.fcmToken = await userCache?.get(fcmTokenKey, defaultValue: '');
-  Constants.deviceId = await userCache?.get(deviceIdKey, defaultValue: '');
+  Constants.fcmToken = await loginCache?.get(fcmTokenKey, defaultValue: '');
+  Constants.deviceId = await loginCache?.get(deviceIdKey, defaultValue: '');
 
   arabicLanguage = await userCache?.get(languageAppKey, defaultValue: false);
   log('arabicLanguage ==>$arabicLanguage');

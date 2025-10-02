@@ -314,5 +314,14 @@
   "you_must_request_a_little_amount_from_": "يجب عليك طلب كميه اقل من",
   "Addresses": "العناوين",
   "addresses_saved": "العناوين المحفوظه",
+  "sing_in_by_biometric": "تسجيل الدخول بالبصمة",
+  "manage_your_fingerprint": "إدارة بصمتك",
+  "biometrics_not_supported": "البصمة غير مدعومة على هذا الجهاز",
+  "biometric_login_disabled": "تسجيل الدخول بالبصمة معطل",
+  "enable_biometric_login": "تفعيل تسجيل الدخول بالبصمة",
+  "authentication_failed": "فشل في المصادقة",
+  "biometric_login_enabled": "تم تفعيل تسجيل الدخول بالبصمة",
+  "biometric_login_failed": "فشل تسجيل الدخول بالبصمة",
+
   "": ""
 }

@@ -22,11 +22,11 @@ class EditProfileCubit extends Cubit<EditProfileState> {
           emit(EditProfileError(e: l.errMessage));
         }, (r) async {
           ConstantsModels.editProfileModel = r;
-          userCacheValue?.data?.name = r.data?.name ?? 'unKnow name';
-          userCacheValue?.data?.email = r.data?.email ?? 'unKnow email';
-          userCacheValue?.data?.phone = r.data?.phone ?? 'unKnow phone';
-          userCacheValue?.data?.avatarPath = r.data?.avatarPath ?? '';
-          await userCache?.put(userCacheKey, jsonEncode(userCacheValue?.toJson()));
+          loginCacheValue?.data?.name = r.data?.name ?? 'unKnow name';
+          loginCacheValue?.data?.email = r.data?.email ?? 'unKnow email';
+          loginCacheValue?.data?.phone = r.data?.phone ?? 'unKnow phone';
+          loginCacheValue?.data?.avatarPath = r.data?.avatarPath ?? '';
+          await loginCache?.put(loginCacheKey, jsonEncode(loginCacheValue?.toJson()));
 
           emit(EditProfileSuccess());
         });

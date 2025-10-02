@@ -308,5 +308,13 @@
   "you_must_request_a_little_amount_from_": "You must request a little amount from ",
   "Addresses": "Addresses",
   "addresses_saved": "Addresses Saved",
+  "sing_in_by_biometric": "Sign in with biometric",
+  "manage_your_fingerprint": "Manage your fingerprint",
+  "biometrics_not_supported": "Biometrics not supported on this device",
+  "biometric_login_disabled": "Biometric login is disabled",
+  "enable_biometric_login": "Enable biometric login",
+  "authentication_failed": "Authentication failed",
+  "biometric_login_enabled": "Biometric login enabled",
+  "biometric_login_failed": "Biometric login failed",
   "": ""
 }
