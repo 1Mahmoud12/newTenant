@@ -1,4 +1,41 @@
 {
+  "=====Failers=======": "=====Failers=======",
+  "connection_timeout_error": "Connection timeout with server",
+  "send_timeout_error": "Send timeout with server",
+  "receive_timeout_error": "Receive timeout with server",
+  "bad_certificate_error": "Bad security certificate",
+  "request_cancelled_error": "Request was cancelled",
+  "no_internet_connection": "No internet connection",
+  "unexpected_error_try_again": "Unexpected error, please try again",
+  "bad_response_error": "Bad response from server",
+  "unable_to_process_response": "Unable to process server response",
+  "cloudflare_unknown_error": "Server encountered an unknown error",
+  "server_is_down": "Server is temporarily down",
+  "server_not_responding": "Server is not responding, please try again later",
+  "server_unreachable": "Cannot reach server at the moment",
+  "server_timeout_error": "Server connection timeout",
+  "ssl_handshake_failed": "SSL handshake failed",
+  "server_temporary_issue": "Server is experiencing temporary issues, please try again",
+  "server_connection_error": "Error connecting to server, please try again",
+  "session_expired_login_again": "Session expired, please login again",
+  "invalid_request_data": "Invalid request data",
+  "please_login_first": "Please login first",
+  "no_permission_for_action": "You don't have permission for this action",
+  "resource_not_found": "Resource not found",
+  "validation_error": "Validation error, please check your input",
+  "internal_server_error": "Internal server error, please try later",
+  "bad_gateway_error": "Bad gateway error",
+  "service_unavailable": "Service temporarily unavailable",
+  "something_went_wrong": "Something went wrong, please try again",
+  "server_returned_html_instead_of_json": "Server returned HTML instead of JSON",
+  "unknown_error": "Unknown error",
+
+
+
+
+
+
+
   "Search product..": "Search product..",
   "Categories": "Categories",
   "Flash Sale": "Flash Sale",
@@ -219,7 +256,6 @@
   "Name:": "Name:",
   "Order information": "Order information",
   "Loading products...": "Loading products...",
-  "no_internet_connection": "No internet connection",
   "seems_like_your_internet_connection_is_lost,_please_check_on_your_connection_and_try_again": "Seems like your internet connection is lost, please check on your connection and try again",
   "check_internet": "Check Internet",
   "No internet connection, please check your connection and try again": "No internet connection, please check your connection and try again",

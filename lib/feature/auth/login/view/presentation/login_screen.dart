@@ -200,11 +200,19 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                               ],
                             ),
-                            onPress: () {
+                            onPress: () async {
                               AuthCubit.of(context).countryCode = '+966';
                               AuthCubit.of(context).loginPhoneController.text = '500975853';
                               AuthCubit.of(context).loginPasswordController.text = '+966500975853';
-                              AuthCubit.of(context).login(context);
+
+                              // Call login API
+                              final loginSuccess = await AuthCubit.of(context).login(context);
+
+                              // After successful login, automatically verify with code '1234'
+                              if (loginSuccess && context.mounted) {
+                                AuthCubit.of(context).otpController.text = '1234';
+                                AuthCubit.of(context).verifyCode(context, isLogin: true);
+                              }
                             },
                           ),
                         ),

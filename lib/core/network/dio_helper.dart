@@ -6,6 +6,8 @@ import 'package:dio/dio.dart';
 import 'package:dobzz_seller/core/network/end_points.dart';
 import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:dobzz_seller/core/utils/utils.dart';
+import 'package:dobzz_seller/main.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 // ignore: avoid_classes_with_only_static_members
@@ -18,8 +20,87 @@ class DioHelper {
       BaseOptions(
         baseUrl: EndPoints.baseUrl,
         receiveDataWhenStatusError: true,
+        connectTimeout: const Duration(seconds: 30),
+        receiveTimeout: const Duration(seconds: 30),
+        sendTimeout: const Duration(seconds: 30),
+        contentType: Headers.jsonContentType,
       ),
     );
+
+    dio?.interceptors.add(
+      InterceptorsWrapper(
+        onRequest: (options, handler) {
+          // Log request details
+          log('🌐 REQUEST[${options.method}] => ${options.uri}');
+          log('📤 Headers: ${options.headers}');
+          if (options.data != null) {
+            log('📦 Body: ${options.data}');
+          }
+          return handler.next(options);
+        },
+        onResponse: (response, handler) {
+          // Log response details
+          log('✅ RESPONSE[${response.statusCode}] => ${response.requestOptions.uri}');
+
+          final contentType = response.headers.value('content-type');
+          if (contentType?.contains('text/html') == true) {
+            log('⚠️ HTML detected in response!');
+            return handler.reject(
+              DioException(
+                requestOptions: response.requestOptions,
+                response: response,
+                type: DioExceptionType.badResponse,
+                error: 'server_returned_html_instead_of_json'.tr(),
+              ),
+            );
+          }
+          if (response.data is String) {
+            final data = (response.data as String).trim().toLowerCase();
+            if (data.startsWith('<!doctype') || data.startsWith('<html')) {
+              log('⚠️ HTML content detected in response body!');
+              return handler.reject(
+                DioException(
+                  requestOptions: response.requestOptions,
+                  response: response,
+                  type: DioExceptionType.badResponse,
+                  error: 'server_returned_html_instead_of_json'.tr(),
+                ),
+              );
+            }
+          }
+
+          return handler.next(response);
+        },
+        onError: (error, handler) {
+          // Log error details
+          log('❌ ERROR[${error.response?.statusCode}] => ${error.requestOptions.uri}');
+          log('💥 Error Type: ${error.type}');
+          log('💥 Error Message: ${error.message}');
+
+          return handler.next(error);
+        },
+      ),
+    );
+
+    // 🔥 Retry Interceptor للأخطاء المؤقتة
+    dio?.interceptors.add(
+      RetryInterceptor(
+        dio: dio!,
+      ),
+    );
+  }
+
+  // 🔥 Helper method لبناء Headers
+  static Map<String, dynamic> _buildHeaders({String? token}) {
+    final String authToken = token ?? Constants.token;
+    return {
+      if (authToken.isNotEmpty) 'Authorization': 'Bearer $authToken',
+      'Accept': 'application/json',
+      'subdomain': Constants.subdomain,
+      'Apipassword': Constants.apiPassword,
+      'lang': Constants.currentLanguage,
+      'uuid': Constants.deviceId,
+    };
   }
 
   // get dataSource ====>>>
@@ -29,40 +110,27 @@ class DioHelper {
     BuildContext? context,
     String? isolateToken,
   }) async {
-    final String token = isolateToken ?? Constants.token;
-    debugPrint('token: $token');
-    dio!.options.headers = {
-      if (token != '') 'Authorization': 'Bearer $token',
-      'Accept': 'application/json',
-      'subdomain': Constants.subdomain,
-      'Apipassword': Constants.apiPassword,
-      'lang': Constants.currentLanguage,
-      'uuid': Constants.deviceId,
-      //'uuid': userCache?.get(deviceIdKey, defaultValue: ''),
-    };
-    log('=======================================================');
-    log('${dio?.options.baseUrl}$url');
-    log('َQuery ====> $query');
-    log('Headers in get method ${dio!.options.headers}');
+    dio!.options.headers = _buildHeaders(token: isolateToken);
 
     log('=======================================================');
+    log('GET: ${dio?.options.baseUrl}$url');
+    log('Query: $query');
+    log('Headers: ${dio!.options.headers}');
+    log('=======================================================');
 
-    return dio!
-        .get(
-      url,
-      queryParameters: query,
-    )
-        .then(
-      (value) {
-        if (value.data['status'] == 0) {
-          throw value.data['detail'];
-        }
-        printDM('Response post Method ==== \n ${value.realUri}');
+    return dio!.get(url, queryParameters: query).then((value) {
+      if (value.data is Map && value.data['status'] == 0) {
+        throw DioException(
+          requestOptions: value.requestOptions,
+          response: value,
+          type: DioExceptionType.badResponse,
+          error: value.data['detail'] ?? 'unknown_error'.tr(),
+        );
+      }
+      logger.i('Success Data (${value.statusCode}) ===> ${value.data['Data']}');
 
-        debugPrint('Success Data (${value.data['StatusCode']}) ===> ${value.data['Data']}');
-        return value;
-      },
-    );
+      return value;
+    });
   }
 
   // post dataSource ====>>>
@@ -75,38 +143,27 @@ class DioHelper {
     BuildContext? context,
     Options? options,
   }) async {
-    final String token = Constants.token;
-
-    debugPrint('token: $token');
-    dio!.options.headers = {
-      if (token != '') 'Authorization': 'Bearer $token',
-      'Accept': 'application/json',
-      'subdomain': Constants.subdomain,
-      'Apipassword': Constants.apiPassword,
-      'lang': Constants.currentLanguage,
-      'uuid': Constants.deviceId,
-      // 'uuid': userCache?.get(deviceIdKey, defaultValue: ''),
-    };
+    dio!.options.headers = _buildHeaders();
 
     log('=======================================================');
-    log('Headers in post method ${dio!.options.baseUrl}/$endPoint');
-    log('Headers in post method ${dio!.options.headers}');
-    log('Data in post method ');
+    log('POST: ${dio!.options.baseUrl}/$endPoint');
+    log('Headers: ${dio!.options.headers}');
+
     if (formDataIsEnabled) {
       final FormData formData = FormData.fromMap(data);
-
+      log('📋 FormData Fields:');
       for (final field in formData.fields) {
-        log('Field: ${field.key}: ${field.value}');
+        log('  ${field.key}: ${field.value}');
       }
-
+      log('📎 FormData Files:');
       for (final file in formData.files) {
-        log('File: ${file.key}: ${file.value.filename}, ${file.value.contentType}');
+        log('  ${file.key}: ${file.value.filename}, ${file.value.contentType}');
       }
     } else {
       log('Data: $data');
     }
-
     log('=======================================================');
+
     return dio!
         .post(
       '${EndPoints.baseUrl}$endPoint',
@@ -115,14 +172,8 @@ class DioHelper {
       options: options,
     )
         .then((value) {
-      printDM('Response post Method ==== \n $value');
+      printDM('Response POST Method ==== \n $value');
       printDM('statusMessage ==> ${value.statusMessage}');
-
-      if (context != null) {}
-      // if (value.data['StatusCode'] == 200) {
-      //   debugPrint('Success Data (${value.data['StatusCode']}) ===> ${value.data['Data']}');
-      // }
-
       return value;
     });
   }
@@ -134,22 +185,13 @@ class DioHelper {
     bool formDataIsEnabled = false,
     required Map<String, dynamic> data,
   }) async {
-    //final String token = HiveReuse.mainBox.get(AppConst.tokenBox) ?? '';
-    dio!.options.headers = {
-      'Authorization': 'Bearer ${Constants.token}',
-      'Accept': 'application/json',
-      'Content-Type': 'application/x-www-form-urlencoded',
-      'Apipassword': Constants.apiPassword,
-      'subdomain': Constants.subdomain,
-      'uuid': Constants.deviceId,
-      // 'uuid': userCache?.get(deviceIdKey, defaultValue: ''),
-    };
+    dio!.options.headers = _buildHeaders();
+
     log('=======================================================');
-    log('Headers in put method ${dio!.options.baseUrl}/$endPoint');
-    log('Headers in put method ${dio!.options.headers}');
-    log('Data in put method $data');
+    log('PUT: ${dio!.options.baseUrl}/$endPoint');
+    log('Headers: ${dio!.options.headers}');
+    log('Data: $data');
     log('=======================================================');
-    log('Headers ====> ${dio!.options.headers}');
 
     return dio!
         .put(
@@ -157,15 +199,18 @@ class DioHelper {
       queryParameters: query,
       data: formDataIsEnabled ? FormData.fromMap(data) : data,
     )
-        .then(
-      (value) {
-        if (value.data['status'] == 0) {
-          throw value.data['detail'];
-        }
-        debugPrint('Success Data (${value.data['StatusCode']}) ===> ${value.data['Data']}');
-        return value;
-      },
-    );
+        .then((value) {
+      if (value.data is Map && value.data['status'] == 0) {
+        throw DioException(
+          requestOptions: value.requestOptions,
+          response: value,
+          type: DioExceptionType.badResponse,
+          error: value.data['detail'] ?? 'unknown_error'.tr(),
+        );
+      }
+      debugPrint('Success Data (${value.data['StatusCode']}) ===> ${value.data['Data']}');
+      return value;
+    });
   }
 
   // deleteData ====>>>
@@ -175,52 +220,109 @@ class DioHelper {
     bool formDataIsEnabled = false,
     required Map<String, dynamic> data,
   }) async {
-    final String token = Constants.token;
+    dio!.options.headers = _buildHeaders();
 
-    // final String token = HiveReuse.mainBox.get(AppConst.tokenBox) ?? '';
-    dio!.options.headers = {
-      if (token != '') 'Authorization': 'Bearer $token',
-      'Accept': 'application/json',
-      'subdomain': Constants.subdomain,
-      'Apipassword': Constants.apiPassword,
-      'lang': Constants.currentLanguage,
-      'uuid': Constants.deviceId,
-      // 'uuid': userCache?.get(deviceIdKey, defaultValue: ''),
-    };
     log('=======================================================');
-    log('Headers in delete method ${dio!.options.baseUrl}/$endPoint');
-    log('Headers in delete method ${dio!.options.headers}');
-    log('Data in delete method $data');
+    log('DELETE: ${dio!.options.baseUrl}/$endPoint');
+    log('Headers: ${dio!.options.headers}');
+    log('Data: $data');
     log('=======================================================');
+
     return dio!
         .delete(
       endPoint,
       queryParameters: query,
       data: formDataIsEnabled ? FormData.fromMap(data) : data,
     )
-        .then(
-      (value) {
-        if (value.data['status'] == 0) {
-          throw value.data['detail'];
-        }
-        debugPrint('Success Data (${value.data['StatusCode']}) ===> ${value.data['Data']}');
-        return value;
-      },
-    );
+        .then((value) {
+      if (value.data is Map && value.data['status'] == 0) {
+        throw DioException(
+          requestOptions: value.requestOptions,
+          response: value,
+          type: DioExceptionType.badResponse,
+          error: value.data['detail'] ?? 'unknown_error'.tr(),
+        );
+      }
+      debugPrint('Success Data (${value.data['StatusCode']}) ===> ${value.data['Data']}');
+      return value;
+    });
   }
 
-  static Future<String> loadMockData({required String fileName, required BuildContext context}) async {
+  static Future<String> loadMockData({
+    required String fileName,
+    required BuildContext context,
+  }) async {
     final String filePath = 'assets/endpoints/$fileName.json';
     final String jsonString = await DefaultAssetBundle.of(context).loadString(filePath);
     return jsonString;
   }
 
-  static Future<Map<String, dynamic>> makeNetworkRequest({required String endpoint, required BuildContext context}) async {
+  static Future<Map<String, dynamic>> makeNetworkRequest({
+    required String endpoint,
+    required BuildContext context,
+  }) async {
     final String mockData = await loadMockData(fileName: endpoint, context: context);
-    // Parse the mock dataSource into a JSON object
     final Map<String, dynamic> jsonData = json.decode(mockData);
-    // Convert the JSON dataSource into a model object or use it directly
     log(jsonData.toString());
     return jsonData;
+  }
+}
+
+// 🔥 Retry Interceptor للمحاولات التلقائية
+class RetryInterceptor extends Interceptor {
+  final Dio dio;
+  final int retries;
+  final List<Duration> retryDelays;
+
+  RetryInterceptor({
+    required this.dio,
+    this.retries = 2,
+    this.retryDelays = const [
+      Duration(seconds: 1),
+      Duration(seconds: 2),
+    ],
+  });
+
+  @override
+  Future<void> onError(DioException err, ErrorInterceptorHandler handler) async {
+    // Only retry on specific status codes or connection errors
+    if (_shouldRetry(err)) {
+      final attempt = err.requestOptions.extra['retry_attempt'] ?? 0;
+
+      if (attempt < retries) {
+        log('🔄 Retrying request (${attempt + 1}/$retries): ${err.requestOptions.uri}');
+
+        // Wait before retry
+        final delay = retryDelays[attempt < retryDelays.length ? attempt : retryDelays.length - 1];
+        await Future.delayed(delay);
+
+        // Update retry count
+        err.requestOptions.extra['retry_attempt'] = attempt + 1;
+
+        try {
+          final response = await dio.fetch(err.requestOptions);
+          return handler.resolve(response);
+        } catch (e) {
+          // If retry fails, continue to next retry or return error
+          if (e is DioException) {
+            return onError(e, handler);
+          }
+        }
+      }
+    }
+
+    return handler.next(err);
+  }
+
+  bool _shouldRetry(DioException err) {
+    // Retry on connection errors or specific status codes
+    return err.type == DioExceptionType.connectionTimeout ||
+        err.type == DioExceptionType.receiveTimeout ||
+        err.type == DioExceptionType.sendTimeout ||
+        err.response?.statusCode == 502 ||
+        err.response?.statusCode == 503 ||
+        err.response?.statusCode == 504 ||
+        err.response?.statusCode == 522 ||
+        err.response?.statusCode == 524;
   }
 }
