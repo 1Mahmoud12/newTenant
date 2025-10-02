@@ -16,6 +16,7 @@ import 'package:dobzz_seller/feature/auth/widgets/authRich_text_link.dart';
 import 'package:easy_localization/easy_localization.dart' as easy;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -145,7 +146,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       });
                     }
                   },
-                  builder: (context, state) => IntrinsicHeight(
+                  builder: (context, state) => SizedBox(
+                    height: 50.h,
                     child: Row(
                       children: [
                         Expanded(
@@ -228,12 +230,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               padding: const EdgeInsets.symmetric(vertical: 14.5),
                               onPress: _handleBiometricLogin,
                               child: Platform.isIOS
-                                  ? SvgPicture.asset(
-                                      AppIcons.faceIdIc,
-                                      width: 30,
-                                      height: 30,
-                                    )
-                                  : SvgPicture.asset(AppIcons.fingerPrintIc),
+                                  ? SvgPicture.asset(AppIcons.faceIdIc, height: 24, width: 24)
+                                  : SvgPicture.asset(AppIcons.fingerPrintIc, height: 24, width: 24),
                             ),
                           ),
                         ],

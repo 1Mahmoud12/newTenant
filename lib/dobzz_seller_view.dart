@@ -46,7 +46,7 @@ class _DobzzSellerAppState extends State<DobzzSellerApp> {
                 }
                 Constants.noInternet = false;
               }
-              setState(() {});
+              if (mounted) setState(() {});
               log('connectivity ${result[0]}==== ${Constants.noInternet}');
             });
           },
