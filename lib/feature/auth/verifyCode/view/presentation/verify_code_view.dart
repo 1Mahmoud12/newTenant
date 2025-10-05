@@ -73,7 +73,7 @@ class _VerifyCodeViewState extends State<VerifyCodeView> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                'verify phone number'.tr(),
+                'verify_phone_number'.tr(),
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: AppColors.primaryColor),
                 textAlign: TextAlign.center,
               ),
@@ -81,7 +81,7 @@ class _VerifyCodeViewState extends State<VerifyCodeView> {
                 children: [
                   Expanded(
                     child: Text(
-                      'enter the verification code sent to your phone to proceed with setting a new password'.tr(),
+                      'enter_the_verification_code_sent_to_your_phone_to_proceed_with_setting_a_new_password'.tr(),
                       style: Theme.of(context).textTheme.displaySmall?.copyWith(color: AppColors.cB900),
                       textAlign: TextAlign.center,
                     ),
@@ -117,7 +117,7 @@ class _VerifyCodeViewState extends State<VerifyCodeView> {
                             startTimer();
                           },
                     child: Text(
-                      'resend code'.tr(),
+                      'resend_code'.tr(),
                       style: Theme.of(context).textTheme.displayMedium?.copyWith(
                             fontWeight: FontWeight.w700,
                             decoration: TextDecoration.underline,

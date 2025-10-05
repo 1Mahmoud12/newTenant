@@ -29,8 +29,12 @@
   "something_went_wrong": "حدث خطأ، حاول مرة أخرى",
   "server_returned_html_instead_of_json": "الخادم أرجع HTML بدلاً من JSON",
   "unknown_error": "خطأ غير معروف",
-
-
+  "enter_the_verification_code_sent_to_your_phone_to_proceed_with_setting_a_new_password": "أدخل رمز التحقق المرسل إلى هاتفك للمتابعة في تعيين كلمة مرور جديدة",
+  "verification_code": "رمز التحقق",
+  "code_sent_successfully": "تم إرسال الرمز بنجاح",
+  "invalid_verification_code": "رمز التحقق غير صحيح",
+  "otp_expired": "انتهت صلاحية رمز التحقق، يرجى إعادة الإرسال",
+  "please_enter_all_digits": "يرجى إدخال جميع أرقام الرمز",
   "Search product..": "ابحث عن منتج..",
   "Categories": "الفئات",
   "Flash Sale": "تخفيضات سريعة",

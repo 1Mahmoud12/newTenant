@@ -12,7 +12,7 @@ class Constants {
   static int distance = 100; // Km
 
   static String notificationChannelKey = 'channel_id1';
-  static AddressModel defaultAddress = AddressModel(-1, 'unknown address');
+  static AddressModel defaultAddress = AddressModel(-1, 'Add New Address');
   static String fcmToken = '';
   static String deviceId = '';
   static String subdomain2 = 'shine';

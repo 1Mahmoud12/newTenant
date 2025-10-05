@@ -463,6 +463,7 @@ class OrderItem extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
           border: Border.all(color: Colors.grey[200]!),
+          color: AppColors.white,
         ),
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
         child: Row(
@@ -542,6 +543,7 @@ class OrderItem extends StatelessWidget {
                 ],
               ),
             ),
+            const SizedBox(width: 12),
           ],
         ),
       ),

@@ -352,5 +352,13 @@
   "authentication_failed": "Authentication failed",
   "biometric_login_enabled": "Biometric login enabled",
   "biometric_login_failed": "Biometric login failed",
+  "verify_phone_number": "Verify phone number",
+  "enter_the_verification_code_sent_to_your_phone_to_proceed_with_setting_a_new_password": "Enter the verification code sent to your phone to proceed with setting a new password",
+  "resend_code": "Resend code",
+  "verification_code": "Verification Code",
+  "code_sent_successfully": "Code sent successfully",
+  "invalid_verification_code": "Invalid verification code",
+  "otp_expired": "Verification code expired, please resend",
+  "please_enter_all_digits": "Please enter all digits of the code",
   "": ""
 }

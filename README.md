@@ -31,6 +31,7 @@ flutter build apk
 open build/app/outputs/flutter-apk/
 ```
 ```shell
+flutter clean  
 flutter pub get
 cd ios
 rm podfile.lock

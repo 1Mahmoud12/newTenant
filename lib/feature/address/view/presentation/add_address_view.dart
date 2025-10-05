@@ -390,6 +390,9 @@ class _AddAddressViewState extends State<AddAddressView> {
                     },
                   ),
                 ),
+                const SizedBox(
+                  height: 20,
+                ),
               ],
             ),
           ),
