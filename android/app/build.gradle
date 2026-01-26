@@ -12,7 +12,7 @@ if (keystorePropertiesFile.exists()) {
 android {
     namespace = "com.mah852.dobzz_seller"
     compileSdkVersion 36
-    ndkVersion = "28.0.12674087"
+    ndkVersion = "28.2.13676358"
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_11
@@ -28,7 +28,7 @@ android {
         applicationId "com.mah852.dobbz_user"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = 23
+        minSdkVersion = flutter.minSdkVersion
         targetSdk = 36
         versionCode = flutter.versionCode
         versionName = flutter.versionName

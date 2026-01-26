@@ -55,7 +55,7 @@ void main() async {
   locationCacheValue = userCache?.get(locationCacheKey);
   // Load login cache first; if legacy userCache exists, migrate it to loginCache
   loginCacheValue = RegisterModel.fromJson(jsonDecode(await loginCache?.get(loginCacheKey, defaultValue: '{}')));
-  if ((loginCacheValue?.data?.token == null || (loginCacheValue?.data?.token?.isEmpty ?? true))) {
+  if (loginCacheValue?.data?.token == null || (loginCacheValue?.data?.token?.isEmpty ?? true)) {
     try {
       final raw = await loginCache?.get(loginCacheKey, defaultValue: '{}');
       if (raw != null && (raw as String).isNotEmpty && raw != '{}') {

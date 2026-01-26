@@ -1,5 +1,7 @@
 class EndPoints {
-  static const domain = 'https://backend.dobzz.com';
+  static const tenant = 'stylish';
+
+  static const domain = 'https://togaar.com/$tenant';
 
   // static const domain = 'https://kadin.dobzz.com';
   static const baseUrl = '$domain/api/v1/';
