@@ -1,15 +1,15 @@
 class LoginParams {
-  final String phone;
+  final String email;
   final String password;
 
   LoginParams({
-    required this.phone,
+    required this.email,
     required this.password,
   });
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'phone': phone,
+      'email': email,
       'password': password,
     };
   }

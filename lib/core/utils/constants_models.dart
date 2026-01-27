@@ -6,6 +6,7 @@ import 'package:dobzz_seller/feature/address/data/models/address_model.dart';
 import 'package:dobzz_seller/feature/address/data/models/city_model.dart';
 import 'package:dobzz_seller/feature/address/data/models/state_model.dart';
 import 'package:dobzz_seller/feature/auth/data/models/country_code_model.dart';
+import 'package:dobzz_seller/feature/auth/data/models/login_response.dart';
 import 'package:dobzz_seller/feature/auth/data/models/register_model.dart';
 import 'package:dobzz_seller/feature/cart/data/models/cart_item_model.dart';
 import 'package:dobzz_seller/feature/checkout/data/models/checkout_details_model.dart';
@@ -19,6 +20,7 @@ import 'package:dobzz_seller/feature/product/data/model/product_details_model.da
 class ConstantsModels {
   static CountryCodeModel? countryCodeModel;
   static RegisterModel? registerModel;
+  static LoginResponse? loginResponseModel;
   static RegisterModel? requiredValidationModel;
   static ProductModel? topProductModel;
   static ProductModel? bestSellerModel;

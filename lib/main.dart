@@ -21,6 +21,7 @@ import 'core/network/dio_helper.dart';
 import 'core/network/local/cache.dart';
 import 'core/network/local/hive_data_base.dart';
 import 'core/utils/notification/notification.dart';
+import 'feature/auth/data/models/login_response.dart';
 import 'firebase_options.dart';
 import 'my_app.dart';
 
@@ -54,12 +55,12 @@ void main() async {
   darkModeValue = userCache?.get(darkModeKey, defaultValue: false);
   locationCacheValue = userCache?.get(locationCacheKey);
   // Load login cache first; if legacy userCache exists, migrate it to loginCache
-  loginCacheValue = RegisterModel.fromJson(jsonDecode(await loginCache?.get(loginCacheKey, defaultValue: '{}')));
+  loginCacheValue = LoginResponse.fromJson(jsonDecode(await loginCache?.get(loginCacheKey, defaultValue: '{}')));
   if (loginCacheValue?.data?.token == null || (loginCacheValue?.data?.token?.isEmpty ?? true)) {
     try {
       final raw = await loginCache?.get(loginCacheKey, defaultValue: '{}');
       if (raw != null && (raw as String).isNotEmpty && raw != '{}') {
-        final migrated = RegisterModel.fromJson(jsonDecode(raw));
+        final migrated = LoginResponse.fromJson(jsonDecode(raw));
         loginCacheValue = migrated;
         await loginCache?.put(loginCacheKey, jsonEncode(migrated.toJson()));
         await loginCache?.put(biometricAuthKey, migrated.data?.token ?? '');

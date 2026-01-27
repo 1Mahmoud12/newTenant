@@ -96,8 +96,8 @@ class BiometricService {
     await loginCache?.put(biometricAuthKey, loginModel.data?.token ?? '');
 
     // Save phone and password for biometric login
-    if (loginModel.data?.phone != null) {
-      await loginCache?.put(loginEmailKey, loginModel.data?.phone);
+    if (loginModel.data?.email != null) {
+      await loginCache?.put(loginEmailKey, loginModel.data?.email);
     }
 
     log('Biometric login enabled for user: ${loginModel.data?.email}');
@@ -162,7 +162,7 @@ class BiometricService {
         log('Logging in via saved token');
         // Hydrate global state
         ConstantsModels.registerModel = savedUser;
-        loginCacheValue = savedUser;
+        // loginCacheValue = savedUser;
         Constants.token = savedToken;
         await loginCache?.put(loginCacheKey, jsonEncode(savedUser.toJson()));
         if (navigatorKey.currentState != null) {

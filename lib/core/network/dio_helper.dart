@@ -9,7 +9,7 @@ import 'package:dobzz_seller/core/utils/utils.dart';
 import 'package:dobzz_seller/main.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-
+import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 // ignore: avoid_classes_with_only_static_members
 class DioHelper {
   static Dio? dio;
@@ -81,7 +81,18 @@ class DioHelper {
         },
       ),
     );
-
+    // ✅ Pretty Logger
+    dio?.interceptors.add(
+      PrettyDioLogger(
+        requestHeader: true,
+        requestBody: true,
+        responseHeader: false,
+        responseBody: true,
+        error: true,
+        compact: true,
+        maxWidth: 120,
+      ),
+    );
     // 🔥 Retry Interceptor للأخطاء المؤقتة
     dio?.interceptors.add(
       RetryInterceptor(

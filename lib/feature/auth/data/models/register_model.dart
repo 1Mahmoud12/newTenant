@@ -1,104 +1,155 @@
 class RegisterModel {
-  bool? status;
-  int? code;
-  String? message;
-  Data? data;
+  final int maxPrice;
+  final int status;
+  final String message;
+  final RegisterData? data;
 
-  RegisterModel({this.status, this.code, this.message, this.data});
-
-  RegisterModel.fromJson(Map<String, dynamic> json) {
-    status = json['status'];
-    code = json['code'];
-    message = json['message'];
-    data = json['data'] != null ? Data.fromJson(json['data']) : null;
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['status'] = status;
-    data['code'] = code;
-    data['message'] = message;
-    if (this.data != null) {
-      data['data'] = this.data!.toJson();
-    }
-    return data;
-  }
-}
-
-class Data {
-  int? id;
-  String? name;
-  String? firstName;
-  String? lastName;
-  String? email;
-  String? phone;
-  String? avatarPath;
-  bool? twoFactorAuth;
-  bool? pushNotifications;
-  bool? desktopNotifications;
-  bool? emailNotifications;
-  String? language;
-  String? appearance;
-  String? createdAt;
-  String? type;
-  String? token;
-
-  Data({
-    this.id,
-    this.name,
-    this.firstName,
-    this.lastName,
-    this.email,
-    this.phone,
-    this.avatarPath,
-    this.twoFactorAuth,
-    this.pushNotifications,
-    this.desktopNotifications,
-    this.emailNotifications,
-    this.language,
-    this.appearance,
-    this.createdAt,
-    this.type,
-    this.token,
+  RegisterModel({
+    required this.maxPrice,
+    required this.status,
+    required this.message,
+    this.data,
   });
 
-  Data.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-    firstName = json['first_name'];
-    lastName = json['last_name'];
-    email = json['email'];
-    phone = json['phone'];
-    avatarPath = json['avatar_path'];
-    twoFactorAuth = json['two_factor_auth'];
-    pushNotifications = json['push_notifications'];
-    desktopNotifications = json['desktop_notifications'];
-    emailNotifications = json['email_notifications'];
-    language = json['language'];
-    appearance = json['appearance'];
-    createdAt = json['created_at'];
-    type = json['type'];
-    token = json['token'];
+  factory RegisterModel.fromJson(Map<String, dynamic> json) {
+    return RegisterModel(
+      maxPrice: json['max_price'] ?? 0,
+      status: json['status'] ?? 0,
+      message: json['message'] ?? '',
+      data: json['data'] != null ? RegisterData.fromJson(json['data']) : null,
+    );
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['name'] = name;
-    data['first_name'] = firstName;
-    data['last_name'] = lastName;
-    data['email'] = email;
-    data['phone'] = phone;
-    data['avatar_path'] = avatarPath;
-    data['two_factor_auth'] = twoFactorAuth;
-    data['push_notifications'] = pushNotifications;
-    data['desktop_notifications'] = desktopNotifications;
-    data['email_notifications'] = emailNotifications;
-    data['language'] = language;
-    data['appearance'] = appearance;
-    data['created_at'] = createdAt;
-    data['type'] = type;
-    data['token'] = token;
-    return data;
+    return {
+      'max_price': maxPrice,
+      'status': status,
+      'message': message,
+      'data': data?.toJson(),
+    };
+  }
+
+  bool get isSuccess => status == 1;
+}
+
+class RegisterData {
+  final int id;
+  final String firstName;
+  final String? lastName;
+  final String email;
+  final String type;
+  final String mobile;
+  final String? firebaseToken;
+  final String? deviceType;
+  final String registerType;
+  final String themeId;
+  final int createdBy;
+  final int storeId;
+  final String updatedAt;
+  final String createdAt;
+  final String token;
+  final String tokenType;
+  final String demoField;
+  final String name;
+  final String address;
+  final String postcode;
+  final String image;
+
+  RegisterData({
+    required this.id,
+    required this.firstName,
+    this.lastName,
+    required this.email,
+    required this.type,
+    required this.mobile,
+    this.firebaseToken,
+    this.deviceType,
+    required this.registerType,
+    required this.themeId,
+    required this.createdBy,
+    required this.storeId,
+    required this.updatedAt,
+    required this.createdAt,
+    required this.token,
+    required this.tokenType,
+    required this.demoField,
+    required this.name,
+    required this.address,
+    required this.postcode,
+    required this.image,
+  });
+
+  factory RegisterData.fromJson(Map<String, dynamic> json) {
+    return RegisterData(
+      id: json['id'] ?? 0,
+      firstName: json['first_name'] ?? '',
+      lastName: json['last_name'],
+      email: json['email'] ?? '',
+      type: json['type'] ?? 'customer',
+      mobile: json['mobile'] ?? '',
+      firebaseToken: json['firebase_token'],
+      deviceType: json['device_type'],
+      registerType: json['register_type'] ?? 'email',
+      themeId: json['theme_id'] ?? '',
+      createdBy: json['created_by'] ?? 0,
+      storeId: json['store_id'] ?? 0,
+      updatedAt: json['updated_at'] ?? '',
+      createdAt: json['created_at'] ?? '',
+      token: json['token'] ?? '',
+      tokenType: json['token_type'] ?? 'Bearer',
+      demoField: json['demo_field'] ?? '',
+      name: json['name'] ?? '',
+      address: json['address'] ?? '',
+      postcode: json['postcode'] ?? '',
+      image: json['image'] ?? '',
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'first_name': firstName,
+      'last_name': lastName,
+      'email': email,
+      'type': type,
+      'mobile': mobile,
+      'firebase_token': firebaseToken,
+      'device_type': deviceType,
+      'register_type': registerType,
+      'theme_id': themeId,
+      'created_by': createdBy,
+      'store_id': storeId,
+      'updated_at': updatedAt,
+      'created_at': createdAt,
+      'token': token,
+      'token_type': tokenType,
+      'demo_field': demoField,
+      'name': name,
+      'address': address,
+      'postcode': postcode,
+      'image': image,
+    };
+  }
+
+  String get fullName => '$firstName ${lastName ?? ''}'.trim();
+
+  String get authHeader => '$tokenType $token';
+
+  bool get isCustomer => type == 'customer';
+
+  DateTime? get createdAtDateTime {
+    try {
+      return DateTime.parse(createdAt);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  DateTime? get updatedAtDateTime {
+    try {
+      return DateTime.parse(updatedAt);
+    } catch (e) {
+      return null;
+    }
   }
 }

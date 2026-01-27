@@ -64,7 +64,7 @@ class _MyDetailsViewState extends State<MyDetailsView> {
   }
 
   Future<void> _loadProfileImage() async {
-    final avatarPath = ConstantsModels.editProfileModel?.data?.avatarPath ?? '';
+    final avatarPath = ConstantsModels.editProfileModel?.data?.image ?? '';
     if (avatarPath.isNotEmpty) {
       _profileImage = await FileDetails.urlToFile(url: avatarPath, nameFile: 'avatar');
       if (mounted) setState(() {});
@@ -77,7 +77,7 @@ class _MyDetailsViewState extends State<MyDetailsView> {
       _firstNameController.text = userData.name ?? 'N/A';
       _lastNameController.text = userData.lastName ?? 'N/A';
       _emailController.text = userData.email ?? 'N/A';
-      _phoneController.text = userData.phone ?? 'N/A';
+      _phoneController.text =  'N/A';
     }
   }
 
@@ -89,7 +89,7 @@ class _MyDetailsViewState extends State<MyDetailsView> {
   }
 
   void _handleSubmit() async {
-    if (loginCacheValue?.data?.phone != Constants.demoAccount) {
+    if (loginCacheValue?.data?.email != Constants.demoAccount) {
       await widget.editProfileCubit.updateUserData(
         context: context,
         name: _firstNameController.text,
@@ -212,7 +212,7 @@ class ProfileImageWidget extends StatelessWidget {
         child: Stack(
           children: [
             CacheImage(
-              urlImage: profileImage != null ? profileImage!.path : ConstantsModels.editProfileModel?.data?.avatarPath,
+              urlImage: profileImage != null ? profileImage!.path : ConstantsModels.editProfileModel?.data?.image,
               fileImage: profileImage,
               width: 100,
               height: 100,
@@ -258,7 +258,7 @@ class UserDetailsForm extends StatefulWidget {
 class _UserDetailsFormState extends State<UserDetailsForm> {
   @override
   void initState() {
-    getCountryCode(number: loginCacheValue?.data?.phone ?? '+966');
+    getCountryCode(number: loginCacheValue?.data?.email ?? '+966');
     super.initState();
   }
 
@@ -286,7 +286,7 @@ class _UserDetailsFormState extends State<UserDetailsForm> {
           enabled: false,
           initialCountryCode: initialCountryCode,
           controller: formatPhone(
-            number: loginCacheValue?.data?.phone ?? ' ',
+            number: loginCacheValue?.data?.email ?? ' ',
             initialCountryCode: initialCountryCode,
           ),
         ),

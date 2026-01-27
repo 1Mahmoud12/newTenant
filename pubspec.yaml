@@ -64,6 +64,7 @@ dependencies:
   flutter_widget_from_html: ^0.17.1
   fluttertoast: ^9.0.0
   geocoding: ^4.0.0
+  pretty_dio_logger:
   google_fonts: ^6.3.1
   google_maps_flutter: ^2.13.1
   googleapis_auth: ^2.0.0

@@ -285,7 +285,7 @@ class GoToCheckOutButton extends StatelessWidget {
                 context.navigateToPage(const CheckoutView());
               }
 
-              if (loginCacheValue?.data?.phone == Constants.demoAccount) {
+              if (loginCacheValue?.data?.email== Constants.demoAccount) {
                 Utils.showToast(title: 'This is demo account you can not create order ', state: UtilState.error);
               } else {
                 context.navigateToPage(const CheckoutView());

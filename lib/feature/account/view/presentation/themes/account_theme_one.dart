@@ -43,7 +43,7 @@ class _ProfileViewThemeOneState extends State<ProfileViewThemeOne> {
   Future<void> _initBiometrics() async {
     final bool supported = await _biometricService.isDeviceSupported();
     final bool canCheck = await _biometricService.canCheckBiometrics();
-    final bool enabled = await _biometricService.isBiometricEnabled() && loginCacheValue?.data?.phone == loginCache?.get(loginEmailKey);
+    final bool enabled = await _biometricService.isBiometricEnabled() && loginCacheValue?.data?.email == loginCache?.get(loginEmailKey);
     if (!mounted) return;
     setState(() {
       _biometricSupported = supported && canCheck;
@@ -156,7 +156,7 @@ class _ProfileViewThemeOneState extends State<ProfileViewThemeOne> {
                                       height: 72,
                                       width: 72,
                                       // circle: true,
-                                      urlImage: loginCacheValue?.data?.avatarPath ?? '',
+                                      urlImage: loginCacheValue?.data?.image ?? '',
                                     ),
                                   ),
                                 ),
@@ -302,7 +302,7 @@ class _ProfileViewThemeOneState extends State<ProfileViewThemeOne> {
                           context.navigateToPage(const LanguageView());
                         },
                       ),
-                      if (loginCacheValue?.data?.phone != Constants.demoAccount) ...[
+                      if (loginCacheValue?.data?.email != Constants.demoAccount) ...[
                         _buildDivider(),
                         _buildMenuItemNew(
                           icon: AppIcons.bioMetricIc,
@@ -394,7 +394,7 @@ class _ProfileViewThemeOneState extends State<ProfileViewThemeOne> {
                         title: 'Delete Account',
                         color: const Color(0xFF9E9E9E),
                         onTap: () {
-                          if (loginCacheValue?.data?.phone != Constants.demoAccount) {
+                          if (loginCacheValue?.data?.email != Constants.demoAccount) {
                             showDeleteAccountDialog(context, () async {
                               await deleteAccountCubit.deleteAccount(context: context);
                             });

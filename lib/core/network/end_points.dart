@@ -1,15 +1,15 @@
 class EndPoints {
-  static const tenant = 'stylish';
+  static const tenant = 'stylique';
 
-  static const domain = 'https://togaar.com/$tenant';
+  static const domain = 'https://togaar.com/api/$tenant';
 
   // static const domain = 'https://kadin.dobzz.com';
-  static const baseUrl = '$domain/api/v1/';
+  static const baseUrl = '$domain/';
 
   // Auth
   static const countryCodes = 'Account/CountryCodes';
-  static const register = 'shop/auth/register';
-  static const login = 'shop/auth/login';
+  static const register = 'register';
+  static const login = 'login';
   static const validateOTP = 'shop/auth/verify-register-otp';
   static const updateFcmToken = 'Account/UpdateFCMToken';
   static const appVisit = 'AppSetting/Admin_UpdateAppVisit';
@@ -121,7 +121,7 @@ class EndPoints {
   static const getProductDetails = 'shop/products';
 
   // address
-  static const address = 'shop/user/addresses';
+  static const address = 'address-list';
   static const state = 'shop/user/states';
   static const cities = '/shop/user/cities';
 

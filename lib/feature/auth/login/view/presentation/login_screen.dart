@@ -19,6 +19,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../../../../core/component/fields/custom_text_form_field.dart';
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -87,10 +89,25 @@ class _LoginScreenState extends State<LoginScreen> {
                   key: formKey,
                   child: Column(
                     children: [
-                      PhoneNumberField(
-                        outPadding: EdgeInsets.zero,
-                        controller: AuthCubit.of(context).loginPhoneController,
-                      ),
+                        CustomTextFormField(
+                          outPadding: EdgeInsets.zero,
+                          controller: AuthCubit.of(context).loginEmailController,
+                          nameField: 'Email Address'.tr(),
+                          hintText: 'Enter your email address'.tr(),
+                          textInputType: TextInputType.emailAddress,
+                        ),
+                        const SizedBox(height: 16),
+                        CustomTextFormField(
+                          outPadding: EdgeInsets.zero,
+                          controller: AuthCubit.of(context).loginPasswordController,
+                          nameField: 'Password'.tr(),
+                          hintText: 'Enter your password'.tr(),
+                          password: true,
+                        ),
+                      // PhoneNumberField(
+                      //   outPadding: EdgeInsets.zero,
+                      //   controller: AuthCubit.of(context).loginPhoneController,
+                      // ),
                       // const SizedBox(height: 16),
                       // Row(
                       //   children: [
@@ -173,9 +190,9 @@ class _LoginScreenState extends State<LoginScreen> {
                             onPress: () {
                               AuthCubit.of(context).errorMessage = null;
                               if (formKey.currentState!.validate()) {
-                                //context.navigateToPage(const NavigationView());
+                              //context.navigateToPage(const NavigationView());
 
-                                AuthCubit.of(context).login(context);
+                              AuthCubit.of(context).login(context);
                               }
                             },
                           ),
@@ -204,7 +221,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             onPress: () async {
                               AuthCubit.of(context).countryCode = '+966';
-                              AuthCubit.of(context).loginPhoneController.text = '500975853';
+                              AuthCubit.of(context).loginEmailController.text = '500975853';
                               AuthCubit.of(context).loginPasswordController.text = '+966500975853';
 
                               // Call login API

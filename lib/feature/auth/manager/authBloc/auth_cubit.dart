@@ -93,7 +93,7 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
 // login controllers
-  TextEditingController loginPhoneController = TextEditingController();
+  TextEditingController loginEmailController = TextEditingController();
   TextEditingController loginPasswordController = TextEditingController();
 // reset password
   // TextEditingController resetPasswordController = TextEditingController();
@@ -103,6 +103,9 @@ class AuthCubit extends Cubit<AuthState> {
   TextEditingController nameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController confirmPasswordController = TextEditingController();
 
   //TextEditingController passwordController = TextEditingController();
   //TextEditingController confirmPasswordController = TextEditingController();
@@ -131,9 +134,10 @@ class AuthCubit extends Cubit<AuthState> {
       context,
       SignUpParams(
         name: nameController.text,
-        phone: countryCode + phoneController.text,
-        //  password: passwordController.text,
-        termAndCondition: termAndCondition,
+        email: emailController.text,
+        mobile:countryCode + phoneController.text,
+        password: passwordController.text,
+        // termAndCondition: termAndCondition,
       ),
     )
         .then(
@@ -198,7 +202,7 @@ class AuthCubit extends Cubit<AuthState> {
             // );
           } else {
             ConstantsModels.registerModel = r;
-            loginCacheValue = r;
+            // loginCacheValue = r;
             Constants.token = r.data?.token ?? '';
             loginCache?.put(loginCacheKey, jsonEncode(r.toJson()));
 
@@ -224,7 +228,7 @@ class AuthCubit extends Cubit<AuthState> {
             context.navigateToPage(const NavigationViewWithThemes());
             phoneController.clear();
             otpController.clear();
-            loginPhoneController.clear();
+            loginEmailController.clear();
             loginPasswordController.clear();
             // passwordController.clear();
           }
@@ -243,7 +247,7 @@ class AuthCubit extends Cubit<AuthState> {
     final result = await authDataSource.postLogin(
       context,
       LoginParams(
-        phone: countryCode + loginPhoneController.text,
+        email:  loginEmailController.text,
         password: loginPasswordController.text,
       ),
     );
@@ -271,7 +275,8 @@ class AuthCubit extends Cubit<AuthState> {
       emit(AuthLoginErrorState(l.errMessage));
       return false;
     }, (r) async {
-      ConstantsModels.registerModel = r;
+      closeDialog(context);
+      ConstantsModels.loginResponseModel = r;
       loginCacheValue = r;
       Constants.customerId = r.data!.id!.toString();
       log('userCacheValue.data ==>${loginCacheValue?.data?.token}');
@@ -281,8 +286,8 @@ class AuthCubit extends Cubit<AuthState> {
       await loginCache?.put(biometricAuthKey, r.data?.token ?? '');
       await loginCache?.put(biometricUserCacheKey, jsonEncode(r.toJson()));
 
-      context.navigateToPage(const VerifyCodeView(isForgetPassword: false, isLogin: true));
-      loginPhoneController.clear();
+        context.navigateToPage(const NavigationViewWithThemes());
+      loginEmailController.clear();
       loginPasswordController.clear();
       emit(AuthLoginSuccessState());
       return true;

@@ -1,6 +1,8 @@
 import 'package:dobzz_seller/feature/auth/data/models/register_model.dart';
 import 'package:hive_flutter/adapters.dart';
 
+import '../../../feature/auth/data/models/login_response.dart';
+
 Box? userCache;
 Box? loginCache;
 String loginCacheBoxKey = 'loginCache';
@@ -31,7 +33,7 @@ bool rememberMe = false;
 
 bool darkModeValue = false;
 
-RegisterModel? loginCacheValue;
+LoginResponse? loginCacheValue;
 // AllMyAddresses allMyAddressesCache = AllMyAddresses();
 // AdvertiseModel advertiseModelCache = AdvertiseModel();
 // CategoriesModel? categoriesModelCache;

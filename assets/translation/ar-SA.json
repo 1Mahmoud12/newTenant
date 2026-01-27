@@ -132,6 +132,7 @@
   "Password": "كلمة المرور",
   "Enter your password": "أدخل كلمة المرور الخاصة بك",
   "Re-enter password": "إعادة إدخال كلمة المرور",
+  "Confirm Password": "تأكيد كلمة المرور",
   "Agree with ": "أوافق على ",
   "Terms & Conditions": "الشروط والأحكام",
   "Already have an account? ": "هل لديك حساب بالفعل؟ ",
@@ -357,6 +358,12 @@
   "authentication_failed": "فشل في المصادقة",
   "biometric_login_enabled": "تم تفعيل تسجيل الدخول بالبصمة",
   "biometric_login_failed": "فشل تسجيل الدخول بالبصمة",
-
+  "email_is_required": "البريد الإلكتروني مطلوب",
+  "please_enter_valid_email": "يرجى إدخال بريد إلكتروني صحيح",
+  "password_is_required": "كلمة المرور مطلوبة",
+  "password_must_be_at_least_6_characters": "يجب أن تتكون كلمة المرور من 6 أحرف على الأقل",
+  "confirm_password_is_required": "تأكيد كلمة المرور مطلوب",
+  "passwords_do_not_match": "كلمات المرور غير متطابقة",
+  "please_accept_terms_and_conditions": "يرجى قبول الشروط والأحكام للمتابعة",
   "": ""
 }

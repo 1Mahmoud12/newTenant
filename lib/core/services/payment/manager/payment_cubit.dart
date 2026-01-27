@@ -107,7 +107,7 @@ class PaymentCubit extends Cubit<PaymentState> {
         logger.d('phone number is $phoneNumber');
         await createSTCFirst(context: context, orderId: '$orderId', mobile: phoneNumber);
       },
-      initialPhoneNumber: myPhoneForStc(ConstantsModels.registerModel?.data?.phone ?? ''),
+      initialPhoneNumber: myPhoneForStc(ConstantsModels.registerModel?.data?.email ?? ''),
     );
   }
 

@@ -128,6 +128,7 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
       outPadding: widget.outPadding ?? const EdgeInsets.symmetric(horizontal: 20),
       controller: widget.controller,
       hintText: 'Phone'.tr(),
+      nameField: 'Phone'.tr(),
       hintStyle: TextStyle(color: AppColors.primaryColor.withOpacityNew(0.5)),
       //  labelText: _phoneHint.tr(),
       validator: (value) => _validatePhoneNumber(value, _countryCode),
@@ -143,7 +144,7 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
                   onCountryChanged: (countryCode) {
                     _updatePhoneHint(countryCode);
                     authCubit.countryCode = countryCode;
-                    authCubit.loginPhoneController.clear();
+                    authCubit.loginEmailController.clear();
                   },
                 ),
               ),

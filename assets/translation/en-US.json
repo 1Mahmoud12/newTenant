@@ -142,6 +142,7 @@
   "Password must be at least 6 characters": "Password must be at least 6 characters",
   "Confirm password is required": "Confirm password is required",
   "Get Start": "Get Start",
+  "Confirm Password": "Confirm Password",
   "Define\nyourself in\nyour unique\nway.": "Define\nyourself in\nyour unique\nway.",
   "please enter your registered phone number to receive a one-time password (OTP).": "please enter your registered phone number to receive a one-time password (OTP).",
   "continue": "continue",
@@ -360,5 +361,12 @@
   "invalid_verification_code": "Invalid verification code",
   "otp_expired": "Verification code expired, please resend",
   "please_enter_all_digits": "Please enter all digits of the code",
+  "email_is_required": "Email is required",
+  "password_is_required": "Password is required",
+  "confirm_password_is_required": "Confirm password is required",
+  "please_accept_terms_and_conditions": "Please accept terms and conditions",
+  "passwords_do_not_match": "Passwords do not match",
+  "please_enter_valid_email": "Please enter a valid email",
+  "password_must_be_at_least_6_characters": "Password must be at least 6 characters",
   "": ""
 }

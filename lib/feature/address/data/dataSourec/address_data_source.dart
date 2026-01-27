@@ -5,12 +5,18 @@ import 'package:dio/dio.dart';
 import 'package:dobzz_seller/core/network/dio_helper.dart';
 import 'package:dobzz_seller/core/network/end_points.dart';
 import 'package:dobzz_seller/core/network/errors/failures.dart';
-import 'package:dobzz_seller/feature/address/data/models/address_model.dart';
+import 'package:dobzz_seller/feature/address/data/models/address_model.dart' ;
+
+import '../../../../core/utils/constants.dart'hide AddressModel;
 
 class AddressDataSource {
   static Future<Either<Failure, AddressModel>> getAddress() async {
     try {
-      final response = await DioHelper.getData(url: EndPoints.address);
+      final response = await DioHelper.postData(endPoint: EndPoints.address,data: {
+        "theme_id": "grocery",
+        "customer_id": Constants.customerId,
+
+      });
       // logger.d('response address: ${response.data['data']}');
       return Right(AddressModel.fromJson(response.data));
     } catch (error) {
