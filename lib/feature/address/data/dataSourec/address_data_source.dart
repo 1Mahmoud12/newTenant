@@ -7,6 +7,7 @@ import 'package:dobzz_seller/core/network/end_points.dart';
 import 'package:dobzz_seller/core/network/errors/failures.dart';
 import 'package:dobzz_seller/feature/address/data/models/address_model.dart';
 
+import '../../../../core/network/local/cache.dart';
 import '../../../../core/utils/constants.dart' hide AddressModel;
 import '../models/add_address_params.dart';
 
@@ -19,7 +20,7 @@ class AddressDataSource {
     try {
       final response = await DioHelper.postData(endPoint: EndPoints.address, data: {
         'theme_id': 'grocery',
-        'customer_id': Constants.customerId,
+        'customer_id': loginCacheValue?.data?.id.toString(),
       });
       if (response.data['status'] == 1) {
         // logger.d('response address: ${response.data['data']}');

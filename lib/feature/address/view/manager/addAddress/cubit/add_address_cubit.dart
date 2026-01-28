@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:easy_localization/easy_localization.dart';
 
+import '../../../../../../core/network/local/cache.dart';
 import '../../../../../../core/utils/constants.dart';
 import '../../../../data/models/add_address_params.dart';
 import '../../address/cubit/address_cubit.dart';
@@ -132,7 +133,7 @@ class AddAddressCubit extends Cubit<AddAddressState> {
     await AddressDataSource.addAddress(
       data: AddAddressParams(
         themeId: 'grocery',
-        customerId: Constants.customerId ?? '',
+        customerId: loginCacheValue?.data?.id.toString()?? '',
         title: nameController.text,
         address: addressNicknameController.text,
         country: countryId.toString(),
@@ -171,7 +172,7 @@ class AddAddressCubit extends Cubit<AddAddressState> {
       addressId: addressId,
       data: AddAddressParams(
         themeId: 'grocery',
-        customerId: Constants.customerId ?? '',
+        customerId: loginCacheValue?.data?.id.toString() ?? '',
         title: nameController.text,
         address: addressNicknameController.text,
         country: countryId.toString(),

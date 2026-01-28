@@ -69,7 +69,8 @@ class _ProductCardState extends State<ProductCard> {
     setState(() {
       isLiked = !isLiked;
     });
-    widget.onLikeTap?.call(context.read<WishListCubit>().isWishListed(skuCode: widget.sku ?? ''));
+    widget.onLikeTap?.call(
+        context.read<WishListCubit>().isWishListed(skuCode: widget.sku ?? ''));
     debugPrint('Liked: $isLiked for ${widget.title}');
   }
 
@@ -101,7 +102,9 @@ class _ProductCardState extends State<ProductCard> {
             Stack(
               children: [
                 ClipRRect(
-                  borderRadius: const BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)),
+                  borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(12),
+                      topRight: Radius.circular(12)),
                   child: CacheImage(
                     urlImage: widget.imagePath,
                     errorColor: Colors.grey,
@@ -122,7 +125,11 @@ class _ProductCardState extends State<ProductCard> {
                         shape: BoxShape.circle,
                       ),
                       child: Icon(
-                        context.watch<WishListCubit>().isWishListed(skuCode: widget.sku ?? widget.variants.first.skuCode!)
+                        context.watch<WishListCubit>().isWishListed(
+                                skuCode: widget.sku ??
+                                    (widget.variants.isNotEmpty
+                                        ? widget.variants.first.skuCode ?? ''
+                                        : ''))
                             ? Icons.favorite
                             : Icons.favorite_border,
                         color: Colors.white,
@@ -185,7 +192,8 @@ class _ProductCardState extends State<ProductCard> {
                         w5,
                         SvgPicture.asset(
                           AppIcons.currency,
-                          colorFilter: const ColorFilter.mode(Colors.black, BlendMode.srcIn),
+                          colorFilter: const ColorFilter.mode(
+                              Colors.black, BlendMode.srcIn),
                           height: 14,
                           width: 14,
                         ),
@@ -195,7 +203,11 @@ class _ProductCardState extends State<ProductCard> {
                   w10,
                   AddToCartButton(
                     productId: widget.productId,
-                    sku: widget.sku != null ? widget.sku! : widget.variants.first.skuCode!, // widget.variants,
+                    sku: widget.sku != null
+                        ? widget.sku!
+                        : (widget.variants.isNotEmpty
+                            ? widget.variants.first.skuCode ?? ''
+                            : ''), // widget.variants,
                   ),
                 ],
               ),
@@ -282,13 +294,15 @@ class _AddToCartButtonState extends State<AddToCartButton> {
                 : () async {
                     await addToCartCubit
                         .addToCart(
-                      sku: widget.sku,
+                      productId: widget.productId,
+                      variantId: 1,
                       context: context,
                     )
                         .then((_) {
                       CartItemsCubit.of(context).addCartItems();
 
-                      if (!mounted) return; // Check if still mounted before setState
+                      if (!mounted)
+                        return; // Check if still mounted before setState
                       setState(() {
                         _isAdded = true;
                       });
@@ -332,7 +346,10 @@ class _AddToCartButtonState extends State<AddToCartButton> {
                           child: FittedBox(
                             child: Text(
                               'Add to cart'.tr(),
-                              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall
+                                  ?.copyWith(
                                     fontSize: 12.sp,
                                     fontWeight: FontWeight.w500,
                                     color: Colors.white,
@@ -392,7 +409,11 @@ class _HorizontalProductCardState extends State<HorizontalProductCard> {
     setState(() {
       isLiked = !isLiked;
     });
-    widget.onLikeTap?.call(context.read<WishListCubit>().isWishListed(skuCode: widget.sku ?? widget.variants.first.skuCode!));
+    widget.onLikeTap?.call(context.read<WishListCubit>().isWishListed(
+        skuCode: widget.sku ??
+            (widget.variants.isNotEmpty
+                ? widget.variants.first.skuCode ?? ''
+                : '')));
   }
 
   @override
@@ -420,7 +441,8 @@ class _HorizontalProductCardState extends State<HorizontalProductCard> {
             borderRadius: BorderRadius.circular(10),
           ),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.stretch, // Stretch to fill height
+            crossAxisAlignment:
+                CrossAxisAlignment.stretch, // Stretch to fill height
             children: [
               // Left side - Product image with like button
               AspectRatio(
@@ -467,7 +489,8 @@ class _HorizontalProductCardState extends State<HorizontalProductCard> {
               // Right side - Product information
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -545,7 +568,8 @@ class _HorizontalProductCardState extends State<HorizontalProductCard> {
                                   w5,
                                   SvgPicture.asset(
                                     AppIcons.currency,
-                                    colorFilter: const ColorFilter.mode(Colors.black, BlendMode.srcIn),
+                                    colorFilter: const ColorFilter.mode(
+                                        Colors.black, BlendMode.srcIn),
                                     height: 14,
                                     width: 14,
                                   ),
@@ -554,8 +578,10 @@ class _HorizontalProductCardState extends State<HorizontalProductCard> {
                             ),
                             w10,
                             HorizontalAddToCartButton(
-                              sku: widget.sku != null ? widget.sku! : widget.variants.first.skuCode!, // widget.variants,
                               productId: widget.productId,
+                              variantId: widget.variants.isNotEmpty
+                                  ? widget.variants.first.id ?? 0
+                                  : 0,
                             ),
                           ],
                         ),
@@ -576,13 +602,14 @@ class HorizontalAddToCartButton extends StatefulWidget {
   const HorizontalAddToCartButton({
     super.key,
     required this.productId,
-    required this.sku,
+    required this.variantId,
   });
 
   final int productId;
-  final String sku;
+  final int variantId;
   @override
-  State<HorizontalAddToCartButton> createState() => _HorizontalAddToCartButtonState();
+  State<HorizontalAddToCartButton> createState() =>
+      _HorizontalAddToCartButtonState();
 }
 
 class _HorizontalAddToCartButtonState extends State<HorizontalAddToCartButton> {
@@ -608,8 +635,8 @@ class _HorizontalAddToCartButtonState extends State<HorizontalAddToCartButton> {
                 : () async {
                     await addToCartCubit
                         .addToCart(
-                      sku: widget.sku,
-                      quantity: 1,
+                      productId: widget.productId,
+                      variantId: widget.variantId,
                       context: context,
                     )
                         .then((_) {
@@ -654,7 +681,10 @@ class _HorizontalAddToCartButtonState extends State<HorizontalAddToCartButton> {
                           child: FittedBox(
                             child: Text(
                               'Add to cart'.tr(),
-                              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall
+                                  ?.copyWith(
                                     fontSize: 12.sp,
                                     fontWeight: FontWeight.w500,
                                     color: Colors.white,

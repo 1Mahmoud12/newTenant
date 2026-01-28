@@ -385,5 +385,6 @@
   "select_state_name": "Select State Name",
   "select_city_name": "Select City Name",
   "select_country": "Select Country",
+  "cart_updated_successfully": "Cart updated successfully",
   "": ""
 }
