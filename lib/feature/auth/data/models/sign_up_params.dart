@@ -29,6 +29,7 @@ class SignUpParams {
       'password': password,
       'mobile': mobile,
       'first_name': name,
+      'register_type': 'email',
       if (deviceType != null) 'device_type': deviceType,
       if (googleId != null) 'google_id': googleId,
       if (facebookId != null) 'facebook_id': facebookId,

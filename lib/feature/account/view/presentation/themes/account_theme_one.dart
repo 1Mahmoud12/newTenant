@@ -1,4 +1,3 @@
-import 'package:dobzz_seller/core/component/cache_image.dart';
 import 'package:dobzz_seller/core/network/local/cache.dart';
 import 'package:dobzz_seller/core/services/biometrics/biometric_service.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
@@ -12,7 +11,6 @@ import 'package:dobzz_seller/feature/account/view/helpCenter/presentation/help_c
 import 'package:dobzz_seller/feature/account/view/manager/deleteAccount/cubit/delete_account_cubit.dart';
 import 'package:dobzz_seller/feature/account/view/myDetalis/presentation/manager/editProfile/cubit/edit_profile_cubit.dart';
 import 'package:dobzz_seller/feature/account/view/myDetalis/presentation/my_details_veiw.dart';
-import 'package:dobzz_seller/feature/account/view/notificationSetting/presentation/notification_setting_view.dart';
 import 'package:dobzz_seller/feature/account/view/presentation/language_view.dart';
 import 'package:dobzz_seller/feature/auth/login/view/presentation/login_screen.dart';
 import 'package:dobzz_seller/mainCubit/cubit/main_cubit_cubit.dart';
@@ -145,19 +143,15 @@ class _ProfileViewThemeOneState extends State<ProfileViewThemeOne> {
                             return Row(
                               children: [
                                 Container(
+                                  width: 72,
+                                  height: 72,
                                   decoration: BoxDecoration(
+                                    color: Colors.white.withOpacity(0.2),
+                                    shape: BoxShape.circle,
                                     border: Border.all(color: Colors.white, width: 2),
-                                    borderRadius: BorderRadius.circular(30),
                                   ),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(28),
-                                    child: CacheImage(
-                                      errorColor: Colors.white70,
-                                      height: 72,
-                                      width: 72,
-                                      // circle: true,
-                                      urlImage: loginCacheValue?.data?.image ?? '',
-                                    ),
+                                  child: Center(
+                                    child: _buildUserInitials(loginCacheValue?.data?.name ?? ''),
                                   ),
                                 ),
                                 const SizedBox(width: 16),
@@ -283,14 +277,14 @@ class _ProfileViewThemeOneState extends State<ProfileViewThemeOne> {
                       //   },
                       // ),
                       // _buildDivider(),
-                      _buildMenuItemNew(
-                        icon: AppIcons.notificationIcon,
-                        title: 'Notifications',
-                        subtitle: 'Manage alert preferences',
-                        onTap: () {
-                          context.navigateToPage(const NotificationsSettingsView());
-                        },
-                      ),
+                      // _buildMenuItemNew(
+                      //   icon: AppIcons.notificationIcon,
+                      //   title: 'Notifications',
+                      //   subtitle: 'Manage alert preferences',
+                      //   onTap: () {
+                      //     context.navigateToPage(const NotificationsSettingsView());
+                      //   },
+                      // ),
 
                       _buildDivider(),
 
@@ -302,20 +296,20 @@ class _ProfileViewThemeOneState extends State<ProfileViewThemeOne> {
                           context.navigateToPage(const LanguageView());
                         },
                       ),
-                      if (loginCacheValue?.data?.email != Constants.demoAccount) ...[
-                        _buildDivider(),
-                        _buildMenuItemNew(
-                          icon: AppIcons.bioMetricIc,
-                          title: 'sing_in_by_biometric',
-                          subtitle: 'manage_your_fingerprint',
-                          onTap: bioMetricsMethod,
-                          trailing: SafeCustomToggleSwitch(
-                            isEnabled: _biometricEnabled,
-                            onToggle: bioMetricsMethod,
-                            isDisabled: !_biometricSupported,
-                          ),
-                        ),
-                      ],
+                      // if (loginCacheValue?.data?.email != Constants.demoAccount) ...[
+                      //   _buildDivider(),
+                      //   _buildMenuItemNew(
+                      //     icon: AppIcons.bioMetricIc,
+                      //     title: 'sing_in_by_biometric',
+                      //     subtitle: 'manage_your_fingerprint',
+                      //     onTap: bioMetricsMethod,
+                      //     trailing: SafeCustomToggleSwitch(
+                      //       isEnabled: _biometricEnabled,
+                      //       onToggle: bioMetricsMethod,
+                      //       isDisabled: !_biometricSupported,
+                      //     ),
+                      //   ),
+                      // ],
                     ],
                   ),
                 ),
@@ -564,6 +558,33 @@ class _ProfileViewThemeOneState extends State<ProfileViewThemeOne> {
         color: Colors.grey.withOpacityNew(0.2),
       ),
     );
+  }
+
+  Widget _buildUserInitials(String name) {
+    final initials = _getInitials(name);
+    return initials.isNotEmpty
+        ? Text(
+            initials,
+            style: const TextStyle(
+              fontSize: 32,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          )
+        : const Icon(
+            Icons.person,
+            size: 40,
+            color: Colors.white,
+          );
+  }
+
+  String _getInitials(String name) {
+    if (name.isEmpty) return '';
+    final parts = name.trim().split(' ');
+    if (parts.length >= 2) {
+      return '${parts[0][0]}${parts[1][0]}'.toUpperCase();
+    }
+    return name[0].toUpperCase();
   }
 
   /// Shows a confirmation dialog for logging out

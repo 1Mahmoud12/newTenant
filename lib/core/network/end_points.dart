@@ -1,10 +1,10 @@
 class EndPoints {
   static const tenant = 'stylique';
 
-  static const domain = 'https://togaar.com/api/$tenant';
+  static const domain = 'https://togaar.com';
 
   // static const domain = 'https://kadin.dobzz.com';
-  static const baseUrl = '$domain/';
+  static const baseUrl = '$domain/api/$tenant/';
 
   // Auth
   static const countryCodes = 'Account/CountryCodes';
