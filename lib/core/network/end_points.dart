@@ -30,7 +30,6 @@ class EndPoints {
   static const validateOTPChangePhone = 'Account/ValidateOTPChangePhone';
 
   // Address
-  static const addAddress = 'Address/AddUserAddress';
   static const editAddress = 'Address/EditUserAddress';
   static const deleteUserAddress = 'Address/DeleteUserAddress';
   static const deleteImageAddress = 'Address/DeleteImage';
@@ -122,8 +121,14 @@ class EndPoints {
 
   // address
   static const address = 'address-list';
+  static const addAddress = 'add-address';
+  static const updateAddress = 'update-address';
+  static const deleteAddress = 'delete-address';
   static const state = 'shop/user/states';
   static const cities = '/shop/user/cities';
+  static const countryList = 'country-list';
+  static const stateList = 'state-list';
+  static const cityList = 'city-list';
 
   // Notifications
   static const getNotifications = 'shop/user/notifications/get-all-unread';

@@ -134,6 +134,7 @@ class _LocationSearchFieldState extends State<LocationSearchField> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         CustomTextFormField(
+          validator: (e){},
           outPadding: EdgeInsets.zero,
           controller: _searchController,
           hintText: widget.hintText,

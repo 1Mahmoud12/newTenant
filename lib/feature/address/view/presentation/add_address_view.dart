@@ -8,6 +8,9 @@ import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:dobzz_seller/core/utils/constant_gaping.dart';
 import 'package:dobzz_seller/core/utils/extensions.dart';
 import 'package:dobzz_seller/feature/address/data/models/address_model.dart';
+import 'package:dobzz_seller/feature/address/data/models/address_state_model.dart';
+import 'package:dobzz_seller/feature/address/data/models/country_model.dart';
+import 'package:dobzz_seller/feature/address/data/models/address_city_model.dart';
 import 'package:dobzz_seller/main.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -26,18 +29,16 @@ class AddAddressView extends StatefulWidget {
     this.isUpdate = false,
     this.addressDataModel,
   });
+
   final AddressCubit addressCubit;
   final bool isUpdate;
   final AddressDataModel? addressDataModel;
+
   @override
   State<AddAddressView> createState() => _AddAddressViewState();
 }
 
 class _AddAddressViewState extends State<AddAddressView> {
-  List<DropDownModel> addressList = [
-    DropDownModel(name: 'Asyut', value: 0),
-    DropDownModel(name: 'California', value: 1),
-  ];
   final AddAddressCubit addAddressCubit = AddAddressCubit();
   final formKey = GlobalKey<FormState>();
 
@@ -51,19 +52,37 @@ class _AddAddressViewState extends State<AddAddressView> {
   String _selectedAddress = '';
   bool _showMap = false;
   bool restrictAddLocationFirstTimeUpdated = false;
+
   @override
   void initState() {
     if (widget.isUpdate) {
       logger.d(widget.addressDataModel?.toJson());
-      addAddressCubit.nameController.text = widget.addressDataModel?.name ?? 'unKnow address';
-      addAddressCubit.addressNicknameController.text = widget.addressDataModel?.address ?? 'unKnow address';
-      addAddressCubit.phoneController.text = widget.addressDataModel?.phone ?? 'unKnow phone number';
+      addAddressCubit.nameController.text =
+          widget.addressDataModel?.title ?? 'unKnow address';
+      addAddressCubit.addressNicknameController.text =
+          widget.addressDataModel?.address ?? 'unKnow address';
+      addAddressCubit.phoneController.text =
+          widget.addressDataModel?.phone ?? 'unKnow phone number';
+      addAddressCubit.postCodeController.text =
+          widget.addressDataModel?.postcode.toString() ?? '';
       addAddressCubit.stateId = widget.addressDataModel?.stateId ?? -1;
-      addAddressCubit.stateName.text = widget.addressDataModel?.state ?? '';
-      addAddressCubit.city.text = widget.addressDataModel?.city ?? '';
+      addAddressCubit.stateName.text = widget.addressDataModel?.stateName ?? '';
+      addAddressCubit.city.text = widget.addressDataModel?.cityName ?? '';
       addAddressCubit.cityId = widget.addressDataModel?.cityId ?? -1;
-      addAddressCubit.isDefault = widget.addressDataModel?.isDefault ?? false;
+      addAddressCubit.countryId = widget.addressDataModel?.countryId ?? -1;
+      addAddressCubit.countryController.text =
+          widget.addressDataModel?.countryName ?? '';
+      addAddressCubit.isDefault =
+          widget.addressDataModel?.defaultAddress == 1 ?? false;
+
+      if (addAddressCubit.countryId != -1) {
+        addAddressCubit.getStates(addAddressCubit.countryId);
+      }
+      if (addAddressCubit.stateId != -1) {
+        addAddressCubit.getCities(addAddressCubit.stateId);
+      }
     }
+    addAddressCubit.getCountries();
     Future.delayed(const Duration(seconds: 1), () {
       setState(() {
         restrictAddLocationFirstTimeUpdated = true;
@@ -74,10 +93,13 @@ class _AddAddressViewState extends State<AddAddressView> {
 
   StateCubit stateCubit = StateCubit();
   CityCubit cityCubit = CityCubit();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: customAppBar(context: context, title: widget.isUpdate ? 'update_address'.tr() : 'new_address'.tr()),
+      appBar: customAppBar(
+          context: context,
+          title: widget.isUpdate ? 'update_address'.tr() : 'new_address'.tr()),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -110,134 +132,6 @@ class _AddAddressViewState extends State<AddAddressView> {
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                h10,
-
-                // Phone Number Field
-                Text(
-                  '${'phone_number'.tr()} *',
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                h5,
-                PhoneNumberField(
-                  controller: addAddressCubit.phoneController,
-                  outPadding: EdgeInsets.zero,
-                ),
-
-                h10,
-
-                // Location Selection Section
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'select_location'.tr(),
-                      style: const TextStyle(
-                        color: Colors.black,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    CustomTextButton(
-                      isExpanded: false,
-                      backgroundColor: AppColors.primaryColor,
-                      borderColor: AppColors.transparent,
-                      onPress: () {
-                        setState(() {
-                          _showMap = !_showMap;
-                        });
-                      },
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Icon(
-                            _showMap ? Icons.map : Icons.location_on,
-                            color: Colors.white,
-                            size: 16,
-                          ),
-                          const SizedBox(width: 4),
-                          Text(
-                            _showMap ? 'hide_map'.tr() : 'select_on_map'.tr(),
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                h10,
-
-                // Selected location display
-                if (_selectedAddress.isNotEmpty)
-                  Container(
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: AppColors.primaryColor.withOpacityNew(0.1),
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(
-                        color: AppColors.primaryColor.withOpacityNew(0.3),
-                      ),
-                    ),
-                    child: Row(
-                      children: [
-                        const Icon(
-                          Icons.location_on,
-                          color: AppColors.primaryColor,
-                          size: 20,
-                        ),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: Text(
-                            _selectedAddress,
-                            style: const TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                // Map widget
-                h10,
-                LocationPickerMap(
-                  height: 300,
-                  showMap: _showMap,
-                  onLocationSelected: (
-                    LatLng position,
-                    String address, {
-                    String? city,
-                    String? state,
-                  }) {
-                    if (restrictAddLocationFirstTimeUpdated) {
-                      setState(() {
-                        addAddressCubit.selectedLocation = position;
-                        _selectedAddress = address;
-                      });
-
-                      // Update the address details field with the selected location
-                      addAddressCubit.addressNicknameController.text = address;
-
-                      // Update city and state fields if available
-                      if (city != null && city.isNotEmpty) {
-                        addAddressCubit.city.text = city;
-                      }
-                      if (state != null && state.isNotEmpty) {
-                        addAddressCubit.stateName.text = state;
-                      }
-                    }
-                  },
-                  searchHint: 'search_for_your_location'.tr(),
-                ),
 
                 h10,
 
@@ -263,7 +157,8 @@ class _AddAddressViewState extends State<AddAddressView> {
                         const SizedBox(width: 8),
                         Expanded(
                           child: Text(
-                            'city_and_state_will_be_automatically_filled_when_you_select_a_location_on_the_map'.tr(),
+                            'city_and_state_will_be_automatically_filled_when_you_select_a_location_on_the_map'
+                                .tr(),
                             style: const TextStyle(
                               fontSize: 12,
                               color: AppColors.primaryColor,
@@ -274,49 +169,126 @@ class _AddAddressViewState extends State<AddAddressView> {
                       ],
                     ),
                   ),
-
-                CustomTextFormField(
-                  outPadding: EdgeInsets.zero,
-                  controller: addAddressCubit.stateName,
-                  hintText: 'enter_state_name'.tr(),
-                  maxLines: 1,
-                  nameField: '${'state_name'.tr()} *',
-                  fontSizeHintText: 12,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'state_name_is_required'.tr();
-                    }
-                    return null;
+                BlocBuilder<AddAddressCubit, AddAddressState>(
+                  bloc: addAddressCubit,
+                  builder: (context, state) {
+                    return CustomDropDownMenu(
+                      items: addAddressCubit.countries
+                          .map((e) => DropDownModel(
+                              name: e.name ?? '', value: e.id ?? -1))
+                          .toList(),
+                      selectedItem: addAddressCubit.countryId != -1
+                          ? DropDownModel(
+                              name: addAddressCubit.countries
+                                      .firstWhere(
+                                          (element) =>
+                                              element.id ==
+                                              addAddressCubit.countryId,
+                                          orElse: () => CountryModel(
+                                              name: addAddressCubit
+                                                  .countryController.text,
+                                              id: addAddressCubit.countryId))
+                                      .name ??
+                                  'select_country'.tr(),
+                              value: addAddressCubit.countryId)
+                          : DropDownModel(
+                              name: 'select_country'.tr(), value: -1),
+                      nameField: 'country_name',
+                      onChanged: (value) {
+                        if (value != null && value.value != -1) {
+                          addAddressCubit.countryId = value.value;
+                          addAddressCubit.countryController.text = value.name;
+                          addAddressCubit.getStates(value.value);
+                          // Clear state and city when country changes
+                          addAddressCubit.stateId = -1;
+                          addAddressCubit.stateName.text = '';
+                          addAddressCubit.states = [];
+                          addAddressCubit.cityId = -1;
+                          addAddressCubit.city.text = '';
+                          addAddressCubit.cities = [];
+                          setState(() {});
+                        }
+                      },
+                      width: 1, // Full width effectively
+                    );
                   },
-                  suffixIcon: addAddressCubit.stateName.text.isNotEmpty
-                      ? const Icon(
-                          Icons.check_circle,
-                          color: Colors.green,
-                          size: 20,
-                        )
-                      : null,
                 ),
                 h10,
-                CustomTextFormField(
-                  outPadding: EdgeInsets.zero,
-                  controller: addAddressCubit.city,
-                  hintText: 'enter_city_name'.tr(),
-                  maxLines: 1,
-                  nameField: '${'city_name'.tr()} *',
-                  fontSizeHintText: 12,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'city_name_is_required'.tr();
-                    }
-                    return null;
+                BlocBuilder<AddAddressCubit, AddAddressState>(
+                  bloc: addAddressCubit,
+                  builder: (context, state) {
+                    return CustomDropDownMenu(
+                      items: addAddressCubit.states
+                          .map((e) => DropDownModel(
+                              name: e.name ?? '', value: e.id ?? -1))
+                          .toList(),
+                      selectedItem: addAddressCubit.stateId != -1
+                          ? DropDownModel(
+                              name: addAddressCubit.states
+                                      .firstWhere(
+                                          (element) =>
+                                              element.id ==
+                                              addAddressCubit.stateId,
+                                          orElse: () => AddressStateModel(
+                                              name: addAddressCubit
+                                                  .stateName.text,
+                                              id: addAddressCubit.stateId))
+                                      .name ??
+                                  'select_state_name'.tr(),
+                              value: addAddressCubit.stateId)
+                          : DropDownModel(
+                              name: 'select_state_name'.tr(), value: -1),
+                      nameField: 'state_name',
+                      onChanged: (value) {
+                        if (value != null && value.value != -1) {
+                          addAddressCubit.stateId = value.value;
+                          addAddressCubit.stateName.text = value.name;
+                          addAddressCubit.getCities(value.value);
+                          // Clear city when state changes
+                          addAddressCubit.cityId = -1;
+                          addAddressCubit.city.text = '';
+                          setState(() {});
+                        }
+                      },
+                      width: 1,
+                    );
                   },
-                  suffixIcon: addAddressCubit.city.text.isNotEmpty
-                      ? const Icon(
-                          Icons.check_circle,
-                          color: Colors.green,
-                          size: 20,
-                        )
-                      : null,
+                ),
+                h10,
+                BlocBuilder<AddAddressCubit, AddAddressState>(
+                  bloc: addAddressCubit,
+                  builder: (context, state) {
+                    return CustomDropDownMenu(
+                      items: addAddressCubit.cities
+                          .map((e) => DropDownModel(
+                              name: e.name ?? '', value: e.id ?? -1))
+                          .toList(),
+                      selectedItem: addAddressCubit.cityId != -1
+                          ? DropDownModel(
+                              name: addAddressCubit.cities
+                                      .firstWhere(
+                                          (element) =>
+                                              element.id ==
+                                              addAddressCubit.cityId,
+                                          orElse: () => AddressCityModel(
+                                              name: addAddressCubit.city.text,
+                                              id: addAddressCubit.cityId))
+                                      .name ??
+                                  'select_city_name'.tr(),
+                              value: addAddressCubit.cityId)
+                          : DropDownModel(
+                              name: 'select_city_name'.tr(), value: -1),
+                      nameField: 'city_name',
+                      onChanged: (value) {
+                        if (value != null && value.value != -1) {
+                          addAddressCubit.cityId = value.value;
+                          addAddressCubit.city.text = value.name;
+                          setState(() {});
+                        }
+                      },
+                      width: 1,
+                    );
+                  },
                 ),
                 h10,
                 CustomTextFormField(
@@ -334,7 +306,22 @@ class _AddAddressViewState extends State<AddAddressView> {
                   },
                 ),
                 h10,
-
+                CustomTextFormField(
+                  outPadding: EdgeInsets.zero,
+                  controller: addAddressCubit.postCodeController,
+                  textInputType: TextInputType.number,
+                  hintText: 'enter_post_code'.tr(),
+                  maxLines: 1,
+                  nameField: '${'post_code'.tr()} *',
+                  fontSizeHintText: 12,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'post_code_is_required'.tr();
+                    }
+                    return null;
+                  },
+                ),
+                h10,
                 LabeledCheckButton(
                   initialValue: addAddressCubit.isDefault,
                   onChanged: (value) {
@@ -347,10 +334,12 @@ class _AddAddressViewState extends State<AddAddressView> {
                   child: BlocBuilder<AddAddressCubit, AddAddressState>(
                     builder: (context, state) {
                       return CustomTextButton(
-                        state: state is UpdateAddressLoading,
+                        state: state is UpdateAddressLoading ||
+                            state is AddAddressLoading,
                         loadingColor: Colors.white,
                         onPress: () {
-                          if (formKey.currentState!.validate()) {
+                          if (formKey.currentState!.validate() &&
+                              addAddressCubit.validateLocationSelection()) {
                             if (widget.isUpdate) {
                               addAddressCubit.updateAddress(
                                 context: context,
@@ -366,7 +355,8 @@ class _AddAddressViewState extends State<AddAddressView> {
                           }
                         },
                         borderRadius: 8,
-                        child: state is AddAddressLoading
+                        child: state is UpdateAddressLoading ||
+                                state is AddAddressLoading
                             ? const Center(
                                 child: SizedBox(
                                   height: 20,
@@ -531,7 +521,8 @@ class _LabeledCheckButtonState extends State<LabeledCheckButton> {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
               border: Border.all(
-                color: _isChecked ? AppColors.primaryColor : Colors.grey.shade300,
+                color:
+                    _isChecked ? AppColors.primaryColor : Colors.grey.shade300,
               ),
               color: _isChecked ? AppColors.primaryColor : Colors.white,
             ),

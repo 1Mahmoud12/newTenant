@@ -131,7 +131,7 @@ class _AddressViewState extends State<AddressView> {
             }
             if (state is AddressSuccess) {
               // Check if addresses are empty
-              if (ConstantsModels.addressModel?.data == null || ConstantsModels.addressModel!.data!.isEmpty) {
+              if (ConstantsModels.addressModel?.data?.data == null || ConstantsModels.addressModel!.data!.data!.isEmpty) {
                 return _buildEmptyAddressState();
               }
 
@@ -153,9 +153,9 @@ class _AddressViewState extends State<AddressView> {
                       ListView.builder(
                         physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
-                        itemCount: ConstantsModels.addressModel?.data?.length ?? 0,
+                        itemCount: ConstantsModels.addressModel?.data?.data?.length ?? 0,
                         itemBuilder: (context, index) {
-                          final address = ConstantsModels.addressModel?.data![index];
+                          final address = ConstantsModels.addressModel?.data?.data![index];
                           return Padding(
                             padding: const EdgeInsets.only(bottom: 12.0),
                             child: Container(
@@ -175,13 +175,13 @@ class _AddressViewState extends State<AddressView> {
                                 title: Row(
                                   children: [
                                     Text(
-                                      address?.name ?? '',
+                                      address?.title ?? '',
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: Constants.tablet ? 16 : 16.sp,
                                       ),
                                     ),
-                                    if (address?.isDefault ?? false) ...[
+                                    if (address?.defaultAddress == 1) ...[
                                       const SizedBox(width: 8),
                                       Container(
                                         margin: const EdgeInsets.only(left: 8),
@@ -191,7 +191,7 @@ class _AddressViewState extends State<AddressView> {
                                           borderRadius: BorderRadius.circular(4),
                                         ),
                                         child: Text(
-                                          address?.isDefault ?? false ? 'Default'.tr() : '',
+                                          address?.defaultAddress == 1 ? 'Default'.tr() : '',
                                           style: const TextStyle(
                                             fontSize: 12,
                                             color: Colors.grey,
@@ -215,7 +215,7 @@ class _AddressViewState extends State<AddressView> {
                                           const SizedBox(width: 4),
                                           Expanded(
                                             child: Text(
-                                              '${address?.country ?? ''} - ${address?.state ?? ''} - ${address?.city ?? ''} - ${address?.pinCode ?? ''}',
+                                              '${address?.countryName ?? ''} - ${address?.stateName ?? ''} - ${address?.cityName ?? ''} - ${address?.postcode ?? ''}',
                                               style: TextStyle(
                                                 color: Colors.grey.shade600,
                                                 fontSize: 14,
