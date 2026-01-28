@@ -25,7 +25,7 @@ class AppColors {
   static const scaffoldBackGround = white;
   static const cSecondScaffoldBackGround = Color(0xffF6F6F6);
   //static const primaryColor = Color(0xffebb4bd);
-  static const primaryColor = Color(0xff2D466D);
+  static const primaryColor = Color(0xff086B83);
   static const secondPrimaryColor = Color(0xffC9EDFF);
   static const cYellowColor = Color(0xffFFD542);
   static const cBackGroundColor = Color(0xffF6F6F6);

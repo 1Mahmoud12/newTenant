@@ -88,7 +88,7 @@ class _HomePageViewState extends State<HomePageView> {
                   ),
                 ),
                 h10,
-                const HomeSlider(),
+                //const HomeSlider(),
                 h10,
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),

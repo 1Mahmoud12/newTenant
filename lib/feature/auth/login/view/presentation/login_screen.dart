@@ -2,7 +2,6 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:dobzz_seller/core/component/buttons/custom_text_button.dart';
-import 'package:dobzz_seller/core/component/phone_number_field.dart';
 import 'package:dobzz_seller/core/services/biometrics/biometric_service.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:dobzz_seller/core/utils/app_icons.dart';
@@ -200,41 +199,41 @@ class _LoginScreenState extends State<LoginScreen> {
                         const SizedBox(
                           width: 10,
                         ),
-                        Expanded(
-                          child: CustomTextButton(
-                            borderRadius: 8,
-                            backgroundColor: AppColors.primaryColor,
-                            padding: const EdgeInsets.symmetric(vertical: 14.5),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    'guest'.tr(),
-                                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                                          fontWeight: FontWeight.w500,
-                                          color: AppColors.white,
-                                        ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            onPress: () async {
-                              AuthCubit.of(context).countryCode = '+966';
-                              AuthCubit.of(context).loginEmailController.text = '500975853';
-                              AuthCubit.of(context).loginPasswordController.text = '+966500975853';
-
-                              // Call login API
-                              final loginSuccess = await AuthCubit.of(context).login(context);
-
-                              // After successful login, automatically verify with code '1234'
-                              if (loginSuccess && context.mounted) {
-                                AuthCubit.of(context).otpController.text = '1234';
-                                AuthCubit.of(context).verifyCode(context, isLogin: true);
-                              }
-                            },
-                          ),
-                        ),
+                        // Expanded(
+                        //   child: CustomTextButton(
+                        //     borderRadius: 8,
+                        //     backgroundColor: AppColors.primaryColor,
+                        //     padding: const EdgeInsets.symmetric(vertical: 14.5),
+                        //     child: Row(
+                        //       children: [
+                        //         Expanded(
+                        //           child: Text(
+                        //             'guest'.tr(),
+                        //             style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        //                   fontWeight: FontWeight.w500,
+                        //                   color: AppColors.white,
+                        //                 ),
+                        //             textAlign: TextAlign.center,
+                        //           ),
+                        //         ),
+                        //       ],
+                        //     ),
+                        //     onPress: () async {
+                        //       AuthCubit.of(context).countryCode = '+966';
+                        //       AuthCubit.of(context).loginEmailController.text = '500975853';
+                        //       AuthCubit.of(context).loginPasswordController.text = '+966500975853';
+                        //
+                        //       // Call login API
+                        //       final loginSuccess = await AuthCubit.of(context).login(context);
+                        //
+                        //       // After successful login, automatically verify with code '1234'
+                        //       if (loginSuccess && context.mounted) {
+                        //         AuthCubit.of(context).otpController.text = '1234';
+                        //         AuthCubit.of(context).verifyCode(context, isLogin: true);
+                        //       }
+                        //     },
+                        //   ),
+                        // ),
                         if (_showBiometricButton) ...[
                           const SizedBox(
                             width: 10,

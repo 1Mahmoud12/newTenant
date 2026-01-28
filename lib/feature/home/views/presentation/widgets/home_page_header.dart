@@ -1,13 +1,9 @@
-import 'package:dobzz_seller/core/utils/app_icons.dart';
-import 'package:dobzz_seller/core/utils/constant_gaping.dart';
 import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
-import 'package:dobzz_seller/feature/notification/view/presentation/notification_view.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 
 import '../../../../address/view/manager/address/cubit/address_cubit.dart';
 import '../../../../address/view/presentation/address_view.dart';
@@ -48,34 +44,34 @@ class _HomePageHeaderState extends State<HomePageHeader> {
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                s,
-                InkWell(
-                  onTap: () {
-                    context.navigateToPage(const NotificationsView());
-                  },
-                  child: Stack(
-                    clipBehavior: Clip.none,
-                    children: [
-                      SvgPicture.asset(
-                        AppIcons.notificationIc,
-                        width: 24,
-                        height: 24,
-                      ),
-                      // Positioned(
-                      //   top: 2,
-                      //   right: 2,
-                      //   child: Container(
-                      //     width: 8,
-                      //     height: 8,
-                      //     decoration: const BoxDecoration(
-                      //       color: Colors.red,
-                      //       shape: BoxShape.circle,
-                      //     ),
-                      //   ),
-                      // ),
-                    ],
-                  ),
-                ),
+                // s,
+                // InkWell(
+                //   onTap: () {
+                //     context.navigateToPage(const NotificationsView());
+                //   },
+                //   child: Stack(
+                //     clipBehavior: Clip.none,
+                //     children: [
+                //       SvgPicture.asset(
+                //         AppIcons.notificationIc,
+                //         width: 24,
+                //         height: 24,
+                //       ),
+                //       // Positioned(
+                //       //   top: 2,
+                //       //   right: 2,
+                //       //   child: Container(
+                //       //     width: 8,
+                //       //     height: 8,
+                //       //     decoration: const BoxDecoration(
+                //       //       color: Colors.red,
+                //       //       shape: BoxShape.circle,
+                //       //     ),
+                //       //   ),
+                //       // ),
+                //     ],
+                //   ),
+                // ),
               ],
             ),
             const SizedBox(height: 4),
