@@ -43,7 +43,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
           emit(UpdateProfileError(e: l.errMessage));
         }, (r) async {
           // Reload user data to update cache
-          await getUserData(context: context);
+          // await getUserData(context: context);
 
           Utils.showToast(title: 'Profile updated successfully', state: UtilState.success);
 

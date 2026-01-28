@@ -32,6 +32,7 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
   late String _countryCode;
   late String _phoneHint;
   late int _selectedCountryIndex;
+  AuthCubit? _authCubit; // Cache the cubit reference
 
   void _updatePhoneHint(String countryCode) {
     setState(() {
@@ -51,6 +52,13 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
           _phoneHint = '01xxxxxxxxx';
       }
     });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Safely get and cache the AuthCubit reference
+    _authCubit ??= AuthCubit.of(context);
   }
 
   @override
@@ -75,18 +83,18 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
     // Initialize the phone hint based on the selected country code
     _updatePhoneHint(_countryCode);
 
-    // Update AuthCubit with the initial country code
+    // Update AuthCubit with the initial country code (use cached reference)
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      AuthCubit.of(context).countryCode = _countryCode;
+      if (mounted && _authCubit != null) {
+        _authCubit!.countryCode = _countryCode;
+      }
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final authCubit = AuthCubit.of(context);
-
     return CustomTextFormField(
-      inputFormatters: AuthCubit.of(context).countryCode == '+966'
+      inputFormatters: _authCubit?.countryCode == '+966'
           ? [
               TextInputFormatter.withFunction((oldValue, newValue) {
                 final text = newValue.text;
@@ -143,8 +151,10 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
                   initialCountryIndex: _selectedCountryIndex, // Pass the selected index
                   onCountryChanged: (countryCode) {
                     _updatePhoneHint(countryCode);
-                    authCubit.countryCode = countryCode;
-                    authCubit.loginEmailController.clear();
+                    if (_authCubit != null) {
+                      _authCubit!.countryCode = countryCode;
+                      _authCubit!.loginEmailController.clear();
+                    }
                   },
                 ),
               ),

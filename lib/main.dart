@@ -4,7 +4,6 @@ import 'dart:developer';
 import 'package:device_preview/device_preview.dart';
 import 'package:dobzz_seller/core/utils/bloc_observe.dart';
 import 'package:dobzz_seller/core/utils/constants.dart';
-import 'package:dobzz_seller/feature/auth/data/models/register_model.dart';
 import 'package:dobzz_seller/feature/navigation/view/presentation/navigation_view.dart';
 import 'package:dobzz_seller/feature/splash/view/presentation/splash_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -56,20 +55,20 @@ void main() async {
   locationCacheValue = userCache?.get(locationCacheKey);
   // Load login cache first; if legacy userCache exists, migrate it to loginCache
   loginCacheValue = LoginResponse.fromJson(jsonDecode(await loginCache?.get(loginCacheKey, defaultValue: '{}')));
-  if (loginCacheValue?.data?.token == null || (loginCacheValue?.data?.token?.isEmpty ?? true)) {
-    try {
-      final raw = await loginCache?.get(loginCacheKey, defaultValue: '{}');
-      if (raw != null && (raw as String).isNotEmpty && raw != '{}') {
-        final migrated = LoginResponse.fromJson(jsonDecode(raw));
-        loginCacheValue = migrated;
-        await loginCache?.put(loginCacheKey, jsonEncode(migrated.toJson()));
-        await loginCache?.put(biometricAuthKey, migrated.data?.token ?? '');
-        await loginCache?.put(biometricUserCacheKey, jsonEncode(migrated.toJson()));
-      }
-    } catch (e) {
-      log('migrate userCache to loginCache error: $e');
-    }
-  }
+  // if (loginCacheValue?.data?.token == null || (loginCacheValue?.data?.token?.isEmpty ?? true)) {
+  //   try {
+  //     final raw = await loginCache?.get(loginCacheKey, defaultValue: '{}');
+  //     if (raw != null && (raw as String).isNotEmpty && raw != '{}') {
+  //       final migrated = LoginResponse.fromJson(jsonDecode(raw));
+  //       loginCacheValue = migrated;
+  //       await loginCache?.put(loginCacheKey, jsonEncode(migrated.toJson()));
+  //       await loginCache?.put(biometricAuthKey, migrated.data?.token ?? '');
+  //       await loginCache?.put(biometricUserCacheKey, jsonEncode(migrated.toJson()));
+  //     }
+  //   } catch (e) {
+  //     log('migrate userCache to loginCache error: $e');
+  //   }
+  // }
   log('userCacheValue ==>$loginCacheValue');
   log('userCacheValue.data ==>${loginCacheValue?.data?.toJson()}');
   Constants.token = loginCacheValue?.data?.token ?? '';

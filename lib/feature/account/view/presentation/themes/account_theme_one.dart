@@ -151,7 +151,7 @@ class _ProfileViewThemeOneState extends State<ProfileViewThemeOne> {
                                     border: Border.all(color: Colors.white, width: 2),
                                   ),
                                   child: Center(
-                                    child: _buildUserInitials(loginCacheValue?.data?.name ?? ''),
+                                    child: _buildUserInitials(loginCacheValue?.data?.firstName ?? ''),
                                   ),
                                 ),
                                 const SizedBox(width: 16),
@@ -160,7 +160,7 @@ class _ProfileViewThemeOneState extends State<ProfileViewThemeOne> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        loginCacheValue?.data?.name ?? 'Unknown'.tr(),
+                                        loginCacheValue?.data?.firstName ?? 'Unknown'.tr(),
                                         style: const TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 22,

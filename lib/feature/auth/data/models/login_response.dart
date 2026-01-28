@@ -35,12 +35,12 @@ class LoginResponse {
 
 class UserData {
   final int id;
-  final String firstName;
+  String firstName;
   final String? lastName;
   final String image;
   final String name;
   final String email;
-  final String mobile;
+  String mobile;
   final String companyName;
   final String countryId;
   final String stateId;

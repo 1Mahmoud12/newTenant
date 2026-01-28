@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dobzz_seller/core/component/buttons/custom_text_button.dart';
 import 'package:dobzz_seller/core/component/custom_app_bar.dart';
 import 'package:dobzz_seller/core/component/fields/custom_text_form_field.dart';
@@ -60,6 +62,10 @@ class _MyDetailsViewState extends State<MyDetailsView> {
         name: _firstNameController.text,
         phone: _phoneController.text,
       );
+      loginCacheValue?.data?.firstName = _firstNameController.text;
+      loginCacheValue?.data?.mobile = _phoneController.text;
+      await loginCache?.put(loginCacheKey, jsonEncode(loginCacheValue?.toJson()));
+
       context.navigateToPage(
         const NavigationViewWithThemes(
           initialIndex: 3,

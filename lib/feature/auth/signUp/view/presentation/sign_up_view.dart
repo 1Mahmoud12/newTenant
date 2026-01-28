@@ -10,14 +10,11 @@ import 'package:dobzz_seller/core/utils/utils.dart';
 import 'package:dobzz_seller/feature/auth/login/view/presentation/login_screen.dart';
 import 'package:dobzz_seller/feature/auth/manager/authBloc/auth_cubit.dart';
 import 'package:dobzz_seller/feature/auth/manager/authBloc/auth_state.dart';
-import 'package:dobzz_seller/feature/auth/verifyCode/view/presentation/verify_code_view.dart';
 import 'package:dobzz_seller/feature/auth/widgets/authRich_text_link.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../../../navigation/view/presentation/navigation_view.dart';
 
 class SignUpView extends StatefulWidget {
   const SignUpView({super.key});
@@ -35,9 +32,14 @@ class _SignUpViewState extends State<SignUpView> {
   void initState() {
     super.initState();
     authCubit = AuthCubit.of(context);
-    authCubit.emailController.clear();
-    authCubit.passwordController.clear();
-    authCubit.confirmPasswordController.clear();
+
+    // Defer controller operations until after build completes
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      authCubit.nameController.clear();
+      authCubit.emailController.clear();
+      authCubit.passwordController.clear();
+      authCubit.confirmPasswordController.clear();
+    });
   }
 
   // Email validation
@@ -102,8 +104,8 @@ class _SignUpViewState extends State<SignUpView> {
                 Text(
                   'Create an account'.tr(),
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    color: AppColors.black,
-                  ),
+                        color: AppColors.black,
+                      ),
                 ),
                 const SizedBox(height: 10),
                 Form(
@@ -126,7 +128,10 @@ class _SignUpViewState extends State<SignUpView> {
                         password: false,
                         validator: validateEmail,
                       ),
-                      PhoneNumberField(controller: authCubit.phoneController,outPadding: EdgeInsets.zero,),
+                      PhoneNumberField(
+                        controller: authCubit.phoneController,
+                        outPadding: EdgeInsets.zero,
+                      ),
                       CustomTextFormField(
                         outPadding: EdgeInsets.zero,
                         controller: authCubit.passwordController,
@@ -187,8 +192,7 @@ class _SignUpViewState extends State<SignUpView> {
                 BlocConsumer<AuthCubit, AuthState>(
                   listener: (context, state) {
                     if (state is AuthSignUpSuccessState) {
-                        context.navigateToPage(const NavigationViewWithThemes());
-
+                      context.navigateToPage(const LoginScreen());
                     }
                   },
                   builder: (context, state) {
