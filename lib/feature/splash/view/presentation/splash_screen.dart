@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'package:dobzz_seller/core/network/local/cache.dart';
+import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:dobzz_seller/core/utils/app_images.dart';
 import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:dobzz_seller/core/utils/extensions.dart';
@@ -76,7 +77,7 @@ class _SplashScreenState extends State<SplashScreen> {
     Constants.currentLanguage = context.locale.languageCode;
     Utils.buildSetSystemUIOverlayStyle();
     return Scaffold(
-      backgroundColor: const Color(0xfffff5f7),
+      backgroundColor: AppColors.secondPrimaryColor,
       body: Stack(
         // mainAxisAlignment: MainAxisAlignment.center,
         children: [
