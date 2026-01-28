@@ -22,10 +22,10 @@ class CartItemsCubit extends Cubit<CartItemsState> {
           if (isClosed) return;
           emit(CartItemsError(e: l.errMessage));
         }, (r) async {
-          log('cart items: ${r.data?.length}');
+          log('cart items: ${r.data?.productList?.length}');
           ConstantsModels.cartItemModel = r;
-          Constants.cartItems = r.data?.length ?? 0;
-          log('Cart items list: ${ConstantsModels.cartItemModel?.data?.length}');
+          Constants.cartItems = r.data?.productList?.length ?? 0;
+          log('Cart items list: ${ConstantsModels.cartItemModel?.data?.productList?.length}');
           if (isClosed) return;
           emit(CartItemsSuccess());
         });

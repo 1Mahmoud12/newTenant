@@ -11,10 +11,10 @@ class AddToCartCubit extends Cubit<AddToCartState> {
   AddToCartCubit() : super(AddToCartInitial());
   int quantity = 1;
 
-  Future<void> addToCart({required BuildContext context, required String sku, String? sizeCode, int? quantity}) async {
+  Future<void> addToCart({required BuildContext context, required int productId, required int variantId, int? quantity}) async {
     if (isClosed) return;
     emit(AddToCartLoading());
-    await AddToCartDataSource.addToCart(sku: sku, quantity: quantity ?? this.quantity, sizeCode: sizeCode).then(
+    await AddToCartDataSource.addToCart(productId:productId, quantity: quantity ?? this.quantity, variantId: variantId).then(
       (value) async {
         value.fold((l) {
           if (isClosed) return;
@@ -34,10 +34,10 @@ class AddToCartCubit extends Cubit<AddToCartState> {
     );
   }
 
-  Future<void> updateCartItem({required BuildContext context, required int cartItemId, required int quantity}) async {
+  Future<void> updateCartItem({required BuildContext context, required int cartItemId, required int quantity, required bool? isIncrease, required int variantId}) async {
     if (isClosed) return;
     emit(AddToCartLoading());
-    await AddToCartDataSource.updateCartItem(cartItemId: cartItemId, quantity: quantity).then(
+    await AddToCartDataSource.updateCartItem(cartItemId: cartItemId, quantity: quantity, isIncrease: isIncrease, variantId: variantId).then(
       (value) async {
         value.fold(
           (l) {

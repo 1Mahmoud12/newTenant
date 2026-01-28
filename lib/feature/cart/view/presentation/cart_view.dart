@@ -51,23 +51,25 @@ class _CartViewState extends State<CartView> {
 
   // Handle add quantity with loading indicator
 // Handle add quantity with loading indicator
-  void onAdd(CartItemData item) async {
-    final itemId = item.id ?? -1;
+  void onAdd(CartProduct item) async {
+    final itemId = item.productId ?? -1;
     if (itemId == -1 || loadingItems[itemId] == true) return;
-    if (item.quantity! >= item.availableQuantity!) {
-      Utils.showToast(title: '${'Maximum quantity is'.tr()} ${item.availableQuantity!}', state: UtilState.error);
-      return;
-    }
-    setState(() {
-      item.quantity = (item.quantity ?? 0) + 1; // Fixed parentheses
-    });
+    // if (item.qty! >= item.availableQuantity!) {
+    //   Utils.showToast(title: '${'Maximum quantity is'.tr()} ${item.availableQuantity!}', state: UtilState.error);
+    //   return;
+    // }
+    // setState(() {
+    //   item.qty = (item.qty ?? 0) + 1; // Fixed parentheses
+    // });
 
     // Rest of your method remains the same
     try {
       await addToCartCubit.updateCartItem(
+        isIncrease: true,
         context: context,
         cartItemId: itemId,
-        quantity: item.quantity ?? 0, // Use the updated quantity
+        quantity: item.qty ?? 0, // Use the updated quantity
+        variantId: item.variantId ?? 0,
       );
 
       // Refresh checkout details and cart items from server
@@ -88,20 +90,22 @@ class _CartViewState extends State<CartView> {
   }
 
 // Handle remove quantity with loading indicator
-  void onRemove(CartItemData item) async {
-    final itemId = item.id ?? -1;
-    if (itemId == -1 || loadingItems[itemId] == true || (item.quantity ?? 0) <= 1) return;
+  void onRemove(CartProduct item) async {
+    final itemId = item.productId ?? -1;
+    if (itemId == -1 || loadingItems[itemId] == true || (item.qty ?? 0) <= 1) return;
 
-    setState(() {
-      item.quantity = (item.quantity ?? 0) - 1; // Fixed parentheses
-    });
+    // setState(() {
+    //   item.qty = (item.qty ?? 0) - 1; // Fixed parentheses
+    // });
 
     // Rest of your method is the same
     try {
       await addToCartCubit.updateCartItem(
+        isIncrease: false,
         context: context,
         cartItemId: itemId,
-        quantity: item.quantity ?? 0, // Use the updated quantity
+        quantity: item.qty ?? 0, // Use the updated quantity
+        variantId: item.variantId ?? 0,
       );
 
       if (mounted) {
@@ -121,23 +125,29 @@ class _CartViewState extends State<CartView> {
   }
 
   // Handle item delete with loading indicator
-  void onDelete(CartItemData item) async {
-    final itemId = item.id ?? -1;
+  void onDelete(CartProduct item) async {
+    final itemId = item.productId ?? -1;
     if (itemId == -1 || loadingItems[itemId] == true) return;
 
     // Set this item as loading
-    setState(() {
-      loadingItems[itemId] = true;
-    });
+    // setState(() {
+    //   loadingItems[itemId] = true;
+    // });
 
     try {
       // Send the delete request to the server
-      await deleteFromCartCubit.deleteFromCart(context: context, itemId: itemId);
+      await addToCartCubit.updateCartItem(
+        isIncrease: null,
+        context: context,
+        cartItemId: itemId,
+        quantity: item.qty ?? 0, // Use the updated quantity
+        variantId: item.variantId ?? 0,
+      );
 
       // Immediately remove the item from the local list
       setState(() {
         if (ConstantsModels.cartItemModel?.data != null) {
-          ConstantsModels.cartItemModel!.data!.removeWhere((element) => element.id == itemId);
+          ConstantsModels.cartItemModel!.data!.productList!.removeWhere((element) => element.cartId == itemId);
           CartItemsCubit.of(context).removeCartItems();
         }
       });
@@ -172,19 +182,28 @@ class _CartViewState extends State<CartView> {
       ],
       child: BlocBuilder<CartItemsCubit, CartItemsState>(
         builder: (context, state) {
-          return Scaffold(
-            persistentFooterButtons: ConstantsModels.cartItemModel != null &&
-                    ConstantsModels.cartItemModel?.data != null &&
-                    ConstantsModels.cartItemModel!.data!.isNotEmpty
-                ? [
-                    GoToCheckOutButton(
+          return BlocListener<AddToCartCubit, AddToCartState>(
+            listener: (context, state) {
+              if(state is AddToCartSuccess){
+                _loadCartItems();
+              }
+            },
+            child: Scaffold(
+              persistentFooterButtons: ConstantsModels.cartItemModel != null &&
+                      ConstantsModels.cartItemModel?.data != null &&
+                      ConstantsModels.cartItemModel!.data!.productList != null &&
+                      ConstantsModels.cartItemModel!.data!.productList!.isNotEmpty
+                  ? [
+                      GoToCheckOutButton(
                       checkoutDetailsCubit: checkoutDetailsCubit,
+                      totalPrice: ConstantsModels.cartItemModel?.data?.subTotal?.toString() ?? '0',
                     ),
                   ]
                 : null,
             appBar: customAppBar(context: context, title: 'Cart'.tr()),
             body: _buildCartBody(state),
-          );
+          ),
+);
         },
       ),
     );
@@ -207,7 +226,7 @@ class _CartViewState extends State<CartView> {
         ),
       );
     } else if (state is CartItemsSuccess || ConstantsModels.cartItemModel?.data != null) {
-      final cartItems = ConstantsModels.cartItemModel?.data ?? [];
+      final cartItems = ConstantsModels.cartItemModel?.data?.productList ?? [];
 
       if (cartItems.isEmpty) {
         return EmptyWidget(
@@ -248,7 +267,9 @@ class GoToCheckOutButton extends StatelessWidget {
   const GoToCheckOutButton({
     super.key,
     required this.checkoutDetailsCubit,
+    required this.totalPrice,
   });
+  final String totalPrice;
 
   final CheckoutDetailsCubit checkoutDetailsCubit;
 
@@ -262,7 +283,7 @@ class GoToCheckOutButton extends StatelessWidget {
             builder: (context, state) {
               return CheckOutItem(
                 label: 'Sub-total'.tr(),
-                value: ConstantsModels.checkoutDetailsModel?.subTotalPrice.toString() ?? '0',
+                value: totalPrice ?? '0',
               );
             },
           ),
@@ -274,13 +295,13 @@ class GoToCheckOutButton extends StatelessWidget {
           CustomTextButton(
             borderRadius: 8,
             onPress: () {
-              final items = ConstantsModels.cartItemModel?.data ?? [];
+              final items = ConstantsModels.cartItemModel?.data?.productList ?? [];
               if (items.isNotEmpty) {
                 for (final element in items) {
-                  if ((element.quantity ?? 0) > (element.availableQuantity ?? 0)) {
-                    Utils.showToast(title: '${'you_must_request_a_little_amount_from_'.tr()} ${element.product}', state: UtilState.error);
-                    return;
-                  }
+                  // if ((element.qty ?? 0) > (element.availableQuantity ?? 0)) {
+                  //   Utils.showToast(title: '${'you_must_request_a_little_amount_from_'.tr()} ${element.product}', state: UtilState.error);
+                  //   return;
+                  // }
                 }
                 context.navigateToPage(const CheckoutView());
               }
@@ -371,7 +392,7 @@ class CartItem {
 }
 
 class CartItemWidget extends StatelessWidget {
-  final CartItemData cartItem;
+  final CartProduct cartItem;
   final VoidCallback onRemove;
   final VoidCallback onAdd;
   final VoidCallback onDelete;
@@ -400,7 +421,7 @@ class CartItemWidget extends StatelessWidget {
         child: Row(
           children: [
             CacheImage(
-              urlImage: cartItem.productImagePath,
+              urlImage: cartItem.image,
               errorColor: Colors.grey,
               width: 100,
               height: 100,
@@ -415,7 +436,7 @@ class CartItemWidget extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          cartItem.product ?? '',
+                          cartItem.name ?? '',
                           style: TextStyle(
                             fontSize: Constants.tablet ? 12 : 12.sp,
                             fontWeight: FontWeight.w600,
@@ -445,21 +466,21 @@ class CartItemWidget extends StatelessWidget {
                       ),
                     ],
                   ),
-                  if (cartItem.size != null)
+                  if (cartItem.variantName != null)
                     Text(
-                      '${'Size'.tr()} ${cartItem.size}',
+                      '${'Size'.tr()} ${cartItem.variantName}',
                       style: TextStyle(fontWeight: FontWeight.w500, fontSize: Constants.tablet ? 14 : 14.sp, color: Colors.grey),
                     )
                   else
                     const SizedBox(
                       height: 10,
                     ),
-                  if (cartItem.availableQuantity != null)
-                    Text(
-                      '${'available_quantity'.tr()} ${cartItem.availableQuantity}',
-                      style: TextStyle(fontWeight: FontWeight.w500, fontSize: Constants.tablet ? 14 : 14.sp, color: Colors.grey),
-                    )
-                  else
+                  // if (cartItem.availableQuantity != null)
+                  //   Text(
+                  //     '${'available_quantity'.tr()} ${cartItem.availableQuantity}',
+                  //     style: TextStyle(fontWeight: FontWeight.w500, fontSize: Constants.tablet ? 14 : 14.sp, color: Colors.grey),
+                  //   )
+                  // else
                     const SizedBox(
                       height: 10,
                     ),
@@ -470,7 +491,7 @@ class CartItemWidget extends StatelessWidget {
                         child: Row(
                           children: [
                             Text(
-                              cartItem.priceForProduct.toString(),
+                              cartItem.finalPrice.toString(),
                               style: TextStyle(
                                 fontSize: Constants.tablet ? 14 : 14.sp,
                                 fontWeight: FontWeight.w600,
@@ -493,7 +514,8 @@ class CartItemWidget extends StatelessWidget {
                           builder: (context, state) {
                             return _QuantityButton(
                               icon: Icons.remove,
-                              onTap: onRemove,
+                              onTap:cartItem.qty! > 1 ? onRemove : null,
+                              cartItem: cartItem,
                               isLoading: state is AddToCartLoading,
                             );
                           },
@@ -505,7 +527,7 @@ class CartItemWidget extends StatelessWidget {
                         child: FittedBox(
                           fit: BoxFit.scaleDown,
                           child: Text(
-                            cartItem.quantity.toString(),
+                            cartItem.qty?.toString() ?? '',
                             style: TextStyle(fontSize: Constants.tablet ? 16 : 16.sp),
                           ),
                         ),
@@ -518,6 +540,7 @@ class CartItemWidget extends StatelessWidget {
                             return _QuantityButton(
                               icon: Icons.add,
                               onTap: onAdd,
+                              cartItem: cartItem,
                               isLoading: state is AddToCartLoading,
                             );
                           },
@@ -537,12 +560,14 @@ class CartItemWidget extends StatelessWidget {
 
 class _QuantityButton extends StatelessWidget {
   final IconData icon;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
   final bool isLoading;
+  final CartProduct cartItem;
 
   const _QuantityButton({
     required this.icon,
     required this.onTap,
+    required this.cartItem,
     this.isLoading = false,
   });
 

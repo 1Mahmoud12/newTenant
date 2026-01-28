@@ -661,7 +661,8 @@ class _PriceAndAddToCartWidgetState extends State<PriceAndAddToCartWidget> {
                       onPress: () async {
                         await widget.addToCartCubit.addToCart(
                           context: context,
-                          sku: widget.variant.skuCode!,
+                          productId: 1,
+                          variantId: widget.variant.id!,
                         );
                       },
                     );
@@ -697,11 +698,11 @@ class _PriceAndAddToCartWidgetState extends State<PriceAndAddToCartWidget> {
                         return;
                       }
                       CartItemsCubit.of(context).addCartItems();
-                      await widget.addToCartCubit.addToCart(
-                        context: context,
-                        sku: widget.variant.skuCode!,
-                        quantity: desiredQty,
-                      );
+                      // await widget.addToCartCubit.addToCart(
+                      //   context: context,
+                      //   sku: widget.variant.skuCode!,
+                      //   quantity: desiredQty,
+                      // );
                     },
                   );
                 },

@@ -25,7 +25,7 @@ class ConstantsModels {
   static ProductModel? topProductModel;
   static ProductModel? bestSellerModel;
   static ProductModel? newArrivalsModel;
-  static CartItemModel? cartItemModel;
+  static CartModel? cartItemModel;
   static WishListModel? wishListModel;
   static RegisterModel? editProfileModel;
   static CategoriesModel? categoriesModel;

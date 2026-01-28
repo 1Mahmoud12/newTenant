@@ -166,8 +166,7 @@ class _ProductCardThemeTwoState extends State<ProductCardThemeTwo> {
                       //customShowToast(context, 'need_edit');
                       CartItemsCubit.of(context).addCartItems();
                       await addToCartCubit.addToCart(
-                        context: context,
-                        sku: widget.skuCode ?? widget.sku.firstOrNull?.skuCode ?? '',
+                        context: context, productId: widget.productId, variantId: widget.sku.firstOrNull?.id ?? 0,
                         //  sizeCode: '',
                       );
                       setState(() {

@@ -76,7 +76,6 @@ class EndPoints {
   static const getOrderHistory = 'Order/GetOrderHistory';
 
   // Cart
-  static const addToCart = 'Order/AddToUserCart';
   static const getUserCart = 'Order/GetUserCart';
   static const deleteFromUserCart = 'Order/DeleteFromUserCart';
   static const orderPaymentMethods = 'Order/OrderPaymentMethods';
@@ -86,7 +85,9 @@ class EndPoints {
   static const addFeedbackList = 'Order/AddFeedbackList';
   static const submitCancellationRequest = 'Order/SubmitCancellationRequest';
   static const getOrderVisitTime = 'Order/GetOrderVisitTime';
-  static const cartItems = 'shop/cart';
+  static const cartItems = 'cart-list';
+  static const addToCart = 'add-cart';
+  static const cartQty = 'cart-qty';
   static const deleteAccount = 'shop/auth/delete-account';
   static const discount = 'shop/checkout/apply-code';
   static const order = 'shop/orders';
