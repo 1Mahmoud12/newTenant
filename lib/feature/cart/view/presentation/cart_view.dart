@@ -22,6 +22,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:skeletonizer/skeletonizer.dart';
+import 'cart_item_skeleton.dart';
 
 class CartView extends StatefulWidget {
   const CartView({super.key});
@@ -58,6 +60,10 @@ class _CartViewState extends State<CartView> {
     //   Utils.showToast(title: '${'Maximum quantity is'.tr()} ${item.availableQuantity!}', state: UtilState.error);
     //   return;
     // }
+
+    setState(() {
+      loadingItems[itemId] = true;
+    });
     // setState(() {
     //   item.qty = (item.qty ?? 0) + 1; // Fixed parentheses
     // });
@@ -78,7 +84,9 @@ class _CartViewState extends State<CartView> {
       }
     } catch (e) {
       if (mounted) {
-        Utils.showToast(title: 'Failed to update quantity. Please try again.', state: UtilState.error);
+        Utils.showToast(
+            title: 'Failed to update quantity. Please try again.',
+            state: UtilState.error);
       }
     } finally {
       if (mounted) {
@@ -92,11 +100,16 @@ class _CartViewState extends State<CartView> {
 // Handle remove quantity with loading indicator
   void onRemove(CartProduct item) async {
     final itemId = item.productId ?? -1;
-    if (itemId == -1 || loadingItems[itemId] == true || (item.qty ?? 0) <= 1) return;
+    if (itemId == -1 || loadingItems[itemId] == true || (item.qty ?? 0) <= 1)
+      return;
 
     // setState(() {
     //   item.qty = (item.qty ?? 0) - 1; // Fixed parentheses
     // });
+
+    setState(() {
+      loadingItems[itemId] = true;
+    });
 
     // Rest of your method is the same
     try {
@@ -113,7 +126,9 @@ class _CartViewState extends State<CartView> {
       }
     } catch (e) {
       if (mounted) {
-        Utils.showToast(title: 'Failed to update quantity. Please try again.', state: UtilState.error);
+        Utils.showToast(
+            title: 'Failed to update quantity. Please try again.',
+            state: UtilState.error);
       }
     } finally {
       if (mounted) {
@@ -130,9 +145,10 @@ class _CartViewState extends State<CartView> {
     if (itemId == -1 || loadingItems[itemId] == true) return;
 
     // Set this item as loading
-    // setState(() {
-    //   loadingItems[itemId] = true;
-    // });
+    // Set this item as loading
+    setState(() {
+      loadingItems[itemId] = true;
+    });
 
     try {
       // Send the delete request to the server
@@ -147,7 +163,8 @@ class _CartViewState extends State<CartView> {
       // Immediately remove the item from the local list
       setState(() {
         if (ConstantsModels.cartItemModel?.data != null) {
-          ConstantsModels.cartItemModel!.data!.productList!.removeWhere((element) => element.cartId == itemId);
+          ConstantsModels.cartItemModel!.data!.productList!
+              .removeWhere((element) => element.cartId == itemId);
           CartItemsCubit.of(context).removeCartItems();
         }
       });
@@ -160,7 +177,9 @@ class _CartViewState extends State<CartView> {
       }
     } catch (e) {
       if (mounted) {
-        Utils.showToast(title: 'Failed to delete item. Please try again.', state: UtilState.error);
+        Utils.showToast(
+            title: 'Failed to delete item. Please try again.',
+            state: UtilState.error);
       }
     } finally {
       // Clear loading state if we're still mounted
@@ -184,26 +203,31 @@ class _CartViewState extends State<CartView> {
         builder: (context, state) {
           return BlocListener<AddToCartCubit, AddToCartState>(
             listener: (context, state) {
-              if(state is AddToCartSuccess){
+              if (state is AddToCartSuccess) {
                 _loadCartItems();
               }
             },
             child: Scaffold(
               persistentFooterButtons: ConstantsModels.cartItemModel != null &&
                       ConstantsModels.cartItemModel?.data != null &&
-                      ConstantsModels.cartItemModel!.data!.productList != null &&
-                      ConstantsModels.cartItemModel!.data!.productList!.isNotEmpty
+                      ConstantsModels.cartItemModel!.data!.productList !=
+                          null &&
+                      ConstantsModels
+                          .cartItemModel!.data!.productList!.isNotEmpty
                   ? [
                       GoToCheckOutButton(
-                      checkoutDetailsCubit: checkoutDetailsCubit,
-                      totalPrice: ConstantsModels.cartItemModel?.data?.subTotal?.toString() ?? '0',
-                    ),
-                  ]
-                : null,
-            appBar: customAppBar(context: context, title: 'Cart'.tr()),
-            body: _buildCartBody(state),
-          ),
-);
+                        checkoutDetailsCubit: checkoutDetailsCubit,
+                        totalPrice: ConstantsModels
+                                .cartItemModel?.data?.subTotal
+                                ?.toString() ??
+                            '0',
+                      ),
+                    ]
+                  : null,
+              appBar: customAppBar(context: context, title: 'Cart'.tr()),
+              body: _buildCartBody(state),
+            ),
+          );
         },
       ),
     );
@@ -211,7 +235,20 @@ class _CartViewState extends State<CartView> {
 
   Widget _buildCartBody(CartItemsState state) {
     if (state is CartItemsLoading) {
-      return const Center(child: LoadingWidget());
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Skeletonizer(
+          enabled: true,
+          effect: ShimmerEffect(
+            baseColor: Colors.grey[300]!,
+            highlightColor: Colors.grey[100]!,
+          ),
+          child: ListView.builder(
+            itemCount: 3,
+            itemBuilder: (context, index) => const CartItemSkeleton(),
+          ),
+        ),
+      );
     } else if (state is CartItemsError) {
       return Center(
         child: Column(
@@ -225,7 +262,8 @@ class _CartViewState extends State<CartView> {
           ],
         ),
       );
-    } else if (state is CartItemsSuccess || ConstantsModels.cartItemModel?.data != null) {
+    } else if (state is CartItemsSuccess ||
+        ConstantsModels.cartItemModel?.data != null) {
       final cartItems = ConstantsModels.cartItemModel?.data?.productList ?? [];
 
       if (cartItems.isEmpty) {
@@ -249,6 +287,7 @@ class _CartViewState extends State<CartView> {
                   onRemove: () => onRemove(item),
                   onAdd: () => onAdd(item),
                   onDelete: () => onDelete(item),
+                  isLoading: loadingItems[item.productId ?? -1] ?? false,
                 ),
             ],
           ),
@@ -295,7 +334,8 @@ class GoToCheckOutButton extends StatelessWidget {
           CustomTextButton(
             borderRadius: 8,
             onPress: () {
-              final items = ConstantsModels.cartItemModel?.data?.productList ?? [];
+              final items =
+                  ConstantsModels.cartItemModel?.data?.productList ?? [];
               if (items.isNotEmpty) {
                 for (final element in items) {
                   // if ((element.qty ?? 0) > (element.availableQuantity ?? 0)) {
@@ -306,8 +346,10 @@ class GoToCheckOutButton extends StatelessWidget {
                 context.navigateToPage(const CheckoutView());
               }
 
-              if (loginCacheValue?.data?.email== Constants.demoAccount) {
-                Utils.showToast(title: 'This is demo account you can not create order ', state: UtilState.error);
+              if (loginCacheValue?.data?.email == Constants.demoAccount) {
+                Utils.showToast(
+                    title: 'This is demo account you can not create order ',
+                    state: UtilState.error);
               } else {
                 context.navigateToPage(const CheckoutView());
               }
@@ -318,7 +360,10 @@ class GoToCheckOutButton extends StatelessWidget {
                 const Spacer(),
                 Text(
                   'Go To Check out'.tr(),
-                  style: TextStyle(fontSize: Constants.tablet ? 16 : 16.sp, fontWeight: FontWeight.w500, color: Colors.white),
+                  style: TextStyle(
+                      fontSize: Constants.tablet ? 16 : 16.sp,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white),
                 ),
                 w10,
                 const Icon(Icons.arrow_forward, color: Colors.white),
@@ -355,12 +400,16 @@ class CheckOutItem extends StatelessWidget {
         children: [
           Text(
             label,
-            style: TextStyle(fontWeight: FontWeight.w500, fontSize: Constants.tablet ? 16 : 16.sp, color: labelColor ?? Colors.grey.shade400),
+            style: TextStyle(
+                fontWeight: FontWeight.w500,
+                fontSize: Constants.tablet ? 16 : 16.sp,
+                color: labelColor ?? Colors.grey.shade400),
           ),
           const Spacer(),
           Text(
             value,
-            style: TextStyle(fontSize: Constants.tablet ? 16 : 16.sp, color: Colors.black),
+            style: TextStyle(
+                fontSize: Constants.tablet ? 16 : 16.sp, color: Colors.black),
           ),
           w5,
           SvgPicture.asset(
@@ -397,6 +446,7 @@ class CartItemWidget extends StatelessWidget {
   final VoidCallback onAdd;
   final VoidCallback onDelete;
   final AddToCartCubit addToCartCubit;
+  final bool isLoading;
 
   const CartItemWidget({
     super.key,
@@ -405,6 +455,7 @@ class CartItemWidget extends StatelessWidget {
     required this.onAdd,
     required this.onDelete,
     required this.addToCartCubit,
+    this.isLoading = false,
   });
 
   @override
@@ -444,24 +495,19 @@ class CartItemWidget extends StatelessWidget {
                         ),
                       ),
                       w7,
-                      BlocProvider.value(
-                        value: addToCartCubit,
-                        child: BlocBuilder<AddToCartCubit, AddToCartState>(
-                          builder: (context, state) {
-                            return InkWell(
-                              onTap: state is AddToCartLoading ? null : onDelete,
-                              child: Container(
-                                padding: const EdgeInsets.all(5),
-                                decoration:
-                                    BoxDecoration(borderRadius: BorderRadius.circular(8), border: Border.all(color: Colors.red.withOpacityNew(0.2))),
-                                child: Icon(
-                                  Icons.delete_outline,
-                                  color: state is AddToCartLoading ? Colors.grey : Colors.red,
-                                  size: Constants.tablet ? 15 : 15.sp,
-                                ),
-                              ),
-                            );
-                          },
+                      InkWell(
+                        onTap: isLoading ? null : onDelete,
+                        child: Container(
+                          padding: const EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(
+                                  color: Colors.red.withOpacityNew(0.2))),
+                          child: Icon(
+                            Icons.delete_outline,
+                            color: isLoading ? Colors.grey : Colors.red,
+                            size: Constants.tablet ? 15 : 15.sp,
+                          ),
                         ),
                       ),
                     ],
@@ -469,7 +515,10 @@ class CartItemWidget extends StatelessWidget {
                   if (cartItem.variantName != null)
                     Text(
                       '${'Size'.tr()} ${cartItem.variantName}',
-                      style: TextStyle(fontWeight: FontWeight.w500, fontSize: Constants.tablet ? 14 : 14.sp, color: Colors.grey),
+                      style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: Constants.tablet ? 14 : 14.sp,
+                          color: Colors.grey),
                     )
                   else
                     const SizedBox(
@@ -481,9 +530,9 @@ class CartItemWidget extends StatelessWidget {
                   //     style: TextStyle(fontWeight: FontWeight.w500, fontSize: Constants.tablet ? 14 : 14.sp, color: Colors.grey),
                   //   )
                   // else
-                    const SizedBox(
-                      height: 10,
-                    ),
+                  const SizedBox(
+                    height: 10,
+                  ),
                   const SizedBox(height: 8),
                   Row(
                     children: [
@@ -500,7 +549,8 @@ class CartItemWidget extends StatelessWidget {
                             w5,
                             SvgPicture.asset(
                               AppIcons.currency,
-                              colorFilter: const ColorFilter.mode(Colors.black, BlendMode.srcIn),
+                              colorFilter: const ColorFilter.mode(
+                                  Colors.black, BlendMode.srcIn),
                               height: 14,
                               width: 14,
                             ),
@@ -508,18 +558,11 @@ class CartItemWidget extends StatelessWidget {
                         ),
                       ),
                       const Spacer(),
-                      BlocProvider.value(
-                        value: addToCartCubit,
-                        child: BlocBuilder<AddToCartCubit, AddToCartState>(
-                          builder: (context, state) {
-                            return _QuantityButton(
-                              icon: Icons.remove,
-                              onTap:cartItem.qty! > 1 ? onRemove : null,
-                              cartItem: cartItem,
-                              isLoading: state is AddToCartLoading,
-                            );
-                          },
-                        ),
+                      _QuantityButton(
+                        icon: Icons.remove,
+                        onTap: cartItem.qty! > 1 ? onRemove : null,
+                        cartItem: cartItem,
+                        isLoading: isLoading,
                       ),
                       const SizedBox(width: 8),
                       SizedBox(
@@ -528,23 +571,17 @@ class CartItemWidget extends StatelessWidget {
                           fit: BoxFit.scaleDown,
                           child: Text(
                             cartItem.qty?.toString() ?? '',
-                            style: TextStyle(fontSize: Constants.tablet ? 16 : 16.sp),
+                            style: TextStyle(
+                                fontSize: Constants.tablet ? 16 : 16.sp),
                           ),
                         ),
                       ),
                       const SizedBox(width: 8),
-                      BlocProvider.value(
-                        value: addToCartCubit,
-                        child: BlocBuilder<AddToCartCubit, AddToCartState>(
-                          builder: (context, state) {
-                            return _QuantityButton(
-                              icon: Icons.add,
-                              onTap: onAdd,
-                              cartItem: cartItem,
-                              isLoading: state is AddToCartLoading,
-                            );
-                          },
-                        ),
+                      _QuantityButton(
+                        icon: Icons.add,
+                        onTap: onAdd,
+                        cartItem: cartItem,
+                        isLoading: isLoading,
                       ),
                     ],
                   ),
@@ -579,7 +616,8 @@ class _QuantityButton extends StatelessWidget {
         width: 20.w,
         height: 20.h,
         decoration: BoxDecoration(
-          border: Border.all(color: isLoading ? Colors.grey.shade200 : Colors.grey.shade400),
+          border: Border.all(
+              color: isLoading ? Colors.grey.shade200 : Colors.grey.shade400),
           borderRadius: BorderRadius.circular(6.r),
           color: isLoading ? Colors.grey.shade100 : Colors.transparent,
         ),
