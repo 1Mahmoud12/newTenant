@@ -7,14 +7,22 @@ class LoginResponse {
   LoginResponse({
     required this.maxPrice,
     required this.status,
-     this.message,
+    this.message,
     this.data,
   });
 
   factory LoginResponse.fromJson(Map<String, dynamic> json) {
+    dynamic statusData = json['status'];
+    int statusIdx = 0;
+    if (statusData is bool) {
+      statusIdx = statusData ? 1 : 0;
+    } else if (statusData is int) {
+      statusIdx = statusData;
+    }
+
     return LoginResponse(
       maxPrice: json['max_price'] ?? 0,
-      status: json['status'] ?? 0,
+      status: statusIdx,
       message: json['message'],
       data: json['data'] != null ? UserData.fromJson(json['data']) : null,
     );
