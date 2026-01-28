@@ -14,7 +14,7 @@ PreferredSizeWidget customAppBar({
   bool centerTitle = true,
   required BuildContext context,
   void Function()? onPressLeading,
-  Widget? actions,
+  Widget? actions = const SizedBox.shrink(),
   String? title,
   PreferredSizeWidget? bottom,
 }) {
