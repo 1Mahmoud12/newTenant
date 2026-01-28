@@ -47,7 +47,7 @@ class _MyAppState extends State<MyApp> {
           ),
           BlocProvider(
             lazy: false,
-            create: (context) => AuthCubit()..getCountryCode(),
+            create: (context) => AuthCubit(),
           ),
           BlocProvider(
             create: (context) => MainCubitCubit(),
@@ -57,6 +57,7 @@ class _MyAppState extends State<MyApp> {
             create: (context) => CartItemsCubit(),
           ),
           BlocProvider(
+            lazy: false,
             create: (context) => WishListCubit()..getWishList(context: context),
           ),
           // BlocProvider(

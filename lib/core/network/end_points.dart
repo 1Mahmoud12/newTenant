@@ -44,12 +44,12 @@ class EndPoints {
   static const getAdvertises = 'Advertise/GetAdvertises';
   static const getTopProduct = 'shop/top-products';
   static const search = 'shop/products';
-  static const bestSeller = 'shop/best-seller';
+  static const bestSeller = 'bestseller';
   static const newArrivals = 'shop/new-arrivals';
   static const wishlist = 'shop/wishlist';
 
   //  Service
-  static const getCategories = 'shop/categories';
+  static const getCategories = 'category';
   static const getAllServices = 'Service/GetAllServices';
   static const getAllPetPackages = 'Service/GetAllPetPackages';
   static const slider = 'shop/home';
@@ -118,7 +118,7 @@ class EndPoints {
   static const addToWishList = 'shop/wishlist';
 
   //product details
-  static const getProductDetails = 'shop/products';
+  static const getProductDetails = 'product-detail';
 
   // address
   static const address = 'address-list';

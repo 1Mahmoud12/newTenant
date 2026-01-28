@@ -7,7 +7,6 @@ import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:dobzz_seller/core/utils/extensions.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/core/utils/utils.dart';
-import 'package:dobzz_seller/feature/auth/login/view/presentation/login_screen.dart';
 import 'package:dobzz_seller/feature/navigation/view/presentation/navigation_view.dart';
 import 'package:dobzz_seller/feature/splash/view/presentation/splash_two_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -38,7 +37,7 @@ class _SplashScreenState extends State<SplashScreen> {
         if (onBoardingValue) {
           context.navigateToPage(const SplashTwoScreen());
         } else {
-          context.navigateToPage(loginCacheValue?.data != null ? const NavigationViewWithThemes() : const LoginScreen());
+          context.navigateToPage(const NavigationViewWithThemes());
         }
         // userCacheValue.data != null ? context.navigateToPage(const NavigationView()) : context.navigateToPage(const LoginScreen());
         // userCache?.put(onBoardingKey, false);

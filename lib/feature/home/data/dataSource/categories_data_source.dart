@@ -8,7 +8,7 @@ import 'package:dobzz_seller/feature/home/data/models/categories_model.dart';
 class CategoriesDataSource {
   static Future<Either<Failure, CategoriesModel>> getCategories() async {
     try {
-      final response = await DioHelper.getData(url: EndPoints.getCategories);
+      final response = await DioHelper.postData(endPoint: EndPoints.getCategories, data: {});
       // log('Top Product Response: ${response.data['data']}');
       return Right(CategoriesModel.fromJson(response.data));
     } catch (error) {

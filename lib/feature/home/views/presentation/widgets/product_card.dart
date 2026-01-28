@@ -100,12 +100,15 @@ class _ProductCardState extends State<ProductCard> {
           children: [
             Stack(
               children: [
-                CacheImage(
-                  urlImage: widget.imagePath,
-                  errorColor: Colors.grey,
-                  height: 150,
-                  width: double.infinity,
-                  fit: BoxFit.contain,
+                ClipRRect(
+                  borderRadius: const BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)),
+                  child: CacheImage(
+                    urlImage: widget.imagePath,
+                    errorColor: Colors.grey,
+                    height: 150,
+                    width: double.infinity,
+                    fit: BoxFit.fill,
+                  ),
                 ),
                 Positioned(
                   top: 12,
@@ -448,10 +451,9 @@ class _HorizontalProductCardState extends State<HorizontalProductCard> {
                             color: Colors.black87,
                             shape: BoxShape.circle,
                           ),
-                          child: Icon(
-                            context.watch<WishListCubit>().isWishListed(skuCode: widget.sku ?? widget.variants.first.skuCode!)
-                                ? Icons.favorite
-                                : Icons.favorite_border,
+                          child: const Icon(
+                            // context.watch<WishListCubit>().isWishListed(skuCode: widget.sku ?? widget.variants.first.skuCode!)
+                            false ? Icons.favorite : Icons.favorite_border,
                             color: Colors.white,
                             size: 14,
                           ),

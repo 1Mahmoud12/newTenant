@@ -72,36 +72,70 @@ class TopProductCubit extends Cubit<TopProductState> {
   bool bestsellerHasProducts = true;
   bool topHasProducts = true;
   bool newArrivalHasProducts = true;
+  int currentPage = 1;
+  int? lastPage;
+  bool isLoadingMore = false;
+  ProductsFeed? currentFeed;
+  int? currentSubCategoryId;
+
   Future<void> getProductsByFeed({
     required BuildContext context,
     required ProductsFeed feed,
     int? subCategoryId,
+    bool isRefresh = false,
   }) async {
     if (isClosed) return;
-    // Try cache first
-    final servedFromCache = await loadFromCache(feed);
-    if (!servedFromCache) {
-      emit(TopProductLoading());
+
+    // Reset pagination logic
+    if (!isLoadingMore || isRefresh) {
+      currentPage = 1;
+      lastPage = null;
+      currentFeed = feed;
+      currentSubCategoryId = subCategoryId;
     }
-    await GetTopProductDataSource.getProductsByFeed(feed: feed, subCategoryId: subCategoryId).then(
+
+    if (currentPage == 1) {
+      // Try cache first only for initial load
+      final servedFromCache = await loadFromCache(feed);
+      if (!servedFromCache) {
+        emit(TopProductLoading());
+      }
+    }
+
+    await GetTopProductDataSource.getProductsByFeed(
+      feed: feed,
+      subCategoryId: subCategoryId,
+      page: currentPage,
+    ).then(
       (value) async {
         value.fold((l) {
           if (isClosed) return;
+          isLoadingMore = false;
           emit(TopProductError(e: l.errMessage));
         }, (r) async {
-          products = r.data ?? [];
+          if (currentPage == 1) {
+            products = r.data ?? [];
+          } else {
+            products.addAll(r.data ?? []);
+          }
+
+          // Update pagination info
+          currentPage = r.currentPage ?? currentPage;
+          lastPage = r.lastPage;
+
+          isLoadingMore = false;
+
           switch (feed) {
             case ProductsFeed.top:
-              topHasProducts = r.data?.isNotEmpty ?? false;
+              topHasProducts = products.isNotEmpty;
               ConstantsModels.topProductModel = r;
               break;
             case ProductsFeed.bestSeller:
-              // Reuse container if desired or add a new one in ConstantsModels
-              bestsellerHasProducts = r.data?.isNotEmpty ?? false;
+              bestsellerHasProducts = products.isNotEmpty;
               ConstantsModels.bestSellerModel = r;
               break;
             case ProductsFeed.newArrival:
-              newArrivalHasProducts = r.data?.isNotEmpty ?? false;
+              newArrivalHasProducts = products.isNotEmpty;
               ConstantsModels.newArrivalsModel = r;
               break;
           }
@@ -109,6 +143,25 @@ class TopProductCubit extends Cubit<TopProductState> {
           emit(TopProductSuccess());
         });
       },
+    );
+  }
+
+  Future<void> loadMoreProducts(BuildContext context) async {
+    if (isLoadingMore || (lastPage != null && currentPage >= lastPage!)) return;
+
+    isLoadingMore = true;
+    currentPage++;
+
+    // Safety check - if feed not set, default to something or return
+    if (currentFeed == null) {
+      isLoadingMore = false;
+      return;
+    }
+
+    await getProductsByFeed(
+      context: context,
+      feed: currentFeed!,
+      subCategoryId: currentSubCategoryId,
     );
   }
 }

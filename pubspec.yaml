@@ -86,7 +86,7 @@ dependencies:
   url_launcher_ios: ^6.3.4
   uuid: ^4.5.1
   hexcolor: ^3.0.1
-
+  skeletonizer: ^2.1.2
 
   # Fingerprint and FaceId
   local_auth: ^2.3.0

@@ -35,22 +35,22 @@ class _ProductDescriptionWidgetState extends State<ProductDescriptionWidget> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text('product_description'.tr(), style: Styles.style16400.copyWith(color: AppColors.black)),
-            InkWell(
-              onTap: () {
-                setState(() {
-                  isArabic = !isArabic;
-                });
-              },
-              child: Text(
-                isArabic ? 'AR' : 'EN',
-                style: Styles.style16400.copyWith(color: AppColors.black),
-              ),
-            ),
+            // InkWell(
+            //   onTap: () {
+            //     setState(() {
+            //       isArabic = !isArabic;
+            //     });
+            //   },
+            //   child: Text(
+            //     isArabic ? 'AR' : 'EN',
+            //     style: Styles.style16400.copyWith(color: AppColors.black),
+            //   ),
+            // ),
           ],
         ),
         const SizedBox(height: 4),
         Text(
-          isArabic ? widget.productModelData.descriptionAr.toString() : widget.productModelData.descriptionEn.toString(),
+          widget.productModelData.description.toString(),
           style: const TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w400,

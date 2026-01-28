@@ -1,5 +1,4 @@
 import 'package:dobzz_seller/core/themes/styles.dart';
-import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:dobzz_seller/feature/home/data/models/product_mdoel.dart';
 import 'package:flutter/material.dart';
 
@@ -11,7 +10,7 @@ class ProductNameWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      '${productModelData.nameEn ?? Constants.unKnownValue} (${productModelData.nameAr ?? Constants.unKnownValue})',
+      '${productModelData.name}',
       style: Styles.style20600.copyWith(
         fontWeight: FontWeight.w600,
         color: Colors.black87,

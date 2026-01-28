@@ -41,6 +41,7 @@ class GetTopProductDataSource {
   static Future<Either<Failure, ProductModel>> getProductsByFeed({
     required ProductsFeed feed,
     int? subCategoryId,
+    int page = 1,
   }) async {
     try {
       final String url = switch (feed) {
@@ -49,12 +50,13 @@ class GetTopProductDataSource {
         ProductsFeed.newArrival => EndPoints.newArrivals,
       };
 
-      final response = await DioHelper.getData(
-        query: {
+      final response = await DioHelper.postData(
+          query: {
           if (subCategoryId != null) 'filter[categories][]': subCategoryId,
-        },
-        url: url,
-      );
+            'page': page,
+          },
+          endPoint: url,
+          data: {});
       final model = ProductModel.fromJson(response.data);
       // Cache by feed
       switch (feed) {

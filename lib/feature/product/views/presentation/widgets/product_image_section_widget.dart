@@ -15,7 +15,7 @@ class ProductImageSection extends StatelessWidget {
         width: double.infinity,
         height: 250,
         borderRadius: 0,
-        urlImage: productModelData.imagePath,
+        urlImage: productModelData.coverImageUrl,
         fit: BoxFit.cover,
       ),
     );

@@ -5,145 +5,81 @@ class ProductDetailsModel {
   int? code;
   String? message;
   Product? data;
+  List<Product>? relatedProducts;
+  List<Images>? productImages;
 
-  ProductDetailsModel({this.status, this.code, this.message, this.data});
-
-  factory ProductDetailsModel.fromJson(Map<String, dynamic> json) => ProductDetailsModel(
-        status: json['status'],
-        code: json['code'],
-        message: json['message'],
-        data: json['data'] != null ? Product.fromJson(json['data']) : null,
-      );
-}
-
-class Category {
-  int? id;
-  String? name;
-  String? image;
-  String? icon;
-  int? visible;
-  int? parentId;
-  int? shopId;
-  String? deletedAt;
-  String? createdAt;
-  String? updatedAt;
-  Pivot? pivot;
-
-  Category({
-    this.id,
-    this.name,
-    this.image,
-    this.icon,
-    this.visible,
-    this.parentId,
-    this.shopId,
-    this.deletedAt,
-    this.createdAt,
-    this.updatedAt,
-    this.pivot,
+  ProductDetailsModel({
+    this.status,
+    this.code,
+    this.message,
+    this.data,
+    this.relatedProducts,
+    this.productImages,
   });
 
-  factory Category.fromJson(Map<String, dynamic> json) => Category(
-        id: json['id'],
-        name: json['name'],
-        image: json['image'],
-        icon: json['icon'],
-        visible: json['visible'],
-        parentId: json['parent_id'],
-        shopId: json['shop_id'],
-        deletedAt: json['deleted_at'],
-        createdAt: json['created_at'],
-        updatedAt: json['updated_at'],
-        pivot: json['pivot'] != null ? Pivot.fromJson(json['pivot']) : null,
-      );
+  factory ProductDetailsModel.fromJson(Map<String, dynamic> json) {
+    // Check if we have the new nested structure inside 'data'
+    Map<String, dynamic>? innerData;
+    if (json['data'] != null && json['data'] is Map) {
+      innerData = json['data'];
+    }
+
+    // Attempt to parse Product from 'product_info' (new API) or 'data' (legacy/fallback)
+    Product? product;
+    if (innerData != null && innerData['product_info'] != null) {
+      product = Product.fromJson(innerData['product_info']);
+    } else if (json['data'] != null && json['data'] is Map && json['data']['product_info'] == null) {
+      // Maybe legacy structure where data IS the product? Or unexpected.
+      // Safe fallback if 'product_info' is missing but 'data' looks like a product
+      try {
+        product = Product.fromJson(json['product_info']);
+      } catch (e) {
+        // ignore
+      }
+    }
+
+    // Parse Related Products
+    List<Product>? related;
+    if (innerData != null && innerData['releted_products'] != null) {
+      related = <Product>[];
+      innerData['releted_products'].forEach((v) {
+        related!.add(Product.fromJson(v));
+      });
+    }
+
+    // Parse Product Images
+    List<Images>? images;
+    if (innerData != null && innerData['product_image'] != null) {
+      images = <Images>[];
+      innerData['product_image'].forEach((v) {
+        images!.add(Images.fromJson(v));
+      });
+    } else if (product?.images != null) {
+      // Fallback to images inside product object if not separated
+      images = product!.images;
+    }
+
+    // Assign images to product if they were separate, so UI can just use product.images
+    if (product != null && images != null) {
+      product.images = images;
+    }
+
+    // Parse Status properly as before
+    bool? statusVal;
+    if (json['status'] is bool) {
+      statusVal = json['status'];
+    } else if (json['status'] is int) {
+      statusVal = json['status'] == 1;
+    }
+
+    return ProductDetailsModel(
+      status: statusVal,
+      code: json['code'],
+      message: json['message'],
+      data: product,
+      relatedProducts: related,
+      productImages: images,
+    );
+  }
 }
-
-class Pivot {
-  int? productId;
-  int? categoryId;
-
-  Pivot({this.productId, this.categoryId});
-
-  factory Pivot.fromJson(Map<String, dynamic> json) => Pivot(
-        productId: json['product_id'],
-        categoryId: json['category_id'],
-      );
-}
-
-class AvailableProductSize {
-  int? id;
-  String? name;
-  String? code;
-  String? createdAt;
-  String? updatedAt;
-
-  AvailableProductSize({this.id, this.name, this.code, this.createdAt, this.updatedAt});
-
-  factory AvailableProductSize.fromJson(Map<String, dynamic> json) => AvailableProductSize(
-        id: json['id'],
-        name: json['name'],
-        code: json['code'],
-        createdAt: json['created_at'],
-        updatedAt: json['updated_at'],
-      );
-}
-
-class ColorModel {
-  int? id;
-  String? name;
-  String? code;
-  String? createdAt;
-  String? updatedAt;
-
-  ColorModel({this.id, this.name, this.code, this.createdAt, this.updatedAt});
-
-  factory ColorModel.fromJson(Map<String, dynamic> json) => ColorModel(
-        id: json['id'],
-        name: json['name'],
-        code: json['code'],
-        createdAt: json['created_at'],
-        updatedAt: json['updated_at'],
-      );
-}
-
-class Review {
-  int? id;
-  String? review;
-  String? customer;
-  String? customerImage;
-  bool? createdBy;
-  String? product;
-  int? productId;
-  String? rating;
-  bool? visible;
-  String? createdAt;
-  String? updatedAt;
-
-  Review({
-    this.id,
-    this.review,
-    this.customer,
-    this.customerImage,
-    this.createdBy,
-    this.product,
-    this.productId,
-    this.rating,
-    this.visible,
-    this.createdAt,
-    this.updatedAt,
-  });
-
-  factory Review.fromJson(Map<String, dynamic> json) => Review(
-        id: json['id'],
-        review: json['review'],
-        customer: json['customer'],
-        customerImage: json['customer_image'],
-        createdBy: json['created_by'],
-        product: json['product'],
-        productId: json['product_id'],
-        rating: json['rating'],
-        visible: json['visible'],
-        createdAt: json['created_at'],
-        updatedAt: json['updated_at'],
-      );
-}
+// Removed unused classes Category, Pivot, AvailableProductSize, ColorModel, Review since we use Product model classes.

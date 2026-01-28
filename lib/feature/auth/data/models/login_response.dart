@@ -12,17 +12,10 @@ class LoginResponse {
   });
 
   factory LoginResponse.fromJson(Map<String, dynamic> json) {
-    dynamic statusData = json['status'];
-    int statusIdx = 0;
-    if (statusData is bool) {
-      statusIdx = statusData ? 1 : 0;
-    } else if (statusData is int) {
-      statusIdx = statusData;
-    }
 
     return LoginResponse(
       maxPrice: json['max_price'] ?? 0,
-      status: statusIdx,
+      status: json['status'] ?? 0,
       message: json['message'],
       data: json['data'] != null ? UserData.fromJson(json['data']) : null,
     );

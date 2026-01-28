@@ -30,24 +30,24 @@ class AuthCubit extends Cubit<AuthState> {
     emit(AuthInitial());
   }
 
-  void getCountryCode() async {
-    emit(AuthGetCountryCodeLoadingState());
-    // animationDialogLoading(context);
-    authDataSource.getCountryCode().then(
-      (value) async {
-        //  closeDialog(context);
-        // bool result = await InternetConnectionChecker().hasConnection;
-        value.fold((l) {
-          //   failureModalBottomSheetWithReason(context, reasons: [l.errMessage], onPress: (){});
-          emit(AuthGetCountryCodeErrorState(l.errMessage));
-        }, (r) async {
-          ConstantsModels.countryCodeModel = r;
-          // setCountryCodeId(r.data?.first.id ?? 1);
-          emit(AuthGetCountryCodeSuccessState());
-        });
-      },
-    );
-  }
+  // void getCountryCode() async {
+  //   emit(AuthGetCountryCodeLoadingState());
+  //   // animationDialogLoading(context);
+  //   authDataSource.getCountryCode().then(
+  //     (value) async {
+  //       //  closeDialog(context);
+  //       // bool result = await InternetConnectionChecker().hasConnection;
+  //       value.fold((l) {
+  //         //   failureModalBottomSheetWithReason(context, reasons: [l.errMessage], onPress: (){});
+  //         emit(AuthGetCountryCodeErrorState(l.errMessage));
+  //       }, (r) async {
+  //         ConstantsModels.countryCodeModel = r;
+  //         // setCountryCodeId(r.data?.first.id ?? 1);
+  //         emit(AuthGetCountryCodeSuccessState());
+  //       });
+  //     },
+  //   );
+  // }
 
   void forgetPassword({required BuildContext context, bool navigateToVerifyCodeView = true}) async {
     emit(AuthGetCountryCodeLoadingState());

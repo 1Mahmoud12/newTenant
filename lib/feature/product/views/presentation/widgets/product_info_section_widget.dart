@@ -33,27 +33,27 @@ class ProductInfoSection extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16),
-          ProductInfoItem(label: 'quantity', value: '${productModelData.quantity}'),
+          ProductInfoItem(label: 'quantity', value: productModelData.available == true ? 'available' : 'not_available'),
           ProductInfoItem(
             label: 'price',
             value: '${productModelData.price} ${'SAR'.tr()}',
             isPrice: true,
           ),
-          ItemListWidget(
-            itemList: productModelData.categories?.map((e) {
-                  return e.name ?? 'unknown';
-                }).toList() ??
-                [],
-            label: 'category',
-          ),
-          if (productModelData.subCategories?.isNotEmpty ?? false)
-            ItemListWidget(
-              itemList: productModelData.subCategories?.map((e) {
-                    return e.name ?? 'unknown';
-                  }).toList() ??
-                  [],
-              label: 'sub_category',
-            ),
+          // ItemListWidget(
+          //   itemList: productModelData.categories?.map((e) {
+          //         return e.name ?? 'unknown';
+          //       }).toList() ??
+          //       [],
+          //   label: 'trending',
+          // ),
+          // if (productModelData.subCategories?.isNotEmpty ?? false)
+          //   ItemListWidget(
+          //     itemList: productModelData.subCategories?.map((e) {
+          //           return e.name ?? 'unknown';
+          //         }).toList() ??
+          //         [],
+          //     label: 'sub_category',
+          //   ),
         ],
       ),
     );

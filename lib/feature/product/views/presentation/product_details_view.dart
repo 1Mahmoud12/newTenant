@@ -1,28 +1,28 @@
 import 'package:dobzz_seller/core/component/buttons/custom_text_button.dart';
 import 'package:dobzz_seller/core/component/cache_image.dart';
 import 'package:dobzz_seller/core/component/custom_app_bar.dart';
-import 'package:dobzz_seller/core/component/loadsErros/loading_widget.dart';
+// import 'package:dobzz_seller/core/component/loadsErros/loading_widget.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:dobzz_seller/core/utils/app_icons.dart';
 import 'package:dobzz_seller/core/utils/constant_gaping.dart';
 import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:dobzz_seller/core/utils/constants_models.dart';
+import 'package:dobzz_seller/core/utils/errorLoadingWidgets/empty_widget.dart';
 import 'package:dobzz_seller/core/utils/utils.dart';
 import 'package:dobzz_seller/feature/cart/view/manager/addToCart/cubit/add_to_cart_cubit.dart';
 import 'package:dobzz_seller/feature/cart/view/manager/cartItems/cubit/cart_items_cubit.dart';
 import 'package:dobzz_seller/feature/home/data/models/product_mdoel.dart';
-import 'package:dobzz_seller/feature/product/data/model/product_details_model.dart';
+// import 'package:dobzz_seller/feature/product/data/model/product_details_model.dart';
 import 'package:dobzz_seller/feature/product/views/manager/productDetails/cubit/product_details_cubit.dart';
 import 'package:dobzz_seller/feature/product/views/presentation/widgets/product_image_section_widget.dart';
 import 'package:dobzz_seller/feature/product/views/presentation/widgets/product_info_section_widget.dart';
-import 'package:dobzz_seller/feature/product/views/presentation/widgets/product_variant_section_widget.dart';
 import 'package:dobzz_seller/feature/product/views/presentation/widgets/specification_section_widget.dart';
-import 'package:dobzz_seller/feature/product/views/presentation/widgets/view_all_reviews_button.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class ProductDetailsView extends StatefulWidget {
@@ -80,17 +80,19 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
         },
         builder: (context, state) {
           return Scaffold(
-            persistentFooterButtons: [
-              if (state is ProductDetailsSuccess && selectVariant != null)
-                PriceAndAddToCartWidget(
-                  variant: selectVariant!,
-                  price: (ConstantsModels.productDetailsModel?.data?.price ?? 0) * selectedQuantity,
-                  addToCartCubit: addToCartCubit,
-                  selectedQuantity: selectedQuantity,
-                )
-              else
-                const SizedBox(height: 56),
-            ],
+            // persistentFooterButtons: [
+            //   if (state is ProductDetailsSuccess && selectVariant != null)
+            //     PriceAndAddToCartWidget(
+            //       variant: selectVariant!,
+            //       price:
+            //           (ConstantsModels.productDetailsModel?.data?.price ?? 0) *
+            //               selectedQuantity,
+            //       addToCartCubit: addToCartCubit,
+            //       selectedQuantity: selectedQuantity,
+            //     )
+            //   else
+            //     const SizedBox(height: 56),
+            // ],
             appBar: customAppBar(context: context, title: 'Product Details'.tr()),
             body: _buildBody(state, productId: widget.productId),
           );
@@ -101,23 +103,50 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
 
   Widget _buildBody(ProductDetailsState state, {required int productId}) {
     if (state is ProductDetailsLoading) {
-      return const Center(child: LoadingWidget());
+      return Skeletonizer(
+        effect: ShimmerEffect(
+          baseColor: Colors.grey[300]!,
+          highlightColor: Colors.grey[100]!,
+        ),
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                height: 300,
+                decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(20),
+                ),
+              ),
+              h20,
+              Container(height: 20, width: 200, color: Colors.grey[300]),
+              h10,
+              Container(height: 15, width: 100, color: Colors.grey[300]),
+              h20,
+              Container(height: 100, width: double.infinity, color: Colors.grey[300]),
+            ],
+          ),
+        ),
+      );
     } else if (state is ProductDetailsError) {
       return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('${'Error:'.tr()}${state.e}'),
-            const SizedBox(height: 16),
-            CustomTextButton(
-              onPress: _loadProductDetails,
-              childText: 'Retry'.tr(),
-            ),
-          ],
+        child: EmptyWidget(
+          data: '${'Error:'.tr()}${state.e}',
+          onTap: () {
+            _loadProductDetails();
+          },
         ),
       );
     } else if (state is ProductDetailsSuccess && ConstantsModels.productDetailsModel != null) {
-      final productDetails = ConstantsModels.productDetailsModel!.data!;
+      final productDetails = ConstantsModels.productDetailsModel!.data;
+
+      // Safety check if data is null despite success state
+      if (productDetails == null) {
+        return Center(child: Text('Product not found'.tr()));
+      }
+
       return SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -145,20 +174,20 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                     ProductSpecsSection(
                       productModelData: productDetails,
                     ),
-                    if (productDetails.variants?.isNotEmpty ?? false)
-                      ProductVariantsSection(
-                        productModelData: productDetails,
-                        selectVariant: selectVariant,
-                        onSelectVariant: (variant, quantity) {
-                          selectVariant = variant;
-                          selectedQuantity = quantity;
-                          setState(() {});
-                        },
-                      ),
-                    if (productDetails.reviews?.isNotEmpty ?? false)
-                      CustomerReviewsSection(
-                        productModelData: productDetails,
-                      ),
+                    // if (productDetails.variants?.isNotEmpty ?? false)
+                    //   ProductVariantsSection(
+                    //     productModelData: productDetails,
+                    //     selectVariant: selectVariant,
+                    //     onSelectVariant: (variant, quantity) {
+                    //       selectVariant = variant;
+                    //       selectedQuantity = quantity;
+                    //       setState(() {});
+                    //     },
+                    //   ),
+                    // if (productDetails.reviews?.isNotEmpty ?? false)
+                    //   CustomerReviewsSection(
+                    //     productModelData: productDetails,
+                    //   ),
                   ],
                 ),
               ),
@@ -256,7 +285,7 @@ class ProductDescription extends StatelessWidget {
 class SizeSelectorSection extends StatelessWidget {
   final String selectedSize;
   final ValueChanged<String> onSelectSize;
-  final List<AvailableProductSize> sizes;
+  final List<dynamic> sizes; // Changed from AvailableProductSize to dynamic
 
   const SizeSelectorSection({
     required this.selectedSize,
@@ -291,7 +320,7 @@ class SizeSelectorSection extends StatelessWidget {
 class SizeSelector extends StatefulWidget {
   final Function(String) onSelectSize;
   final String selectedSize;
-  final List<AvailableProductSize> sizes;
+  final List<dynamic> sizes; // Changed from AvailableProductSize to dynamic
 
   const SizeSelector({
     Key? key,

@@ -1,3 +1,4 @@
+import 'package:dobzz_seller/core/component/buttons/custom_text_button.dart';
 import 'package:dobzz_seller/core/utils/app_images.dart';
 import 'package:dobzz_seller/core/utils/extensions.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -23,9 +24,10 @@ enum EmptyImages {
 class EmptyWidget extends StatelessWidget {
   final String? data;
   final String? subData;
+  final Function? onTap;
   final EmptyImages? emptyImage; // Make this nullable
 
-  const EmptyWidget({super.key, this.data, this.emptyImage, this.subData});
+  const EmptyWidget({super.key, this.data, this.emptyImage, this.subData, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -60,6 +62,8 @@ class EmptyWidget extends StatelessWidget {
                   (data ?? 'no_Data,_sorry').tr(),
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w500),
                   textAlign: TextAlign.center,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
                 if (subData != null) const SizedBox(height: 8),
                 if (subData != null)
@@ -67,6 +71,14 @@ class EmptyWidget extends StatelessWidget {
                     subData!.tr(),
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w400),
                     textAlign: TextAlign.center,
+                  ),
+                if (onTap != null) const SizedBox(height: 8),
+                if (onTap != null)
+                  CustomTextButton(
+                    onPress: () {
+                      onTap?.call();
+                    },
+                    childText: 'Retry'.tr(),
                   ),
               ],
             ),

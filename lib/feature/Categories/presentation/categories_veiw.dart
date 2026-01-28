@@ -55,16 +55,19 @@ class CategoriesScreen extends StatelessWidget {
                 crossAxisSpacing: 16,
                 mainAxisSpacing: 16,
                 children: List.generate(ConstantsModels.categoriesModel?.data?.length ?? 0, (index) {
+                  final category = ConstantsModels.categoriesModel?.data?[index];
+                  if (category == null) return const SizedBox();
+
                   return CategoryCard(
                     onTap: () {
                       context.navigateToPage(
                         SubcategoryScreen(
-                          categoryId: ConstantsModels.categoriesModel?.data![index].id ?? 0,
+                          categoryId: category.id ?? 0,
                         ),
                       );
                     },
-                    title: ConstantsModels.categoriesModel?.data?[index].name ?? 'Category',
-                    imageUrl: ConstantsModels.categoriesModel?.data?[index].imagePath ?? 'https://via.placeholder.com/150',
+                    title: category.name ?? 'Category',
+                    imageUrl: category.imagePathFullUrl ?? category.imagePath ?? 'https://via.placeholder.com/150',
                   );
                 }),
               ),
@@ -121,6 +124,7 @@ class CategoryCard extends StatelessWidget {
                 CacheImage(
                   urlImage: imageUrl,
                   errorColor: Colors.grey,
+                  fit: BoxFit.fill,
                 ),
 
               // Black overlay label at bottom

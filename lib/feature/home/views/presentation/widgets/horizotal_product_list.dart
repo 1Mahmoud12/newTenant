@@ -105,9 +105,7 @@ class TopProductHorizontalList extends StatelessWidget {
           } else if (state is TopProductError) {
             // Notify empty on error
             onProductsLoaded?.call(0);
-            return Center(
-              child: Text('${'Error:'.tr()}${state.e}'),
-            );
+            return const SizedBox();
           } else if (topProductCubit.products.isNotEmpty) {
             // Access the loaded top products
             final topProducts = topProductCubit.products;
@@ -145,7 +143,7 @@ class TopProductHorizontalList extends StatelessWidget {
                                 variants: product.variants ?? [],
                                 description: product.description ?? 'No description available'.tr(),
                                 rating: product.reviewsCount?.toDouble() ?? 0.0,
-                                sku: product.skuCode,
+                                sku: product.slug ?? 'ASD123',
                                 productId: product.id ?? -1,
                                 initialLiked: widget.isItWhishList!,
                                 onLikeTap: (isNowLiked) {
@@ -175,7 +173,7 @@ class TopProductHorizontalList extends StatelessWidget {
                                         );
                                   }
                                 },
-                                imagePath: product.imagePath ?? '',
+                                imagePath: product.coverImageUrl ?? '',
                                 title: product.name ?? 'Unknown Product'.tr(),
                                 price: product.price?.toString() ?? '0',
                               )
@@ -209,7 +207,7 @@ class TopProductHorizontalList extends StatelessWidget {
                                         );
                                   }
                                 },
-                                imagePath: product.imagePath ?? '',
+                                imagePath: product.coverImageUrl ?? '',
                                 title: product.name ?? 'Unknown Product'.tr(),
                                 price: product.price?.toString() ?? '0',
                               ),
