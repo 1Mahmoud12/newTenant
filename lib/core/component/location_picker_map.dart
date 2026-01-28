@@ -17,6 +17,9 @@ class LocationPickerMap extends StatefulWidget {
     String address, {
     String? city,
     String? state,
+    String? country,
+    String? postalCode,
+    String? street,
   })? onLocationSelected;
   final bool showSearchField;
   final bool showMap;
@@ -39,9 +42,11 @@ class LocationPickerMap extends StatefulWidget {
 }
 
 class _LocationPickerMapState extends State<LocationPickerMap> {
-  final Completer<GoogleMapController> _controller = Completer<GoogleMapController>();
+  final Completer<GoogleMapController> _controller =
+      Completer<GoogleMapController>();
   Set<Marker> _markers = {};
-  LatLng _selectedLocation = const LatLng(31.2001, 29.9187); // Default to Alexandria
+  LatLng _selectedLocation =
+      const LatLng(31.2001, 29.9187); // Default to Alexandria
   String _selectedAddress = '';
   bool _isLoading = false;
 
@@ -112,7 +117,9 @@ class _LocationPickerMapState extends State<LocationPickerMap> {
           position: location,
           infoWindow: InfoWindow(
             title: 'selected_location',
-            snippet: _selectedAddress.isNotEmpty ? _selectedAddress : 'tap_to_select_location'.tr(),
+            snippet: _selectedAddress.isNotEmpty
+                ? _selectedAddress
+                : 'tap_to_select_location'.tr(),
           ),
         ),
       };
@@ -129,7 +136,8 @@ class _LocationPickerMapState extends State<LocationPickerMap> {
       if (placemarks.isNotEmpty) {
         final placemark = placemarks[0];
         setState(() {
-          _selectedAddress = '${placemark.street}, ${placemark.locality}, ${placemark.administrativeArea}, ${placemark.country}';
+          _selectedAddress =
+              '${placemark.street}, ${placemark.locality}, ${placemark.administrativeArea}, ${placemark.country}';
         });
 
         // Update marker info window
@@ -137,10 +145,23 @@ class _LocationPickerMapState extends State<LocationPickerMap> {
 
         // Extract city and state information
         final city = placemark.locality ?? placemark.subLocality ?? '';
-        final state = placemark.administrativeArea ?? placemark.subAdministrativeArea ?? '';
+        final state = placemark.administrativeArea ??
+            placemark.subAdministrativeArea ??
+            '';
+        final country = placemark.country ?? '';
+        final postalCode = placemark.postalCode ?? '';
+        final street = placemark.street ?? '';
 
         // Notify parent widget with additional location details
-        widget.onLocationSelected?.call(location, _selectedAddress, city: city, state: state);
+        widget.onLocationSelected?.call(
+          location,
+          _selectedAddress,
+          city: city,
+          state: state,
+          country: country,
+          postalCode: postalCode,
+          street: street,
+        );
       }
     } catch (e) {
       debugPrint('Error getting address: $e');

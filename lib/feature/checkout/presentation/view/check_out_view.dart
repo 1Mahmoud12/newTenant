@@ -50,7 +50,7 @@ class _CheckoutViewState extends State<CheckoutView> {
               return CustomTextButton(
                 borderRadius: 8,
                 onPress: () {
-                  if (ConstantsModels.addressModel?.data?.isEmpty ?? true) {
+                  if (ConstantsModels.addressModel?.data?.data?.isEmpty ?? true) {
                     context.navigateToPage(
                       AddAddressView(
                         addressCubit: addressCubit,
@@ -128,13 +128,13 @@ class _CheckoutViewState extends State<CheckoutView> {
                             builder: (context, state) {
                               return CustomDropDownMenu(
                                 menuItemPadding: const EdgeInsets.symmetric(horizontal: 16),
-                                hasError: ConstantsModels.addressModel?.data?.isEmpty ?? true,
+                                hasError: ConstantsModels.addressModel?.data?.data?.isEmpty ?? true,
                                 errorText: 'you should create address first'.tr(),
                                 nameField: 'Address'.tr(),
                                 borderColor: Colors.grey.withOpacityNew(0.2),
                                 selectedItem: DropDownModel(name: Constants.defaultAddress.name!, value: 0),
-                                items: ConstantsModels.addressModel?.data?.map((e) {
-                                      return DropDownModel(name: e.name ?? '', value: e.id ?? -1);
+                                items: ConstantsModels.addressModel?.data?.data?.map((e) {
+                                      return DropDownModel(name: e.fullName ?? '', value: e.id ?? -1);
                                     }).toList() ??
                                     [],
                                 onChanged: (value) {
