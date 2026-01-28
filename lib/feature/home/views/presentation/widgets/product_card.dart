@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:dobzz_seller/core/component/cache_image.dart';
 import 'package:dobzz_seller/core/component/loadsErros/loading_widget.dart';
+import 'package:dobzz_seller/core/component/wishlist_icon_button.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:dobzz_seller/core/utils/app_icons.dart';
 import 'package:dobzz_seller/core/utils/constant_gaping.dart';
@@ -69,7 +70,7 @@ class _ProductCardState extends State<ProductCard> {
     setState(() {
       isLiked = !isLiked;
     });
-    widget.onLikeTap?.call(context.read<WishListCubit>().isWishListed(skuCode: widget.sku ?? ''));
+    widget.onLikeTap?.call(context.read<WishListCubit>().isWishListed(productId: widget.productId));
     debugPrint('Liked: $isLiked for ${widget.title}');
   }
 
@@ -113,22 +114,9 @@ class _ProductCardState extends State<ProductCard> {
                 Positioned(
                   top: 12,
                   right: 12,
-                  child: GestureDetector(
-                    onTap: toggleLike,
-                    child: Container(
-                      padding: const EdgeInsets.all(6),
-                      decoration: const BoxDecoration(
-                        color: Colors.black87,
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(
-                        context.watch<WishListCubit>().isWishListed(skuCode: widget.sku ?? widget.variants.first.skuCode!)
-                            ? Icons.favorite
-                            : Icons.favorite_border,
-                        color: Colors.white,
-                        size: 18,
-                      ),
-                    ),
+                  child: WishlistIconButton(
+                    productId: widget.productId,
+                    size: 18,
                   ),
                 ),
               ],
@@ -352,7 +340,6 @@ class HorizontalProductCard extends StatefulWidget {
   final String imagePath;
   final String title;
   final String price;
-  final String? sku;
   final String? discountPercentage;
   final String description;
   final double rating;
@@ -372,7 +359,6 @@ class HorizontalProductCard extends StatefulWidget {
     required this.initialLiked,
     required this.productId,
     required this.variants,
-    this.sku,
   }) : super(key: key);
 
   @override
@@ -392,7 +378,7 @@ class _HorizontalProductCardState extends State<HorizontalProductCard> {
     setState(() {
       isLiked = !isLiked;
     });
-    widget.onLikeTap?.call(context.read<WishListCubit>().isWishListed(skuCode: widget.sku ?? widget.variants.first.skuCode!));
+    widget.onLikeTap?.call(context.read<WishListCubit>().isWishListed(productId: widget.productId!));
   }
 
   @override
@@ -443,21 +429,9 @@ class _HorizontalProductCardState extends State<HorizontalProductCard> {
                     Positioned(
                       top: 8,
                       right: 8,
-                      child: GestureDetector(
-                        onTap: toggleLike,
-                        child: Container(
-                          padding: const EdgeInsets.all(6),
-                          decoration: const BoxDecoration(
-                            color: Colors.black87,
-                            shape: BoxShape.circle,
-                          ),
-                          child: const Icon(
-                            // context.watch<WishListCubit>().isWishListed(skuCode: widget.sku ?? widget.variants.first.skuCode!)
-                            false ? Icons.favorite : Icons.favorite_border,
-                            color: Colors.white,
-                            size: 14,
-                          ),
-                        ),
+                      child: WishlistIconButton(
+                        productId: widget.productId,
+                        size: 14,
                       ),
                     ),
                   ],
@@ -554,7 +528,6 @@ class _HorizontalProductCardState extends State<HorizontalProductCard> {
                             ),
                             w10,
                             HorizontalAddToCartButton(
-                              sku: widget.sku != null ? widget.sku! : widget.variants.first.skuCode!, // widget.variants,
                               productId: widget.productId,
                             ),
                           ],
@@ -576,11 +549,9 @@ class HorizontalAddToCartButton extends StatefulWidget {
   const HorizontalAddToCartButton({
     super.key,
     required this.productId,
-    required this.sku,
   });
 
   final int productId;
-  final String sku;
   @override
   State<HorizontalAddToCartButton> createState() => _HorizontalAddToCartButtonState();
 }
@@ -608,7 +579,7 @@ class _HorizontalAddToCartButtonState extends State<HorizontalAddToCartButton> {
                 : () async {
                     await addToCartCubit
                         .addToCart(
-                      sku: widget.sku,
+                      sku: 'widget.sku',
                       quantity: 1,
                       context: context,
                     )

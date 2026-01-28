@@ -39,11 +39,11 @@ class _ProductVariantsSectionState extends State<ProductVariantsSection> {
     _variantQuantityBySku[sku] = quantity;
   }
 
-  void toggleLike({required String skuCode}) {
-    if (context.read<WishListCubit>().isWishListed(skuCode: skuCode)) {
-      context.read<WishListCubit>().removeFromWishList(context: context, skuCode: skuCode);
+  void toggleLike({required int productId}) {
+    if (context.read<WishListCubit>().isWishListed(productId: productId)) {
+      context.read<WishListCubit>().removeFromWishList(context: context, productId: productId);
     } else {
-      context.read<WishListCubit>().addToWishList(context: context, skuCode: skuCode);
+      context.read<WishListCubit>().addToWishList(context: context, productId: productId);
     }
   }
 
@@ -81,7 +81,9 @@ class _ProductVariantsSectionState extends State<ProductVariantsSection> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        toggleLike(skuCode: item.skuCode ?? '');
+                        if (widget.productModelData.id != null) {
+                          toggleLike(productId: widget.productModelData.id!);
+                        }
                       },
                       child: Container(
                         padding: const EdgeInsets.all(6),
@@ -90,7 +92,9 @@ class _ProductVariantsSectionState extends State<ProductVariantsSection> {
                           shape: BoxShape.circle,
                         ),
                         child: Icon(
-                          context.watch<WishListCubit>().isWishListed(skuCode: item.skuCode ?? '') ? Icons.favorite : Icons.favorite_border,
+                          context.watch<WishListCubit>().isWishListed(productId: widget.productModelData.id ?? -1)
+                              ? Icons.favorite
+                              : Icons.favorite_border,
                           color: Colors.white,
                           size: 18,
                         ),

@@ -45,7 +45,7 @@ class _ProductCardThemeTwoState extends State<ProductCardThemeTwo> {
   bool isAddedToCart = false;
 
   void toggleLike() {
-    widget.onLikeTap.call(context.read<WishListCubit>().isWishListed(skuCode: widget.skuCode ?? widget.sku.first.skuCode!));
+    widget.onLikeTap.call(context.read<WishListCubit>().isWishListed(productId: widget.productId));
     debugPrint('Liked:  for ${widget.title}');
   }
 
@@ -95,8 +95,7 @@ class _ProductCardThemeTwoState extends State<ProductCardThemeTwo> {
                         shape: BoxShape.circle,
                       ),
                       child: Icon(
-                        context.watch<WishListCubit>().isWishListed(skuCode: widget.skuCode ?? widget.sku.first.skuCode!)
-                            ? Icons.favorite
+                        context.watch<WishListCubit>().isWishListed(productId: widget.productId) ? Icons.favorite
                             : Icons.favorite_border,
                         color: Colors.white,
                         size: 18,
@@ -167,7 +166,8 @@ class _ProductCardThemeTwoState extends State<ProductCardThemeTwo> {
                       //customShowToast(context, 'need_edit');
                       CartItemsCubit.of(context).addCartItems();
                       await addToCartCubit.addToCart(
-                        context: context, sku: widget.skuCode ?? widget.sku.firstOrNull?.skuCode ?? '',
+                        context: context,
+                        sku: widget.skuCode ?? widget.sku.firstOrNull?.skuCode ?? '',
                         //  sizeCode: '',
                       );
                       setState(() {

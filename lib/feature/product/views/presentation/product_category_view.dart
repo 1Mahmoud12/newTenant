@@ -1,7 +1,6 @@
 import 'package:dobzz_seller/core/component/loadsErros/loading_widget.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:dobzz_seller/core/utils/constants_models.dart';
-import 'package:dobzz_seller/core/utils/custom_show_toast.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/feature/Categories/presentation/manager/subCategroy/cubit/sub_category_cubit.dart';
 import 'package:dobzz_seller/feature/cart/view/presentation/cart_view.dart';
@@ -274,16 +273,16 @@ class _ProductCategoryViewState extends State<ProductCategoryView> {
                             productId: product.id ?? -1,
                             initialLiked: false,
                             onLikeTap: (isNowLiked) {
-                              final sku = product.skuCode ?? product.variants?.firstOrNull?.skuCode;
-                              if (sku == null) {
-                                customShowToast(context, 'not_sku_for_this_item'.tr());
-                                return;
-                              }
-                              if (!isNowLiked) {
-                                // Add to wishlist
-                                context.read<WishListCubit>().addToWishList(context: context, skuCode: sku, product: product);
-                              } else {
-                                context.read<WishListCubit>().removeFromWishList(context: context, skuCode: sku);
+                              if (!isNowLiked && product.id != null) {
+                                context.read<WishListCubit>().addToWishList(
+                                      context: context,
+                                      productId: product.id!,
+                                    );
+                              } else if (isNowLiked && product.id != null) {
+                                context.read<WishListCubit>().removeFromWishList(
+                                      context: context,
+                                      productId: product.id!,
+                                    );
                               }
                             },
                             imagePath: product.imagePath ?? '',

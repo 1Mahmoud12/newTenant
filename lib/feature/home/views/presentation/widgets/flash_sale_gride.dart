@@ -1,7 +1,6 @@
 import 'package:dobzz_seller/core/component/loadsErros/loading_widget.dart';
 import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:dobzz_seller/core/utils/constants_models.dart';
-import 'package:dobzz_seller/core/utils/custom_show_toast.dart';
 import 'package:dobzz_seller/core/utils/errorLoadingWidgets/empty_widget.dart';
 import 'package:dobzz_seller/feature/favorites/views/manager/wishList/cubit/wish_list_cubit.dart';
 import 'package:dobzz_seller/feature/home/views/manager/topProduct/cubit/top_product_cubit.dart';
@@ -103,19 +102,15 @@ class TopProductGrid extends StatelessWidget {
                   productId: product.id ?? -1,
                   initialLiked: widget.isItWhishList!,
                   onLikeTap: (isNowLiked) {
-                    final sku = product.skuCode ?? product.variants?.firstOrNull?.skuCode;
-                    if (sku == null) {
-                      customShowToast(context, 'not_sku_for_this_item'.tr());
-                      return;
-                    }
                     if (isNowLiked) {
-                      // Add to wishlist
-                      context.read<WishListCubit>().removeFromWishList(context: context, skuCode: sku);
+                      context.read<WishListCubit>().removeFromWishList(
+                            context: context,
+                            productId: product.id!,
+                          );
                     } else {
                       context.read<WishListCubit>().addToWishList(
                             context: context,
-                            skuCode: sku,
-                            product: product,
+                            productId: product.id!,
                           );
                     }
                   },
@@ -189,27 +184,19 @@ class FavoriteGrid extends StatelessWidget {
                     return ProductCard(
                       variants: const [],
                       //  rating: wishListItem.,
-                      sku: wishListItem.skuCode,
+                      sku: '${wishListItem.productId ?? 0}',
                       productId: wishListItem.productId?.toInt() ?? -1,
                       initialLiked: true,
                       description: wishListItem.descriptionProduct ?? unknownValue,
                       onLikeTap: (isNowLiked) {
-                        final sku = wishListItem.skuCode;
-                        if (sku == null) {
-                          customShowToast(
-                            context,
-                            'not_sku_for_this_item'.tr(),
-                          );
-                          return;
-                        }
-                        if (isNowLiked) {
+                        if (isNowLiked && wishListItem.productId != null) {
                           context.read<WishListCubit>().removeFromWishList(
                                 context: context,
-                                skuCode: sku,
+                                productId: wishListItem.productId!,
                               );
                         }
                       },
-                      imagePath: wishListItem.productImagePath ?? '',
+                      imagePath: wishListItem.productData?.coverImageUrl ?? '',
                       title: wishListItem.product ?? 'Unknown Product'.tr(),
                       price: '\$${wishListItem.priceForProduct?.toString() ?? '0'}',
                     );
