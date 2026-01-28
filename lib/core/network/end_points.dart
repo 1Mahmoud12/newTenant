@@ -43,7 +43,7 @@ class EndPoints {
   static const staticPage = 'StaticPage/StaticPage';
   static const getAdvertises = 'Advertise/GetAdvertises';
   static const getTopProduct = 'shop/top-products';
-  static const search = 'shop/products';
+  static const search = 'search';
   static const bestSeller = 'bestseller';
   static const newArrivals = 'shop/new-arrivals';
   static const wishlist = 'shop/wishlist';

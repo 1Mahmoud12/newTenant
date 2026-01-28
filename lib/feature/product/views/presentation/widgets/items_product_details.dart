@@ -218,7 +218,7 @@ class ProductInfoItem extends StatelessWidget {
           Expanded(
             flex: 3,
             child: Text(
-              value,
+              value.tr(),
               style: Theme.of(context).textTheme.displayMedium,
               textAlign: TextAlign.end,
             ),

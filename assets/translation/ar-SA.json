@@ -365,5 +365,7 @@
   "confirm_password_is_required": "تأكيد كلمة المرور مطلوب",
   "passwords_do_not_match": "كلمات المرور غير متطابقة",
   "please_accept_terms_and_conditions": "يرجى قبول الشروط والأحكام للمتابعة",
+  "available": "Available",
+  "not_available": "Not available",
   "": ""
 }

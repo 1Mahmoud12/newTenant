@@ -368,5 +368,7 @@
   "passwords_do_not_match": "Passwords do not match",
   "please_enter_valid_email": "Please enter a valid email",
   "password_must_be_at_least_6_characters": "Password must be at least 6 characters",
+  "available": "متاح",
+  "not_available": "غير متاح",
   "": ""
 }
