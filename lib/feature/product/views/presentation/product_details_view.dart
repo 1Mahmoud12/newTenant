@@ -711,6 +711,7 @@ class _PriceAndAddToCartWidgetState extends State<PriceAndAddToCartWidget> {
                         );
                         return;
                       }
+
                       await widget.addToCartCubit.addToCart(
                         context: context,
                         productId: widget.productId,
