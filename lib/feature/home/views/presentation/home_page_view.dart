@@ -7,10 +7,10 @@ import 'package:dobzz_seller/core/utils/constant_gaping.dart';
 import 'package:dobzz_seller/core/utils/constants_models.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/feature/Categories/presentation/categories_veiw.dart';
+import 'package:dobzz_seller/feature/allProducts/view/all_products_view.dart';
 import 'package:dobzz_seller/feature/home/views/manager/categories/cubit/categories_cubit.dart';
 import 'package:dobzz_seller/feature/home/views/manager/salesBanner/cubit/sales_banner_cubit.dart';
 import 'package:dobzz_seller/feature/home/views/manager/topProduct/cubit/top_product_cubit.dart';
-import 'package:dobzz_seller/feature/home/views/presentation/products_by_category_view.dart';
 import 'package:dobzz_seller/feature/home/views/presentation/products_feed_view.dart';
 // import 'package:dobzz_seller/feature/home/views/presentation/products_feed_view.dart';
 import 'package:dobzz_seller/feature/home/views/presentation/search_product_home_view.dart';
@@ -18,7 +18,6 @@ import 'package:dobzz_seller/feature/home/views/presentation/widgets/cart_floati
 import 'package:dobzz_seller/feature/home/views/presentation/widgets/categories_list.dart';
 // import 'package:dobzz_seller/feature/home/views/presentation/widgets/featured_category.dart';
 import 'package:dobzz_seller/feature/home/views/presentation/widgets/home_page_header.dart';
-import 'package:dobzz_seller/feature/home/views/presentation/widgets/home_slider.dart';
 import 'package:dobzz_seller/feature/home/views/presentation/widgets/horizotal_product_list.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -325,10 +324,7 @@ class _FeaturedCategoriesItemState extends State<FeaturedCategoriesItem> {
               title: widget.featuredName,
               onTap: () {
                 context.navigateToPage(
-                  ProductsByCategoryView(
-                    categoryId: widget.categoryId,
-                    title: widget.featuredName,
-                  ),
+                  AllProductsView(),
                 );
               },
             ),

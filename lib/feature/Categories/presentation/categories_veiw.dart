@@ -2,7 +2,7 @@ import 'package:dobzz_seller/core/component/cache_image.dart';
 import 'package:dobzz_seller/core/utils/constants_models.dart';
 import 'package:dobzz_seller/core/utils/extensions.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
-import 'package:dobzz_seller/feature/Categories/presentation/sub_category_view.dart';
+import 'package:dobzz_seller/feature/allProducts/view/all_products_view.dart';
 import 'package:flutter/material.dart';
 
 class CategoriesScreen extends StatelessWidget {
@@ -61,9 +61,7 @@ class CategoriesScreen extends StatelessWidget {
                   return CategoryCard(
                     onTap: () {
                       context.navigateToPage(
-                        SubcategoryScreen(
-                          categoryId: category.id ?? 0,
-                        ),
+                        const AllProductsView(),
                       );
                     },
                     title: category.name ?? 'Category',

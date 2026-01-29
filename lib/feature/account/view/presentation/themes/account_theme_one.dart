@@ -11,6 +11,7 @@ import 'package:dobzz_seller/feature/account/view/helpCenter/presentation/help_c
 import 'package:dobzz_seller/feature/account/view/manager/deleteAccount/cubit/delete_account_cubit.dart';
 import 'package:dobzz_seller/feature/account/view/myDetalis/presentation/manager/editProfile/cubit/edit_profile_cubit.dart';
 import 'package:dobzz_seller/feature/account/view/myDetalis/presentation/my_details_veiw.dart';
+import 'package:dobzz_seller/feature/account/view/myOrders/presentation/my_order_view.dart';
 import 'package:dobzz_seller/feature/account/view/presentation/language_view.dart';
 import 'package:dobzz_seller/feature/favorites/views/manager/wishList/cubit/wish_list_cubit.dart';
 import 'package:dobzz_seller/feature/navigation/view/presentation/navigation_view.dart';
@@ -209,15 +210,15 @@ class _ProfileViewThemeOneState extends State<ProfileViewThemeOne> {
                   ),
                   child: Column(
                     children: [
-                      // _buildMenuItemNew(
-                      //   icon: AppIcons.myOrders,
-                      //   title: 'My Orders',
-                      //   subtitle: 'View your order history',
-                      //   onTap: () {
-                      //     context.navigateToPage(const MyOrderView());
-                      //   },
-                      // ),
-                      //  _buildDivider(),
+                      _buildMenuItemNew(
+                        icon: AppIcons.myOrders,
+                        title: 'My Orders',
+                        subtitle: 'View your order history',
+                        onTap: () {
+                          context.navigateToPage(const MyOrderView());
+                        },
+                      ),
+                      _buildDivider(),
                       _buildMenuItemNew(
                         icon: AppIcons.myDetails,
                         title: 'My Details',

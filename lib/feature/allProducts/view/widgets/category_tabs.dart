@@ -70,6 +70,7 @@ class CategoryTabs extends StatelessWidget {
           ),
         ),
         child: FittedBox(
+          fit: BoxFit.scaleDown,
           child: Text(
             label,
             style: TextStyle(
