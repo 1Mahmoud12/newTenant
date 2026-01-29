@@ -386,5 +386,7 @@
   "select_city_name": "Select City Name",
   "select_country": "Select Country",
   "cart_updated_successfully": "Cart updated successfully",
+  "please_login_to_use_this_feature": "Please login to use this feature",
+  "login_required": "Login Required",
   "": ""
 }

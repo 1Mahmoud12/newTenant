@@ -21,6 +21,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../../../../../core/component/login_dialog.dart';
 import '../../../../address/view/presentation/address_view.dart';
 
 class ProfileViewThemeOne extends StatefulWidget {
@@ -100,6 +101,7 @@ class _ProfileViewThemeOneState extends State<ProfileViewThemeOne> {
                           ),
                           InkWell(
                             onTap: () {
+
                               context.navigateToPage(
                                 MyDetailsView(
                                   editProfileCubit: editProfileCubit,
@@ -220,6 +222,12 @@ class _ProfileViewThemeOneState extends State<ProfileViewThemeOne> {
                         title: 'My Details',
                         subtitle: 'Manage your personal information',
                         onTap: () {
+                          if (loginCacheValue?.data?.id == null) {
+                            LoginDialog.show(
+                              context,
+                            );
+                            return;
+                          }
                           context.navigateToPage(
                             MyDetailsView(
                               editProfileCubit: editProfileCubit,
@@ -233,6 +241,12 @@ class _ProfileViewThemeOneState extends State<ProfileViewThemeOne> {
                         title: 'Address Book',
                         subtitle: 'Manage your shipping addresses',
                         onTap: () {
+                          if (loginCacheValue?.data?.id == null) {
+                            LoginDialog.show(
+                              context,
+                            );
+                            return;
+                          }
                           context.navigateToPage(const AddressView());
                         },
                       ),

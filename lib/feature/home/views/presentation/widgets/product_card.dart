@@ -19,6 +19,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../../../../../core/component/login_dialog.dart';
+import '../../../../../core/network/local/cache.dart';
+
 class ProductCard extends StatefulWidget {
   final String imagePath;
   final String title;
@@ -598,6 +601,12 @@ class _HorizontalAddToCartButtonState extends State<HorizontalAddToCartButton> {
             onTap: state is AddToCartLoading
                 ? null
                 : () async {
+              if (loginCacheValue?.data?.id == null) {
+                LoginDialog.show(
+                  context,
+                );
+              return;
+              }
                     await addToCartCubit
                         .addToCart(
                       productId: widget.productId,

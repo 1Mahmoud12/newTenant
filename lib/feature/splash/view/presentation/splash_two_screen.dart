@@ -6,6 +6,7 @@ import 'package:dobzz_seller/core/utils/constant_gaping.dart';
 import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/feature/auth/login/view/presentation/login_screen.dart';
+import 'package:dobzz_seller/feature/navigation/view/presentation/navigation_view.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -28,7 +29,7 @@ class _SplashTwoScreenState extends State<SplashTwoScreen> {
             onBoardingValue = false;
             await userCache?.put(onBoardingKey, false);
 
-            context.navigateToPage(const LoginScreen());
+            context.navigateToPage(const NavigationViewWithThemes());
           },
           child: Row(
             children: [

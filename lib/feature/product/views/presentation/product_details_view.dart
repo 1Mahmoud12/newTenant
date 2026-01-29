@@ -25,6 +25,11 @@ import 'package:flutter_svg/svg.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
+import '../../../../core/component/login_dialog.dart';
+import '../../../../core/network/local/cache.dart';
+import 'widgets/product_variant_section_widget.dart';
+import 'widgets/view_all_reviews_button.dart';
+
 class ProductDetailsView extends StatefulWidget {
   final int productId;
   final List<Variants> variants;
@@ -80,19 +85,20 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
         },
         builder: (context, state) {
           return Scaffold(
-            // persistentFooterButtons: [
-            //   if (state is ProductDetailsSuccess && selectVariant != null)
-            //     PriceAndAddToCartWidget(
-            //       variant: selectVariant!,
-            //       price:
-            //           (ConstantsModels.productDetailsModel?.data?.price ?? 0) *
-            //               selectedQuantity,
-            //       addToCartCubit: addToCartCubit,
-            //       selectedQuantity: selectedQuantity,
-            //     )
-            //   else
-            //     const SizedBox(height: 56),
-            // ],
+            persistentFooterButtons: [
+              if (state is ProductDetailsSuccess )
+                PriceAndAddToCartWidget(
+                  // variant: 0,
+                  productId: widget.productId,
+                  price:
+                      (ConstantsModels.productDetailsModel?.data?.price ?? 0) *
+                          selectedQuantity,
+                  addToCartCubit: addToCartCubit,
+                  selectedQuantity: selectedQuantity,
+                )
+              else
+                const SizedBox(height: 56),
+            ],
             appBar: customAppBar(context: context, title: 'Product Details'.tr()),
             body: _buildBody(state, productId: widget.productId),
           );
@@ -549,13 +555,15 @@ class PriceAndAddToCartWidget extends StatefulWidget {
     super.key,
     required this.addToCartCubit,
     required this.price,
-    required this.variant,
+    // required this.variant,
     required this.selectedQuantity,
+    required this.productId,
   });
   final AddToCartCubit addToCartCubit;
   final num price;
-  final Variants variant;
+  // final Variants variant;
   final int selectedQuantity;
+  final int productId;
   @override
   State<PriceAndAddToCartWidget> createState() => _PriceAndAddToCartWidgetState();
 }
@@ -661,8 +669,8 @@ class _PriceAndAddToCartWidgetState extends State<PriceAndAddToCartWidget> {
                       onPress: () async {
                         await widget.addToCartCubit.addToCart(
                           context: context,
-                          productId: 1,
-                          variantId: widget.variant.id!,
+                          productId: widget.productId,
+                          variantId: 0,
                         );
                       },
                     );
@@ -688,17 +696,26 @@ class _PriceAndAddToCartWidgetState extends State<PriceAndAddToCartWidget> {
                       ],
                     ),
                     onPress: () async {
-                      final int maxQty = (widget.variant.quantity ?? 1).toInt();
-                      final int desiredQty = widget.selectedQuantity;
-                      if (desiredQty > maxQty) {
-                        Utils.showToast(
-                          title: '${'Maximum quantity is'.tr()} $maxQty',
-                          state: UtilState.warning,
+                      // final int maxQty = (widget.productId).toInt();
+                      // final int desiredQty = widget.selectedQuantity;
+                      // if (desiredQty > maxQty) {
+                      //   Utils.showToast(
+                      //     title: '${'Maximum quantity is'.tr()} $maxQty',
+                      //     state: UtilState.warning,
+                      //   );
+                      //   return;
+                      // }
+                     if (loginCacheValue?.data?.id == null) {
+                        LoginDialog.show(
+                          context,
                         );
                         return;
                       }
-                      CartItemsCubit.of(context).addCartItems();
-                      // await widget.addToCartCubit.addToCart(
+                      await widget.addToCartCubit.addToCart(
+                        context: context,
+                        productId: widget.productId,
+                        variantId: 0,
+                      );                      // await widget.addToCartCubit.addToCart(
                       //   context: context,
                       //   sku: widget.variant.skuCode!,
                       //   quantity: desiredQty,

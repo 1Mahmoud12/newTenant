@@ -383,5 +383,7 @@
   "select_city_name": "اختار اسم المدينة",
   "select_state_name": "اختار اسم المحافظة",
   "cart_updated_successfully": "تم تحديث العربة بنجاح",
+  "please_login_to_use_this_feature": "يرجى تسجيل الدخول لاستخدام هذه الميزة",
+  "login_required": "تسجيل الدخول مطلوب",
   "": ""
 }

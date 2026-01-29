@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:dobzz_seller/core/utils/utils.dart';
@@ -12,6 +13,9 @@ import 'package:dobzz_seller/feature/navigation/view/presentation/navigation_bar
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+import '../../../../core/component/login_dialog.dart';
+import '../../../../core/network/local/cache.dart';
 
 enum NavigationTheme {
   circular,
@@ -42,7 +46,7 @@ class _NavigationViewWithThemesState extends State<NavigationViewWithThemes> {
 
   @override
   void initState() {
-    CartItemsCubit.of(context).getCartItems(context: context);
+    // CartItemsCubit.of(context).getCartItems(context: context);
 
     _selectedIndex = widget.initialIndex!;
     _theme = widget.theme;
@@ -50,6 +54,15 @@ class _NavigationViewWithThemesState extends State<NavigationViewWithThemes> {
   }
 
   void _onItemTapped(int index) {
+    log('loginCacheValue ====> ${loginCacheValue?.data?.id}');
+    if (index == 1 || index == 2) {
+      if (loginCacheValue?.data?.id == null) {
+        LoginDialog.show(
+          context,
+        );
+        return;
+      }
+    }
     setState(() {
       _selectedIndex = index;
     });
