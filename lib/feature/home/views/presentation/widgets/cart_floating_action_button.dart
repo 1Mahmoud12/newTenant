@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:dobzz_seller/core/component/login_dialog.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:dobzz_seller/core/utils/app_icons.dart';
 import 'package:dobzz_seller/core/utils/constants.dart';
@@ -10,6 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+
+import '../../../../../core/network/local/cache.dart';
 
 class CartFloatingAB extends StatelessWidget {
   final Function()? onTap;
@@ -31,6 +34,12 @@ class CartFloatingAB extends StatelessWidget {
         backgroundColor: AppColors.primaryColor,
         onPressed: onTap ??
             () {
+              if (loginCacheValue?.data?.id == null) {
+                LoginDialog.show(
+                  context,
+                );
+                return;
+              }
               context.navigateToPage(const CartView());
             },
         child: Stack(

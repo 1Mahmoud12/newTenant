@@ -9,10 +9,10 @@ class WishListDataSource {
   // Get all products in wishlist - POST API with customer_id parameter
   static Future<Either<Failure, WishListModel>> getWishList() async {
     try {
-      final customerId = Constants.customerId ?? '2';
+      final customerId = Constants.customerId;
       final response = await DioHelper.postData(
         endPoint: 'wishlist-list',
-        query: {'customer_id': customerId},
+        query: {if (customerId != null) 'customer_id': customerId},
         data: {},
       );
       return Right(WishListModel.fromJson(response.data));

@@ -278,6 +278,12 @@ class _AddToCartButtonState extends State<AddToCartButton> {
             onTap: state is AddToCartLoading
                 ? null
                 : () async {
+                    if (loginCacheValue?.data?.id == null) {
+                      LoginDialog.show(
+                        context,
+                      );
+                      return;
+                    }
                     await addToCartCubit
                         .addToCart(
                       productId: widget.productId,

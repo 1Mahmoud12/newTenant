@@ -3,8 +3,6 @@ import 'package:dobzz_seller/core/utils/custom_show_toast.dart';
 import 'package:dobzz_seller/core/utils/utils.dart';
 import 'package:dobzz_seller/feature/favorites/data/dataSource/wish_list_data_source.dart';
 import 'package:dobzz_seller/feature/favorites/data/model/wish_list_model.dart';
-import 'package:dobzz_seller/feature/home/data/models/product_mdoel.dart';
-import 'package:dobzz_seller/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -18,6 +16,9 @@ class WishListCubit extends Cubit<WishListState> {
 
   Future<void> getWishList({required BuildContext context}) async {
     emit(WishListLoading());
+    // if(Constants.customerId==null){
+    //   return;
+    // }
     await WishListDataSource.getWishList().then(
       (value) async {
         value.fold((l) {
@@ -26,6 +27,7 @@ class WishListCubit extends Cubit<WishListState> {
         }, (r) async {
           wishList = r.data?.data ?? [];
           ConstantsModels.wishListModel = r;
+
           emit(WishListSuccess());
         });
       },

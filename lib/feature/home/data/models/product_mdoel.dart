@@ -397,6 +397,7 @@ class ReviewModel {
 
 class Product {
   int? id;
+  int? categoryId;
   String? name;
   String? description;
   String? skuCode;
@@ -438,8 +439,9 @@ class Product {
   String? finalPrice;
   dynamic salePrice;
 
-  Product(
-      {this.id,
+  Product({
+    this.id,
+    this.categoryId,
       this.name,
       this.slug,
       this.description,
@@ -483,6 +485,7 @@ class Product {
     id = json['id'];
     name = json['name'];
     description = json['description'];
+    categoryId = json['category_id'];
     slug = json['slug'];
 
     price = json['price'];
@@ -557,6 +560,7 @@ class Product {
     data['id'] = id;
     data['name'] = name;
     data['slug'] = slug;
+    data['category_id'] = categoryId;
 
     data['status'] = available;
     data['description'] = description;

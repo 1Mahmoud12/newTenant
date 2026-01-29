@@ -12,7 +12,8 @@ import 'package:dobzz_seller/feature/account/view/manager/deleteAccount/cubit/de
 import 'package:dobzz_seller/feature/account/view/myDetalis/presentation/manager/editProfile/cubit/edit_profile_cubit.dart';
 import 'package:dobzz_seller/feature/account/view/myDetalis/presentation/my_details_veiw.dart';
 import 'package:dobzz_seller/feature/account/view/presentation/language_view.dart';
-import 'package:dobzz_seller/feature/auth/login/view/presentation/login_screen.dart';
+import 'package:dobzz_seller/feature/favorites/views/manager/wishList/cubit/wish_list_cubit.dart';
+import 'package:dobzz_seller/feature/navigation/view/presentation/navigation_view.dart';
 import 'package:dobzz_seller/mainCubit/cubit/main_cubit_cubit.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -391,8 +392,12 @@ class _ProfileViewThemeOneState extends State<ProfileViewThemeOne> {
                         onTap: () {
                           showLogoutDialog(context, () async {
                             loginCacheValue = null;
-                            await userCache?.clear();
-                            context.navigateToPage(const LoginScreen());
+                            Constants.token = '';
+                            Constants.customerId = null;
+                            ConstantsModels.wishListModel = null;
+                            context.read<WishListCubit>().wishList.clear();
+                            await loginCache?.clear();
+                            context.navigateToPage(const NavigationViewWithThemes());
                           });
                         },
                       ),

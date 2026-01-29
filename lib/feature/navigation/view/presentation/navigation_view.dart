@@ -2,9 +2,9 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:dobzz_seller/core/utils/utils.dart';
-import 'package:dobzz_seller/feature/account/view/myOrders/presentation/my_order_view.dart';
 import 'package:dobzz_seller/feature/account/view/presentation/themes/account_theme_one.dart';
-import 'package:dobzz_seller/feature/cart/view/manager/cartItems/cubit/cart_items_cubit.dart';
+import 'package:dobzz_seller/feature/allProducts/view/all_products_view.dart';
+import 'package:dobzz_seller/feature/favorites/views/manager/wishList/cubit/wish_list_cubit.dart';
 import 'package:dobzz_seller/feature/favorites/views/presentation/favorite_view.dart';
 import 'package:dobzz_seller/feature/home/views/presentation/home_page_view.dart';
 import 'package:dobzz_seller/feature/navigation/view/presentation/navigation_bar_theme/circled_border_Theme.dart';
@@ -13,6 +13,7 @@ import 'package:dobzz_seller/feature/navigation/view/presentation/navigation_bar
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/component/login_dialog.dart';
 import '../../../../core/network/local/cache.dart';
@@ -50,12 +51,17 @@ class _NavigationViewWithThemesState extends State<NavigationViewWithThemes> {
 
     _selectedIndex = widget.initialIndex!;
     _theme = widget.theme;
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) {
+        context.read<WishListCubit>().getWishList(context: context);
+      },
+    );
     super.initState();
   }
 
   void _onItemTapped(int index) {
     log('loginCacheValue ====> ${loginCacheValue?.data?.id}');
-    if (index == 1 || index == 2) {
+    if (index == 2 || index == 3) {
       if (loginCacheValue?.data?.id == null) {
         LoginDialog.show(
           context,
@@ -70,7 +76,7 @@ class _NavigationViewWithThemesState extends State<NavigationViewWithThemes> {
 
   final List<Widget> _screens = [
     const HomePageView(),
-    const MyOrderView(),
+    const AllProductsView(),
     const FavoriteView(),
     const ProfileViewThemeOne(),
   ];
