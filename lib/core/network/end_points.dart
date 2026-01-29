@@ -93,6 +93,7 @@ class EndPoints {
   static const order = 'shop/orders';
   static const checkoutDetails = 'shop/checkout';
   static const processToCheckout = 'shop/checkout/proceed';
+  static const placeOrder = 'place-order';
   static const subCategories = 'shop/sub-categories?filter[parent_id]=';
 
   // Payment Setting

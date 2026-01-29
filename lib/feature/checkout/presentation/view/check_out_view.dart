@@ -2,7 +2,6 @@ import 'package:dobzz_seller/core/component/buttons/custom_text_button.dart';
 import 'package:dobzz_seller/core/component/custom_app_bar.dart';
 import 'package:dobzz_seller/core/component/custom_drop_down_menu.dart';
 import 'package:dobzz_seller/core/component/fields/custom_text_form_field.dart';
-import 'package:dobzz_seller/core/services/payment/select_payment_method_dialog.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:dobzz_seller/core/utils/constant_gaping.dart';
 import 'package:dobzz_seller/core/utils/constants.dart';
@@ -16,12 +15,15 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import '../../../../core/network/local/cache.dart';
+import '../../data/models/place_order_model.dart';
+import '../../../cart/data/models/cart_item_model.dart';
 import '../../../address/view/manager/address/cubit/address_cubit.dart';
 import '../../../address/view/presentation/add_address_view.dart';
 
 class CheckoutView extends StatefulWidget {
-  const CheckoutView({Key? key}) : super(key: key);
+  final CartData cartData;
+  const CheckoutView({Key? key, required this.cartData}) : super(key: key);
 
   @override
   State<CheckoutView> createState() => _CheckoutViewState();
@@ -50,17 +52,71 @@ class _CheckoutViewState extends State<CheckoutView> {
               return CustomTextButton(
                 borderRadius: 8,
                 onPress: () {
-                  if (ConstantsModels.addressModel?.data?.data?.isEmpty ?? true) {
+                  if (ConstantsModels.addressModel?.data?.data?.isEmpty ??
+                      true) {
                     context.navigateToPage(
                       AddAddressView(
                         addressCubit: addressCubit,
                       ),
                     );
                   } else {
-                    selectPaymentMethodDialog(
-                      context,
-                      onPress: (paymentMethodId) {},
+                    final selectedAddressId =
+                        int.tryParse(processToCheckoutCubit.addressId) ?? 0;
+
+                    if (selectedAddressId <= 0) {
+                      Utils.showToast(
+                          title: 'please_select_address'.tr(),
+                          state: UtilState.error);
+                      return;
+                    }
+
+                    final selectedAddress =
+                        ConstantsModels.addressModel?.data?.data?.firstWhere(
+                      (element) => element.id == selectedAddressId,
+                      orElse: () =>
+                          ConstantsModels.addressModel!.data!.data!.first,
                     );
+
+                    if (selectedAddress != null) {
+                      final billingInfo = BillingInfoModel(
+                        billingPostecode: selectedAddress.postcode.toString(),
+                        email: loginCacheValue?.data?.email ?? '',
+                        billingCity: selectedAddress.cityName ?? '',
+                        lastname: '',
+                        billingCompanyName: '',
+                        deliveryCity: selectedAddress.cityName ?? '',
+                        deliveryState: selectedAddress.stateId.toString(),
+                        billingAddress: selectedAddress.address ?? '',
+                        deliveryPostcode: selectedAddress.postcode.toString(),
+                        billingUserTelephone: selectedAddress.phone ?? '',
+                        firstname: selectedAddress.fullName ?? '',
+                        deliveryCountry: selectedAddress.countryId.toString(),
+                        billingCountry: selectedAddress.countryId.toString(),
+                        deliveryAddress: selectedAddress.address ?? '',
+                        billingState: selectedAddress.stateId.toString(),
+                      );
+
+                      final body = PlaceOrderBodyModel(
+                        themeId: "stylique",
+                        paymentType: "cod",
+                        billingInfo: billingInfo,
+                        couponInfo: {},
+                        deliveryComment: "",
+                        userId: loginCacheValue?.data?.id.toString() ?? "0",
+                        customerId: loginCacheValue?.data?.id.toString() ?? "0",
+                        paymentComment: "",
+                        methodId: "1",
+                        shippingId: "3",
+                        price: widget.cartData.subTotal?.toString() ?? "0",
+                      );
+
+                      processToCheckoutCubit.placeOrder(
+                          context: context, body: body);
+                    } else {
+                      Utils.showToast(
+                          title: 'please_select_address'.tr(),
+                          state: UtilState.error);
+                    }
                   }
                 },
                 child: state is ProcessToCheckoutLoading
@@ -126,20 +182,49 @@ class _CheckoutViewState extends State<CheckoutView> {
                           flex: 7,
                           child: BlocBuilder<AddressCubit, AddressState>(
                             builder: (context, state) {
+                              final addresses =
+                                  ConstantsModels.addressModel?.data?.data ??
+                                      [];
+                              final firstAddress =
+                                  addresses.isNotEmpty ? addresses.first : null;
+                              final initialName =
+                                  (Constants.defaultAddress.name != null &&
+                                          Constants
+                                              .defaultAddress.name!.isNotEmpty)
+                                      ? Constants.defaultAddress.name!
+                                      : (firstAddress?.fullName ?? 'Address');
+                              final initialId =
+                                  (Constants.defaultAddress.addressId != null)
+                                      ? Constants.defaultAddress.addressId!
+                                      : (firstAddress?.id ?? 0);
+
+                              // Ensure addressId is set if we have a default/first address
+                              if (processToCheckoutCubit.addressId.isEmpty ||
+                                  processToCheckoutCubit.addressId == '-1') {
+                                if (initialId != 0) {
+                                  processToCheckoutCubit.addressId =
+                                      initialId.toString();
+                                }
+                              }
+
                               return CustomDropDownMenu(
-                                menuItemPadding: const EdgeInsets.symmetric(horizontal: 16),
-                                hasError: ConstantsModels.addressModel?.data?.data?.isEmpty ?? true,
-                                errorText: 'you should create address first'.tr(),
+                                menuItemPadding:
+                                    const EdgeInsets.symmetric(horizontal: 16),
+                                hasError: addresses.isEmpty,
+                                errorText:
+                                    'you should create address first'.tr(),
                                 nameField: 'Address'.tr(),
                                 borderColor: Colors.grey.withOpacityNew(0.2),
-                                selectedItem: DropDownModel(name: Constants.defaultAddress.name!, value: 0),
-                                items: ConstantsModels.addressModel?.data?.data?.map((e) {
-                                      return DropDownModel(name: e.fullName ?? '', value: e.id ?? -1);
-                                    }).toList() ??
-                                    [],
+                                selectedItem: DropDownModel(
+                                    name: initialName, value: initialId),
+                                items: addresses.map((e) {
+                                  return DropDownModel(
+                                      name: e.title ?? '', value: e.id ?? -1);
+                                }).toList(),
                                 onChanged: (value) {
                                   // setState(() {});
-                                  processToCheckoutCubit.addressId = value?.value.toString() ?? '-1';
+                                  processToCheckoutCubit.addressId =
+                                      value?.value.toString() ?? '-1';
                                   // cityCubit.getAddress(context: context, stateId: addAddressCubit.stateId);
                                   // addAddressCubit.stateId = value?.value ?? -1;
                                 },
@@ -224,11 +309,14 @@ class _CheckoutViewState extends State<CheckoutView> {
                       ),
                     ),
                     const SizedBox(height: 16),
-                    _buildOrderSummaryRow('Sub-total'.tr(), '\$ ${ConstantsModels.checkoutDetailsModel?.subTotalPrice ?? 0}'),
+                    _buildOrderSummaryRow('Sub-total'.tr(),
+                        '\$ ${widget.cartData.subTotal ?? 0}'),
                     const SizedBox(height: 12),
-                    _buildOrderSummaryRow('VAT (%)'.tr(), '\$ 0.00'),
+                    _buildOrderSummaryRow('VAT (%)'.tr(),
+                        '\$ ${widget.cartData.totalTaxPrice ?? 0}'),
                     const SizedBox(height: 12),
-                    _buildOrderSummaryRow('Shipping fee'.tr(), '\$ 0.00'),
+                    _buildOrderSummaryRow('Shipping fee'.tr(),
+                        '\$ ${widget.cartData.shippingOriginalPrice ?? 0}'),
                     const SizedBox(height: 8),
                     Divider(
                       thickness: 0.7,
@@ -236,7 +324,9 @@ class _CheckoutViewState extends State<CheckoutView> {
                     ),
                     const SizedBox(height: 8),
                     // Payment Method Section
-                    _buildOrderSummaryRow('Total'.tr(), '\$ ${ConstantsModels.checkoutDetailsModel?.subTotalPrice ?? 0}', isTotal: true),
+                    _buildOrderSummaryRow('Total'.tr(),
+                        '\$ ${widget.cartData.totalFinalPrice ?? 0}',
+                        isTotal: true),
 
                     // Payment Method Section
                     const SizedBox(height: 8),
@@ -254,7 +344,8 @@ class _CheckoutViewState extends State<CheckoutView> {
     );
   }
 
-  Widget _buildOrderSummaryRow(String title, String amount, {bool isTotal = false}) {
+  Widget _buildOrderSummaryRow(String title, String amount,
+      {bool isTotal = false}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -321,7 +412,9 @@ class _PromoCodeState extends State<PromoCode> {
               child: InkWell(
                 onTap: () {
                   if (widget.discountCubit.discountCode.text.isEmpty) {
-                    Utils.showToast(title: 'Please Enter promo code'.tr(), state: UtilState.error);
+                    Utils.showToast(
+                        title: 'Please Enter promo code'.tr(),
+                        state: UtilState.error);
                   } else {
                     widget.discountCubit.discount(context: context);
                   }

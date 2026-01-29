@@ -7,6 +7,7 @@ import 'package:dobzz_seller/core/network/end_points.dart';
 import 'package:dobzz_seller/core/network/errors/failures.dart';
 import 'package:dobzz_seller/feature/cart/data/models/cart_item_model.dart';
 
+import '../../../../core/network/local/cache.dart';
 import '../../../../core/utils/constants.dart';
 
 class CartItemDataSource {
@@ -14,8 +15,8 @@ class CartItemDataSource {
     try {
       final response = await DioHelper.postData(endPoint: EndPoints.cartItems, query: {
         'theme_id': 'grocery',
-        'customer_id': Constants.customerId,
-      }, data: {});
+        'customer_id': loginCacheValue?.data?.id,
+      },data: {});
       if (response.data['status'] == 1) {
         return Right(CartModel.fromJson(response.data));
       } else {

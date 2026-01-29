@@ -15,7 +15,6 @@ import 'package:dobzz_seller/feature/cart/data/models/cart_item_model.dart';
 import 'package:dobzz_seller/feature/cart/view/manager/addToCart/cubit/add_to_cart_cubit.dart';
 import 'package:dobzz_seller/feature/cart/view/manager/cartItems/cubit/cart_items_cubit.dart';
 import 'package:dobzz_seller/feature/cart/view/manager/deleteFromCart/cubit/delete_from_cart_cubit.dart';
-import 'package:dobzz_seller/feature/checkout/presentation/manager/checkoutDetails/cubit/checkout_details_cubit.dart';
 import 'package:dobzz_seller/feature/checkout/presentation/view/check_out_view.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -35,7 +34,6 @@ class CartView extends StatefulWidget {
 class _CartViewState extends State<CartView> {
   final AddToCartCubit addToCartCubit = AddToCartCubit();
   final DeleteFromCartCubit deleteFromCartCubit = DeleteFromCartCubit();
-  final CheckoutDetailsCubit checkoutDetailsCubit = CheckoutDetailsCubit();
 
   // Track items that are currently loading
   final Map<int, bool> loadingItems = {};
@@ -48,7 +46,7 @@ class _CartViewState extends State<CartView> {
 
   void _loadCartItems() {
     CartItemsCubit.of(context).getCartItems(context: context);
-    checkoutDetailsCubit.getCheckoutDetails(context: context);
+    // checkoutDetailsCubit.getCheckoutDetails(context: context);
   }
 
   // Handle add quantity with loading indicator
@@ -80,7 +78,7 @@ class _CartViewState extends State<CartView> {
 
       // Refresh checkout details and cart items from server
       if (mounted) {
-        await checkoutDetailsCubit.getCheckoutDetails(context: context);
+        // await checkoutDetailsCubit.getCheckoutDetails(context: context);
       }
     } catch (e) {
       if (mounted) {
@@ -122,7 +120,7 @@ class _CartViewState extends State<CartView> {
       );
 
       if (mounted) {
-        await checkoutDetailsCubit.getCheckoutDetails(context: context);
+        // await checkoutDetailsCubit.getCheckoutDetails(context: context);
       }
     } catch (e) {
       if (mounted) {
@@ -171,7 +169,7 @@ class _CartViewState extends State<CartView> {
 
       // Refresh checkout details and cart items from server
       if (mounted) {
-        await checkoutDetailsCubit.getCheckoutDetails(context: context);
+        // await checkoutDetailsCubit.getCheckoutDetails(context: context);
         // We can keep this commented out since we've already updated the UI
         // await cartCubit.getCartItems(context: context);
       }
@@ -195,7 +193,6 @@ class _CartViewState extends State<CartView> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider.value(value: checkoutDetailsCubit),
         BlocProvider.value(value: addToCartCubit),
         BlocProvider.value(value: deleteFromCartCubit),
       ],
@@ -216,9 +213,8 @@ class _CartViewState extends State<CartView> {
                           .cartItemModel!.data!.productList!.isNotEmpty
                   ? [
                       GoToCheckOutButton(
-                        checkoutDetailsCubit: checkoutDetailsCubit,
                         totalPrice: ConstantsModels
-                                .cartItemModel?.data?.subTotal
+                                .cartItemModel?.data?.totalFinalPrice
                                 ?.toString() ??
                             '0',
                       ),
@@ -305,12 +301,9 @@ class _CartViewState extends State<CartView> {
 class GoToCheckOutButton extends StatelessWidget {
   const GoToCheckOutButton({
     super.key,
-    required this.checkoutDetailsCubit,
     required this.totalPrice,
   });
   final String totalPrice;
-
-  final CheckoutDetailsCubit checkoutDetailsCubit;
 
   @override
   Widget build(BuildContext context) {
@@ -318,13 +311,9 @@ class GoToCheckOutButton extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Column(
         children: [
-          BlocBuilder<CheckoutDetailsCubit, CheckoutDetailsState>(
-            builder: (context, state) {
-              return CheckOutItem(
-                label: 'Sub-total'.tr(),
-                value: totalPrice ?? '0',
-              );
-            },
+          CheckOutItem(
+            label: 'Sub-total'.tr(),
+            value: totalPrice ?? '0',
           ),
           Divider(
             thickness: 0.7,
@@ -343,7 +332,9 @@ class GoToCheckOutButton extends StatelessWidget {
                   //   return;
                   // }
                 }
-                context.navigateToPage(const CheckoutView());
+                context.navigateToPage(CheckoutView(
+                  cartData: ConstantsModels.cartItemModel!.data!,
+                ));
               }
 
               if (loginCacheValue?.data?.email == Constants.demoAccount) {
@@ -351,7 +342,9 @@ class GoToCheckOutButton extends StatelessWidget {
                     title: 'This is demo account you can not create order ',
                     state: UtilState.error);
               } else {
-                context.navigateToPage(const CheckoutView());
+                context.navigateToPage(CheckoutView(
+                  cartData: ConstantsModels.cartItemModel!.data!,
+                ));
               }
             },
             child: Row(

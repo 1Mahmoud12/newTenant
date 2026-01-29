@@ -5,11 +5,13 @@ import 'package:dobzz_seller/core/network/errors/failures.dart';
 import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:dobzz_seller/feature/favorites/data/model/wish_list_model.dart';
 
+import '../../../../core/network/local/cache.dart';
+
 class WishListDataSource {
   // Get all products in wishlist - POST API with customer_id parameter
   static Future<Either<Failure, WishListModel>> getWishList() async {
     try {
-      final customerId = Constants.customerId;
+      final customerId = loginCacheValue?.data?.id;
       final response = await DioHelper.postData(
         endPoint: 'wishlist-list',
         query: {if (customerId != null) 'customer_id': customerId},

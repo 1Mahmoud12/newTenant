@@ -29,13 +29,6 @@
   "something_went_wrong": "Something went wrong, please try again",
   "server_returned_html_instead_of_json": "Server returned HTML instead of JSON",
   "unknown_error": "Unknown error",
-
-
-
-
-
-
-
   "Search product..": "Search product..",
   "Categories": "Categories",
   "Flash Sale": "Flash Sale",
@@ -99,6 +92,7 @@
   "Card": "Card",
   "Cash": "Cash",
   "Apple Pay": "Apple Pay",
+  "please_select_address": "Please select an address",
   "Order Summary": "Order Summary",
   "VAT (%)": "VAT (%)",
   "Shipping fee": "Shipping fee",
@@ -276,13 +270,12 @@
   "Manage alert preferences": "Manage alert preferences",
   "Select your preferred language": "Select your preferred language",
   "Get help with your account": "Get help with your account",
-  "Edit Profile":"Edit Profile",
-  "Account Actions":"Account Actions",
-  "Support":"Support",
-  "Security & Preferences":"Security & Preferences",
-  "My Account":"My Account",
+  "Edit Profile": "Edit Profile",
+  "Account Actions": "Account Actions",
+  "Support": "Support",
+  "Security & Preferences": "Security & Preferences",
+  "My Account": "My Account",
   "Product Details": "Product Details",
-
   "Added to Cart": "Added to Cart",
   "Try Again": "Try Again",
   "Maximum quantity is": "Maximum quantity is",

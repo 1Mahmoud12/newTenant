@@ -29,6 +29,7 @@ class CouponInfo {
     };
   }
 }
+
 class CartProduct {
   int? cartId;
   String? cartCreated;
@@ -75,6 +76,7 @@ class CartProduct {
     };
   }
 }
+
 class CartData {
   List<CartProduct>? productList;
   int? subTotal;
@@ -83,6 +85,9 @@ class CartData {
   String? finalPrice;
   String? totalSubPrice;
   CouponInfo? couponInfo;
+  String? totalTaxPrice;
+  int? shippingOriginalPrice;
+  String? totalFinalPrice;
 
   CartData({
     this.productList,
@@ -92,6 +97,9 @@ class CartData {
     this.finalPrice,
     this.totalSubPrice,
     this.couponInfo,
+    this.totalTaxPrice,
+    this.shippingOriginalPrice,
+    this.totalFinalPrice,
   });
 
   CartData.fromJson(Map<String, dynamic> json) {
@@ -104,8 +112,11 @@ class CartData {
     subTotal = json['sub_total'];
     cartTotalProduct = json['cart_total_product'];
     cartTotalQty = json['cart_total_qty'];
-    finalPrice = json['final_price'];
-    totalSubPrice = json['total_sub_price'];
+    finalPrice = json['final_price']?.toString();
+    totalSubPrice = json['total_sub_price']?.toString();
+    totalTaxPrice = json['total_tax_price']?.toString();
+    shippingOriginalPrice = json['shipping_original_price'];
+    totalFinalPrice = json['total_final_price']?.toString();
     couponInfo = json['coupon_info'] != null
         ? CouponInfo.fromJson(json['coupon_info'])
         : null;
@@ -119,10 +130,14 @@ class CartData {
       'cart_total_qty': cartTotalQty,
       'final_price': finalPrice,
       'total_sub_price': totalSubPrice,
+      'total_tax_price': totalTaxPrice,
+      'shipping_original_price': shippingOriginalPrice,
+      'total_final_price': totalFinalPrice,
       'coupon_info': couponInfo?.toJson(),
     };
   }
 }
+
 class CartModel {
   int? status;
   String? message;

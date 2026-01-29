@@ -206,7 +206,8 @@ class _CustomDropDownMenuState extends State<CustomDropDownMenu> {
                           )
                         : Text(
                             item.name,
-                            style: Styles.style12400,
+                            style:
+                                Styles.style12400.copyWith(color: Colors.black),
                             overflow: TextOverflow.ellipsis,
                             textAlign: context.locale.languageCode == 'ar'
                                 ? TextAlign.right

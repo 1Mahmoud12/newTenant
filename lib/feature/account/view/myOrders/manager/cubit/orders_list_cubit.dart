@@ -8,7 +8,7 @@ class OrdersListCubit extends Cubit<OrdersListState> {
   OrdersListCubit() : super(OrdersListInitial());
 
   // Toggle this to use dummy data (true) or real API (false)
-  static const bool useDummyData = true;
+  static const bool useDummyData = false;
 
   Future<void> fetchOrders() async {
     emit(OrdersListLoading());
