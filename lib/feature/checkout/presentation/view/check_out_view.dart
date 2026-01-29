@@ -151,6 +151,7 @@ class _CheckoutViewState extends State<CheckoutView> {
           BlocProvider.value(value: processToCheckoutCubit),
           BlocProvider.value(value: discountCubit),
         ],
+
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: SingleChildScrollView(
