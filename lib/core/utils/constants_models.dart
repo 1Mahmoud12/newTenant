@@ -12,6 +12,7 @@ import 'package:dobzz_seller/feature/cart/data/models/cart_item_model.dart';
 import 'package:dobzz_seller/feature/checkout/data/models/checkout_details_model.dart';
 import 'package:dobzz_seller/feature/favorites/data/model/wish_list_model.dart';
 import 'package:dobzz_seller/feature/home/data/models/categories_model.dart';
+import 'package:dobzz_seller/feature/home/data/models/land_page_model.dart';
 import 'package:dobzz_seller/feature/home/data/models/product_mdoel.dart';
 import 'package:dobzz_seller/feature/home/data/models/sales_model.dart';
 import 'package:dobzz_seller/feature/home/data/models/slider_model.dart';
@@ -41,6 +42,7 @@ class ConstantsModels {
   static GeneralNotificationModel? generalNotificationModel;
   static SliderModel? sliderModel;
   static SalesBannerModel? salesBannerModel;
+  static LandPageModel? landPageModel;
 
   // Payments
   static PaymentMethodModel? paymentMethodModel;

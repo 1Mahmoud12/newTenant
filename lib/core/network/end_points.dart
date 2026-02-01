@@ -74,6 +74,7 @@ class EndPoints {
   static const getMyCanceledOrders = 'Order/GetMyCanceledOrders';
   static const getOrderDetails = 'Order/GetOrderDetails';
   static const getOrderHistory = 'Order/GetOrderHistory';
+  static const orderDetail = 'order-detail';
 
   // Cart
   static const getUserCart = 'Order/GetUserCart';
@@ -136,4 +137,6 @@ class EndPoints {
   static const getNotifications = 'shop/user/notifications/get-all-unread';
   static const markAllRead = 'shop/user/notifications/mark-all-read';
   static const markAsRead = 'shop/user/notifications/mark-as-read';
+
+  static const landpage = 'landingpage';
 }

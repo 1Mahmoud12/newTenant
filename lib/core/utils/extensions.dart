@@ -50,3 +50,10 @@ extension ColorOpacityX on Color {
     return withAlpha((opacity * 255).toInt());
   }
 }
+
+extension StringExtension on String {
+  String capitalize() {
+    if (isEmpty) return this;
+    return '${this[0].toUpperCase()}${substring(1)}';
+  }
+}

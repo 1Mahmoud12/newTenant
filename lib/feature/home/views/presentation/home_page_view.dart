@@ -18,6 +18,7 @@ import 'package:dobzz_seller/feature/home/views/presentation/widgets/cart_floati
 import 'package:dobzz_seller/feature/home/views/presentation/widgets/categories_list.dart';
 // import 'package:dobzz_seller/feature/home/views/presentation/widgets/featured_category.dart';
 import 'package:dobzz_seller/feature/home/views/presentation/widgets/home_page_header.dart';
+import 'package:dobzz_seller/feature/home/views/presentation/widgets/home_slider.dart';
 import 'package:dobzz_seller/feature/home/views/presentation/widgets/horizotal_product_list.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -87,7 +88,7 @@ class _HomePageViewState extends State<HomePageView> {
                   ),
                 ),
                 h10,
-                //const HomeSlider(),
+                const HomeSlider(),
                 h10,
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),

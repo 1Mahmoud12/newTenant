@@ -1,8 +1,11 @@
+import 'package:dobzz_seller/core/component/buttons/custom_text_button.dart';
 import 'package:dobzz_seller/core/component/custom_app_bar.dart';
 import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:dobzz_seller/core/utils/errorLoadingWidgets/empty_widget.dart';
+import 'package:dobzz_seller/core/utils/navigate.dart';
 import 'package:dobzz_seller/feature/account/view/myOrders/data/models/orders_list_model.dart';
 import 'package:dobzz_seller/feature/account/view/myOrders/manager/cubit/orders_list_cubit.dart';
+import 'package:dobzz_seller/feature/account/view/myOrders/presentation/order_details_view.dart' hide OrderItem;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -208,12 +211,11 @@ class OrderCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final statusColor = _getStatusColor(order.deliveredStatusString ?? 'Pending');
 
-    return Card(
+    return Container(
       margin: const EdgeInsets.only(bottom: 16),
-      elevation: 2,
-      shape: RoundedRectangleBorder(
+      decoration: BoxDecoration(
+        color: AppColors.white,
         borderRadius: BorderRadius.circular(12),
-        side: BorderSide(color: Colors.grey.shade200),
       ),
       child: InkWell(
         onTap: () {
@@ -247,7 +249,7 @@ class OrderCard extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: statusColor.withOpacity(0.15),
                       borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: statusColor),
+                      //  border: Border.all(color: statusColor),
                     ),
                     child: Text(
                       (order.deliveredStatusString ?? 'Pending').toUpperCase(),
@@ -291,30 +293,28 @@ class OrderCard extends StatelessWidget {
                     ),
                   ],
                 ),
-              const SizedBox(height: 12),
-              const Divider(),
+
               const SizedBox(height: 8),
               // Amount and view details
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'EGP ${order.amount?.toStringAsFixed(2) ?? '0.00'}',
+                    '${order.amount?.toStringAsFixed(2) ?? '0.00'} ${'SAR'.tr()}',
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
                       color: AppColors.primaryColor,
                     ),
                   ),
-                  TextButton.icon(
-                    onPressed: () {
-                      // Navigate to details
+                  CustomTextButton(
+                    onPress: () {
+                      context.navigateToPage(OrderDetailsScreen(orderId: order.id!));
                     },
-                    icon: const Icon(Icons.arrow_forward, size: 16),
-                    label: Text('View Details'.tr()),
-                    style: TextButton.styleFrom(
-                      foregroundColor: AppColors.primaryColor,
-                    ),
+                    padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 24),
+                    childText: 'View Details'.tr(),
+                    borderRadius: 24,
+                    isExpanded: false,
                   ),
                 ],
               ),
