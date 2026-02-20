@@ -101,8 +101,31 @@ class AppVersionChecker {
       if (response.statusCode != 200) {
         errorMsg = "Can't find an app in the Google Play Store with the id: $packageName";
       } else {
-        newVersion = RegExp(r',\[\[\["([0-9,\.]*)"]],').firstMatch(response.body)!.group(1);
-        url = uri.toString();
+        final match = RegExp(r',\[\[\["([0-9,.]*)"]],').firstMatch(response.body);
+        if (match != null) {
+          newVersion = match.group(1);
+          url = uri.toString();
+        } else {
+          // Try alternative regex patterns for different Play Store HTML structures
+          final altMatch1 = RegExp('"version":"([0-9,.]*)"').firstMatch(response.body);
+          final altMatch2 = RegExp(r'\[\[\["([0-9,.]*)"]],').firstMatch(response.body);
+          final altMatch3 =
+              RegExp('Current Version</div><span class="htlgb"><div class="IQ1z0d"><span class="htlgb">([0-9,.]*)</span>').firstMatch(response.body);
+
+          if (altMatch1 != null) {
+            newVersion = altMatch1.group(1);
+            url = uri.toString();
+          } else if (altMatch2 != null) {
+            newVersion = altMatch2.group(1);
+            url = uri.toString();
+          } else if (altMatch3 != null) {
+            newVersion = altMatch3.group(1);
+            url = uri.toString();
+          } else {
+            errorMsg = 'Could not extract version from Google Play Store page. The app might not be published or the page structure has changed.';
+            url = uri.toString();
+          }
+        }
       }
     } catch (e) {
       errorMsg = '$e';

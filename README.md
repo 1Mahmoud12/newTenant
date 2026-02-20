@@ -30,6 +30,7 @@ fluttr pub get
 flutter build apk
 open build/app/outputs/flutter-apk/
 ```
+
 ```shell
 flutter clean  
 flutter pub get
@@ -40,10 +41,13 @@ rm -rf .symlinks
 pod install
 open .
 cd ..
+flutter build apk
+open build/app/outputs/flutter-apk/
 ```
 
 ```shell
-
+flutter clean  
+fluttr pub get
 flutter build appbundle
 open build/app/outputs/bundle/
 ```

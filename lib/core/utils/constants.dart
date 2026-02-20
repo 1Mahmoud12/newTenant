@@ -34,8 +34,8 @@ class Constants {
   static bool noInternet = false;
   static bool tablet = false;
   static String versionApp = '';
-  static String packageName = 'com.mah852.dobbz_user';
-  static String appleId = '6745216210';
+  static String packageName = 'com.codgoo.anjez';
+  static String appleId = '6758432142';
   static String demoAccount = '+966500975853';
 
   static String urlGoogleMapPlace = 'https://maps.googleapis.com/maps/api/place/autocomplete/json';

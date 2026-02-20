@@ -10,7 +10,7 @@ if (keystorePropertiesFile.exists()) {
     keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 }
 android {
-    namespace = "com.mah852.dobzz_seller"
+    namespace = "com.codgoo.anjez"
     compileSdkVersion 36
     ndkVersion = "28.2.13676358"
 

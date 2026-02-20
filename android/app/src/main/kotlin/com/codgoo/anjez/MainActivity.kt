@@ -1,4 +1,4 @@
-package com.mah852.dobzz_seller
+package com.codgoo.anjez
 
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
@@ -7,7 +7,7 @@ import android.view.View
 import io.flutter.embedding.android.FlutterFragmentActivity;
 
 class MainActivity : FlutterFragmentActivity() {
-	private val channelName = "com.mah852.dobzz_seller/ui"
+	private val channelName = "com.codgoo.anjez/ui"
 
 	override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
 		super.configureFlutterEngine(flutterEngine)
