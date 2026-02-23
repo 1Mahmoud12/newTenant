@@ -4,9 +4,9 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:awesome_notifications/awesome_notifications.dart';
-import 'package:dobzz_seller/core/network/local/cache.dart';
-import 'package:dobzz_seller/core/utils/constants.dart';
-import 'package:dobzz_seller/core/utils/device_id.dart';
+import 'package:rova_star/core/network/local/cache.dart';
+import 'package:rova_star/core/utils/constants.dart';
+import 'package:rova_star/core/utils/device_id.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

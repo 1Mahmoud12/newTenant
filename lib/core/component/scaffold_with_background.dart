@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:dobzz_seller/core/utils/app_images.dart';
+import 'package:rova_star/core/utils/app_images.dart';
 
 class ScaffoldWithBackground extends StatelessWidget {
   final Widget child;

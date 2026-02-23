@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:dobzz_seller/core/themes/colors.dart';
-import 'package:dobzz_seller/core/utils/extensions.dart';
+import 'package:rova_star/core/themes/colors.dart';
+import 'package:rova_star/core/utils/extensions.dart';
 
 class SliderWithThumb extends StatefulWidget {
   final double valueSlider;

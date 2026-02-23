@@ -1,15 +1,13 @@
 class EndPoints {
-  static const tenant = 'stylique';
-
-  static const domain = 'https://togaar.com';
+  static const domain = 'https://backend.dobzz.com';
 
   // static const domain = 'https://kadin.dobzz.com';
-  static const baseUrl = '$domain/api/$tenant/';
+  static const baseUrl = '$domain/api/v1/';
 
   // Auth
   static const countryCodes = 'Account/CountryCodes';
-  static const register = 'register';
-  static const login = 'login';
+  static const register = 'shop/auth/register';
+  static const login = 'shop/auth/login';
   static const validateOTP = 'shop/auth/verify-register-otp';
   static const updateFcmToken = 'Account/UpdateFCMToken';
   static const appVisit = 'AppSetting/Admin_UpdateAppVisit';
@@ -30,6 +28,7 @@ class EndPoints {
   static const validateOTPChangePhone = 'Account/ValidateOTPChangePhone';
 
   // Address
+  static const addAddress = 'Address/AddUserAddress';
   static const editAddress = 'Address/EditUserAddress';
   static const deleteUserAddress = 'Address/DeleteUserAddress';
   static const deleteImageAddress = 'Address/DeleteImage';
@@ -42,13 +41,13 @@ class EndPoints {
   static const staticPage = 'StaticPage/StaticPage';
   static const getAdvertises = 'Advertise/GetAdvertises';
   static const getTopProduct = 'shop/top-products';
-  static const search = 'search';
-  static const bestSeller = 'bestseller';
+  static const search = 'shop/products';
+  static const bestSeller = 'shop/best-seller';
   static const newArrivals = 'shop/new-arrivals';
   static const wishlist = 'shop/wishlist';
 
   //  Service
-  static const getCategories = 'category';
+  static const getCategories = 'shop/categories';
   static const getAllServices = 'Service/GetAllServices';
   static const getAllPetPackages = 'Service/GetAllPetPackages';
   static const slider = 'shop/home';
@@ -74,9 +73,9 @@ class EndPoints {
   static const getMyCanceledOrders = 'Order/GetMyCanceledOrders';
   static const getOrderDetails = 'Order/GetOrderDetails';
   static const getOrderHistory = 'Order/GetOrderHistory';
-  static const orderDetail = 'order-detail';
 
   // Cart
+  static const addToCart = 'Order/AddToUserCart';
   static const getUserCart = 'Order/GetUserCart';
   static const deleteFromUserCart = 'Order/DeleteFromUserCart';
   static const orderPaymentMethods = 'Order/OrderPaymentMethods';
@@ -86,15 +85,12 @@ class EndPoints {
   static const addFeedbackList = 'Order/AddFeedbackList';
   static const submitCancellationRequest = 'Order/SubmitCancellationRequest';
   static const getOrderVisitTime = 'Order/GetOrderVisitTime';
-  static const cartItems = 'cart-list';
-  static const addToCart = 'add-cart';
-  static const cartQty = 'cart-qty';
+  static const cartItems = 'shop/cart';
   static const deleteAccount = 'shop/auth/delete-account';
   static const discount = 'shop/checkout/apply-code';
   static const order = 'shop/orders';
   static const checkoutDetails = 'shop/checkout';
   static const processToCheckout = 'shop/checkout/proceed';
-  static const placeOrder = 'place-order';
   static const subCategories = 'shop/sub-categories?filter[parent_id]=';
 
   // Payment Setting
@@ -120,23 +116,15 @@ class EndPoints {
   static const addToWishList = 'shop/wishlist';
 
   //product details
-  static const getProductDetails = 'product-detail';
+  static const getProductDetails = 'shop/products';
 
   // address
-  static const address = 'address-list';
-  static const addAddress = 'add-address';
-  static const updateAddress = 'update-address';
-  static const deleteAddress = 'delete-address';
+  static const address = 'shop/user/addresses';
   static const state = 'shop/user/states';
   static const cities = '/shop/user/cities';
-  static const countryList = 'country-list';
-  static const stateList = 'state-list';
-  static const cityList = 'city-list';
 
   // Notifications
   static const getNotifications = 'shop/user/notifications/get-all-unread';
   static const markAllRead = 'shop/user/notifications/mark-all-read';
   static const markAsRead = 'shop/user/notifications/mark-as-read';
-
-  static const landpage = 'landingpage';
 }

@@ -1,9 +1,9 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
-import 'package:dobzz_seller/core/network/dio_helper.dart';
-import 'package:dobzz_seller/core/network/end_points.dart';
-import 'package:dobzz_seller/core/network/errors/failures.dart';
-import 'package:dobzz_seller/feature/checkout/data/models/promo_code_model.dart';
+import 'package:rova_star/core/network/dio_helper.dart';
+import 'package:rova_star/core/network/end_points.dart';
+import 'package:rova_star/core/network/errors/failures.dart';
+import 'package:rova_star/feature/checkout/data/models/promo_code_model.dart';
 
 class DisscountDataSource {
   static Future<Either<Failure, PromoCodeModel>> discount({required String discountCode}) async {

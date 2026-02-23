@@ -1,9 +1,9 @@
-import 'package:dobzz_seller/core/component/custom_app_bar.dart';
-import 'package:dobzz_seller/core/component/custom_list.dart';
-import 'package:dobzz_seller/core/component/fields/custom_text_form_field.dart';
-import 'package:dobzz_seller/core/themes/colors.dart';
-import 'package:dobzz_seller/core/utils/constant_gaping.dart';
-import 'package:dobzz_seller/core/utils/extensions.dart';
+import 'package:rova_star/core/component/custom_app_bar.dart';
+import 'package:rova_star/core/component/custom_list.dart';
+import 'package:rova_star/core/component/fields/custom_text_form_field.dart';
+import 'package:rova_star/core/themes/colors.dart';
+import 'package:rova_star/core/utils/constant_gaping.dart';
+import 'package:rova_star/core/utils/extensions.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

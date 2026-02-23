@@ -1,7 +1,7 @@
-import 'package:dobzz_seller/feature/home/data/models/product_mdoel.dart';
-import 'package:dobzz_seller/feature/product/views/presentation/widgets/items_product_details.dart';
-import 'package:dobzz_seller/feature/product/views/presentation/widgets/product_description_widget.dart';
-import 'package:dobzz_seller/feature/product/views/presentation/widgets/product_name_widget.dart';
+import 'package:rova_star/feature/home/data/models/product_mdoel.dart';
+import 'package:rova_star/feature/product/views/presentation/widgets/items_product_details.dart';
+import 'package:rova_star/feature/product/views/presentation/widgets/product_description_widget.dart';
+import 'package:rova_star/feature/product/views/presentation/widgets/product_name_widget.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
@@ -33,27 +33,27 @@ class ProductInfoSection extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16),
-          ProductInfoItem(label: 'quantity', value: productModelData.available == true ? 'available' : 'not_available'),
+          ProductInfoItem(label: 'quantity', value: '${productModelData.quantity}'),
           ProductInfoItem(
             label: 'price',
             value: '${productModelData.price} ${'SAR'.tr()}',
             isPrice: true,
           ),
-          // ItemListWidget(
-          //   itemList: productModelData.categories?.map((e) {
-          //         return e.name ?? 'unknown';
-          //       }).toList() ??
-          //       [],
-          //   label: 'trending',
-          // ),
-          // if (productModelData.subCategories?.isNotEmpty ?? false)
-          //   ItemListWidget(
-          //     itemList: productModelData.subCategories?.map((e) {
-          //           return e.name ?? 'unknown';
-          //         }).toList() ??
-          //         [],
-          //     label: 'sub_category',
-          //   ),
+          ItemListWidget(
+            itemList: productModelData.categories?.map((e) {
+                  return e.name ?? 'unknown';
+                }).toList() ??
+                [],
+            label: 'category',
+          ),
+          if (productModelData.subCategories?.isNotEmpty ?? false)
+            ItemListWidget(
+              itemList: productModelData.subCategories?.map((e) {
+                    return e.name ?? 'unknown';
+                  }).toList() ??
+                  [],
+              label: 'sub_category',
+            ),
         ],
       ),
     );

@@ -1,161 +1,97 @@
-class CouponInfo {
-  int? couponId;
-  String? couponName;
-  String? couponCode;
-  String? couponDiscountType;
-  String? couponDiscountNumber;
-  String? couponDiscountAmount;
-  String? couponFinalAmount;
+class CartItemModel {
+  bool? status;
+  int? code;
+  String? message;
+  List<CartItemData>? data;
 
-  CouponInfo.fromJson(Map<String, dynamic> json) {
-    couponId = json['coupon_id'];
-    couponName = json['coupon_name'];
-    couponCode = json['coupon_code'];
-    couponDiscountType = json['coupon_discount_type'];
-    couponDiscountNumber = json['coupon_discount_number'];
-    couponDiscountAmount = json['coupon_discount_amount'];
-    couponFinalAmount = json['coupon_final_amount'];
-  }
+  CartItemModel({this.status, this.code, this.message, this.data});
 
-  Map<String, dynamic> toJson() {
-    return {
-      'coupon_id': couponId,
-      'coupon_name': couponName,
-      'coupon_code': couponCode,
-      'coupon_discount_type': couponDiscountType,
-      'coupon_discount_number': couponDiscountNumber,
-      'coupon_discount_amount': couponDiscountAmount,
-      'coupon_final_amount': couponFinalAmount,
-    };
-  }
-}
-
-class CartProduct {
-  int? cartId;
-  String? cartCreated;
-  int? productId;
-  String? image;
-  String? name;
-  String? originalPrice;
-  String? totalOriginalPrice;
-  String? discountPrice;
-  String? finalPrice;
-  int? qty;
-  String? variantName;
-  int? variantId;
-
-  CartProduct.fromJson(Map<String, dynamic> json) {
-    cartId = json['cart_id'];
-    cartCreated = json['cart_created'];
-    productId = json['product_id'];
-    image = json['image'];
-    name = json['name'];
-    originalPrice = json['orignal_price'];
-    totalOriginalPrice = json['total_orignal_price'];
-    discountPrice = json['discount_price'];
-    finalPrice = json['final_price'];
-    qty = json['qty'];
-    variantName = json['variant_name'];
-    variantId = json['variant_id'];
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'cart_id': cartId,
-      'cart_created': cartCreated,
-      'product_id': productId,
-      'image': image,
-      'name': name,
-      'orignal_price': originalPrice,
-      'total_orignal_price': totalOriginalPrice,
-      'discount_price': discountPrice,
-      'final_price': finalPrice,
-      'qty': qty,
-      'variant_name': variantName,
-      'variant_id': variantId,
-    };
-  }
-}
-
-class CartData {
-  List<CartProduct>? productList;
-  int? subTotal;
-  int? cartTotalProduct;
-  int? cartTotalQty;
-  String? finalPrice;
-  String? totalSubPrice;
-  CouponInfo? couponInfo;
-  String? totalTaxPrice;
-  int? shippingOriginalPrice;
-  String? totalFinalPrice;
-
-  CartData({
-    this.productList,
-    this.subTotal,
-    this.cartTotalProduct,
-    this.cartTotalQty,
-    this.finalPrice,
-    this.totalSubPrice,
-    this.couponInfo,
-    this.totalTaxPrice,
-    this.shippingOriginalPrice,
-    this.totalFinalPrice,
-  });
-
-  CartData.fromJson(Map<String, dynamic> json) {
-    if (json['product_list'] != null) {
-      productList = <CartProduct>[];
-      json['product_list'].forEach((v) {
-        productList!.add(CartProduct.fromJson(v));
+  CartItemModel.fromJson(Map<String, dynamic> json) {
+    status = json['status'];
+    code = json['code'];
+    message = json['message'];
+    if (json['data'] != null) {
+      data = <CartItemData>[];
+      json['data'].forEach((v) {
+        data!.add(CartItemData.fromJson(v));
       });
     }
-    subTotal = json['sub_total'];
-    cartTotalProduct = json['cart_total_product'];
-    cartTotalQty = json['cart_total_qty'];
-    finalPrice = json['final_price']?.toString();
-    totalSubPrice = json['total_sub_price']?.toString();
-    totalTaxPrice = json['total_tax_price']?.toString();
-    shippingOriginalPrice = json['shipping_original_price'];
-    totalFinalPrice = json['total_final_price']?.toString();
-    couponInfo = json['coupon_info'] != null
-        ? CouponInfo.fromJson(json['coupon_info'])
-        : null;
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'product_list': productList?.map((v) => v.toJson()).toList(),
-      'sub_total': subTotal,
-      'cart_total_product': cartTotalProduct,
-      'cart_total_qty': cartTotalQty,
-      'final_price': finalPrice,
-      'total_sub_price': totalSubPrice,
-      'total_tax_price': totalTaxPrice,
-      'shipping_original_price': shippingOriginalPrice,
-      'total_final_price': totalFinalPrice,
-      'coupon_info': couponInfo?.toJson(),
-    };
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    data['code'] = code;
+    data['message'] = message;
+    if (this.data != null) {
+      data['data'] = this.data!.map((v) => v.toJson()).toList();
+    }
+    return data;
   }
 }
 
-class CartModel {
-  int? status;
-  String? message;
-  CartData? data;
+class CartItemData {
+  int? id;
+  String? product;
+  String? size;
+  String? color;
+  String? colorCode;
+  int? priceForProduct;
+  int? availableQuantity;
+  String? productImagePath;
+  String? productThumbnailPath;
+  int? quantity;
+  int? price;
+  String? createdAt;
+  String? updatedAt;
 
-  CartModel({this.status, this.message, this.data});
+  CartItemData({
+    this.id,
+    this.product,
+    this.size,
+    this.color,
+    this.colorCode,
+    this.priceForProduct,
+    this.productImagePath,
+    this.productThumbnailPath,
+    this.quantity,
+    this.price,
+    this.createdAt,
+    this.availableQuantity,
+    this.updatedAt,
+  });
 
-  CartModel.fromJson(Map<String, dynamic> json) {
-    status = json['status'];
-    message = json['message'];
-    data = json['data'] != null ? CartData.fromJson(json['data']) : null;
+  CartItemData.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    product = json['product'];
+    size = json['size'];
+    color = json['color'];
+    colorCode = json['color_code'];
+    availableQuantity = json['available_quantity'];
+    priceForProduct = json['priceForProduct'];
+    productImagePath = json['product_image_path'];
+    productThumbnailPath = json['product_thumbnail_path'];
+    quantity = json['quantity'];
+    price = json['price'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'status': status,
-      'message': message,
-      'data': data?.toJson(),
-    };
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['product'] = product;
+    data['size'] = size;
+    data['color'] = color;
+    data['color_code'] = colorCode;
+    data['available_quantity'] = availableQuantity;
+    data['priceForProduct'] = priceForProduct;
+    data['product_image_path'] = productImagePath;
+    data['product_thumbnail_path'] = productThumbnailPath;
+    data['quantity'] = quantity;
+    data['price'] = price;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    return data;
   }
 }

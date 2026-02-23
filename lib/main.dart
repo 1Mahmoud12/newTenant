@@ -2,10 +2,6 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:device_preview/device_preview.dart';
-import 'package:dobzz_seller/core/utils/bloc_observe.dart';
-import 'package:dobzz_seller/core/utils/constants.dart';
-import 'package:dobzz_seller/feature/navigation/view/presentation/navigation_view.dart';
-import 'package:dobzz_seller/feature/splash/view/presentation/splash_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -15,12 +11,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:logger/logger.dart';
+import 'package:rova_star/core/utils/bloc_observe.dart';
+import 'package:rova_star/core/utils/constants.dart';
+import 'package:rova_star/feature/auth/data/models/register_model.dart';
+import 'package:rova_star/feature/navigation/view/presentation/navigation_view.dart';
+import 'package:rova_star/feature/splash/view/presentation/splash_screen.dart';
 
 import 'core/network/dio_helper.dart';
 import 'core/network/local/cache.dart';
 import 'core/network/local/hive_data_base.dart';
 import 'core/utils/notification/notification.dart';
-import 'feature/auth/data/models/login_response.dart';
 import 'firebase_options.dart';
 import 'my_app.dart';
 
@@ -54,21 +54,21 @@ void main() async {
   darkModeValue = userCache?.get(darkModeKey, defaultValue: false);
   locationCacheValue = userCache?.get(locationCacheKey);
   // Load login cache first; if legacy userCache exists, migrate it to loginCache
-  loginCacheValue = LoginResponse.fromJson(jsonDecode(await loginCache?.get(loginCacheKey, defaultValue: '{}')));
-  // if (loginCacheValue?.data?.token == null || (loginCacheValue?.data?.token?.isEmpty ?? true)) {
-  //   try {
-  //     final raw = await loginCache?.get(loginCacheKey, defaultValue: '{}');
-  //     if (raw != null && (raw as String).isNotEmpty && raw != '{}') {
-  //       final migrated = LoginResponse.fromJson(jsonDecode(raw));
-  //       loginCacheValue = migrated;
-  //       await loginCache?.put(loginCacheKey, jsonEncode(migrated.toJson()));
-  //       await loginCache?.put(biometricAuthKey, migrated.data?.token ?? '');
-  //       await loginCache?.put(biometricUserCacheKey, jsonEncode(migrated.toJson()));
-  //     }
-  //   } catch (e) {
-  //     log('migrate userCache to loginCache error: $e');
-  //   }
-  // }
+  loginCacheValue = RegisterModel.fromJson(jsonDecode(await loginCache?.get(loginCacheKey, defaultValue: '{}')));
+  if ((loginCacheValue?.data?.token == null || (loginCacheValue?.data?.token?.isEmpty ?? true))) {
+    try {
+      final raw = await loginCache?.get(loginCacheKey, defaultValue: '{}');
+      if (raw != null && (raw as String).isNotEmpty && raw != '{}') {
+        final migrated = RegisterModel.fromJson(jsonDecode(raw));
+        loginCacheValue = migrated;
+        await loginCache?.put(loginCacheKey, jsonEncode(migrated.toJson()));
+        await loginCache?.put(biometricAuthKey, migrated.data?.token ?? '');
+        await loginCache?.put(biometricUserCacheKey, jsonEncode(migrated.toJson()));
+      }
+    } catch (e) {
+      log('migrate userCache to loginCache error: $e');
+    }
+  }
   log('userCacheValue ==>$loginCacheValue');
   log('userCacheValue.data ==>${loginCacheValue?.data?.toJson()}');
   Constants.token = loginCacheValue?.data?.token ?? '';
@@ -89,7 +89,7 @@ void main() async {
   await NotificationUtility.initializeAwesomeNotification();
   // Apply immersive navigation bar flags on Android via MethodChannel
   try {
-    const platform = MethodChannel('com.mah852.dobzz_seller/ui');
+    const platform = MethodChannel('com.codgoo.rova_star/ui');
     await platform.invokeMethod('setImmersiveMode');
   } catch (e) {
     // ignore errors silently

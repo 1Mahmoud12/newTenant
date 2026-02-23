@@ -5,51 +5,19 @@ class ProductModel {
   int? code;
   List<Product>? data;
 
-  int? currentPage;
-  int? lastPage;
-  int? total;
-
   ProductModel({
     this.message,
     this.status,
     this.code,
     this.data,
-    this.currentPage,
-    this.lastPage,
-    this.total,
   });
 
   factory ProductModel.fromJson(Map<String, dynamic> json) {
-    List<Product> products = [];
-    int? currentPage;
-    int? lastPage;
-    int? total;
-
-    if (json['data'] != null) {
-      if (json['data'] is List) {
-        // Legacy support: direct list
-        products = List<Product>.from(json['data'].map((x) => Product.fromJson(x)));
-      } else if (json['data'] is Map) {
-        // Pagination object
-        final paginationData = json['data'];
-        currentPage = paginationData['current_page'];
-        lastPage = paginationData['last_page'];
-        total = paginationData['total'];
-
-        if (paginationData['data'] != null && paginationData['data'] is List) {
-          products = List<Product>.from(paginationData['data'].map((x) => Product.fromJson(x)));
-        }
-      }
-    }
-
     return ProductModel(
       message: json['message'],
-      status: json['status'] == 1,
+      status: json['status'],
       code: json['code'],
-      data: products,
-      currentPage: currentPage,
-      lastPage: lastPage,
-      total: total,
+      data: json['data'] != null ? List<Product>.from(json['data'].map((x) => Product.fromJson(x))) : null,
     );
   }
 
@@ -397,14 +365,14 @@ class ReviewModel {
 
 class Product {
   int? id;
-  int? categoryId;
   String? name;
-  String? description;
   String? skuCode;
-  String? slug;
 
-  bool? available;
-
+  String? nameAr;
+  String? nameEn;
+  String? description;
+  String? descriptionAr;
+  String? descriptionEn;
   num? price;
   num? priceOld;
   num? length;
@@ -426,26 +394,21 @@ class Product {
   num? taxId;
   String? imagePath;
   String? thumbnailPath;
-  String? coverImageUrl;
   bool? visible;
   List<Reviews>? reviews;
   num? reviewsCount;
   num? averageRating;
   String? createdAt;
   String? updatedAt;
-  int? trending;
-  bool? inCart;
-  bool? inWhishlist;
-  String? finalPrice;
-  dynamic salePrice;
 
-  Product({
-    this.id,
-    this.categoryId,
+  Product(
+      {this.id,
       this.name,
-      this.slug,
+      this.nameAr,
+      this.nameEn,
       this.description,
-      this.available,
+      this.descriptionAr,
+      this.descriptionEn,
       this.skuCode,
       this.price,
       this.priceOld,
@@ -468,26 +431,22 @@ class Product {
       this.taxId,
       this.imagePath,
       this.thumbnailPath,
-      this.coverImageUrl,
       this.visible,
       this.reviews,
       this.reviewsCount,
       this.averageRating,
       this.createdAt,
-      this.updatedAt,
-      this.trending,
-      this.inCart,
-      this.inWhishlist,
-      this.finalPrice,
-      this.salePrice});
+      this.updatedAt});
 
   Product.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
-    description = json['description'];
-    categoryId = json['category_id'];
-    slug = json['slug'];
 
+    nameAr = json['name_ar'];
+    nameEn = json['name_en'];
+    description = json['description'];
+    descriptionAr = json['description_ar'];
+    descriptionEn = json['description_en'];
     price = json['price'];
     skuCode = json['sku_code'];
     priceOld = json['price_old'];
@@ -535,7 +494,6 @@ class Product {
     taxId = json['tax_id'];
     imagePath = json['image_path'];
     thumbnailPath = json['thumbnail_path'];
-    coverImageUrl = json['cover_image_url'];
     visible = json['visible'];
     if (json['reviews'] != null) {
       reviews = <Reviews>[];
@@ -547,24 +505,18 @@ class Product {
     averageRating = json['average_rating'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
-    trending = json['trending'];
-    inCart = json['in_cart'];
-    inWhishlist = json['in_whishlist'];
-    finalPrice = json['final_price']?.toString();
-    salePrice = json['sale_price'];
-    available = json['status'] == 1;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['name'] = name;
-    data['slug'] = slug;
-    data['category_id'] = categoryId;
 
-    data['status'] = available;
+    data['name_ar'] = nameAr;
+    data['name_en'] = nameEn;
     data['description'] = description;
-
+    data['description_ar'] = descriptionAr;
+    data['description_en'] = descriptionEn;
     data['price'] = price;
     data['sku_code'] = skuCode;
     data['price_old'] = priceOld;
@@ -597,7 +549,6 @@ class Product {
     data['tax_id'] = taxId;
     data['image_path'] = imagePath;
     data['thumbnail_path'] = thumbnailPath;
-    data['cover_image_url'] = coverImageUrl;
     data['visible'] = visible;
     if (reviews != null) {
       data['reviews'] = reviews!.map((v) => v.toJson()).toList();
@@ -606,11 +557,6 @@ class Product {
     data['average_rating'] = averageRating;
     data['created_at'] = createdAt;
     data['updated_at'] = updatedAt;
-    data['trending'] = trending;
-    data['in_cart'] = inCart;
-    data['in_whishlist'] = inWhishlist;
-    data['final_price'] = finalPrice;
-    data['sale_price'] = salePrice;
     return data;
   }
 }
@@ -678,21 +624,18 @@ class Categories {
 class Images {
   int? id;
   String? image;
-  String? imagePathFullUrl;
 
-  Images({this.id, this.image, this.imagePathFullUrl});
+  Images({this.id, this.image});
 
   Images.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     image = json['image'];
-    imagePathFullUrl = json['image_path_full_url'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['image'] = image;
-    data['image_path_full_url'] = imagePathFullUrl;
     return data;
   }
 }

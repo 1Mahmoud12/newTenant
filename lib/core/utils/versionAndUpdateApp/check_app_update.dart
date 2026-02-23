@@ -110,7 +110,7 @@ class AppVersionChecker {
           final altMatch1 = RegExp('"version":"([0-9,.]*)"').firstMatch(response.body);
           final altMatch2 = RegExp(r'\[\[\["([0-9,.]*)"]],').firstMatch(response.body);
           final altMatch3 =
-              RegExp('Current Version</div><span class="htlgb"><div class="IQ1z0d"><span class="htlgb">([0-9,.]*)</span>').firstMatch(response.body);
+          RegExp('Current Version</div><span class="htlgb"><div class="IQ1z0d"><span class="htlgb">([0-9,.]*)</span>').firstMatch(response.body);
 
           if (altMatch1 != null) {
             newVersion = altMatch1.group(1);

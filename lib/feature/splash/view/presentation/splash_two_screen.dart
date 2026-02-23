@@ -1,15 +1,14 @@
-import 'package:dobzz_seller/core/component/buttons/custom_text_button.dart';
-import 'package:dobzz_seller/core/network/local/cache.dart';
-import 'package:dobzz_seller/core/themes/colors.dart';
-import 'package:dobzz_seller/core/utils/app_images.dart';
-import 'package:dobzz_seller/core/utils/constant_gaping.dart';
-import 'package:dobzz_seller/core/utils/constants.dart';
-import 'package:dobzz_seller/core/utils/navigate.dart';
-import 'package:dobzz_seller/feature/auth/login/view/presentation/login_screen.dart';
-import 'package:dobzz_seller/feature/navigation/view/presentation/navigation_view.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:rova_star/core/component/buttons/custom_text_button.dart';
+import 'package:rova_star/core/network/local/cache.dart';
+import 'package:rova_star/core/themes/colors.dart';
+import 'package:rova_star/core/utils/app_images.dart';
+import 'package:rova_star/core/utils/constant_gaping.dart';
+import 'package:rova_star/core/utils/constants.dart';
+import 'package:rova_star/core/utils/navigate.dart';
+import 'package:rova_star/feature/auth/login/view/presentation/login_screen.dart';
 
 class SplashTwoScreen extends StatefulWidget {
   const SplashTwoScreen({super.key});
@@ -29,7 +28,7 @@ class _SplashTwoScreenState extends State<SplashTwoScreen> {
             onBoardingValue = false;
             await userCache?.put(onBoardingKey, false);
 
-            context.navigateToPage(const NavigationViewWithThemes());
+            context.navigateToPage(const LoginScreen());
           },
           child: Row(
             children: [

@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:dobzz_seller/core/network/local/cache.dart';
+import 'package:rova_star/core/network/local/cache.dart';
 import 'package:uuid/uuid.dart';
 
 class DeviceUUid {

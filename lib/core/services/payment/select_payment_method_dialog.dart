@@ -1,11 +1,11 @@
-import 'package:dobzz_seller/core/component/buttons/custom_text_button.dart';
-import 'package:dobzz_seller/core/services/payment/manager/payment_cubit.dart';
-import 'package:dobzz_seller/core/themes/colors.dart';
-import 'package:dobzz_seller/core/utils/app_icons.dart';
-import 'package:dobzz_seller/core/utils/app_images.dart';
-import 'package:dobzz_seller/core/utils/bottomSheet/failure_bottom_sheet_with_reason.dart';
-import 'package:dobzz_seller/core/utils/constants.dart';
-import 'package:dobzz_seller/core/utils/constants_models.dart';
+import 'package:rova_star/core/component/buttons/custom_text_button.dart';
+import 'package:rova_star/core/services/payment/manager/payment_cubit.dart';
+import 'package:rova_star/core/themes/colors.dart';
+import 'package:rova_star/core/utils/app_icons.dart';
+import 'package:rova_star/core/utils/app_images.dart';
+import 'package:rova_star/core/utils/bottomSheet/failure_bottom_sheet_with_reason.dart';
+import 'package:rova_star/core/utils/constants.dart';
+import 'package:rova_star/core/utils/constants_models.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -234,7 +234,7 @@ Future<PaymentModel> selectPaymentMethodDialog(
                     if (orderId == null) {
                       cubit.createOrder(context: context, paymentMethod: paymentModel.title);
                     } else {
-                      cubit.afterSuccessCreateOrder(context: context, selectedPaymentMethod: paymentModel.title, orderId: orderId!);
+                      cubit.afterSuccessCreateOrder(context: context, selectedPaymentMethod: paymentModel.title, orderId: orderId);
                     }
                   },
                 ),

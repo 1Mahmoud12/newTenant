@@ -1,8 +1,8 @@
-import 'package:dobzz_seller/core/themes/colors.dart';
-import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart'; // Import for SVG support
+import 'package:rova_star/core/themes/colors.dart';
+import 'package:rova_star/core/utils/constants.dart';
 
 class CustomList extends StatefulWidget {
   final List tabs;

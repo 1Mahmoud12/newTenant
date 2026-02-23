@@ -1,9 +1,9 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
-import 'package:dobzz_seller/core/network/dio_helper.dart';
-import 'package:dobzz_seller/core/network/end_points.dart';
-import 'package:dobzz_seller/core/network/errors/failures.dart';
-import 'package:dobzz_seller/feature/notification/data/models/notifications_model.dart';
+import 'package:rova_star/core/network/dio_helper.dart';
+import 'package:rova_star/core/network/end_points.dart';
+import 'package:rova_star/core/network/errors/failures.dart';
+import 'package:rova_star/feature/notification/data/models/notifications_model.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 abstract class NotificationDataSource {

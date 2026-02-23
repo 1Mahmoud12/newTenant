@@ -2,9 +2,9 @@ import 'dart:developer';
 
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
-import 'package:dobzz_seller/core/network/dio_helper.dart';
-import 'package:dobzz_seller/core/network/end_points.dart';
-import 'package:dobzz_seller/core/network/errors/failures.dart';
+import 'package:rova_star/core/network/dio_helper.dart';
+import 'package:rova_star/core/network/end_points.dart';
+import 'package:rova_star/core/network/errors/failures.dart';
 
 class DeleteAccountDataSource {
   static Future<Either<Failure, void>> deleteAccount() async {

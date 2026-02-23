@@ -1,12 +1,12 @@
-import 'package:dobzz_seller/core/utils/app_icons.dart';
-import 'package:dobzz_seller/feature/home/data/models/categories_model.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:rova_star/core/utils/app_icons.dart';
+import 'package:rova_star/feature/home/data/models/categories_model.dart';
 
 class Constants {
   static String fontFamily = 'Cairo';
-  static String appName = 'El-Mamlaka';
+  static String appName = 'Rova Star';
   static String? customerId;
   static LatLng locationCache = const LatLng(30.033333, 31.233334);
   static int distance = 100; // Km
@@ -16,8 +16,9 @@ class Constants {
   static String fcmToken = '';
   static String deviceId = '';
   static String subdomain2 = 'shine';
-  // 'kadin.dobzz.com'
-  static String subdomain = 'kadin';
+  // 'kadin.dobzz.com' /// https://rovastar-sa.com/
+  static String subdomain = 'rovastar-sa.com';
+  static String origin = 'https://rovastar-sa.com';
 //  static String subdomain = 'kadin';
   static String apiPassword = '123#Social_Codgoo#321';
   static int cartItems = 0;
@@ -34,8 +35,8 @@ class Constants {
   static bool noInternet = false;
   static bool tablet = false;
   static String versionApp = '';
-  static String packageName = 'com.codgoo.anjez';
-  static String appleId = '6758432142';
+  static String packageName = 'com.codgoo.rova_star';
+  static String appleId = '6745216210';
   static String demoAccount = '+966500975853';
 
   static String urlGoogleMapPlace = 'https://maps.googleapis.com/maps/api/place/autocomplete/json';

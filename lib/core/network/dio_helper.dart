@@ -3,13 +3,13 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
-import 'package:dobzz_seller/core/network/end_points.dart';
-import 'package:dobzz_seller/core/utils/constants.dart';
-import 'package:dobzz_seller/core/utils/utils.dart';
-import 'package:dobzz_seller/main.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:pretty_dio_logger/pretty_dio_logger.dart';
+import 'package:rova_star/core/network/end_points.dart';
+import 'package:rova_star/core/utils/constants.dart';
+import 'package:rova_star/core/utils/utils.dart';
+import 'package:rova_star/main.dart';
+
 // ignore: avoid_classes_with_only_static_members
 class DioHelper {
   static Dio? dio;
@@ -81,18 +81,7 @@ class DioHelper {
         },
       ),
     );
-    // ✅ Pretty Logger
-    dio?.interceptors.add(
-      PrettyDioLogger(
-        requestHeader: true,
-        requestBody: true,
-        responseHeader: false,
-        responseBody: true,
-        error: true,
-        compact: true,
-        maxWidth: 120,
-      ),
-    );
+
     // 🔥 Retry Interceptor للأخطاء المؤقتة
     dio?.interceptors.add(
       RetryInterceptor(
@@ -107,7 +96,9 @@ class DioHelper {
     return {
       if (authToken.isNotEmpty) 'Authorization': 'Bearer $authToken',
       'Accept': 'application/json',
-      'subdomain': Constants.subdomain,
+      // 'subdomain': Constants.subdomain,
+      'Domain': Constants.subdomain,
+      'Origin': Constants.subdomain,
       'Apipassword': Constants.apiPassword,
       'lang': Constants.currentLanguage,
       'uuid': Constants.deviceId,
@@ -219,7 +210,8 @@ class DioHelper {
           error: value.data['detail'] ?? 'unknown_error'.tr(),
         );
       }
-      debugPrint('Success Data (${value.data['StatusCode']}) ===> ${value.data['Data']}');
+      debugPrint(
+          'Success Data (${value.data['StatusCode']}) ===> ${value.data['Data']}',);
       return value;
     });
   }
@@ -254,7 +246,8 @@ class DioHelper {
           error: value.data['detail'] ?? 'unknown_error'.tr(),
         );
       }
-      debugPrint('Success Data (${value.data['StatusCode']}) ===> ${value.data['Data']}');
+      debugPrint(
+          'Success Data (${value.data['StatusCode']}) ===> ${value.data['Data']}',);
       return value;
     });
   }
@@ -264,7 +257,8 @@ class DioHelper {
     required BuildContext context,
   }) async {
     final String filePath = 'assets/endpoints/$fileName.json';
-    final String jsonString = await DefaultAssetBundle.of(context).loadString(filePath);
+    final String jsonString =
+        await DefaultAssetBundle.of(context).loadString(filePath);
     return jsonString;
   }
 
@@ -272,7 +266,8 @@ class DioHelper {
     required String endpoint,
     required BuildContext context,
   }) async {
-    final String mockData = await loadMockData(fileName: endpoint, context: context);
+    final String mockData =
+        await loadMockData(fileName: endpoint, context: context);
     final Map<String, dynamic> jsonData = json.decode(mockData);
     log(jsonData.toString());
     return jsonData;
@@ -295,7 +290,8 @@ class RetryInterceptor extends Interceptor {
   });
 
   @override
-  Future<void> onError(DioException err, ErrorInterceptorHandler handler) async {
+  Future<void> onError(
+      DioException err, ErrorInterceptorHandler handler,) async {
     // Only retry on specific status codes or connection errors
     if (_shouldRetry(err)) {
       final attempt = err.requestOptions.extra['retry_attempt'] ?? 0;
@@ -304,7 +300,8 @@ class RetryInterceptor extends Interceptor {
         log('🔄 Retrying request (${attempt + 1}/$retries): ${err.requestOptions.uri}');
 
         // Wait before retry
-        final delay = retryDelays[attempt < retryDelays.length ? attempt : retryDelays.length - 1];
+        final delay = retryDelays[
+            attempt < retryDelays.length ? attempt : retryDelays.length - 1];
         await Future.delayed(delay);
 
         // Update retry count

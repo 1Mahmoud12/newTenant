@@ -1,17 +1,17 @@
 import 'dart:async';
 import 'dart:ui';
 
-import 'package:dobzz_seller/core/network/local/cache.dart';
-import 'package:dobzz_seller/core/themes/colors.dart';
-import 'package:dobzz_seller/core/utils/app_images.dart';
-import 'package:dobzz_seller/core/utils/constants.dart';
-import 'package:dobzz_seller/core/utils/extensions.dart';
-import 'package:dobzz_seller/core/utils/navigate.dart';
-import 'package:dobzz_seller/core/utils/utils.dart';
-import 'package:dobzz_seller/feature/navigation/view/presentation/navigation_view.dart';
-import 'package:dobzz_seller/feature/splash/view/presentation/splash_two_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:rova_star/core/network/local/cache.dart';
+import 'package:rova_star/core/utils/app_images.dart';
+import 'package:rova_star/core/utils/constants.dart';
+import 'package:rova_star/core/utils/extensions.dart';
+import 'package:rova_star/core/utils/navigate.dart';
+import 'package:rova_star/core/utils/utils.dart';
+import 'package:rova_star/feature/auth/login/view/presentation/login_screen.dart';
+import 'package:rova_star/feature/navigation/view/presentation/navigation_view.dart';
+import 'package:rova_star/feature/splash/view/presentation/splash_two_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -38,7 +38,7 @@ class _SplashScreenState extends State<SplashScreen> {
         if (onBoardingValue) {
           context.navigateToPage(const SplashTwoScreen());
         } else {
-          context.navigateToPage(const NavigationViewWithThemes());
+          context.navigateToPage(loginCacheValue?.data != null ? const NavigationViewWithThemes() : const LoginScreen());
         }
         // userCacheValue.data != null ? context.navigateToPage(const NavigationView()) : context.navigateToPage(const LoginScreen());
         // userCache?.put(onBoardingKey, false);
@@ -77,7 +77,7 @@ class _SplashScreenState extends State<SplashScreen> {
     Constants.currentLanguage = context.locale.languageCode;
     Utils.buildSetSystemUIOverlayStyle();
     return Scaffold(
-      backgroundColor: AppColors.secondPrimaryColor,
+      backgroundColor: const Color(0xfffff5f7),
       body: Stack(
         // mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -100,7 +100,7 @@ class _SplashScreenState extends State<SplashScreen> {
           ),
           Center(
             child: Image.asset(
-              AppImages.appLogo,
+              AppImages.appLogoWhite,
               width: 200,
             ),
           ),

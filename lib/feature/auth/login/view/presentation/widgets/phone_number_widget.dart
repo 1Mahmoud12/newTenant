@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:dobzz_seller/core/component/fields/custom_text_form_field.dart';
-import 'package:dobzz_seller/core/themes/colors.dart';
-import 'package:dobzz_seller/core/utils/app_icons.dart';
-import 'package:dobzz_seller/core/utils/bottomSheet/select_county_code_dialog.dart';
-import 'package:dobzz_seller/core/utils/constants_models.dart';
-import 'package:dobzz_seller/feature/auth/manager/authBloc/auth_cubit.dart';
-import 'package:dobzz_seller/feature/auth/manager/authBloc/auth_state.dart';
+import 'package:rova_star/core/component/fields/custom_text_form_field.dart';
+import 'package:rova_star/core/themes/colors.dart';
+import 'package:rova_star/core/utils/app_icons.dart';
+import 'package:rova_star/core/utils/bottomSheet/select_county_code_dialog.dart';
+import 'package:rova_star/core/utils/constants_models.dart';
+import 'package:rova_star/feature/auth/manager/authBloc/auth_cubit.dart';
+import 'package:rova_star/feature/auth/manager/authBloc/auth_state.dart';
 
 class PhonePickerField extends StatelessWidget {
   const PhonePickerField({

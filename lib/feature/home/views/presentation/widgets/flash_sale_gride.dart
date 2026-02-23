@@ -1,11 +1,12 @@
-import 'package:dobzz_seller/core/component/loadsErros/loading_widget.dart';
-import 'package:dobzz_seller/core/utils/constants.dart';
-import 'package:dobzz_seller/core/utils/constants_models.dart';
-import 'package:dobzz_seller/core/utils/errorLoadingWidgets/empty_widget.dart';
-import 'package:dobzz_seller/feature/favorites/views/manager/wishList/cubit/wish_list_cubit.dart';
-import 'package:dobzz_seller/feature/home/views/manager/topProduct/cubit/top_product_cubit.dart';
-import 'package:dobzz_seller/feature/home/views/presentation/widgets/empty_product.dart';
-import 'package:dobzz_seller/feature/home/views/presentation/widgets/product_card.dart';
+import 'package:rova_star/core/component/loadsErros/loading_widget.dart';
+import 'package:rova_star/core/utils/constants.dart';
+import 'package:rova_star/core/utils/constants_models.dart';
+import 'package:rova_star/core/utils/custom_show_toast.dart';
+import 'package:rova_star/core/utils/errorLoadingWidgets/empty_widget.dart';
+import 'package:rova_star/feature/favorites/views/manager/wishList/cubit/wish_list_cubit.dart';
+import 'package:rova_star/feature/home/views/manager/topProduct/cubit/top_product_cubit.dart';
+import 'package:rova_star/feature/home/views/presentation/widgets/empty_product.dart';
+import 'package:rova_star/feature/home/views/presentation/widgets/product_card.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -102,15 +103,19 @@ class TopProductGrid extends StatelessWidget {
                   productId: product.id ?? -1,
                   initialLiked: widget.isItWhishList!,
                   onLikeTap: (isNowLiked) {
+                    final sku = product.skuCode ?? product.variants?.firstOrNull?.skuCode;
+                    if (sku == null) {
+                      customShowToast(context, 'not_sku_for_this_item'.tr());
+                      return;
+                    }
                     if (isNowLiked) {
-                      context.read<WishListCubit>().removeFromWishList(
-                            context: context,
-                            productId: product.id!,
-                          );
+                      // Add to wishlist
+                      context.read<WishListCubit>().removeFromWishList(context: context, skuCode: sku);
                     } else {
                       context.read<WishListCubit>().addToWishList(
                             context: context,
-                            productId: product.id!,
+                            skuCode: sku,
+                            product: product,
                           );
                     }
                   },
@@ -184,19 +189,27 @@ class FavoriteGrid extends StatelessWidget {
                     return ProductCard(
                       variants: const [],
                       //  rating: wishListItem.,
-                      sku: '${wishListItem.productId ?? 0}',
+                      sku: wishListItem.skuCode,
                       productId: wishListItem.productId?.toInt() ?? -1,
                       initialLiked: true,
                       description: wishListItem.descriptionProduct ?? unknownValue,
                       onLikeTap: (isNowLiked) {
-                        if (isNowLiked && wishListItem.productId != null) {
+                        final sku = wishListItem.skuCode;
+                        if (sku == null) {
+                          customShowToast(
+                            context,
+                            'not_sku_for_this_item'.tr(),
+                          );
+                          return;
+                        }
+                        if (isNowLiked) {
                           context.read<WishListCubit>().removeFromWishList(
                                 context: context,
-                                productId: wishListItem.productId!,
+                                skuCode: sku,
                               );
                         }
                       },
-                      imagePath: wishListItem.productData?.coverImageUrl ?? '',
+                      imagePath: wishListItem.productImagePath ?? '',
                       title: wishListItem.product ?? 'Unknown Product'.tr(),
                       price: '\$${wishListItem.priceForProduct?.toString() ?? '0'}',
                     );

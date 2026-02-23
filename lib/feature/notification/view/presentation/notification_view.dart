@@ -1,8 +1,8 @@
-import 'package:dobzz_seller/core/component/custom_app_bar.dart';
-import 'package:dobzz_seller/core/utils/errorLoadingWidgets/empty_widget.dart';
-import 'package:dobzz_seller/core/utils/extensions.dart';
-import 'package:dobzz_seller/feature/notification/data/models/notifications_model.dart';
-import 'package:dobzz_seller/feature/notification/view/manager/notifications_cubit.dart';
+import 'package:rova_star/core/component/custom_app_bar.dart';
+import 'package:rova_star/core/utils/errorLoadingWidgets/empty_widget.dart';
+import 'package:rova_star/core/utils/extensions.dart';
+import 'package:rova_star/feature/notification/data/models/notifications_model.dart';
+import 'package:rova_star/feature/notification/view/manager/notifications_cubit.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

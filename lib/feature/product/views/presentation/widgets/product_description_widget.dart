@@ -1,6 +1,6 @@
-import 'package:dobzz_seller/core/themes/colors.dart';
-import 'package:dobzz_seller/core/themes/styles.dart';
-import 'package:dobzz_seller/feature/home/data/models/product_mdoel.dart';
+import 'package:rova_star/core/themes/colors.dart';
+import 'package:rova_star/core/themes/styles.dart';
+import 'package:rova_star/feature/home/data/models/product_mdoel.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
@@ -35,22 +35,22 @@ class _ProductDescriptionWidgetState extends State<ProductDescriptionWidget> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text('product_description'.tr(), style: Styles.style16400.copyWith(color: AppColors.black)),
-            // InkWell(
-            //   onTap: () {
-            //     setState(() {
-            //       isArabic = !isArabic;
-            //     });
-            //   },
-            //   child: Text(
-            //     isArabic ? 'AR' : 'EN',
-            //     style: Styles.style16400.copyWith(color: AppColors.black),
-            //   ),
-            // ),
+            InkWell(
+              onTap: () {
+                setState(() {
+                  isArabic = !isArabic;
+                });
+              },
+              child: Text(
+                isArabic ? 'AR' : 'EN',
+                style: Styles.style16400.copyWith(color: AppColors.black),
+              ),
+            ),
           ],
         ),
         const SizedBox(height: 4),
         Text(
-          widget.productModelData.description.toString(),
+          isArabic ? widget.productModelData.descriptionAr.toString() : widget.productModelData.descriptionEn.toString(),
           style: const TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w400,

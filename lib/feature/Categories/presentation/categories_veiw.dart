@@ -1,8 +1,8 @@
-import 'package:dobzz_seller/core/component/cache_image.dart';
-import 'package:dobzz_seller/core/utils/constants_models.dart';
-import 'package:dobzz_seller/core/utils/extensions.dart';
-import 'package:dobzz_seller/core/utils/navigate.dart';
-import 'package:dobzz_seller/feature/allProducts/view/all_products_view.dart';
+import 'package:rova_star/core/component/cache_image.dart';
+import 'package:rova_star/core/utils/constants_models.dart';
+import 'package:rova_star/core/utils/extensions.dart';
+import 'package:rova_star/core/utils/navigate.dart';
+import 'package:rova_star/feature/Categories/presentation/sub_category_view.dart';
 import 'package:flutter/material.dart';
 
 class CategoriesScreen extends StatelessWidget {
@@ -55,17 +55,16 @@ class CategoriesScreen extends StatelessWidget {
                 crossAxisSpacing: 16,
                 mainAxisSpacing: 16,
                 children: List.generate(ConstantsModels.categoriesModel?.data?.length ?? 0, (index) {
-                  final category = ConstantsModels.categoriesModel?.data?[index];
-                  if (category == null) return const SizedBox();
-
                   return CategoryCard(
                     onTap: () {
                       context.navigateToPage(
-                        const AllProductsView(),
+                        SubcategoryScreen(
+                          categoryId: ConstantsModels.categoriesModel?.data![index].id ?? 0,
+                        ),
                       );
                     },
-                    title: category.name ?? 'Category',
-                    imageUrl: category.imagePathFullUrl ?? category.imagePath ?? 'https://via.placeholder.com/150',
+                    title: ConstantsModels.categoriesModel?.data?[index].name ?? 'Category',
+                    imageUrl: ConstantsModels.categoriesModel?.data?[index].imagePath ?? 'https://via.placeholder.com/150',
                   );
                 }),
               ),
@@ -122,7 +121,6 @@ class CategoryCard extends StatelessWidget {
                 CacheImage(
                   urlImage: imageUrl,
                   errorColor: Colors.grey,
-                  fit: BoxFit.fill,
                 ),
 
               // Black overlay label at bottom

@@ -1,4 +1,4 @@
-import 'package:dobzz_seller/core/services/payment/select_payment_method_dialog.dart';
+import 'package:rova_star/core/services/payment/select_payment_method_dialog.dart';
 
 class PaymentMethodModel {
   PaymentMethodModel({

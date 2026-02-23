@@ -1,28 +1,29 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:dobzz_seller/core/network/errors/failures.dart';
-import 'package:dobzz_seller/core/network/local/cache.dart';
-import 'package:dobzz_seller/core/utils/bottomSheet/failure_bottom_sheet_with_reason.dart';
-import 'package:dobzz_seller/core/utils/bottomSheet/select_county_code_dialog.dart';
-import 'package:dobzz_seller/core/utils/constants.dart';
-import 'package:dobzz_seller/core/utils/constants_models.dart';
-import 'package:dobzz_seller/core/utils/errorLoadingWidgets/dialog_loading_animation.dart';
-import 'package:dobzz_seller/core/utils/navigate.dart';
-import 'package:dobzz_seller/feature/auth/data/dataSource/aut_data_source.dart';
-import 'package:dobzz_seller/feature/auth/data/models/login_params.dart';
-import 'package:dobzz_seller/feature/auth/data/models/sign_up_params.dart';
-import 'package:dobzz_seller/feature/auth/data/models/verify_code_model.dart';
-import 'package:dobzz_seller/feature/auth/manager/authBloc/auth_state.dart';
-import 'package:dobzz_seller/feature/auth/verifyCode/view/presentation/verify_code_view.dart';
-import 'package:dobzz_seller/feature/navigation/view/presentation/navigation_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rova_star/core/network/errors/failures.dart';
+import 'package:rova_star/core/network/local/cache.dart';
+import 'package:rova_star/core/utils/bottomSheet/failure_bottom_sheet_with_reason.dart';
+import 'package:rova_star/core/utils/bottomSheet/select_county_code_dialog.dart';
+import 'package:rova_star/core/utils/constants.dart';
+import 'package:rova_star/core/utils/constants_models.dart';
+import 'package:rova_star/core/utils/errorLoadingWidgets/dialog_loading_animation.dart';
+import 'package:rova_star/core/utils/navigate.dart';
+import 'package:rova_star/feature/auth/data/dataSource/aut_data_source.dart';
+import 'package:rova_star/feature/auth/data/models/login_params.dart';
+import 'package:rova_star/feature/auth/data/models/sign_up_params.dart';
+import 'package:rova_star/feature/auth/data/models/verify_code_model.dart';
+import 'package:rova_star/feature/auth/manager/authBloc/auth_state.dart';
+import 'package:rova_star/feature/auth/verifyCode/view/presentation/verify_code_view.dart';
+import 'package:rova_star/feature/navigation/view/presentation/navigation_view.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   AuthCubit() : super(AuthInitial());
 
-  static AuthCubit of(BuildContext context) => BlocProvider.of<AuthCubit>(context);
+  static AuthCubit of(BuildContext context) =>
+      BlocProvider.of<AuthCubit>(context);
 
   final AuthDataSource authDataSource = AuthDataSourceImpl();
   int termAndCondition = 0;
@@ -30,34 +31,43 @@ class AuthCubit extends Cubit<AuthState> {
     emit(AuthInitial());
   }
 
-  // void getCountryCode() async {
-  //   emit(AuthGetCountryCodeLoadingState());
-  //   // animationDialogLoading(context);
-  //   authDataSource.getCountryCode().then(
-  //     (value) async {
-  //       //  closeDialog(context);
-  //       // bool result = await InternetConnectionChecker().hasConnection;
-  //       value.fold((l) {
-  //         //   failureModalBottomSheetWithReason(context, reasons: [l.errMessage], onPress: (){});
-  //         emit(AuthGetCountryCodeErrorState(l.errMessage));
-  //       }, (r) async {
-  //         ConstantsModels.countryCodeModel = r;
-  //         // setCountryCodeId(r.data?.first.id ?? 1);
-  //         emit(AuthGetCountryCodeSuccessState());
-  //       });
-  //     },
-  //   );
-  // }
+  void getCountryCode() async {
+    emit(AuthGetCountryCodeLoadingState());
+    // animationDialogLoading(context);
+    authDataSource.getCountryCode().then(
+      (value) async {
+        //  closeDialog(context);
+        // bool result = await InternetConnectionChecker().hasConnection;
+        value.fold((l) {
+          //   failureModalBottomSheetWithReason(context, reasons: [l.errMessage], onPress: (){});
+          emit(AuthGetCountryCodeErrorState(l.errMessage));
+        }, (r) async {
+          ConstantsModels.countryCodeModel = r;
+          // setCountryCodeId(r.data?.first.id ?? 1);
+          emit(AuthGetCountryCodeSuccessState());
+        });
+      },
+    );
+  }
 
-  void forgetPassword({required BuildContext context, bool navigateToVerifyCodeView = true}) async {
+  void forgetPassword({
+    required BuildContext context,
+    bool navigateToVerifyCodeView = true,
+  }) async {
     emit(AuthGetCountryCodeLoadingState());
     animationDialogLoading(context);
-    authDataSource.forgetPassword(context, phone: countryCode + phoneController.text).then(
+    authDataSource
+        .forgetPassword(context, phone: countryCode + phoneController.text)
+        .then(
       (value) async {
         closeDialog(context);
         // bool result = await InternetConnectionChecker().hasConnection;
         value.fold((l) {
-          failureModalBottomSheetWithReason(context, reasons: [l.errMessage], onPress: () {});
+          failureModalBottomSheetWithReason(
+            context,
+            reasons: [l.errMessage],
+            onPress: () {},
+          );
           emit(AuthGetCountryCodeErrorState(l.errMessage));
         }, (r) async {
           if (navigateToVerifyCodeView) {
@@ -74,26 +84,41 @@ class AuthCubit extends Cubit<AuthState> {
     );
   }
 
-  void resendCode({required BuildContext context, required bool isLogin}) async {
+  void resendCode({
+    required BuildContext context,
+    required bool isLogin,
+  }) async {
     emit(AuthResendCodeLoadingState());
     animationDialogLoading(context);
     //   customShowToast(context, 'we_send_again_code_for_you'.tr());
-    authDataSource.resendCode(context, phone: countryCode + phoneController.text, customerId: Constants.customerId, isLogin: isLogin).then(
+    authDataSource
+        .resendCode(
+      context,
+      phone: countryCode + phoneController.text,
+      customerId: Constants.customerId,
+      isLogin: isLogin,
+    )
+        .then(
       (value) async {
         closeDialog(context);
         // bool result = await InternetConnectionChecker().hasConnection;
         value.fold((l) {
-          failureModalBottomSheetWithReason(context, reasons: [l.errMessage], onPress: () {});
+          failureModalBottomSheetWithReason(
+            context,
+            reasons: [l.errMessage],
+            onPress: () {},
+          );
           emit(AuthResendCodeErrorState(l.errMessage));
         }, (r) async {
           emit(AuthResendCodeSuccessState());
+          log('token===========> $r');
         });
       },
     );
   }
 
 // login controllers
-  TextEditingController loginEmailController = TextEditingController();
+  TextEditingController loginPhoneController = TextEditingController();
   TextEditingController loginPasswordController = TextEditingController();
 // reset password
   // TextEditingController resetPasswordController = TextEditingController();
@@ -103,9 +128,6 @@ class AuthCubit extends Cubit<AuthState> {
   TextEditingController nameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-  TextEditingController confirmPasswordController = TextEditingController();
 
   //TextEditingController passwordController = TextEditingController();
   //TextEditingController confirmPasswordController = TextEditingController();
@@ -134,10 +156,9 @@ class AuthCubit extends Cubit<AuthState> {
       context,
       SignUpParams(
         name: nameController.text,
-        email: emailController.text,
-        mobile:countryCode + phoneController.text,
-        password: passwordController.text,
-        // termAndCondition: termAndCondition,
+        phone: countryCode + phoneController.text,
+        //  password: passwordController.text,
+        termAndCondition: termAndCondition,
       ),
     )
         .then(
@@ -151,7 +172,11 @@ class AuthCubit extends Cubit<AuthState> {
           } else {
             errorReasons = [l.errMessage];
           }
-          failureModalBottomSheetWithReason(context, reasons: errorReasons, onPress: () {});
+          failureModalBottomSheetWithReason(
+            context,
+            reasons: errorReasons,
+            onPress: () {},
+          );
           // customShowToast(context, l.errMessage, showToastStatus: ShowToastStatus.error);
           emit(AuthSignUpErrorState(l.errMessage));
         }, (r) async {
@@ -168,7 +193,11 @@ class AuthCubit extends Cubit<AuthState> {
     emit(AuthSetCodeState());
   }
 
-  void verifyCode(BuildContext context, {bool isForgetPassword = false, bool isLogin = false}) async {
+  void verifyCode(
+    BuildContext context, {
+    bool isForgetPassword = false,
+    bool isLogin = false,
+  }) async {
     final otpValue = otpController.text;
     emit(AuthVerifyLoadingState());
     animationDialogLoading(context);
@@ -190,7 +219,11 @@ class AuthCubit extends Cubit<AuthState> {
         // bool result = await InternetConnectionChecker().hasConnection;
         value.fold((l) {
           otpController.clear();
-          failureModalBottomSheetWithReason(context, reasons: [l.errMessage], onPress: () {});
+          failureModalBottomSheetWithReason(
+            context,
+            reasons: [l.errMessage],
+            onPress: () {},
+          );
           emit(AuthVerifyErrorState(l.errMessage));
         }, (r) async {
           if (isForgetPassword) {
@@ -202,10 +235,9 @@ class AuthCubit extends Cubit<AuthState> {
             // );
           } else {
             ConstantsModels.registerModel = r;
-            // loginCacheValue = r;
+            loginCacheValue = r;
             Constants.token = r.data?.token ?? '';
             loginCache?.put(loginCacheKey, jsonEncode(r.toJson()));
-
             // // Save biometric login data after successful verification
             // if (isLogin) {
             //   final biometricService = BiometricService();
@@ -228,7 +260,7 @@ class AuthCubit extends Cubit<AuthState> {
             context.navigateToPage(const NavigationViewWithThemes());
             phoneController.clear();
             otpController.clear();
-            loginEmailController.clear();
+            loginPhoneController.clear();
             loginPasswordController.clear();
             // passwordController.clear();
           }
@@ -247,8 +279,9 @@ class AuthCubit extends Cubit<AuthState> {
     final result = await authDataSource.postLogin(
       context,
       LoginParams(
-        email:  loginEmailController.text,
+        phone: countryCode + loginPhoneController.text,
         password: loginPasswordController.text,
+
       ),
     );
     return result.fold((l) {
@@ -269,14 +302,17 @@ class AuthCubit extends Cubit<AuthState> {
           ),
         );
       } else {
-        failureModalBottomSheetWithReason(context, reasons: errorReasons, onPress: () {});
+        failureModalBottomSheetWithReason(
+          context,
+          reasons: errorReasons,
+          onPress: () {},
+        );
       }
 
       emit(AuthLoginErrorState(l.errMessage));
       return false;
     }, (r) async {
-      closeDialog(context);
-      ConstantsModels.loginResponseModel = r;
+      ConstantsModels.registerModel = r;
       loginCacheValue = r;
       Constants.customerId = r.data!.id!.toString();
       log('userCacheValue.data ==>${loginCacheValue?.data?.token}');
@@ -286,8 +322,10 @@ class AuthCubit extends Cubit<AuthState> {
       await loginCache?.put(biometricAuthKey, r.data?.token ?? '');
       await loginCache?.put(biometricUserCacheKey, jsonEncode(r.toJson()));
 
-        context.navigateToPage(const NavigationViewWithThemes());
-      loginEmailController.clear();
+      context.navigateToPage(
+        const VerifyCodeView(isForgetPassword: false, isLogin: true),
+      );
+      loginPhoneController.clear();
       loginPasswordController.clear();
       emit(AuthLoginSuccessState());
       return true;

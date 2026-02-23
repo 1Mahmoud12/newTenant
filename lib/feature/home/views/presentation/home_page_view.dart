@@ -1,28 +1,27 @@
 import 'dart:developer';
 
-import 'package:dobzz_seller/core/component/fields/custom_text_form_field.dart';
-import 'package:dobzz_seller/core/component/loadsErros/loading_widget.dart';
-import 'package:dobzz_seller/core/component/see_all_widget.dart';
-import 'package:dobzz_seller/core/utils/constant_gaping.dart';
-import 'package:dobzz_seller/core/utils/constants_models.dart';
-import 'package:dobzz_seller/core/utils/navigate.dart';
-import 'package:dobzz_seller/feature/Categories/presentation/categories_veiw.dart';
-import 'package:dobzz_seller/feature/allProducts/view/all_products_view.dart';
-import 'package:dobzz_seller/feature/home/views/manager/categories/cubit/categories_cubit.dart';
-import 'package:dobzz_seller/feature/home/views/manager/salesBanner/cubit/sales_banner_cubit.dart';
-import 'package:dobzz_seller/feature/home/views/manager/topProduct/cubit/top_product_cubit.dart';
-import 'package:dobzz_seller/feature/home/views/presentation/products_feed_view.dart';
-// import 'package:dobzz_seller/feature/home/views/presentation/products_feed_view.dart';
-import 'package:dobzz_seller/feature/home/views/presentation/search_product_home_view.dart';
-import 'package:dobzz_seller/feature/home/views/presentation/widgets/cart_floating_action_button.dart';
-import 'package:dobzz_seller/feature/home/views/presentation/widgets/categories_list.dart';
-// import 'package:dobzz_seller/feature/home/views/presentation/widgets/featured_category.dart';
-import 'package:dobzz_seller/feature/home/views/presentation/widgets/home_page_header.dart';
-import 'package:dobzz_seller/feature/home/views/presentation/widgets/home_slider.dart';
-import 'package:dobzz_seller/feature/home/views/presentation/widgets/horizotal_product_list.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rova_star/core/component/fields/custom_text_form_field.dart';
+import 'package:rova_star/core/component/loadsErros/loading_widget.dart';
+import 'package:rova_star/core/component/see_all_widget.dart';
+import 'package:rova_star/core/utils/constant_gaping.dart';
+import 'package:rova_star/core/utils/constants_models.dart';
+import 'package:rova_star/core/utils/navigate.dart';
+import 'package:rova_star/feature/Categories/presentation/Categories_veiw.dart';
+import 'package:rova_star/feature/home/views/manager/categories/cubit/categories_cubit.dart';
+import 'package:rova_star/feature/home/views/manager/salesBanner/cubit/sales_banner_cubit.dart';
+import 'package:rova_star/feature/home/views/manager/topProduct/cubit/top_product_cubit.dart';
+import 'package:rova_star/feature/home/views/presentation/products_by_category_view.dart';
+import 'package:rova_star/feature/home/views/presentation/products_feed_view.dart';
+import 'package:rova_star/feature/home/views/presentation/search_product_home_view.dart';
+import 'package:rova_star/feature/home/views/presentation/widgets/cart_floating_action_button.dart';
+import 'package:rova_star/feature/home/views/presentation/widgets/categories_list.dart';
+import 'package:rova_star/feature/home/views/presentation/widgets/featured_category.dart';
+import 'package:rova_star/feature/home/views/presentation/widgets/home_page_header.dart';
+import 'package:rova_star/feature/home/views/presentation/widgets/home_slider.dart';
+import 'package:rova_star/feature/home/views/presentation/widgets/horizotal_product_list.dart';
 
 class HomePageView extends StatefulWidget {
   const HomePageView({super.key});
@@ -37,9 +36,9 @@ class _HomePageViewState extends State<HomePageView> {
   late TopProductCubit newCubit;
   @override
   void initState() {
-    // if (ConstantsModels.salesBannerModel == null) {
-    //   salesBannerCubit.getSaleBanner(context: context);
-    // }
+    if (ConstantsModels.salesBannerModel == null) {
+      salesBannerCubit.getSaleBanner(context: context);
+    }
     bestsellerCubit = TopProductCubit();
     topCubit = TopProductCubit();
     newCubit = TopProductCubit();
@@ -102,8 +101,6 @@ class _HomePageViewState extends State<HomePageView> {
                 h10,
                 const CategoriesList(),
                 h10,
-                // Commenting out other sections as requested
-
                 BlocProvider.value(
                   value: bestsellerCubit,
                   child: BlocBuilder<TopProductCubit, TopProductState>(
@@ -141,7 +138,21 @@ class _HomePageViewState extends State<HomePageView> {
                     },
                   ),
                 ),
-                /*  BlocProvider.value(
+                // h10,
+                // BlocProvider.value(
+                //   value: salesBannerCubit,
+                //   child: BlocBuilder<SalesBannerCubit, SalesBannerState>(
+                //     builder: (context, state) {
+                //       return SaleCountdownBanner(
+                //         bannerData: ConstantsModels.salesBannerModel?.data ?? SaleBannerData(),
+                //         onActionPressed: () {
+                //           context.navigateToPage(const ProductView());
+                //         },
+                //       );
+                //     },
+                //   ),
+                // ),
+                BlocProvider.value(
                   value: topCubit,
                   child: BlocBuilder<TopProductCubit, TopProductState>(
                     builder: (context, state) {
@@ -165,7 +176,7 @@ class _HomePageViewState extends State<HomePageView> {
                               ),
                             ),
                           Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 7),
+                            padding: const EdgeInsets.symmetric(horizontal: 7),
                             child: FlashSaleHorizontalList(
                               isHorizontal: true,
                               topProductCubit: topCubit,
@@ -200,7 +211,7 @@ class _HomePageViewState extends State<HomePageView> {
                               ),
                             ),
                           Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 7),
+                            padding: const EdgeInsets.symmetric(horizontal: 7),
                             child: FlashSaleHorizontalList(
                               isHorizontal: true,
                               feed: ProductsFeed.newArrival,
@@ -215,7 +226,6 @@ class _HomePageViewState extends State<HomePageView> {
                 h10,
                 const FeaturedCategory(),
                 const FeaturedList(),
-                */
                 const SizedBox(
                   height: 100,
                 ),
@@ -325,7 +335,10 @@ class _FeaturedCategoriesItemState extends State<FeaturedCategoriesItem> {
               title: widget.featuredName,
               onTap: () {
                 context.navigateToPage(
-                  AllProductsView(),
+                  ProductsByCategoryView(
+                    categoryId: widget.categoryId,
+                    title: widget.featuredName,
+                  ),
                 );
               },
             ),

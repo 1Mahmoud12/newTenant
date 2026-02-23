@@ -1,13 +1,13 @@
 import 'dart:developer';
 
-import 'package:dobzz_seller/core/themes/colors.dart';
-import 'package:dobzz_seller/core/themes/styles.dart';
-import 'package:dobzz_seller/core/utils/constant_gaping.dart';
-import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:rova_star/core/themes/colors.dart';
+import 'package:rova_star/core/themes/styles.dart';
+import 'package:rova_star/core/utils/constant_gaping.dart';
+import 'package:rova_star/core/utils/constants.dart';
 
 class DropDownModel {
   final String name;
@@ -38,10 +38,8 @@ class CustomDropDownMenu extends StatefulWidget {
   final String? nameField;
   final bool hasError;
   final String? errorText;
-  final EdgeInsetsGeometry?
-      menuItemPadding; // New property for menu item padding
-  final EdgeInsetsGeometry?
-      buttonPadding; // New property for dropdown button padding
+  final EdgeInsetsGeometry? menuItemPadding; // New property for menu item padding
+  final EdgeInsetsGeometry? buttonPadding; // New property for dropdown button padding
   final double? menuMaxHeight; // Control max height of dropdown menu
 
   const CustomDropDownMenu({
@@ -69,22 +67,13 @@ class CustomDropDownMenu extends StatefulWidget {
 }
 
 class _CustomDropDownMenuState extends State<CustomDropDownMenu> {
-  DropDownModel newSelected =
-      DropDownModel(name: '', value: -1, showImage: true, showName: false);
+  DropDownModel newSelected = DropDownModel(name: '', value: -1, showImage: true, showName: false);
 
   @override
   void initState() {
     newSelected = widget.selectedItem!;
     log('print selected item====>${newSelected.showName}');
     super.initState();
-  }
-
-  @override
-  void didUpdateWidget(CustomDropDownMenu oldWidget) {
-    if (widget.selectedItem != oldWidget.selectedItem) {
-      newSelected = widget.selectedItem!;
-    }
-    super.didUpdateWidget(oldWidget);
   }
 
   @override
@@ -104,17 +93,14 @@ class _CustomDropDownMenuState extends State<CustomDropDownMenu> {
             borderRadius: BorderRadius.circular(widget.borderRadius ?? 8),
             color: widget.fillColor ?? AppColors.white,
             border: Border.all(
-              color: widget.hasError
-                  ? Colors.red
-                  : widget.borderColor ?? AppColors.greyBorderColor,
+              color: widget.hasError ? Colors.red : widget.borderColor ?? AppColors.greyBorderColor,
             ),
           ),
 
           child: DropdownButton<DropDownModel>(
             underline: Container(),
             icon: const SizedBox(),
-            padding: widget.buttonPadding ??
-                EdgeInsets.symmetric(horizontal: newSelected.showImage ? 6 : 4),
+            padding: widget.buttonPadding ?? EdgeInsets.symmetric(horizontal: newSelected.showImage ? 6 : 4),
             iconSize: 0,
             menuMaxHeight: widget.menuMaxHeight,
             hint: Row(
@@ -169,9 +155,7 @@ class _CustomDropDownMenuState extends State<CustomDropDownMenu> {
             //  autofocus: false,
             focusColor: AppColors.primaryColor,
             dropdownColor: AppColors.white,
-            alignment: context.locale.languageCode == 'ar'
-                ? Alignment.centerRight
-                : Alignment.centerLeft,
+            alignment: context.locale.languageCode == 'ar' ? Alignment.centerRight : Alignment.centerLeft,
             style: widget.textStyleSelected ?? Styles.style14400,
             itemHeight: null, // Allow items to determine their own height
 
@@ -181,14 +165,10 @@ class _CustomDropDownMenuState extends State<CustomDropDownMenu> {
                 child: Container(
                   // constraints: BoxConstraints(maxWidth: 120.w),
                   // width: 120.w,
-                  alignment: context.locale.languageCode == 'ar'
-                      ? Alignment.centerRight
-                      : Alignment.centerLeft,
-                  decoration:
-                      BoxDecoration(borderRadius: BorderRadius.circular(10.r)),
+                  alignment: context.locale.languageCode == 'ar' ? Alignment.centerRight : Alignment.centerLeft,
+                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(10.r)),
                   child: Padding(
-                    padding: widget.menuItemPadding ??
-                        const EdgeInsets.only(left: 10.0).w,
+                    padding: widget.menuItemPadding ?? const EdgeInsets.only(left: 10.0).w,
                     child: item.showImage
                         ? Padding(
                             padding: const EdgeInsets.only(left: 5, right: 5),
@@ -206,12 +186,9 @@ class _CustomDropDownMenuState extends State<CustomDropDownMenu> {
                           )
                         : Text(
                             item.name,
-                            style:
-                                Styles.style12400.copyWith(color: Colors.black),
+                            style: Styles.style12400,
                             overflow: TextOverflow.ellipsis,
-                            textAlign: context.locale.languageCode == 'ar'
-                                ? TextAlign.right
-                                : TextAlign.left,
+                            textAlign: context.locale.languageCode == 'ar' ? TextAlign.right : TextAlign.left,
                             maxLines: 1,
                           ),
                   ),

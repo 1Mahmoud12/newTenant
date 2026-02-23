@@ -1,9 +1,9 @@
 import 'dart:developer';
 
-import 'package:dobzz_seller/core/services/cache_service.dart';
-import 'package:dobzz_seller/core/utils/constants_models.dart';
-import 'package:dobzz_seller/feature/home/data/dataSource/get_top_product_data_source.dart';
-import 'package:dobzz_seller/feature/home/data/models/product_mdoel.dart';
+import 'package:rova_star/core/services/cache_service.dart';
+import 'package:rova_star/core/utils/constants_models.dart';
+import 'package:rova_star/feature/home/data/dataSource/get_top_product_data_source.dart';
+import 'package:rova_star/feature/home/data/models/product_mdoel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -72,70 +72,36 @@ class TopProductCubit extends Cubit<TopProductState> {
   bool bestsellerHasProducts = true;
   bool topHasProducts = true;
   bool newArrivalHasProducts = true;
-  int currentPage = 1;
-  int? lastPage;
-  bool isLoadingMore = false;
-  ProductsFeed? currentFeed;
-  int? currentSubCategoryId;
-
   Future<void> getProductsByFeed({
     required BuildContext context,
     required ProductsFeed feed,
     int? subCategoryId,
-    bool isRefresh = false,
   }) async {
     if (isClosed) return;
-
-    // Reset pagination logic
-    if (!isLoadingMore || isRefresh) {
-      currentPage = 1;
-      lastPage = null;
-      currentFeed = feed;
-      currentSubCategoryId = subCategoryId;
+    // Try cache first
+    final servedFromCache = await loadFromCache(feed);
+    if (!servedFromCache) {
+      emit(TopProductLoading());
     }
-
-    if (currentPage == 1) {
-      // Try cache first only for initial load
-      final servedFromCache = await loadFromCache(feed);
-      if (!servedFromCache) {
-        emit(TopProductLoading());
-      }
-    }
-
-    await GetTopProductDataSource.getProductsByFeed(
-      feed: feed,
-      subCategoryId: subCategoryId,
-      page: currentPage,
-    ).then(
+    await GetTopProductDataSource.getProductsByFeed(feed: feed, subCategoryId: subCategoryId).then(
       (value) async {
         value.fold((l) {
           if (isClosed) return;
-          isLoadingMore = false;
           emit(TopProductError(e: l.errMessage));
         }, (r) async {
-          if (currentPage == 1) {
-            products = r.data ?? [];
-          } else {
-            products.addAll(r.data ?? []);
-          }
-
-          // Update pagination info
-          currentPage = r.currentPage ?? currentPage;
-          lastPage = r.lastPage;
-
-          isLoadingMore = false;
-
+          products = r.data ?? [];
           switch (feed) {
             case ProductsFeed.top:
-              topHasProducts = products.isNotEmpty;
+              topHasProducts = r.data?.isNotEmpty ?? false;
               ConstantsModels.topProductModel = r;
               break;
             case ProductsFeed.bestSeller:
-              bestsellerHasProducts = products.isNotEmpty;
+              // Reuse container if desired or add a new one in ConstantsModels
+              bestsellerHasProducts = r.data?.isNotEmpty ?? false;
               ConstantsModels.bestSellerModel = r;
               break;
             case ProductsFeed.newArrival:
-              newArrivalHasProducts = products.isNotEmpty;
+              newArrivalHasProducts = r.data?.isNotEmpty ?? false;
               ConstantsModels.newArrivalsModel = r;
               break;
           }
@@ -143,25 +109,6 @@ class TopProductCubit extends Cubit<TopProductState> {
           emit(TopProductSuccess());
         });
       },
-    );
-  }
-
-  Future<void> loadMoreProducts(BuildContext context) async {
-    if (isLoadingMore || (lastPage != null && currentPage >= lastPage!)) return;
-
-    isLoadingMore = true;
-    currentPage++;
-
-    // Safety check - if feed not set, default to something or return
-    if (currentFeed == null) {
-      isLoadingMore = false;
-      return;
-    }
-
-    await getProductsByFeed(
-      context: context,
-      feed: currentFeed!,
-      subCategoryId: currentSubCategoryId,
     );
   }
 }

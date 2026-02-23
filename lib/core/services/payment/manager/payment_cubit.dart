@@ -1,21 +1,21 @@
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
-import 'package:dobzz_seller/core/services/payment/data/dataSource/payment_data_source.dart';
-import 'package:dobzz_seller/core/services/payment/data/model/payment_credit_params.dart';
-import 'package:dobzz_seller/core/services/payment/data/model/payment_stc_first_params.dart';
-import 'package:dobzz_seller/core/services/payment/in_app_webView.dart';
-import 'package:dobzz_seller/core/services/payment/select_payment_method_dialog.dart';
-import 'package:dobzz_seller/core/utils/constants.dart';
-import 'package:dobzz_seller/core/utils/constants_models.dart';
-import 'package:dobzz_seller/core/utils/errorLoadingWidgets/dialog_loading_animation.dart';
-import 'package:dobzz_seller/core/utils/navigate.dart';
-import 'package:dobzz_seller/core/utils/utils.dart';
-import 'package:dobzz_seller/feature/checkout/data/dataSource/process_to_checkout_data_source.dart';
-import 'package:dobzz_seller/feature/checkout/presentation/view/widgets/add_phone_payment.dart';
-import 'package:dobzz_seller/feature/checkout/presentation/view/widgets/show_otp.dart';
-import 'package:dobzz_seller/feature/navigation/view/presentation/navigation_view.dart';
-import 'package:dobzz_seller/main.dart';
+import 'package:rova_star/core/services/payment/data/dataSource/payment_data_source.dart';
+import 'package:rova_star/core/services/payment/data/model/payment_credit_params.dart';
+import 'package:rova_star/core/services/payment/data/model/payment_stc_first_params.dart';
+import 'package:rova_star/core/services/payment/in_app_webView.dart';
+import 'package:rova_star/core/services/payment/select_payment_method_dialog.dart';
+import 'package:rova_star/core/utils/constants.dart';
+import 'package:rova_star/core/utils/constants_models.dart';
+import 'package:rova_star/core/utils/errorLoadingWidgets/dialog_loading_animation.dart';
+import 'package:rova_star/core/utils/navigate.dart';
+import 'package:rova_star/core/utils/utils.dart';
+import 'package:rova_star/feature/checkout/data/dataSource/process_to_checkout_data_source.dart';
+import 'package:rova_star/feature/checkout/presentation/view/widgets/add_phone_payment.dart';
+import 'package:rova_star/feature/checkout/presentation/view/widgets/show_otp.dart';
+import 'package:rova_star/feature/navigation/view/presentation/navigation_view.dart';
+import 'package:rova_star/main.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
@@ -107,7 +107,7 @@ class PaymentCubit extends Cubit<PaymentState> {
         logger.d('phone number is $phoneNumber');
         await createSTCFirst(context: context, orderId: '$orderId', mobile: phoneNumber);
       },
-      initialPhoneNumber: myPhoneForStc(ConstantsModels.registerModel?.data?.email ?? ''),
+      initialPhoneNumber: myPhoneForStc(ConstantsModels.registerModel?.data?.phone ?? ''),
     );
   }
 
@@ -248,7 +248,7 @@ class PaymentCubit extends Cubit<PaymentState> {
       );
       context.navigateToPage(const NavigationViewWithThemes(
         initialIndex: 1,
-      ));
+      ),);
     });
   }
 }

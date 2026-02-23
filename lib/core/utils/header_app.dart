@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:dobzz_seller/core/themes/styles.dart';
+import 'package:rova_star/core/themes/styles.dart';
 
 class HeaderApp extends StatelessWidget {
   const HeaderApp({

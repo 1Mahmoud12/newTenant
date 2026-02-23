@@ -1,9 +1,9 @@
 import 'package:bloc/bloc.dart';
-import 'package:dobzz_seller/core/network/local/cache.dart';
-import 'package:dobzz_seller/core/utils/navigate.dart';
-import 'package:dobzz_seller/core/utils/utils.dart';
-import 'package:dobzz_seller/feature/account/data/dataSoruce/delete_account_data_source.dart';
-import 'package:dobzz_seller/feature/auth/login/view/presentation/login_screen.dart';
+import 'package:rova_star/core/network/local/cache.dart';
+import 'package:rova_star/core/utils/navigate.dart';
+import 'package:rova_star/core/utils/utils.dart';
+import 'package:rova_star/feature/account/data/dataSoruce/delete_account_data_source.dart';
+import 'package:rova_star/feature/auth/login/view/presentation/login_screen.dart';
 import 'package:flutter/material.dart';
 
 part 'delete_account_state.dart';

@@ -1,7 +1,5 @@
-import 'package:dobzz_seller/feature/auth/data/models/register_model.dart';
 import 'package:hive_flutter/adapters.dart';
-
-import '../../../feature/auth/data/models/login_response.dart';
+import 'package:rova_star/feature/auth/data/models/register_model.dart';
 
 Box? userCache;
 Box? loginCache;
@@ -33,7 +31,7 @@ bool rememberMe = false;
 
 bool darkModeValue = false;
 
-LoginResponse? loginCacheValue;
+RegisterModel? loginCacheValue;
 // AllMyAddresses allMyAddressesCache = AllMyAddresses();
 // AdvertiseModel advertiseModelCache = AdvertiseModel();
 // CategoriesModel? categoriesModelCache;

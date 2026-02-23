@@ -1,9 +1,9 @@
 import 'package:country_code_picker/country_code_picker.dart';
-import 'package:dobzz_seller/core/component/buttons/custom_text_button.dart';
-import 'package:dobzz_seller/core/component/phone_number_field.dart';
-import 'package:dobzz_seller/core/themes/colors.dart';
-import 'package:dobzz_seller/feature/auth/manager/authBloc/auth_cubit.dart';
-import 'package:dobzz_seller/feature/auth/manager/authBloc/auth_state.dart';
+import 'package:rova_star/core/component/buttons/custom_text_button.dart';
+import 'package:rova_star/core/component/phone_number_field.dart';
+import 'package:rova_star/core/themes/colors.dart';
+import 'package:rova_star/feature/auth/manager/authBloc/auth_cubit.dart';
+import 'package:rova_star/feature/auth/manager/authBloc/auth_state.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

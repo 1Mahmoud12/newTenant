@@ -1,19 +1,14 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
-import 'package:dobzz_seller/core/network/dio_helper.dart';
-import 'package:dobzz_seller/core/network/end_points.dart';
-import 'package:dobzz_seller/core/network/errors/failures.dart';
-import 'package:dobzz_seller/main.dart';
-import '../models/place_order_model.dart';
+import 'package:rova_star/core/network/dio_helper.dart';
+import 'package:rova_star/core/network/end_points.dart';
+import 'package:rova_star/core/network/errors/failures.dart';
+import 'package:rova_star/main.dart';
 
 abstract class ProcessToCheckoutDataSource {
   Future<Either<Failure, int>> processToCheckout({
     required String addressId,
     required String paymentMethod,
-  });
-
-  Future<Either<Failure, PlaceOrderResponseModel>> placeOrder({
-    required PlaceOrderBodyModel body,
   });
 }
 
@@ -37,28 +32,6 @@ class ProcessToCheckoutDataSourceImpl implements ProcessToCheckoutDataSource {
       final int idOrder = response.data['data']['order']['id'];
       logger.e(response.data['data']['order']['id']);
       return Right(idOrder);
-    } catch (error) {
-      if (error is DioException) {
-        return Left(ServerFailure.fromDioException(error));
-      }
-      return Left(ServerFailure(error.toString()));
-    }
-  }
-
-  @override
-  Future<Either<Failure, PlaceOrderResponseModel>> placeOrder(
-      {required PlaceOrderBodyModel body}) async {
-    try {
-      final response = await DioHelper.postData(
-        endPoint: EndPoints.placeOrder,
-        data: body.toJson(),
-      );
-
-      if (response.data['status'] == 0) {
-        return Left(ServerFailure(response.data['message']));
-      }
-
-      return Right(PlaceOrderResponseModel.fromJson(response.data));
     } catch (error) {
       if (error is DioException) {
         return Left(ServerFailure.fromDioException(error));

@@ -1,10 +1,10 @@
 import 'dart:async';
 
-import 'package:dobzz_seller/core/component/cache_image.dart';
-import 'package:dobzz_seller/core/utils/constants_models.dart';
-import 'package:dobzz_seller/core/utils/extensions.dart';
-import 'package:dobzz_seller/feature/home/data/models/sales_model.dart';
-import 'package:dobzz_seller/feature/home/views/manager/salesBanner/cubit/sales_banner_cubit.dart';
+import 'package:rova_star/core/component/cache_image.dart';
+import 'package:rova_star/core/utils/constants_models.dart';
+import 'package:rova_star/core/utils/extensions.dart';
+import 'package:rova_star/feature/home/data/models/sales_model.dart';
+import 'package:rova_star/feature/home/views/manager/salesBanner/cubit/sales_banner_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

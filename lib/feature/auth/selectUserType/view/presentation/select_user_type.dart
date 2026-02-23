@@ -1,11 +1,3 @@
-import 'package:dobzz_seller/core/component/buttons/custom_text_button.dart';
-import 'package:dobzz_seller/core/themes/colors.dart';
-import 'package:dobzz_seller/core/utils/app_icons.dart';
-import 'package:dobzz_seller/core/utils/extensions.dart';
-import 'package:dobzz_seller/core/utils/navigate.dart';
-import 'package:dobzz_seller/core/utils/screen_spaces_extension.dart';
-import 'package:dobzz_seller/feature/auth/login/view/presentation/login_screen.dart';
-import 'package:dobzz_seller/feature/auth/selectUserType/view/presentation/widgets/switch_language_widget.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +5,14 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:rova_star/core/component/buttons/custom_text_button.dart';
+import 'package:rova_star/core/themes/colors.dart';
+import 'package:rova_star/core/utils/app_icons.dart';
+import 'package:rova_star/core/utils/extensions.dart';
+import 'package:rova_star/core/utils/navigate.dart';
+import 'package:rova_star/core/utils/screen_spaces_extension.dart';
+import 'package:rova_star/feature/auth/login/view/presentation/login_screen.dart';
+import 'package:rova_star/feature/auth/selectUserType/view/presentation/widgets/switch_language_widget.dart';
 
 import '../../../../navigation/view/presentation/navigation_view.dart';
 import '../../../signUp/view/presentation/sign_up_view.dart';

@@ -48,21 +48,19 @@ class DefaultFirebaseOptions {
         );
     }
   }
-
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBHR37Wi8XJeGl2zUgXRpRnvnu1NABPgks',
-    appId: '1:975522326323:android:296b5a5241b74d7aa78046',
-    messagingSenderId: '975522326323',
-    projectId: 'ghsselha',
-    storageBucket: 'ghsselha.firebasestorage.app',
+    apiKey: 'AIzaSyDk8JGU3Mhy5EWYDFBnqw2DtNeBcuj4wG0',
+    appId: '1:842994830177:ios:1dff3e734cbc92a7ab9320',
+    messagingSenderId: '842994830177',
+    projectId: 'dobzz-fe3d4',
+    storageBucket: 'dobzz-fe3d4.firebasestorage.app',
   );
-
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBUGVYODu_FoyGKEA75CA9eDO6feajiAMU',
-    appId: '1:975522326323:ios:912ec90d9f49bc46a78046',
-    messagingSenderId: '975522326323',
-    projectId: 'ghsselha',
-    storageBucket: 'ghsselha.firebasestorage.app',
-    iosBundleId: 'com.ittihad.chesselha',
+    apiKey: 'AIzaSyDk8JGU3Mhy5EWYDFBnqw2DtNeBcuj4wG0',
+    appId: '1:842994830177:ios:1dff3e734cbc92a7ab9320',
+    messagingSenderId: '842994830177',
+    projectId: 'dobzz-fe3d4',
+    storageBucket: 'dobzz-fe3d4.firebasestorage.app',
+    iosBundleId: 'com.codgoo.rovastar',
   );
 }

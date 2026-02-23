@@ -1,10 +1,10 @@
-import 'package:dobzz_seller/core/component/cache_image.dart';
-import 'package:dobzz_seller/core/component/loadsErros/loading_widget.dart';
-import 'package:dobzz_seller/core/utils/constants_models.dart';
-import 'package:dobzz_seller/core/utils/extensions.dart';
-import 'package:dobzz_seller/core/utils/navigate.dart';
-import 'package:dobzz_seller/feature/Categories/presentation/manager/subCategroy/cubit/sub_category_cubit.dart';
-import 'package:dobzz_seller/feature/product/views/presentation/product_view.dart';
+import 'package:rova_star/core/component/cache_image.dart';
+import 'package:rova_star/core/component/loadsErros/loading_widget.dart';
+import 'package:rova_star/core/utils/constants_models.dart';
+import 'package:rova_star/core/utils/extensions.dart';
+import 'package:rova_star/core/utils/navigate.dart';
+import 'package:rova_star/feature/Categories/presentation/manager/subCategroy/cubit/sub_category_cubit.dart';
+import 'package:rova_star/feature/product/views/presentation/product_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

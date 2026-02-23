@@ -2,10 +2,10 @@ import 'dart:developer';
 
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
-import 'package:dobzz_seller/core/network/dio_helper.dart';
-import 'package:dobzz_seller/core/network/end_points.dart';
-import 'package:dobzz_seller/core/network/errors/failures.dart';
-import 'package:dobzz_seller/feature/account/view/notificationSetting/data/models/general_notification_setting_model.dart';
+import 'package:rova_star/core/network/dio_helper.dart';
+import 'package:rova_star/core/network/end_points.dart';
+import 'package:rova_star/core/network/errors/failures.dart';
+import 'package:rova_star/feature/account/view/notificationSetting/data/models/general_notification_setting_model.dart';
 
 class GetGeneralNotiSettingDataSource {
   static Future<Either<Failure, GeneralNotificationModel>> getGeneralNotiSetting() async {

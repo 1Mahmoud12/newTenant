@@ -1,18 +1,18 @@
 import 'dart:io';
 
-import 'package:dobzz_seller/core/network/local/cache.dart';
-import 'package:dobzz_seller/core/themes/colors.dart';
-import 'package:dobzz_seller/core/themes/light.dart';
-import 'package:dobzz_seller/core/utils/constants.dart';
-import 'package:dobzz_seller/feature/cart/view/manager/cartItems/cubit/cart_items_cubit.dart';
-import 'package:dobzz_seller/feature/favorites/views/manager/wishList/cubit/wish_list_cubit.dart';
-import 'package:dobzz_seller/feature/navigation/view/manager/homeBloc/state.dart';
-import 'package:dobzz_seller/mainCubit/cubit/main_cubit_cubit.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:rova_star/core/network/local/cache.dart';
+import 'package:rova_star/core/themes/colors.dart';
+import 'package:rova_star/core/themes/light.dart';
+import 'package:rova_star/core/utils/constants.dart';
+import 'package:rova_star/feature/cart/view/manager/cartItems/cubit/cart_items_cubit.dart';
+import 'package:rova_star/feature/favorites/views/manager/wishList/cubit/wish_list_cubit.dart';
+import 'package:rova_star/feature/navigation/view/manager/homeBloc/state.dart';
+import 'package:rova_star/mainCubit/cubit/main_cubit_cubit.dart';
 
 import 'dobzz_seller_view.dart';
 import 'feature/address/view/manager/address/cubit/address_cubit.dart';
@@ -47,7 +47,7 @@ class _MyAppState extends State<MyApp> {
           ),
           BlocProvider(
             lazy: false,
-            create: (context) => AuthCubit(),
+            create: (context) => AuthCubit()..getCountryCode(),
           ),
           BlocProvider(
             create: (context) => MainCubitCubit(),
@@ -57,7 +57,6 @@ class _MyAppState extends State<MyApp> {
             create: (context) => CartItemsCubit(),
           ),
           BlocProvider(
-            lazy: false,
             create: (context) => WishListCubit()..getWishList(context: context),
           ),
           // BlocProvider(

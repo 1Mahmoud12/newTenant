@@ -3,11 +3,12 @@ import 'dart:developer';
 
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:dobzz_seller/core/utils/constants.dart';
-import 'package:dobzz_seller/core/utils/errorLoadingWidgets/stop_internet_widget.dart';
-import 'package:dobzz_seller/core/utils/notification/notification.dart';
+
 import 'package:flutter/material.dart';
 
+import 'core/utils/constants.dart';
+import 'core/utils/errorLoadingWidgets/stop_internet_widget.dart';
+import 'core/utils/notification/notification.dart';
 import 'main.dart';
 
 class DobzzSellerApp extends StatefulWidget {

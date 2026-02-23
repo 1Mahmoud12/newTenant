@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
-import 'package:dobzz_seller/core/utils/constants_models.dart';
-import 'package:dobzz_seller/feature/product/data/dataSource/product_details_data_source.dart';
+import 'package:rova_star/core/utils/constants_models.dart';
+import 'package:rova_star/feature/product/data/dataSource/product_details_data_source.dart';
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 

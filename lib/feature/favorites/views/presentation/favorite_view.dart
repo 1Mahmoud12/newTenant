@@ -1,8 +1,8 @@
-import 'package:dobzz_seller/core/component/custom_app_bar.dart';
-import 'package:dobzz_seller/feature/home/views/presentation/widgets/cart_floating_action_button.dart';
-import 'package:dobzz_seller/feature/home/views/presentation/widgets/flash_sale_gride.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:rova_star/core/component/custom_app_bar.dart';
+import 'package:rova_star/feature/home/views/presentation/widgets/cart_floating_action_button.dart';
+import 'package:rova_star/feature/home/views/presentation/widgets/flash_sale_gride.dart';
 
 class FavoriteView extends StatelessWidget {
   const FavoriteView({super.key});

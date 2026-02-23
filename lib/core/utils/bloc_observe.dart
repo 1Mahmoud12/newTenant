@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:dobzz_seller/core/utils/utils.dart';
+import 'package:rova_star/core/utils/utils.dart';
 
 class MyBlocObserver extends BlocObserver {
   @override

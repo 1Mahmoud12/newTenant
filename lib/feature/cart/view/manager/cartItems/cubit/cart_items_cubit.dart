@@ -1,9 +1,9 @@
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
-import 'package:dobzz_seller/core/utils/constants.dart';
-import 'package:dobzz_seller/core/utils/constants_models.dart';
-import 'package:dobzz_seller/feature/cart/data/dataSource/cart_item_data_source.dart';
+import 'package:rova_star/core/utils/constants.dart';
+import 'package:rova_star/core/utils/constants_models.dart';
+import 'package:rova_star/feature/cart/data/dataSource/cart_item_data_source.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
@@ -22,10 +22,10 @@ class CartItemsCubit extends Cubit<CartItemsState> {
           if (isClosed) return;
           emit(CartItemsError(e: l.errMessage));
         }, (r) async {
-          log('cart items: ${r.data?.productList?.length}');
+          log('cart items: ${r.data?.length}');
           ConstantsModels.cartItemModel = r;
-          Constants.cartItems = r.data?.productList?.length ?? 0;
-          log('Cart items list: ${ConstantsModels.cartItemModel?.data?.productList?.length}');
+          Constants.cartItems = r.data?.length ?? 0;
+          log('Cart items list: ${ConstantsModels.cartItemModel?.data?.length}');
           if (isClosed) return;
           emit(CartItemsSuccess());
         });

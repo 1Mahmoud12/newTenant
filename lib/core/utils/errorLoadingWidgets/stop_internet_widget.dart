@@ -1,10 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:dobzz_seller/core/component/buttons/custom_text_button.dart';
-import 'package:dobzz_seller/core/utils/constants.dart';
-import 'package:dobzz_seller/core/utils/custom_show_toast.dart';
-import 'package:dobzz_seller/core/utils/errorLoadingWidgets/empty_widget.dart';
-import 'package:dobzz_seller/core/utils/extensions.dart';
+import 'package:rova_star/core/component/buttons/custom_text_button.dart';
+import 'package:rova_star/core/utils/constants.dart';
+import 'package:rova_star/core/utils/custom_show_toast.dart';
+import 'package:rova_star/core/utils/errorLoadingWidgets/empty_widget.dart';
+import 'package:rova_star/core/utils/extensions.dart';
 
 class StopInternetWidget extends StatelessWidget {
   const StopInternetWidget({super.key});

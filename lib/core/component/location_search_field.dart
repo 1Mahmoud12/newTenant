@@ -1,12 +1,12 @@
 import 'dart:convert';
 
-import 'package:dobzz_seller/core/component/fields/custom_text_form_field.dart';
-import 'package:dobzz_seller/core/component/loadsErros/loading_widget.dart';
-import 'package:dobzz_seller/core/themes/colors.dart';
-import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
+import 'package:rova_star/core/component/fields/custom_text_form_field.dart';
+import 'package:rova_star/core/component/loadsErros/loading_widget.dart';
+import 'package:rova_star/core/themes/colors.dart';
+import 'package:rova_star/core/utils/constants.dart';
 
 class LocationSearchField extends StatefulWidget {
   final String hintText;
@@ -134,7 +134,6 @@ class _LocationSearchFieldState extends State<LocationSearchField> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         CustomTextFormField(
-          validator: (e){},
           outPadding: EdgeInsets.zero,
           controller: _searchController,
           hintText: widget.hintText,

@@ -1,9 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:dobzz_seller/core/component/buttons/custom_text_button.dart';
-import 'package:dobzz_seller/core/themes/colors.dart';
-import 'package:dobzz_seller/feature/navigation/view/manager/homeBloc/cubit.dart';
+import 'package:rova_star/core/component/buttons/custom_text_button.dart';
+import 'package:rova_star/core/themes/colors.dart';
+import 'package:rova_star/feature/navigation/view/manager/homeBloc/cubit.dart';
 
 Future<void> changeLanguageDialog(BuildContext context) async {
   String locale = context.locale.languageCode;

@@ -1,10 +1,8 @@
 import 'dart:async';
-
-import 'package:dobzz_seller/core/component/cache_image.dart';
-import 'package:dobzz_seller/core/network/end_points.dart';
-import 'package:dobzz_seller/core/themes/colors.dart';
-import 'package:dobzz_seller/core/utils/constants_models.dart';
-import 'package:dobzz_seller/feature/home/views/manager/slider/cubit/slider_cubit.dart';
+import 'package:rova_star/core/component/cache_image.dart';
+import 'package:rova_star/core/themes/colors.dart';
+import 'package:rova_star/core/utils/constants_models.dart';
+import 'package:rova_star/feature/home/views/manager/slider/cubit/slider_cubit.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -80,10 +78,9 @@ class _HomeSliderState extends State<HomeSlider> {
           }
         },
         builder: (context, state) {
-          // Get slider from landpage model
-          final banner = ConstantsModels.landPageModel?.data?.themJson?.homepageBanner;
-          final imageUrl = banner?.bgImg;
-          final sliders = imageUrl != null ? [imageUrl] : [];
+          // Get sliders from model if available
+          final sliders = ConstantsModels.sliderModel?.data?.sliders;
+          final sliderCount = sliders?.length ?? 3;
 
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -99,27 +96,26 @@ class _HomeSliderState extends State<HomeSlider> {
                       });
                     },
                     children: List.generate(
-                      sliders.length,
+                      sliderCount,
                       (index) => Padding(
                         padding: EdgeInsets.only(
                           right: context.locale.languageCode == 'ar' ? 0 : 5,
                           left: context.locale.languageCode == 'ar' ? 5 : 0,
                         ),
                         child: CacheImage(
-                          urlImage: '${EndPoints.domain}/${sliders[index]}',
+                          urlImage: sliders != null && index < sliders.length ? sliders[index].imagePath ?? '' : '',
                           errorColor: Colors.grey,
                           borderRadius: 12,
-                          fit: BoxFit.fill,
                         ),
                       ),
                     ),
                   ),
                 ),
                 const SizedBox(height: 16),
-                if (controller.hasClients && sliders.isNotEmpty)
+                if (controller.hasClients && sliderCount > 0)
                   SmoothPageIndicator(
                     controller: controller,
-                    count: sliders.length,
+                    count: sliderCount,
                     effect: const WormEffect(
                       dotHeight: 8,
                       dotWidth: 8,

@@ -1,20 +1,25 @@
-import 'dart:convert';
+import 'dart:io';
 
-import 'package:dobzz_seller/core/component/buttons/custom_text_button.dart';
-import 'package:dobzz_seller/core/component/custom_app_bar.dart';
-import 'package:dobzz_seller/core/component/fields/custom_text_form_field.dart';
-import 'package:dobzz_seller/core/component/phone_number_field.dart';
-import 'package:dobzz_seller/core/network/local/cache.dart';
-import 'package:dobzz_seller/core/themes/colors.dart';
-import 'package:dobzz_seller/core/utils/constant_gaping.dart';
-import 'package:dobzz_seller/core/utils/constants.dart';
-import 'package:dobzz_seller/core/utils/navigate.dart';
-import 'package:dobzz_seller/core/utils/utils.dart';
-import 'package:dobzz_seller/feature/account/view/myDetalis/presentation/manager/editProfile/cubit/edit_profile_cubit.dart';
-import 'package:dobzz_seller/feature/navigation/view/presentation/navigation_view.dart';
+import 'package:rova_star/core/component/buttons/custom_text_button.dart';
+import 'package:rova_star/core/component/cache_image.dart';
+import 'package:rova_star/core/component/custom_app_bar.dart';
+import 'package:rova_star/core/component/fields/custom_text_form_field.dart';
+import 'package:rova_star/core/component/loadsErros/loading_widget.dart';
+import 'package:rova_star/core/component/phone_number_field.dart';
+import 'package:rova_star/core/network/local/cache.dart';
+import 'package:rova_star/core/themes/colors.dart';
+import 'package:rova_star/core/utils/constant_gaping.dart';
+import 'package:rova_star/core/utils/constants.dart';
+import 'package:rova_star/core/utils/constants_models.dart';
+import 'package:rova_star/core/utils/file.dart';
+import 'package:rova_star/core/utils/navigate.dart';
+import 'package:rova_star/core/utils/utils.dart';
+import 'package:rova_star/feature/account/view/myDetalis/presentation/manager/editProfile/cubit/edit_profile_cubit.dart';
+import 'package:rova_star/feature/navigation/view/presentation/navigation_view.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 
 class MyDetailsView extends StatefulWidget {
   const MyDetailsView({super.key, required this.editProfileCubit});
@@ -28,44 +33,71 @@ class MyDetailsView extends StatefulWidget {
 class _MyDetailsViewState extends State<MyDetailsView> {
   // Controllers
   final _firstNameController = TextEditingController();
+  final _lastNameController = TextEditingController();
   final _emailController = TextEditingController();
   final _phoneController = TextEditingController();
+
+  // State variables
+  final ImagePicker _picker = ImagePicker();
+  File? _profileImage;
 
   @override
   void initState() {
     super.initState();
-    _populateFormFields();
+    _loadUserData();
   }
 
   @override
   void dispose() {
     _firstNameController.dispose();
+    _lastNameController.dispose();
     _emailController.dispose();
     _phoneController.dispose();
     super.dispose();
   }
 
   // Methods
+  Future<void> _loadUserData() async {
+    await widget.editProfileCubit.getUserData(context: context);
+    await _loadProfileImage();
+    _populateFormFields();
+  }
+
+  Future<void> _loadProfileImage() async {
+    final avatarPath = ConstantsModels.editProfileModel?.data?.avatarPath ?? '';
+    if (avatarPath.isNotEmpty) {
+      _profileImage = await FileDetails.urlToFile(url: avatarPath, nameFile: 'avatar');
+      if (mounted) setState(() {});
+    }
+  }
+
   void _populateFormFields() {
-    if (loginCacheValue?.data != null) {
-      final userData = loginCacheValue!.data!;
-      _firstNameController.text = userData.name;
-      _emailController.text = userData.email;
-      _phoneController.text = userData.mobile;
+    if (ConstantsModels.editProfileModel?.data != null) {
+      final userData = ConstantsModels.editProfileModel!.data!;
+      _firstNameController.text = userData.name ?? 'N/A';
+      _lastNameController.text = userData.lastName ?? 'N/A';
+      _emailController.text = userData.email ?? 'N/A';
+      _phoneController.text = userData.phone ?? 'N/A';
+    }
+  }
+
+  Future<void> _pickImage() async {
+    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+    if (image != null && mounted) {
+      setState(() => _profileImage = File(image.path));
     }
   }
 
   void _handleSubmit() async {
-    if (loginCacheValue?.data?.email != Constants.demoAccount) {
+    if (loginCacheValue?.data?.phone != Constants.demoAccount) {
       await widget.editProfileCubit.updateUserData(
         context: context,
         name: _firstNameController.text,
+        email: _emailController.text,
         phone: _phoneController.text,
+        image: _profileImage,
       );
-      loginCacheValue?.data?.firstName = _firstNameController.text;
-      loginCacheValue?.data?.mobile = _phoneController.text;
-      await loginCache?.put(loginCacheKey, jsonEncode(loginCacheValue?.toJson()));
-
+      await widget.editProfileCubit.getUserData(context: context);
       context.navigateToPage(
         const NavigationViewWithThemes(
           initialIndex: 3,
@@ -84,8 +116,11 @@ class _MyDetailsViewState extends State<MyDetailsView> {
         value: widget.editProfileCubit,
         child: DetailViewBody(
           firstNameController: _firstNameController,
+          lastNameController: _lastNameController,
           emailController: _emailController,
           phoneController: _phoneController,
+          profileImage: _profileImage,
+          onPickImage: _pickImage,
           onSubmit: _handleSubmit,
           editProfileCubit: widget.editProfileCubit,
         ),
@@ -96,121 +131,122 @@ class _MyDetailsViewState extends State<MyDetailsView> {
 
 class DetailViewBody extends StatelessWidget {
   final TextEditingController firstNameController;
+  final TextEditingController lastNameController;
   final TextEditingController emailController;
   final TextEditingController phoneController;
+  final File? profileImage;
+  final VoidCallback onPickImage;
   final VoidCallback onSubmit;
   final EditProfileCubit editProfileCubit;
 
   const DetailViewBody({
     super.key,
     required this.firstNameController,
+    required this.lastNameController,
     required this.emailController,
     required this.phoneController,
+    required this.profileImage,
+    required this.onPickImage,
     required this.onSubmit,
     required this.editProfileCubit,
   });
 
   @override
   Widget build(BuildContext context) {
-    // Check if we have cached user data
-    if (loginCacheValue?.data == null) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(Icons.person_off, size: 64, color: Colors.grey),
-            const SizedBox(height: 16),
-            Text(
-              'No user data available'.tr(),
-              style: const TextStyle(fontSize: 16, color: Colors.grey),
-            ),
-          ],
-        ),
-      );
-    }
-
     return SingleChildScrollView(
-      child: Column(
-        children: [
-          h20,
-          // Vector Avatar
-          const VectorAvatarWidget(),
-          h20,
-          UserDetailsForm(
-            firstNameController: firstNameController,
-            emailController: emailController,
-            phoneController: phoneController,
-          ),
-          h30,
-          SubmitButtonWidget(
-            onSubmit: onSubmit,
-            editProfileCubit: editProfileCubit,
-          ),
-          h20,
-        ],
+      child: BlocBuilder<EditProfileCubit, EditProfileState>(
+        buildWhen: (previous, current) => current is EditProfileLoading || current is EditProfileError || current is EditProfileSuccess,
+        builder: (context, state) {
+          if (state is EditProfileLoading) {
+            return const Center(child: LoadingWidget());
+          }
+          if (state is EditProfileError) {
+            return Center(child: Text(state.e));
+          }
+          if (state is EditProfileSuccess) {
+            return Column(
+              children: [
+                h20,
+                ProfileImageWidget(
+                  profileImage: profileImage,
+                  onPickImage: onPickImage,
+                ),
+                h20,
+                UserDetailsForm(
+                  firstNameController: firstNameController,
+                  lastNameController: lastNameController,
+                  emailController: emailController,
+                  phoneController: phoneController,
+                ),
+                h30,
+                SubmitButtonWidget(
+                  onSubmit: onSubmit,
+                  editProfileCubit: editProfileCubit,
+                ),
+                h20,
+              ],
+            );
+          }
+          return const SizedBox();
+        },
       ),
     );
   }
 }
 
-class VectorAvatarWidget extends StatelessWidget {
-  const VectorAvatarWidget({super.key});
+class ProfileImageWidget extends StatelessWidget {
+  final File? profileImage;
+  final VoidCallback onPickImage;
+
+  const ProfileImageWidget({
+    super.key,
+    required this.profileImage,
+    required this.onPickImage,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final userName = loginCacheValue?.data?.name ?? '';
-    final initials = _getInitials(userName);
-
     return Center(
-      child: Container(
-        width: 100,
-        height: 100,
-        decoration: BoxDecoration(
-          color: AppColors.primaryColor.withOpacity(0.1),
-          shape: BoxShape.circle,
-          border: Border.all(
-            color: AppColors.primaryColor,
-            width: 2,
-          ),
-        ),
-        child: Center(
-          child: initials.isNotEmpty
-              ? Text(
-                  initials,
-                  style: const TextStyle(
-                    fontSize: 36,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.primaryColor,
-                  ),
-                )
-              : const Icon(
-                  Icons.person,
-                  size: 50,
+      child: GestureDetector(
+        onTap: onPickImage,
+        child: Stack(
+          children: [
+            CacheImage(
+              urlImage: profileImage != null ? profileImage!.path : ConstantsModels.editProfileModel?.data?.avatarPath,
+              fileImage: profileImage,
+              width: 100,
+              height: 100,
+              circle: true,
+            ),
+            Positioned(
+              bottom: 0,
+              right: 0,
+              child: Container(
+                padding: const EdgeInsets.all(5),
+                decoration: const BoxDecoration(
                   color: AppColors.primaryColor,
+                  shape: BoxShape.circle,
                 ),
+                child: const Icon(Icons.camera_alt, color: Colors.white, size: 20),
+              ),
+            ),
+          ],
         ),
       ),
     );
-  }
-
-  String _getInitials(String name) {
-    if (name.isEmpty) return '';
-    final parts = name.trim().split(' ');
-    if (parts.length >= 2) {
-      return '${parts[0][0]}${parts[1][0]}'.toUpperCase();
-    }
-    return name[0].toUpperCase();
   }
 }
 
 class UserDetailsForm extends StatefulWidget {
   final TextEditingController firstNameController;
+  final TextEditingController lastNameController;
   final TextEditingController emailController;
   final TextEditingController phoneController;
 
   const UserDetailsForm({
     super.key,
     required this.firstNameController,
+    required this.lastNameController,
     required this.emailController,
     required this.phoneController,
   });
@@ -222,7 +258,7 @@ class UserDetailsForm extends StatefulWidget {
 class _UserDetailsFormState extends State<UserDetailsForm> {
   @override
   void initState() {
-    getCountryCode(number: loginCacheValue?.data?.mobile ?? '+966');
+    getCountryCode(number: loginCacheValue?.data?.phone ?? '+966');
     super.initState();
   }
 
@@ -241,15 +277,16 @@ class _UserDetailsFormState extends State<UserDetailsForm> {
         CustomTextFormField(
           nameField: 'Email Address'.tr(),
           controller: widget.emailController,
-          hintText: 'Email address'.tr(),
+          hintText: 'Enter your email address'.tr(),
           textInputType: TextInputType.emailAddress,
-          enable: false, // Disabled as per user requirement
         ),
         h10,
+        // The controller already has the full number with country code (e.g. "Constants.demoAccount)
         PhoneNumberField(
+          enabled: false,
           initialCountryCode: initialCountryCode,
           controller: formatPhone(
-            number: loginCacheValue?.data?.mobile ?? '',
+            number: loginCacheValue?.data?.phone ?? ' ',
             initialCountryCode: initialCountryCode,
           ),
         ),
@@ -259,10 +296,9 @@ class _UserDetailsFormState extends State<UserDetailsForm> {
   }
 
   void getCountryCode({required String number}) {
-    if (number.isEmpty) return;
     if (number.substring(0, 3) == '+20') {
       initialCountryCode = '+2';
-    } else if (number.length >= 3) {
+    } else {
       initialCountryCode = number.substring(0, 3);
     }
   }
@@ -272,8 +308,6 @@ class _UserDetailsFormState extends State<UserDetailsForm> {
     required String initialCountryCode,
   }) {
     final TextEditingController phone = TextEditingController(text: '');
-
-    if (number.isEmpty) return phone;
 
     if (initialCountryCode == '+2') {
       if (number.length >= 2) {

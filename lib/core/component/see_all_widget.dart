@@ -1,8 +1,8 @@
-import 'package:dobzz_seller/core/themes/colors.dart';
-import 'package:dobzz_seller/core/utils/constants.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:rova_star/core/themes/colors.dart';
+import 'package:rova_star/core/utils/constants.dart';
 
 class SeeAllWidget extends StatelessWidget {
   const SeeAllWidget({

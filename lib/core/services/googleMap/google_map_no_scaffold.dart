@@ -5,14 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart' as location_import;
-import 'package:dobzz_seller/core/network/local/cache.dart';
-import 'package:dobzz_seller/core/services/googleMap/utils/utils_google_map.dart';
-import 'package:dobzz_seller/core/themes/colors.dart';
-import 'package:dobzz_seller/core/utils/constants.dart';
-import 'package:dobzz_seller/core/utils/extensions.dart';
-import 'package:dobzz_seller/core/utils/utils.dart';
-import 'package:dobzz_seller/feature/navigation/view/manager/homeBloc/cubit.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:rova_star/core/network/local/cache.dart';
+import 'package:rova_star/core/services/googleMap/utils/utils_google_map.dart';
+import 'package:rova_star/core/themes/colors.dart';
+import 'package:rova_star/core/utils/constants.dart';
+import 'package:rova_star/core/utils/extensions.dart';
+import 'package:rova_star/core/utils/utils.dart';
+import 'package:rova_star/feature/navigation/view/manager/homeBloc/cubit.dart';
 
 class GoogleMapWithoutScaffold extends StatefulWidget {
   final double? height;

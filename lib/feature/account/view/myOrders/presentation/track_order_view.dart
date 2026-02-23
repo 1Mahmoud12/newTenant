@@ -1,4 +1,4 @@
-import 'package:dobzz_seller/core/utils/app_images.dart';
+import 'package:rova_star/core/utils/app_images.dart';
 import 'package:flutter/material.dart';
 
 class TrackOrderView extends StatelessWidget {

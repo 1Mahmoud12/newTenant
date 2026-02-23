@@ -1,21 +1,21 @@
-import 'package:dobzz_seller/core/network/local/cache.dart';
-import 'package:dobzz_seller/core/services/biometrics/biometric_service.dart';
-import 'package:dobzz_seller/core/themes/colors.dart';
-import 'package:dobzz_seller/core/utils/app_icons.dart';
-import 'package:dobzz_seller/core/utils/constants.dart';
-import 'package:dobzz_seller/core/utils/constants_models.dart';
-import 'package:dobzz_seller/core/utils/extensions.dart';
-import 'package:dobzz_seller/core/utils/navigate.dart';
-import 'package:dobzz_seller/core/utils/utils.dart';
-import 'package:dobzz_seller/feature/account/view/helpCenter/presentation/help_center_view.dart';
-import 'package:dobzz_seller/feature/account/view/manager/deleteAccount/cubit/delete_account_cubit.dart';
-import 'package:dobzz_seller/feature/account/view/myDetalis/presentation/manager/editProfile/cubit/edit_profile_cubit.dart';
-import 'package:dobzz_seller/feature/account/view/myDetalis/presentation/my_details_veiw.dart';
-import 'package:dobzz_seller/feature/account/view/myOrders/presentation/my_order_view.dart';
-import 'package:dobzz_seller/feature/account/view/presentation/language_view.dart';
-import 'package:dobzz_seller/feature/favorites/views/manager/wishList/cubit/wish_list_cubit.dart';
-import 'package:dobzz_seller/feature/navigation/view/presentation/navigation_view.dart';
-import 'package:dobzz_seller/mainCubit/cubit/main_cubit_cubit.dart';
+import 'package:rova_star/core/component/cache_image.dart';
+import 'package:rova_star/core/network/local/cache.dart';
+import 'package:rova_star/core/services/biometrics/biometric_service.dart';
+import 'package:rova_star/core/themes/colors.dart';
+import 'package:rova_star/core/utils/app_icons.dart';
+import 'package:rova_star/core/utils/constants.dart';
+import 'package:rova_star/core/utils/constants_models.dart';
+import 'package:rova_star/core/utils/extensions.dart';
+import 'package:rova_star/core/utils/navigate.dart';
+import 'package:rova_star/core/utils/utils.dart';
+import 'package:rova_star/feature/account/view/helpCenter/presentation/help_center_view.dart';
+import 'package:rova_star/feature/account/view/manager/deleteAccount/cubit/delete_account_cubit.dart';
+import 'package:rova_star/feature/account/view/myDetalis/presentation/manager/editProfile/cubit/edit_profile_cubit.dart';
+import 'package:rova_star/feature/account/view/myDetalis/presentation/my_details_veiw.dart';
+import 'package:rova_star/feature/account/view/notificationSetting/presentation/notification_setting_view.dart';
+import 'package:rova_star/feature/account/view/presentation/language_view.dart';
+import 'package:rova_star/feature/auth/login/view/presentation/login_screen.dart';
+import 'package:rova_star/mainCubit/cubit/main_cubit_cubit.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -23,7 +23,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../../../../../core/component/login_dialog.dart';
 import '../../../../address/view/presentation/address_view.dart';
 
 class ProfileViewThemeOne extends StatefulWidget {
@@ -44,7 +43,7 @@ class _ProfileViewThemeOneState extends State<ProfileViewThemeOne> {
   Future<void> _initBiometrics() async {
     final bool supported = await _biometricService.isDeviceSupported();
     final bool canCheck = await _biometricService.canCheckBiometrics();
-    final bool enabled = await _biometricService.isBiometricEnabled() && loginCacheValue?.data?.email == loginCache?.get(loginEmailKey);
+    final bool enabled = await _biometricService.isBiometricEnabled() && loginCacheValue?.data?.phone == loginCache?.get(loginEmailKey);
     if (!mounted) return;
     setState(() {
       _biometricSupported = supported && canCheck;
@@ -103,7 +102,6 @@ class _ProfileViewThemeOneState extends State<ProfileViewThemeOne> {
                           ),
                           InkWell(
                             onTap: () {
-
                               context.navigateToPage(
                                 MyDetailsView(
                                   editProfileCubit: editProfileCubit,
@@ -147,15 +145,19 @@ class _ProfileViewThemeOneState extends State<ProfileViewThemeOne> {
                             return Row(
                               children: [
                                 Container(
-                                  width: 72,
-                                  height: 72,
                                   decoration: BoxDecoration(
-                                    color: Colors.white.withOpacity(0.2),
-                                    shape: BoxShape.circle,
                                     border: Border.all(color: Colors.white, width: 2),
+                                    borderRadius: BorderRadius.circular(30),
                                   ),
-                                  child: Center(
-                                    child: _buildUserInitials(loginCacheValue?.data?.firstName ?? ''),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(28),
+                                    child: CacheImage(
+                                      errorColor: Colors.white70,
+                                      height: 72,
+                                      width: 72,
+                                      // circle: true,
+                                      urlImage: loginCacheValue?.data?.avatarPath ?? '',
+                                    ),
                                   ),
                                 ),
                                 const SizedBox(width: 16),
@@ -164,7 +166,7 @@ class _ProfileViewThemeOneState extends State<ProfileViewThemeOne> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        loginCacheValue?.data?.firstName ?? 'Unknown'.tr(),
+                                        loginCacheValue?.data?.name ?? 'Unknown'.tr(),
                                         style: const TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 22,
@@ -210,26 +212,20 @@ class _ProfileViewThemeOneState extends State<ProfileViewThemeOne> {
                   ),
                   child: Column(
                     children: [
-                      _buildMenuItemNew(
-                        icon: AppIcons.myOrders,
-                        title: 'My Orders',
-                        subtitle: 'View your order history',
-                        onTap: () {
-                          context.navigateToPage(const MyOrderView());
-                        },
-                      ),
-                      _buildDivider(),
+                      // _buildMenuItemNew(
+                      //   icon: AppIcons.myOrders,
+                      //   title: 'My Orders',
+                      //   subtitle: 'View your order history',
+                      //   onTap: () {
+                      //     context.navigateToPage(const MyOrderView());
+                      //   },
+                      // ),
+                      //  _buildDivider(),
                       _buildMenuItemNew(
                         icon: AppIcons.myDetails,
                         title: 'My Details',
                         subtitle: 'Manage your personal information',
                         onTap: () {
-                          if (loginCacheValue?.data?.id == null) {
-                            LoginDialog.show(
-                              context,
-                            );
-                            return;
-                          }
                           context.navigateToPage(
                             MyDetailsView(
                               editProfileCubit: editProfileCubit,
@@ -243,12 +239,6 @@ class _ProfileViewThemeOneState extends State<ProfileViewThemeOne> {
                         title: 'Address Book',
                         subtitle: 'Manage your shipping addresses',
                         onTap: () {
-                          if (loginCacheValue?.data?.id == null) {
-                            LoginDialog.show(
-                              context,
-                            );
-                            return;
-                          }
                           context.navigateToPage(const AddressView());
                         },
                       ),
@@ -293,14 +283,14 @@ class _ProfileViewThemeOneState extends State<ProfileViewThemeOne> {
                       //   },
                       // ),
                       // _buildDivider(),
-                      // _buildMenuItemNew(
-                      //   icon: AppIcons.notificationIcon,
-                      //   title: 'Notifications',
-                      //   subtitle: 'Manage alert preferences',
-                      //   onTap: () {
-                      //     context.navigateToPage(const NotificationsSettingsView());
-                      //   },
-                      // ),
+                      _buildMenuItemNew(
+                        icon: AppIcons.notificationIcon,
+                        title: 'Notifications',
+                        subtitle: 'Manage alert preferences',
+                        onTap: () {
+                          context.navigateToPage(const NotificationsSettingsView());
+                        },
+                      ),
 
                       _buildDivider(),
 
@@ -312,20 +302,20 @@ class _ProfileViewThemeOneState extends State<ProfileViewThemeOne> {
                           context.navigateToPage(const LanguageView());
                         },
                       ),
-                      // if (loginCacheValue?.data?.email != Constants.demoAccount) ...[
-                      //   _buildDivider(),
-                      //   _buildMenuItemNew(
-                      //     icon: AppIcons.bioMetricIc,
-                      //     title: 'sing_in_by_biometric',
-                      //     subtitle: 'manage_your_fingerprint',
-                      //     onTap: bioMetricsMethod,
-                      //     trailing: SafeCustomToggleSwitch(
-                      //       isEnabled: _biometricEnabled,
-                      //       onToggle: bioMetricsMethod,
-                      //       isDisabled: !_biometricSupported,
-                      //     ),
-                      //   ),
-                      // ],
+                      if (loginCacheValue?.data?.phone != Constants.demoAccount) ...[
+                        _buildDivider(),
+                        _buildMenuItemNew(
+                          icon: AppIcons.bioMetricIc,
+                          title: 'sing_in_by_biometric',
+                          subtitle: 'manage_your_fingerprint',
+                          onTap: bioMetricsMethod,
+                          trailing: SafeCustomToggleSwitch(
+                            isEnabled: _biometricEnabled,
+                            onToggle: bioMetricsMethod,
+                            isDisabled: !_biometricSupported,
+                          ),
+                        ),
+                      ],
                     ],
                   ),
                 ),
@@ -393,12 +383,8 @@ class _ProfileViewThemeOneState extends State<ProfileViewThemeOne> {
                         onTap: () {
                           showLogoutDialog(context, () async {
                             loginCacheValue = null;
-                            Constants.token = '';
-                            Constants.customerId = null;
-                            ConstantsModels.wishListModel = null;
-                            context.read<WishListCubit>().wishList.clear();
-                            await loginCache?.clear();
-                            context.navigateToPage(const NavigationViewWithThemes());
+                            await userCache?.clear();
+                            context.navigateToPage(const LoginScreen());
                           });
                         },
                       ),
@@ -408,7 +394,7 @@ class _ProfileViewThemeOneState extends State<ProfileViewThemeOne> {
                         title: 'Delete Account',
                         color: const Color(0xFF9E9E9E),
                         onTap: () {
-                          if (loginCacheValue?.data?.email != Constants.demoAccount) {
+                          if (loginCacheValue?.data?.phone != Constants.demoAccount) {
                             showDeleteAccountDialog(context, () async {
                               await deleteAccountCubit.deleteAccount(context: context);
                             });
@@ -578,33 +564,6 @@ class _ProfileViewThemeOneState extends State<ProfileViewThemeOne> {
         color: Colors.grey.withOpacityNew(0.2),
       ),
     );
-  }
-
-  Widget _buildUserInitials(String name) {
-    final initials = _getInitials(name);
-    return initials.isNotEmpty
-        ? Text(
-            initials,
-            style: const TextStyle(
-              fontSize: 32,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
-          )
-        : const Icon(
-            Icons.person,
-            size: 40,
-            color: Colors.white,
-          );
-  }
-
-  String _getInitials(String name) {
-    if (name.isEmpty) return '';
-    final parts = name.trim().split(' ');
-    if (parts.length >= 2) {
-      return '${parts[0][0]}${parts[1][0]}'.toUpperCase();
-    }
-    return name[0].toUpperCase();
   }
 
   /// Shows a confirmation dialog for logging out

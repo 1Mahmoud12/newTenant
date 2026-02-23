@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:dobzz_seller/core/themes/colors.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:rova_star/core/themes/colors.dart';
 
 class ConfirmationDeleteDialog extends StatefulWidget {
   final String title;

@@ -1,15 +1,15 @@
 import 'dart:developer';
 
-import 'package:dobzz_seller/core/component/custom_drop_down_menu.dart';
-import 'package:dobzz_seller/core/component/fields/custom_text_form_field.dart';
-import 'package:dobzz_seller/core/themes/colors.dart';
-import 'package:dobzz_seller/core/utils/app_icons.dart';
-import 'package:dobzz_seller/core/utils/extensions.dart';
-import 'package:dobzz_seller/core/utils/utils.dart';
-import 'package:dobzz_seller/feature/auth/manager/authBloc/auth_cubit.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:rova_star/core/component/custom_drop_down_menu.dart';
+import 'package:rova_star/core/component/fields/custom_text_form_field.dart';
+import 'package:rova_star/core/themes/colors.dart';
+import 'package:rova_star/core/utils/app_icons.dart';
+import 'package:rova_star/core/utils/extensions.dart';
+import 'package:rova_star/core/utils/utils.dart';
+import 'package:rova_star/feature/auth/manager/authBloc/auth_cubit.dart';
 
 class PhoneNumberField extends StatefulWidget {
   final TextEditingController controller;
@@ -32,7 +32,6 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
   late String _countryCode;
   late String _phoneHint;
   late int _selectedCountryIndex;
-  AuthCubit? _authCubit; // Cache the cubit reference
 
   void _updatePhoneHint(String countryCode) {
     setState(() {
@@ -52,13 +51,6 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
           _phoneHint = '01xxxxxxxxx';
       }
     });
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    // Safely get and cache the AuthCubit reference
-    _authCubit ??= AuthCubit.of(context);
   }
 
   @override
@@ -83,18 +75,18 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
     // Initialize the phone hint based on the selected country code
     _updatePhoneHint(_countryCode);
 
-    // Update AuthCubit with the initial country code (use cached reference)
+    // Update AuthCubit with the initial country code
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted && _authCubit != null) {
-        _authCubit!.countryCode = _countryCode;
-      }
+      AuthCubit.of(context).countryCode = _countryCode;
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    final authCubit = AuthCubit.of(context);
+
     return CustomTextFormField(
-      inputFormatters: _authCubit?.countryCode == '+966'
+      inputFormatters: AuthCubit.of(context).countryCode == '+966'
           ? [
               TextInputFormatter.withFunction((oldValue, newValue) {
                 final text = newValue.text;
@@ -136,7 +128,6 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
       outPadding: widget.outPadding ?? const EdgeInsets.symmetric(horizontal: 20),
       controller: widget.controller,
       hintText: 'Phone'.tr(),
-      nameField: 'Phone'.tr(),
       hintStyle: TextStyle(color: AppColors.primaryColor.withOpacityNew(0.5)),
       //  labelText: _phoneHint.tr(),
       validator: (value) => _validatePhoneNumber(value, _countryCode),
@@ -151,10 +142,8 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
                   initialCountryIndex: _selectedCountryIndex, // Pass the selected index
                   onCountryChanged: (countryCode) {
                     _updatePhoneHint(countryCode);
-                    if (_authCubit != null) {
-                      _authCubit!.countryCode = countryCode;
-                      _authCubit!.loginEmailController.clear();
-                    }
+                    authCubit.countryCode = countryCode;
+                    authCubit.loginPhoneController.clear();
                   },
                 ),
               ),

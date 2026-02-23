@@ -1,13 +1,13 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
-import 'package:dobzz_seller/core/network/dio_helper.dart';
-import 'package:dobzz_seller/core/network/end_points.dart';
-import 'package:dobzz_seller/core/network/errors/failures.dart';
-import 'package:dobzz_seller/core/services/payment/data/model/payment_credit_model.dart';
-import 'package:dobzz_seller/core/services/payment/data/model/payment_credit_params.dart';
-import 'package:dobzz_seller/core/services/payment/data/model/payment_method_model.dart';
-import 'package:dobzz_seller/core/services/payment/data/model/payment_stc_first_params.dart';
-import 'package:dobzz_seller/core/services/payment/data/model/stc_first_model.dart';
+import 'package:rova_star/core/network/dio_helper.dart';
+import 'package:rova_star/core/network/end_points.dart';
+import 'package:rova_star/core/network/errors/failures.dart';
+import 'package:rova_star/core/services/payment/data/model/payment_credit_model.dart';
+import 'package:rova_star/core/services/payment/data/model/payment_credit_params.dart';
+import 'package:rova_star/core/services/payment/data/model/payment_method_model.dart';
+import 'package:rova_star/core/services/payment/data/model/payment_stc_first_params.dart';
+import 'package:rova_star/core/services/payment/data/model/stc_first_model.dart';
 
 abstract class PaymentDataSource {
   Future<Either<Failure, PaymentMethodModel>> getPaymentMethod();

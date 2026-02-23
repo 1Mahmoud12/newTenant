@@ -1,9 +1,9 @@
-import 'package:dobzz_seller/core/themes/colors.dart';
-import 'package:dobzz_seller/core/utils/constant_gaping.dart';
-import 'package:dobzz_seller/feature/cart/view/manager/addToCart/cubit/add_to_cart_cubit.dart';
-import 'package:dobzz_seller/feature/cart/view/manager/cartItems/cubit/cart_items_cubit.dart';
-import 'package:dobzz_seller/feature/favorites/views/manager/wishList/cubit/wish_list_cubit.dart';
-import 'package:dobzz_seller/feature/home/data/models/product_mdoel.dart';
+import 'package:rova_star/core/themes/colors.dart';
+import 'package:rova_star/core/utils/constant_gaping.dart';
+import 'package:rova_star/feature/cart/view/manager/addToCart/cubit/add_to_cart_cubit.dart';
+import 'package:rova_star/feature/cart/view/manager/cartItems/cubit/cart_items_cubit.dart';
+import 'package:rova_star/feature/favorites/views/manager/wishList/cubit/wish_list_cubit.dart';
+import 'package:rova_star/feature/home/data/models/product_mdoel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -45,7 +45,7 @@ class _ProductCardThemeTwoState extends State<ProductCardThemeTwo> {
   bool isAddedToCart = false;
 
   void toggleLike() {
-    widget.onLikeTap.call(context.read<WishListCubit>().isWishListed(productId: widget.productId));
+    widget.onLikeTap.call(context.read<WishListCubit>().isWishListed(skuCode: widget.skuCode ?? widget.sku.first.skuCode!));
     debugPrint('Liked:  for ${widget.title}');
   }
 
@@ -95,7 +95,8 @@ class _ProductCardThemeTwoState extends State<ProductCardThemeTwo> {
                         shape: BoxShape.circle,
                       ),
                       child: Icon(
-                        context.watch<WishListCubit>().isWishListed(productId: widget.productId) ? Icons.favorite
+                        context.watch<WishListCubit>().isWishListed(skuCode: widget.skuCode ?? widget.sku.first.skuCode!)
+                            ? Icons.favorite
                             : Icons.favorite_border,
                         color: Colors.white,
                         size: 18,
@@ -166,7 +167,7 @@ class _ProductCardThemeTwoState extends State<ProductCardThemeTwo> {
                       //customShowToast(context, 'need_edit');
                       CartItemsCubit.of(context).addCartItems();
                       await addToCartCubit.addToCart(
-                        context: context, productId: widget.productId, variantId: widget.sku.firstOrNull?.id ?? 0,
+                        context: context, sku: widget.skuCode ?? widget.sku.firstOrNull?.skuCode ?? '',
                         //  sizeCode: '',
                       );
                       setState(() {

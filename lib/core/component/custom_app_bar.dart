@@ -1,20 +1,20 @@
 import 'dart:io';
 
-import 'package:dobzz_seller/core/utils/app_icons.dart';
-import 'package:dobzz_seller/core/utils/constants.dart';
-import 'package:dobzz_seller/core/utils/navigate.dart';
-import 'package:dobzz_seller/feature/notification/view/presentation/notification_view.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:rova_star/core/utils/app_icons.dart';
+import 'package:rova_star/core/utils/constants.dart';
+import 'package:rova_star/core/utils/navigate.dart';
+import 'package:rova_star/feature/notification/view/presentation/notification_view.dart';
 
 PreferredSizeWidget customAppBar({
   bool stopLeading = false,
   bool centerTitle = true,
   required BuildContext context,
   void Function()? onPressLeading,
-  Widget? actions = const SizedBox.shrink(),
+  Widget? actions,
   String? title,
   PreferredSizeWidget? bottom,
 }) {

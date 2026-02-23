@@ -7,11 +7,7 @@ final class CategoriesInitial extends CategoriesState {}
 
 final class CategoriesLoading extends CategoriesState {}
 
-final class CategoriesSuccess extends CategoriesState {
-  final List<CategoryData> data;
-
-  CategoriesSuccess({required this.data});
-}
+final class CategoriesSuccess extends CategoriesState {}
 
 final class CategoriesError extends CategoriesState {
   final String e;

@@ -1,26 +1,22 @@
 import 'dart:async';
 
-import 'package:dobzz_seller/core/component/cache_image.dart';
-import 'package:dobzz_seller/core/component/loadsErros/loading_widget.dart';
-import 'package:dobzz_seller/core/component/wishlist_icon_button.dart';
-import 'package:dobzz_seller/core/themes/colors.dart';
-import 'package:dobzz_seller/core/utils/app_icons.dart';
-import 'package:dobzz_seller/core/utils/constant_gaping.dart';
-import 'package:dobzz_seller/core/utils/constants.dart';
-import 'package:dobzz_seller/core/utils/navigate.dart';
-import 'package:dobzz_seller/feature/cart/view/manager/addToCart/cubit/add_to_cart_cubit.dart';
-import 'package:dobzz_seller/feature/cart/view/manager/cartItems/cubit/cart_items_cubit.dart';
-import 'package:dobzz_seller/feature/favorites/views/manager/wishList/cubit/wish_list_cubit.dart';
-import 'package:dobzz_seller/feature/home/data/models/product_mdoel.dart';
-import 'package:dobzz_seller/feature/product/views/presentation/product_details_view.dart';
+import 'package:rova_star/core/component/cache_image.dart';
+import 'package:rova_star/core/component/loadsErros/loading_widget.dart';
+import 'package:rova_star/core/themes/colors.dart';
+import 'package:rova_star/core/utils/app_icons.dart';
+import 'package:rova_star/core/utils/constant_gaping.dart';
+import 'package:rova_star/core/utils/constants.dart';
+import 'package:rova_star/core/utils/navigate.dart';
+import 'package:rova_star/feature/cart/view/manager/addToCart/cubit/add_to_cart_cubit.dart';
+import 'package:rova_star/feature/cart/view/manager/cartItems/cubit/cart_items_cubit.dart';
+import 'package:rova_star/feature/favorites/views/manager/wishList/cubit/wish_list_cubit.dart';
+import 'package:rova_star/feature/home/data/models/product_mdoel.dart';
+import 'package:rova_star/feature/product/views/presentation/product_details_view.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-
-import '../../../../../core/component/login_dialog.dart';
-import '../../../../../core/network/local/cache.dart';
 
 class ProductCard extends StatefulWidget {
   final String imagePath;
@@ -73,7 +69,7 @@ class _ProductCardState extends State<ProductCard> {
     setState(() {
       isLiked = !isLiked;
     });
-    widget.onLikeTap?.call(context.read<WishListCubit>().isWishListed(productId: widget.productId));
+    widget.onLikeTap?.call(context.read<WishListCubit>().isWishListed(skuCode: widget.sku ?? ''));
     debugPrint('Liked: $isLiked for ${widget.title}');
   }
 
@@ -104,24 +100,32 @@ class _ProductCardState extends State<ProductCard> {
           children: [
             Stack(
               children: [
-                ClipRRect(
-                  borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(12),
-                      topRight: Radius.circular(12)),
-                  child: CacheImage(
-                    urlImage: widget.imagePath,
-                    errorColor: Colors.grey,
-                    height: 150,
-                    width: double.infinity,
-                    fit: BoxFit.fill,
-                  ),
+                CacheImage(
+                  urlImage: widget.imagePath,
+                  errorColor: Colors.grey,
+                  height: 150,
+                  width: double.infinity,
+                  fit: BoxFit.contain,
                 ),
                 Positioned(
                   top: 12,
                   right: 12,
-                  child: WishlistIconButton(
-                    productId: widget.productId,
-                    size: 18,
+                  child: GestureDetector(
+                    onTap: toggleLike,
+                    child: Container(
+                      padding: const EdgeInsets.all(6),
+                      decoration: const BoxDecoration(
+                        color: Colors.black87,
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        context.watch<WishListCubit>().isWishListed(skuCode: widget.sku ?? widget.variants.first.skuCode!)
+                            ? Icons.favorite
+                            : Icons.favorite_border,
+                        color: Colors.white,
+                        size: 18,
+                      ),
+                    ),
                   ),
                 ),
               ],
@@ -178,8 +182,7 @@ class _ProductCardState extends State<ProductCard> {
                         w5,
                         SvgPicture.asset(
                           AppIcons.currency,
-                          colorFilter: const ColorFilter.mode(
-                              Colors.black, BlendMode.srcIn),
+                          colorFilter: const ColorFilter.mode(Colors.black, BlendMode.srcIn),
                           height: 14,
                           width: 14,
                         ),
@@ -189,11 +192,7 @@ class _ProductCardState extends State<ProductCard> {
                   w10,
                   AddToCartButton(
                     productId: widget.productId,
-                    sku: widget.sku != null
-                        ? widget.sku!
-                        : (widget.variants.isNotEmpty
-                            ? widget.variants.first.skuCode ?? ''
-                            : ''), // widget.variants,
+                    sku: widget.sku != null ? widget.sku! : widget.variants.first.skuCode!, // widget.variants,
                   ),
                 ],
               ),
@@ -278,23 +277,15 @@ class _AddToCartButtonState extends State<AddToCartButton> {
             onTap: state is AddToCartLoading
                 ? null
                 : () async {
-                    if (loginCacheValue?.data?.id == null) {
-                      LoginDialog.show(
-                        context,
-                      );
-                      return;
-                    }
                     await addToCartCubit
                         .addToCart(
-                      productId: widget.productId,
-                      variantId: 1,
+                      sku: widget.sku,
                       context: context,
                     )
                         .then((_) {
                       CartItemsCubit.of(context).addCartItems();
 
-                      if (!mounted)
-                        return; // Check if still mounted before setState
+                      if (!mounted) return; // Check if still mounted before setState
                       setState(() {
                         _isAdded = true;
                       });
@@ -338,10 +329,7 @@ class _AddToCartButtonState extends State<AddToCartButton> {
                           child: FittedBox(
                             child: Text(
                               'Add to cart'.tr(),
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodySmall
-                                  ?.copyWith(
+                              style: Theme.of(context).textTheme.bodySmall?.copyWith(
                                     fontSize: 12.sp,
                                     fontWeight: FontWeight.w500,
                                     color: Colors.white,
@@ -361,6 +349,7 @@ class HorizontalProductCard extends StatefulWidget {
   final String imagePath;
   final String title;
   final String price;
+  final String? sku;
   final String? discountPercentage;
   final String description;
   final double rating;
@@ -380,6 +369,7 @@ class HorizontalProductCard extends StatefulWidget {
     required this.initialLiked,
     required this.productId,
     required this.variants,
+    this.sku,
   }) : super(key: key);
 
   @override
@@ -399,7 +389,7 @@ class _HorizontalProductCardState extends State<HorizontalProductCard> {
     setState(() {
       isLiked = !isLiked;
     });
-    widget.onLikeTap?.call(context.read<WishListCubit>().isWishListed(productId: widget.productId!));
+    widget.onLikeTap?.call(context.read<WishListCubit>().isWishListed(skuCode: widget.sku ?? widget.variants.first.skuCode!));
   }
 
   @override
@@ -427,8 +417,7 @@ class _HorizontalProductCardState extends State<HorizontalProductCard> {
             borderRadius: BorderRadius.circular(10),
           ),
           child: Row(
-            crossAxisAlignment:
-                CrossAxisAlignment.stretch, // Stretch to fill height
+            crossAxisAlignment: CrossAxisAlignment.stretch, // Stretch to fill height
             children: [
               // Left side - Product image with like button
               AspectRatio(
@@ -451,9 +440,22 @@ class _HorizontalProductCardState extends State<HorizontalProductCard> {
                     Positioned(
                       top: 8,
                       right: 8,
-                      child: WishlistIconButton(
-                        productId: widget.productId,
-                        size: 14,
+                      child: GestureDetector(
+                        onTap: toggleLike,
+                        child: Container(
+                          padding: const EdgeInsets.all(6),
+                          decoration: const BoxDecoration(
+                            color: Colors.black87,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(
+                            context.watch<WishListCubit>().isWishListed(skuCode: widget.sku ?? widget.variants.first.skuCode!)
+                                ? Icons.favorite
+                                : Icons.favorite_border,
+                            color: Colors.white,
+                            size: 14,
+                          ),
+                        ),
                       ),
                     ),
                   ],
@@ -463,8 +465,7 @@ class _HorizontalProductCardState extends State<HorizontalProductCard> {
               // Right side - Product information
               Expanded(
                 child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -542,8 +543,7 @@ class _HorizontalProductCardState extends State<HorizontalProductCard> {
                                   w5,
                                   SvgPicture.asset(
                                     AppIcons.currency,
-                                    colorFilter: const ColorFilter.mode(
-                                        Colors.black, BlendMode.srcIn),
+                                    colorFilter: const ColorFilter.mode(Colors.black, BlendMode.srcIn),
                                     height: 14,
                                     width: 14,
                                   ),
@@ -552,10 +552,8 @@ class _HorizontalProductCardState extends State<HorizontalProductCard> {
                             ),
                             w10,
                             HorizontalAddToCartButton(
+                              sku: widget.sku != null ? widget.sku! : widget.variants.first.skuCode!, // widget.variants,
                               productId: widget.productId,
-                              variantId: widget.variants.isNotEmpty
-                                  ? widget.variants.first.id ?? 0
-                                  : 0,
                             ),
                           ],
                         ),
@@ -576,14 +574,13 @@ class HorizontalAddToCartButton extends StatefulWidget {
   const HorizontalAddToCartButton({
     super.key,
     required this.productId,
-    required this.variantId,
+    required this.sku,
   });
 
   final int productId;
-  final int variantId;
+  final String sku;
   @override
-  State<HorizontalAddToCartButton> createState() =>
-      _HorizontalAddToCartButtonState();
+  State<HorizontalAddToCartButton> createState() => _HorizontalAddToCartButtonState();
 }
 
 class _HorizontalAddToCartButtonState extends State<HorizontalAddToCartButton> {
@@ -607,16 +604,10 @@ class _HorizontalAddToCartButtonState extends State<HorizontalAddToCartButton> {
             onTap: state is AddToCartLoading
                 ? null
                 : () async {
-              if (loginCacheValue?.data?.id == null) {
-                LoginDialog.show(
-                  context,
-                );
-              return;
-              }
                     await addToCartCubit
                         .addToCart(
-                      productId: widget.productId,
-                      variantId: widget.variantId,
+                      sku: widget.sku,
+                      quantity: 1,
                       context: context,
                     )
                         .then((_) {
@@ -661,10 +652,7 @@ class _HorizontalAddToCartButtonState extends State<HorizontalAddToCartButton> {
                           child: FittedBox(
                             child: Text(
                               'Add to cart'.tr(),
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodySmall
-                                  ?.copyWith(
+                              style: Theme.of(context).textTheme.bodySmall?.copyWith(
                                     fontSize: 12.sp,
                                     fontWeight: FontWeight.w500,
                                     color: Colors.white,

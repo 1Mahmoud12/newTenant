@@ -1,4 +1,4 @@
-import 'package:dobzz_seller/core/themes/colors.dart';
+import 'package:rova_star/core/themes/colors.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
@@ -218,7 +218,7 @@ class ProductInfoItem extends StatelessWidget {
           Expanded(
             flex: 3,
             child: Text(
-              value.tr(),
+              value,
               style: Theme.of(context).textTheme.displayMedium,
               textAlign: TextAlign.end,
             ),

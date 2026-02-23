@@ -4,7 +4,7 @@ import 'dart:ui';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:dobzz_seller/core/utils/app_images.dart';
+import 'package:rova_star/core/utils/app_images.dart';
 
 import 'constants_google_map.dart';
 

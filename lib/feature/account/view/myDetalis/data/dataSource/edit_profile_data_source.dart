@@ -2,17 +2,16 @@ import 'dart:developer';
 
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
-import 'package:dobzz_seller/core/network/dio_helper.dart';
-import 'package:dobzz_seller/core/network/end_points.dart';
-import 'package:dobzz_seller/core/network/errors/failures.dart';
-import 'package:dobzz_seller/core/network/local/cache.dart';
-import 'package:dobzz_seller/feature/auth/data/models/register_model.dart';
+import 'package:rova_star/core/network/dio_helper.dart';
+import 'package:rova_star/core/network/end_points.dart';
+import 'package:rova_star/core/network/errors/failures.dart';
+import 'package:rova_star/feature/auth/data/models/register_model.dart';
 
 class EditProfileDataSource {
   static Future<Either<Failure, RegisterModel>> getUserData() async {
     try {
       final response = await DioHelper.getData(url: EndPoints.editProfile);
-      log('user data=>${response.data}');
+      log('user data==>${response.data}');
       return Right(RegisterModel.fromJson(response.data));
     } catch (error) {
       if (error is DioException) {
@@ -24,21 +23,8 @@ class EditProfileDataSource {
 
   static Future<Either<Failure, void>> updateUserData({required Map<String, dynamic> data}) async {
     try {
-      final customerId = loginCacheValue?.data?.id;
-
-      // Build query parameters
-      final queryParams = {
-        'theme_id': 'grocery',
-        'customer_id': customerId.toString(),
-        ...data,
-      };
-
-      final response = await DioHelper.postData(
-        endPoint: 'profile-update',
-        query: queryParams,
-        data: {},
-      );
-      log('Profile update response: ${response.data}');
+      final response = await DioHelper.postData(formDataIsEnabled: true, endPoint: EndPoints.editProfile, data: data);
+      log(' Response: ${response.data['data']}');
       return const Right(null);
     } catch (error) {
       if (error is DioException) {

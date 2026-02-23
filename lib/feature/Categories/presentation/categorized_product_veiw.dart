@@ -1,11 +1,12 @@
-import 'package:dobzz_seller/core/component/custom_app_bar.dart';
-import 'package:dobzz_seller/core/component/custom_list.dart';
-import 'package:dobzz_seller/core/component/loadsErros/loading_widget.dart';
-import 'package:dobzz_seller/core/utils/constants_models.dart';
-import 'package:dobzz_seller/feature/Categories/presentation/manager/subCategroy/cubit/sub_category_cubit.dart';
-import 'package:dobzz_seller/feature/favorites/views/manager/wishList/cubit/wish_list_cubit.dart';
-import 'package:dobzz_seller/feature/home/views/manager/topProduct/cubit/top_product_cubit.dart';
-import 'package:dobzz_seller/feature/home/views/presentation/widgets/product_card.dart';
+import 'package:rova_star/core/component/custom_app_bar.dart';
+import 'package:rova_star/core/component/custom_list.dart';
+import 'package:rova_star/core/component/loadsErros/loading_widget.dart';
+import 'package:rova_star/core/utils/constants_models.dart';
+import 'package:rova_star/core/utils/custom_show_toast.dart';
+import 'package:rova_star/feature/Categories/presentation/manager/subCategroy/cubit/sub_category_cubit.dart';
+import 'package:rova_star/feature/favorites/views/manager/wishList/cubit/wish_list_cubit.dart';
+import 'package:rova_star/feature/home/views/manager/topProduct/cubit/top_product_cubit.dart';
+import 'package:rova_star/feature/home/views/presentation/widgets/product_card.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -193,10 +194,20 @@ class _CategorizedProductViewState extends State<CategorizedProductView> {
                             productId: product.id ?? -1,
                             initialLiked: false,
                             onLikeTap: (isNowLiked) {
-                              if (isNowLiked && product.id != null) {
+                              final sku = product.skuCode ?? product.variants?.firstOrNull?.skuCode;
+                              if (sku == null) {
+                                customShowToast(
+                                  context,
+                                  'not_sku_for_this_item'.tr(),
+                                );
+                                return;
+                              }
+                              if (isNowLiked) {
+                                // Add to wishlist
                                 context.read<WishListCubit>().addToWishList(
                                       context: context,
-                                      productId: product.id!,
+                                      skuCode: sku,
+                                      product: product,
                                     );
                               }
                             },

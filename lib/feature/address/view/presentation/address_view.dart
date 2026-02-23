@@ -1,22 +1,20 @@
-import 'package:dobzz_seller/core/component/confirmation_delete_dailog.dart';
-import 'package:dobzz_seller/core/component/custom_app_bar.dart';
-import 'package:dobzz_seller/core/component/loadsErros/loading_widget.dart';
-import 'package:dobzz_seller/core/themes/colors.dart';
-import 'package:dobzz_seller/core/utils/app_icons.dart';
-import 'package:dobzz_seller/core/utils/constant_gaping.dart';
-import 'package:dobzz_seller/core/utils/constants.dart';
-import 'package:dobzz_seller/core/utils/constants_models.dart';
-import 'package:dobzz_seller/core/utils/navigate.dart';
+import 'package:rova_star/core/component/confirmation_delete_dailog.dart';
+import 'package:rova_star/core/component/custom_app_bar.dart';
+import 'package:rova_star/core/component/loadsErros/loading_widget.dart';
+import 'package:rova_star/core/themes/colors.dart';
+import 'package:rova_star/core/utils/app_icons.dart';
+import 'package:rova_star/core/utils/constant_gaping.dart';
+import 'package:rova_star/core/utils/constants.dart';
+import 'package:rova_star/core/utils/constants_models.dart';
+import 'package:rova_star/core/utils/navigate.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 
 import '../manager/address/cubit/address_cubit.dart';
 import 'add_address_view.dart';
-import 'address_item_skeleton.dart';
 
 class AddressView extends StatefulWidget {
   const AddressView({super.key});
@@ -83,7 +81,7 @@ class _AddressViewState extends State<AddressView> {
               height: 24,
             ),
           ],
-        )
+        ),
 
         // BlocProvider.value(
         //   value: addressCubit,
@@ -115,44 +113,10 @@ class _AddressViewState extends State<AddressView> {
       body: BlocProvider.value(
         value: addressCubit,
         child: BlocBuilder<AddressCubit, AddressState>(
-          buildWhen: (previous, current) =>
-              current is AddressLoading ||
-              current is AddressError ||
-              current is AddressSuccess,
+          buildWhen: (previous, current) => current is AddressLoading || current is AddressError || current is AddressSuccess,
           builder: (context, state) {
             if (state is AddressLoading) {
-              return SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'addresses_saved'.tr(),
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: Constants.tablet ? 20 : 20.sp,
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      Skeletonizer(
-                        enabled: true,
-                        effect: ShimmerEffect(
-                          baseColor: Colors.grey[300]!,
-                          highlightColor: Colors.grey[100]!,
-                        ),
-                        child: ListView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: 5,
-                          itemBuilder: (context, index) =>
-                              const AddressItemSkeleton(),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              );
+              return const Center(child: LoadingWidget());
             }
             if (state is AddressError) {
               return Center(
@@ -167,8 +131,7 @@ class _AddressViewState extends State<AddressView> {
             }
             if (state is AddressSuccess) {
               // Check if addresses are empty
-              if (ConstantsModels.addressModel?.data?.data == null ||
-                  ConstantsModels.addressModel!.data!.data!.isEmpty) {
+              if (ConstantsModels.addressModel?.data == null || ConstantsModels.addressModel!.data!.isEmpty) {
                 return _buildEmptyAddressState();
               }
 
@@ -190,12 +153,9 @@ class _AddressViewState extends State<AddressView> {
                       ListView.builder(
                         physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
-                        itemCount:
-                            ConstantsModels.addressModel?.data?.data?.length ??
-                                0,
+                        itemCount: ConstantsModels.addressModel?.data?.length ?? 0,
                         itemBuilder: (context, index) {
-                          final address =
-                              ConstantsModels.addressModel?.data?.data![index];
+                          final address = ConstantsModels.addressModel?.data![index];
                           return Padding(
                             padding: const EdgeInsets.only(bottom: 12.0),
                             child: Container(
@@ -215,27 +175,23 @@ class _AddressViewState extends State<AddressView> {
                                 title: Row(
                                   children: [
                                     Text(
-                                      address?.title ?? '',
+                                      address?.name ?? '',
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: Constants.tablet ? 16 : 16.sp,
                                       ),
                                     ),
-                                    if (address?.defaultAddress == 1) ...[
+                                    if (address?.isDefault ?? false) ...[
                                       const SizedBox(width: 8),
                                       Container(
                                         margin: const EdgeInsets.only(left: 8),
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 8, vertical: 2),
+                                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                                         decoration: BoxDecoration(
                                           color: Colors.grey.shade200,
-                                          borderRadius:
-                                              BorderRadius.circular(4),
+                                          borderRadius: BorderRadius.circular(4),
                                         ),
                                         child: Text(
-                                          address?.defaultAddress == 1
-                                              ? 'Default'.tr()
-                                              : '',
+                                          address?.isDefault ?? false ? 'Default'.tr() : '',
                                           style: const TextStyle(
                                             fontSize: 12,
                                             color: Colors.grey,
@@ -259,7 +215,7 @@ class _AddressViewState extends State<AddressView> {
                                           const SizedBox(width: 4),
                                           Expanded(
                                             child: Text(
-                                              '${address?.countryName ?? ''} - ${address?.stateName ?? ''} - ${address?.cityName ?? ''} - ${address?.postcode ?? ''}',
+                                              '${address?.country ?? ''} - ${address?.state ?? ''} - ${address?.city ?? ''} - ${address?.pinCode ?? ''}',
                                               style: TextStyle(
                                                 color: Colors.grey.shade600,
                                                 fontSize: 14,
@@ -293,15 +249,9 @@ class _AddressViewState extends State<AddressView> {
                                                     style: Theme.of(context)
                                                         .textTheme
                                                         .bodySmall
-                                                        ?.copyWith(
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                            fontSize: 14.sp,
-                                                            color: const Color(
-                                                                0xff808080)),
+                                                        ?.copyWith(fontWeight: FontWeight.w500, fontSize: 14.sp, color: const Color(0xff808080)),
                                                   ),
-                                                  SvgPicture.asset(
-                                                      AppIcons.edit),
+                                                  SvgPicture.asset(AppIcons.edit),
                                                 ],
                                               ),
                                             ),
@@ -310,22 +260,13 @@ class _AddressViewState extends State<AddressView> {
                                           InkWell(
                                             onTap: () {
                                               ConfirmationDeleteDialog.show(
-                                                stateStream:
-                                                    addressCubit.stream,
-                                                loadingStateCheck: (state) =>
-                                                    state
-                                                        is DeleteAddressLoading,
+                                                stateStream: addressCubit.stream,
+                                                loadingStateCheck: (state) => state is DeleteAddressLoading,
                                                 context: context,
                                                 onConfirm: () async {
-                                                  await addressCubit
-                                                      .deleteAddress(
-                                                          context: context,
-                                                          addressId:
-                                                              address?.id ??
-                                                                  -1);
+                                                  await addressCubit.deleteAddress(context: context, addressId: address?.id ?? -1);
                                                   Navigator.pop(context);
-                                                  await addressCubit.getAddress(
-                                                      context: context);
+                                                  await addressCubit.getAddress(context: context);
                                                 },
                                               );
                                             },
@@ -339,15 +280,9 @@ class _AddressViewState extends State<AddressView> {
                                                     style: Theme.of(context)
                                                         .textTheme
                                                         .bodySmall
-                                                        ?.copyWith(
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                            fontSize: 14.sp,
-                                                            color: const Color(
-                                                                0xffDD5A5D)),
+                                                        ?.copyWith(fontWeight: FontWeight.w500, fontSize: 14.sp, color: const Color(0xffDD5A5D)),
                                                   ),
-                                                  SvgPicture.asset(
-                                                      AppIcons.deleteIc),
+                                                  SvgPicture.asset(AppIcons.deleteIc),
                                                 ],
                                               ),
                                             ),

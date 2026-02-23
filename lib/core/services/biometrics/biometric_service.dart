@@ -1,14 +1,14 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:dobzz_seller/core/network/local/cache.dart';
-import 'package:dobzz_seller/core/utils/constants.dart';
-import 'package:dobzz_seller/core/utils/constants_models.dart';
-import 'package:dobzz_seller/feature/auth/data/models/register_model.dart';
-import 'package:dobzz_seller/feature/navigation/view/presentation/navigation_view.dart';
-import 'package:dobzz_seller/main.dart';
 import 'package:flutter/material.dart';
 import 'package:local_auth/local_auth.dart';
+import 'package:rova_star/core/network/local/cache.dart';
+import 'package:rova_star/core/utils/constants.dart';
+import 'package:rova_star/core/utils/constants_models.dart';
+import 'package:rova_star/feature/auth/data/models/register_model.dart';
+import 'package:rova_star/feature/navigation/view/presentation/navigation_view.dart';
+import 'package:rova_star/main.dart';
 
 enum BiometricTypeSimple { none, face, fingerprint, iris, weak, strong }
 
@@ -96,8 +96,8 @@ class BiometricService {
     await loginCache?.put(biometricAuthKey, loginModel.data?.token ?? '');
 
     // Save phone and password for biometric login
-    if (loginModel.data?.email != null) {
-      await loginCache?.put(loginEmailKey, loginModel.data?.email);
+    if (loginModel.data?.phone != null) {
+      await loginCache?.put(loginEmailKey, loginModel.data?.phone);
     }
 
     log('Biometric login enabled for user: ${loginModel.data?.email}');
@@ -162,7 +162,7 @@ class BiometricService {
         log('Logging in via saved token');
         // Hydrate global state
         ConstantsModels.registerModel = savedUser;
-        // loginCacheValue = savedUser;
+        loginCacheValue = savedUser;
         Constants.token = savedToken;
         await loginCache?.put(loginCacheKey, jsonEncode(savedUser.toJson()));
         if (navigatorKey.currentState != null) {

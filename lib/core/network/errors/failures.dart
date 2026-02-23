@@ -1,13 +1,13 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
-import 'package:dobzz_seller/core/network/errors/api_error_model.dart';
-import 'package:dobzz_seller/core/network/local/cache.dart';
-import 'package:dobzz_seller/core/utils/constants.dart';
-import 'package:dobzz_seller/feature/auth/login/view/presentation/login_screen.dart';
-import 'package:dobzz_seller/main.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:rova_star/core/network/errors/api_error_model.dart';
+import 'package:rova_star/core/network/local/cache.dart';
+import 'package:rova_star/core/utils/constants.dart';
+import 'package:rova_star/feature/auth/login/view/presentation/login_screen.dart';
+import 'package:rova_star/main.dart';
 
 abstract class Failure {
   final String errMessage;
